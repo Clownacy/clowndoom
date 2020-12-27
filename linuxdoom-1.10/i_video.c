@@ -62,7 +62,6 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 Display*	X_display=0;
 Window		X_mainWindow;
-Colormap	X_cmap;
 Visual*		X_visual;
 GC		X_gc;
 XEvent		X_event;
@@ -374,6 +373,27 @@ void I_FinishUpdate (void)
     
     }
 
+    // temporary code to "convert" Index8 to RGBA32
+    if (multiply == 1)
+    {
+	const unsigned char *src_pointer = screens[0];
+
+	for (size_t y = 0; y < SCREENHEIGHT; ++y)
+	{
+	    unsigned char *dst_pointer = &image->data[y*X_width*4];
+
+	    for (size_t x = 0; x < SCREENWIDTH; ++x)
+	    {
+		const unsigned char pixel = *src_pointer++;
+
+		*dst_pointer++ = pixel;
+		*dst_pointer++ = pixel;
+		*dst_pointer++ = pixel;
+		*dst_pointer++ = 0;
+	    }
+	}
+    }
+
     // scales the screen size before blitting it
     if (multiply == 2)
     {
@@ -535,7 +555,7 @@ void I_ReadScreen (byte* scr)
 // Palette stuff.
 //
 static XColor	colors[256];
-
+/*
 void UploadNewPalette(Colormap cmap, byte *palette)
 {
 
@@ -576,13 +596,13 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 
 	}
 }
-
+*/
 //
 // I_SetPalette
 //
 void I_SetPalette (byte* palette)
 {
-    UploadNewPalette(X_cmap, palette);
+//    UploadNewPalette(X_cmap, palette);
 }
 
 
@@ -769,8 +789,8 @@ void I_InitGraphics(void)
 
     // use the default visual 
     X_screen = DefaultScreen(X_display);
-    if (!XMatchVisualInfo(X_display, X_screen, 8, PseudoColor, &X_visualinfo))
-	I_Error("xdoom currently only supports 256-color PseudoColor screens");
+    if (!XMatchVisualInfo(X_display, X_screen, 24, TrueColor, &X_visualinfo))
+	I_Error("xdoom currently only supports 24-bit TrueColor screens");
     X_visual = X_visualinfo.visual;
 
     // check for the MITSHM extension
@@ -791,19 +811,14 @@ void I_InitGraphics(void)
 
     fprintf(stderr, "Using MITSHM extension\n");
 
-    // create the colormap
-    X_cmap = XCreateColormap(X_display, RootWindow(X_display,
-						   X_screen), X_visual, AllocAll);
-
     // setup attributes for main window
-    attribmask = CWEventMask | CWColormap | CWBorderPixel;
+    attribmask = CWEventMask | CWBorderPixel;
     attribs.event_mask =
 	KeyPressMask
 	| KeyReleaseMask
 	// | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
 	| ExposureMask;
 
-    attribs.colormap = X_cmap;
     attribs.border_pixel = 0;
 
     // create the main window
@@ -812,7 +827,7 @@ void I_InitGraphics(void)
 					x, y,
 					X_width, X_height,
 					0, // borderwidth
-					8, // depth
+					24, // depth
 					InputOutput,
 					X_visual,
 					attribmask,
@@ -859,7 +874,7 @@ void I_InitGraphics(void)
 	// create the image
 	image = XShmCreateImage(	X_display,
 					X_visual,
-					8,
+					24,
 					ZPixmap,
 					0,
 					&X_shminfo,
@@ -898,20 +913,17 @@ void I_InitGraphics(void)
     {
 	image = XCreateImage(	X_display,
     				X_visual,
-    				8,
+    				24,
     				ZPixmap,
     				0,
-    				(char*)malloc(X_width * X_height),
+    				(char*)malloc(X_width * X_height * 4),
     				X_width, X_height,
-    				8,
-    				X_width );
+    				32,
+    				X_width*4 );
 
     }
 
-    if (multiply == 1)
-	screens[0] = (unsigned char *) (image->data);
-    else
-	screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
+    screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
 
 }
 
