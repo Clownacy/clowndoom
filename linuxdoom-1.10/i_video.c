@@ -381,7 +381,8 @@ void I_FinishUpdate (void)
     
     }
 
-    // temporary code to "convert" Index8 to RGBA32
+    // scales the screen size before blitting it
+    // also converts the screen to RGBX8888
     if (multiply == 1)
     {
 	const unsigned char *src_pointer = screens[0];
@@ -401,112 +402,31 @@ void I_FinishUpdate (void)
 	    }
 	}
     }
-
-    // scales the screen size before blitting it
-    if (multiply == 2)
+    else
     {
-	unsigned int *olineptrs[2];
-	unsigned int *ilineptr;
-	int x, y, i;
-	unsigned int twoopixels;
-	unsigned int twomoreopixels;
-	unsigned int fouripixels;
+	const unsigned char *src_pointer = screens[0];
 
-	ilineptr = (unsigned int *) (screens[0]);
-	for (i=0 ; i<2 ; i++)
-	    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
-
-	y = SCREENHEIGHT;
-	while (y--)
+	for (size_t y = 0; y < SCREENHEIGHT; ++y)
 	{
-	    x = SCREENWIDTH;
-	    do
+	    unsigned char *dst_row = &image->data[y*multiply*X_width*4];
+	    unsigned char *dst_pointer = dst_row;
+
+	    for (size_t x = 0; x < SCREENWIDTH; ++x)
 	    {
-		fouripixels = *ilineptr++;
-		twoopixels =	(fouripixels & 0xff000000)
-		    |	((fouripixels>>8) & 0xffff00)
-		    |	((fouripixels>>16) & 0xff);
-		twomoreopixels =	((fouripixels<<16) & 0xff000000)
-		    |	((fouripixels<<8) & 0xffff00)
-		    |	(fouripixels & 0xff);
-#ifdef __BIG_ENDIAN__
-		*olineptrs[0]++ = twoopixels;
-		*olineptrs[1]++ = twoopixels;
-		*olineptrs[0]++ = twomoreopixels;
-		*olineptrs[1]++ = twomoreopixels;
-#else
-		*olineptrs[0]++ = twomoreopixels;
-		*olineptrs[1]++ = twomoreopixels;
-		*olineptrs[0]++ = twoopixels;
-		*olineptrs[1]++ = twoopixels;
-#endif
-	    } while (x-=4);
-	    olineptrs[0] += X_width/4;
-	    olineptrs[1] += X_width/4;
+		const unsigned char pixel = *src_pointer++;
+
+		for (int i = 0; i < multiply; ++i)
+		{
+		    *dst_pointer++ = colors[pixel].red;
+		    *dst_pointer++ = colors[pixel].green;
+		    *dst_pointer++ = colors[pixel].blue;
+		    *dst_pointer++ = 0;
+		}
+	    }
+
+	    for (int i = 1; i < multiply; ++i)
+		memcpy(&dst_row[i*X_width*4], dst_row, X_width*4);
 	}
-
-    }
-    else if (multiply == 3)
-    {
-	unsigned int *olineptrs[3];
-	unsigned int *ilineptr;
-	int x, y, i;
-	unsigned int fouropixels[3];
-	unsigned int fouripixels;
-
-	ilineptr = (unsigned int *) (screens[0]);
-	for (i=0 ; i<3 ; i++)
-	    olineptrs[i] = (unsigned int *) &image->data[i*X_width];
-
-	y = SCREENHEIGHT;
-	while (y--)
-	{
-	    x = SCREENWIDTH;
-	    do
-	    {
-		fouripixels = *ilineptr++;
-		fouropixels[0] = (fouripixels & 0xff000000)
-		    |	((fouripixels>>8) & 0xff0000)
-		    |	((fouripixels>>16) & 0xffff);
-		fouropixels[1] = ((fouripixels<<8) & 0xff000000)
-		    |	(fouripixels & 0xffff00)
-		    |	((fouripixels>>8) & 0xff);
-		fouropixels[2] = ((fouripixels<<16) & 0xffff0000)
-		    |	((fouripixels<<8) & 0xff00)
-		    |	(fouripixels & 0xff);
-#ifdef __BIG_ENDIAN__
-		*olineptrs[0]++ = fouropixels[0];
-		*olineptrs[1]++ = fouropixels[0];
-		*olineptrs[2]++ = fouropixels[0];
-		*olineptrs[0]++ = fouropixels[1];
-		*olineptrs[1]++ = fouropixels[1];
-		*olineptrs[2]++ = fouropixels[1];
-		*olineptrs[0]++ = fouropixels[2];
-		*olineptrs[1]++ = fouropixels[2];
-		*olineptrs[2]++ = fouropixels[2];
-#else
-		*olineptrs[0]++ = fouropixels[2];
-		*olineptrs[1]++ = fouropixels[2];
-		*olineptrs[2]++ = fouropixels[2];
-		*olineptrs[0]++ = fouropixels[1];
-		*olineptrs[1]++ = fouropixels[1];
-		*olineptrs[2]++ = fouropixels[1];
-		*olineptrs[0]++ = fouropixels[0];
-		*olineptrs[1]++ = fouropixels[0];
-		*olineptrs[2]++ = fouropixels[0];
-#endif
-	    } while (x-=4);
-	    olineptrs[0] += 2*X_width/4;
-	    olineptrs[1] += 2*X_width/4;
-	    olineptrs[2] += 2*X_width/4;
-	}
-
-    }
-    else if (multiply == 4)
-    {
-	// Broken. Gotta fix this some day.
-	void Expand4(unsigned *, double *);
-  	Expand4 ((unsigned *)(screens[0]), (double *) (image->data));
     }
 
     if (doShm)
