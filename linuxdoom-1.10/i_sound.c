@@ -60,26 +60,6 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 
 #include "doomdef.h"
 
-// UNIX hack, to be removed.
-#ifdef SNDSERV
-// Separate sound server process.
-FILE*	sndserver=0;
-char*	sndserver_filename = "./sndserver ";
-#elif SNDINTR
-
-// Update all 30 millisecs, approx. 30fps synchronized.
-// Linux resolution is allegedly 10 millisecs,
-//  scale is microseconds.
-#define SOUND_INTERVAL     500
-
-// Get the interrupt. Set duration in millisecs.
-int I_SoundSetTimer( int duration_of_tick );
-void I_SoundDelTimer( void );
-#else
-// None?
-#endif
-
-
 // A quick hack to establish a protocol between
 // synchronous mix buffer updates and asynchronous
 // audio writes. Probably redundant with gametic.
@@ -481,15 +461,6 @@ I_StartSound
   // UNUSED
   priority = 0;
   
-#ifdef SNDSERV 
-    if (sndserver)
-    {
-	fprintf(sndserver, "p%2.2x%2.2x%2.2x%2.2x\n", id, pitch, vol, sep);
-	fflush(sndserver);
-    }
-    // warning: control reaches end of non-void function.
-    return id;
-#else
     // Debug.
     //fprintf( stderr, "starting sound %d", id );
     
@@ -499,7 +470,6 @@ I_StartSound
     // fprintf( stderr, "/handle is %d\n", id );
     
     return id;
-#endif
 }
 
 
@@ -694,14 +664,6 @@ I_UpdateSoundParams
 
 void I_ShutdownSound(void)
 {    
-#ifdef SNDSERV
-  if (sndserver)
-  {
-    // Send a "quit" command.
-    fprintf(sndserver, "q\n");
-    fflush(sndserver);
-  }
-#else
   // Wait till all pending sounds are finished.
   int done = 0;
   int i;
@@ -725,7 +687,6 @@ void I_ShutdownSound(void)
   
   // Cleaning up -releasing the DSP device.
   close ( audio_fd );
-#endif
 
   // Done.
   return;
@@ -738,27 +699,7 @@ void I_ShutdownSound(void)
 
 void
 I_InitSound()
-{ 
-#ifdef SNDSERV
-  char buffer[256];
-  
-  if (getenv("DOOMWADDIR"))
-    sprintf(buffer, "%s/%s",
-	    getenv("DOOMWADDIR"),
-	    sndserver_filename);
-  else
-    sprintf(buffer, "%s", sndserver_filename);
-  
-  // start sound process
-  if ( !access(buffer, X_OK) )
-  {
-    strcat(buffer, " -quiet");
-    sndserver = popen(buffer, "w");
-  }
-  else
-    fprintf(stderr, "Could not start sound server [%s]\n", buffer);
-#else
-    
+{     
   int i;
   
 #ifdef SNDINTR
@@ -823,7 +764,6 @@ I_InitSound()
   // Finished initialization.
   fprintf(stderr, "I_InitSound: sound module ready\n");
     
-#endif
 }
 
 
