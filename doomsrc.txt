@@ -1,0 +1,96 @@
+===========================================================================
+Archive Maintainer      : Please place in /source
+Primary purpose         : Coding or reference
+Uploaded by             : Miguel Folatelli, email: myk@fibertel.com.ar
+                          (include "DOOM" in the message subject)
+===========================================================================
+Title                   : Doom source code, under the GNU GPL
+Filename                : linuxdoom-1.10.src.tgz
+Release date            : October 3rd 1999 (relicensed by John Carmack)
+Author                  : id Software
+Email Address           : johnc@idsoftware.com
+                          (Keep in mind before you bother John about this
+                           file that there is tons of info on the net about
+                           this source put forth by the "DOOM community"
+                           and that John is not actively supporting this
+                           file. He did more than enough by releasing it.)
+Other Files By Author   : id Software's game engines
+Misc. Author Info       : One of the id Software founders
+
+Description             : This is a copy of the source code for DOOM's
+                          executable, v1.10 (public release version).
+                          This source code was initially released under
+                          the DOOM license in 1997, but then dual licensed
+                          (DOOM/GPL) in 1997 to encourage transparency in
+                          the development of ports and extensions of the
+                          DOOM game engines. A copy of the source under the
+                          DOOM license may be obtained at id Software's
+                          FTP, or at one of its mirrors on /idgames in the
+                          /idstuff/source directory.
+
+Additional Credits to   : Everyone who's contributed to the understanding
+                          and development of the DOOM source code, and Bernd
+                          Kreimeier for preparing the source for release.
+===========================================================================
+* What is included *
+
+New levels              : 0
+Sounds                  : No
+Music                   : No
+Graphics                : No
+Dehacked/BEX Patch      : No
+Demos                   : No
+Other                   : Yes (source code)
+Other files required    : App to open TGZ files (GZip, 7-Zip, WinRAR, etc.)
+
+
+* Play Information *
+
+Game                    : The Ultimate DOOM, DOOM II v1.9, or Final DOOM
+Map #                   : N/A
+Single Player           : N/A
+Cooperative 2-4 Player  : N/A
+Deathmatch 2-4 Player   : N/A
+Other game styles       : N/A
+Difficulty Settings     : N/A
+
+
+* Construction *
+
+Base                    : New from scratch
+Build Time              : 1992-1997 (mostly 1992-1993)
+Editor(s) used          : ?
+Known Bugs              : More or less the bugs you find playing DOOM
+May Not Run With        : As it stands, non-Linux OSs
+Tested With             : Probably old Linux builds from 1997
+
+
+
+* Copyright / Permissions *
+
+Authors MAY use the contents of this file as a base for modification or
+reuse as long as they respect the following:
+
+Copyright (C) 1999  id Software
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+
+* Where to get the file that this text file describes *
+
+The Usual: ftp://archives.3dgamers.com/pub/idgames/
+Web sites: http://www.3ddownloads.com/doomworld/ports/doomsrc.zip
+FTP sites: Any mirrors of the /idgames adchive
+
