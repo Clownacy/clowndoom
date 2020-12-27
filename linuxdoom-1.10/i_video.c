@@ -71,6 +71,14 @@ XImage*		image;
 int		X_width;
 int		X_height;
 
+// Color palette
+static struct
+{
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
+}		colors[256];
+
 // MIT SHared Memory extension.
 boolean		doShm;
 
@@ -386,9 +394,9 @@ void I_FinishUpdate (void)
 	    {
 		const unsigned char pixel = *src_pointer++;
 
-		*dst_pointer++ = pixel;
-		*dst_pointer++ = pixel;
-		*dst_pointer++ = pixel;
+		*dst_pointer++ = colors[pixel].red;
+		*dst_pointer++ = colors[pixel].green;
+		*dst_pointer++ = colors[pixel].blue;
 		*dst_pointer++ = 0;
 	    }
 	}
@@ -552,57 +560,18 @@ void I_ReadScreen (byte* scr)
 
 
 //
-// Palette stuff.
-//
-static XColor	colors[256];
-/*
-void UploadNewPalette(Colormap cmap, byte *palette)
-{
-
-    register int	i;
-    register int	c;
-    static boolean	firstcall = true;
-
-#ifdef __cplusplus
-    if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
-#else
-    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
-#endif
-	{
-	    // initialize the colormap
-	    if (firstcall)
-	    {
-		firstcall = false;
-		for (i=0 ; i<256 ; i++)
-		{
-		    colors[i].pixel = i;
-		    colors[i].flags = DoRed|DoGreen|DoBlue;
-		}
-	    }
-
-	    // set the X colormap entries
-	    for (i=0 ; i<256 ; i++)
-	    {
-		c = gammatable[usegamma][*palette++];
-		colors[i].red = (c<<8) + c;
-		c = gammatable[usegamma][*palette++];
-		colors[i].green = (c<<8) + c;
-		c = gammatable[usegamma][*palette++];
-		colors[i].blue = (c<<8) + c;
-	    }
-
-	    // store the colors to the current colormap
-	    XStoreColors(X_display, cmap, colors, 256);
-
-	}
-}
-*/
-//
 // I_SetPalette
 //
 void I_SetPalette (byte* palette)
 {
-//    UploadNewPalette(X_cmap, palette);
+    register int	i;
+
+    for (i=0 ; i<256 ; i++)
+    {
+	colors[i].blue = gammatable[usegamma][*palette++];
+	colors[i].green = gammatable[usegamma][*palette++];
+	colors[i].red = gammatable[usegamma][*palette++];
+    }
 }
 
 
