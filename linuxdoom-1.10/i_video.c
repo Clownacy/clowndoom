@@ -386,7 +386,7 @@ void I_FinishUpdate (void)
 
 	for (size_t y = 0; y < SCREENHEIGHT; ++y)
 	{
-	    unsigned char *dst_pointer = &image->data[y*X_width*4];
+	    unsigned char *dst_pointer = (unsigned char*)&image->data[y*X_width*4];
 
 	    for (size_t x = 0; x < SCREENWIDTH; ++x)
 	    {
@@ -405,7 +405,7 @@ void I_FinishUpdate (void)
 
 	for (size_t y = 0; y < SCREENHEIGHT; ++y)
 	{
-	    unsigned char *dst_row = &image->data[y*multiply*X_width*4];
+	    unsigned char *dst_row = (unsigned char*)&image->data[y*multiply*X_width*4];
 	    unsigned char *dst_pointer = dst_row;
 
 	    for (size_t x = 0; x < SCREENWIDTH; ++x)
