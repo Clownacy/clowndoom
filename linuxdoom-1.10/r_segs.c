@@ -208,7 +208,7 @@ void R_RenderSegLoop (void)
     int			top;
     int			bottom;
 
-    //texturecolumn = 0;				// shut up compiler warning
+    texturecolumn = 0;				// shut up compiler warning
 	
     for ( ; rw_x < rw_stopx ; rw_x++)
     {

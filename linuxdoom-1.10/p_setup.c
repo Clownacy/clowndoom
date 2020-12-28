@@ -585,7 +585,7 @@ P_SetupLevel
   skill_t	skill)
 {
     int		i;
-    char	lumpname[9];
+    char	lumpname[6];
     int		lumpnum;
 	
     totalkills = totalitems = totalsecret = wminfo.maxfrags = 0;
@@ -624,10 +624,12 @@ P_SetupLevel
     // find map name
     if ( gamemode == commercial)
     {
-	if (map<10)
-	    sprintf (lumpname,"map0%i", map);
-	else
-	    sprintf (lumpname,"map%i", map);
+	lumpname[0] = 'm';
+	lumpname[1] = 'a';
+	lumpname[2] = 'p';
+	lumpname[3] = '0' + (map / 10) % 10;
+	lumpname[4] = '0' + map % 10;
+	lumpname[5] = '\0';
     }
     else
     {
@@ -635,7 +637,7 @@ P_SetupLevel
 	lumpname[1] = '0' + episode;
 	lumpname[2] = 'M';
 	lumpname[3] = '0' + map;
-	lumpname[4] = 0;
+	lumpname[4] = '\0';
     }
 
     lumpnum = W_GetNumForName (lumpname);
