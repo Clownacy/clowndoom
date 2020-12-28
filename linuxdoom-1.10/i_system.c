@@ -178,3 +178,8 @@ void I_Error (char *error, ...)
     
     exit(-1);
 }
+
+void I_Sleep(void)
+{
+    usleep(1);
+}

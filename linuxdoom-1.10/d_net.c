@@ -24,7 +24,6 @@
 //-----------------------------------------------------------------------------
 
 
-
 #include "m_menu.h"
 #include "i_system.h"
 #include "i_video.h"
@@ -729,6 +728,8 @@ void TryRunTics (void)
 	    M_Ticker ();
 	    return;
 	} 
+
+	I_Sleep();
     }
     
     // run the count * ticdup dics
