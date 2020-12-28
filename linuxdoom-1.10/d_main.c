@@ -613,10 +613,8 @@ void IdentifyVersion (void)
 	D_AddFile (DEVMAPS"data_se/texture1.lmp");
 	D_AddFile (DEVMAPS"data_se/pnames.lmp");
 	strcpy (basedefault,DEVDATA"default.cfg");
-	return;
     }
-
-    if (M_CheckParm ("-regdev"))
+    else if (M_CheckParm ("-regdev"))
     {
 	gamemode = registered;
 	devparm = true;
@@ -625,10 +623,8 @@ void IdentifyVersion (void)
 	D_AddFile (DEVMAPS"data_se/texture2.lmp");
 	D_AddFile (DEVMAPS"data_se/pnames.lmp");
 	strcpy (basedefault,DEVDATA"default.cfg");
-	return;
     }
-
-    if (M_CheckParm ("-comdev"))
+    else if (M_CheckParm ("-comdev"))
     {
 	gamemode = commercial;
 	devparm = true;
@@ -643,10 +639,8 @@ void IdentifyVersion (void)
 	D_AddFile (DEVMAPS"cdata/texture1.lmp");
 	D_AddFile (DEVMAPS"cdata/pnames.lmp");
 	strcpy (basedefault,DEVDATA"default.cfg");
-	return;
     }
-
-    if ( !access (doom2fwad,R_OK) )
+    else if ( !access (doom2fwad,R_OK) )
     {
 	gamemode = commercial;
 	// C'est ridicule!
@@ -654,57 +648,54 @@ void IdentifyVersion (void)
 	language = french;
 	printf("French version\n");
 	D_AddFile (doom2fwad);
-	return;
     }
-
-    if ( !access (doom2wad,R_OK) )
+    else if ( !access (doom2wad,R_OK) )
     {
 	gamemode = commercial;
 	D_AddFile (doom2wad);
-	return;
     }
-
-    if ( !access (plutoniawad, R_OK ) )
+    else if ( !access (plutoniawad, R_OK ) )
     {
       gamemode = commercial;
       D_AddFile (plutoniawad);
-      return;
     }
-
-    if ( !access ( tntwad, R_OK ) )
+    else if ( !access ( tntwad, R_OK ) )
     {
       gamemode = commercial;
       D_AddFile (tntwad);
-      return;
     }
-
-    if ( !access (doomuwad,R_OK) )
+    else if ( !access (doomuwad,R_OK) )
     {
       gamemode = retail;
       D_AddFile (doomuwad);
-      return;
     }
-
-    if ( !access (doomwad,R_OK) )
+    else if ( !access (doomwad,R_OK) )
     {
       gamemode = registered;
       D_AddFile (doomwad);
-      return;
     }
-
-    if ( !access (doom1wad,R_OK) )
+    else if ( !access (doom1wad,R_OK) )
     {
       gamemode = shareware;
       D_AddFile (doom1wad);
-      return;
+    }
+    else
+    {
+	printf("Game mode indeterminate.\n");
+	gamemode = indetermined;
+
+	// We don't abort. Let's see what the PWAD contains.
+	//exit(1);
+	//I_Error ("Game mode indeterminate\n");
     }
 
-    printf("Game mode indeterminate.\n");
-    gamemode = indetermined;
-
-    // We don't abort. Let's see what the PWAD contains.
-    //exit(1);
-    //I_Error ("Game mode indeterminate\n");
+    free(doom1wad);
+    free(doomwad);
+    free(doomuwad);
+    free(doom2wad);
+    free(doom2fwad);
+    free(plutoniawad);
+    free(tntwad);
 }
 
 //
