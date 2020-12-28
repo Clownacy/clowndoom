@@ -591,7 +591,7 @@ void IdentifyVersion (void)
     plutoniawad = malloc(strlen(doomwaddir)+1+/*9*/12+1);
     sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
 
-    tntwad = malloc(strlen(doomwaddir)+1+9+1);
+    tntwad = malloc(strlen(doomwaddir)+1+7+1);
     sprintf(tntwad, "%s/tnt.wad", doomwaddir);
 
 
