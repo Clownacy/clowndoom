@@ -200,6 +200,7 @@ void I_GetEvent(void)
 {
 
     event_t event;
+    static int button_state;
 
     // put event-grabbing stuff in here
     XNextEvent(X_display, &X_event);
@@ -218,40 +219,46 @@ void I_GetEvent(void)
 	// fprintf(stderr, "ku");
 	break;
       case ButtonPress:
+        switch (X_event.xbutton.button)
+	{
+	    case Button1:
+		button_state |= 1;
+		break;
+	    case Button2:
+		button_state |= 2;
+		break;
+	    case Button3:
+		button_state |= 4;
+		break;
+	}
 	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0)
-	    | (X_event.xbutton.button == Button1)
-	    | (X_event.xbutton.button == Button2 ? 2 : 0)
-	    | (X_event.xbutton.button == Button3 ? 4 : 0);
+	event.data1 = button_state;
 	event.data2 = event.data3 = 0;
 	D_PostEvent(&event);
 	// fprintf(stderr, "b");
 	break;
       case ButtonRelease:
+        switch (X_event.xbutton.button)
+	{
+	    case Button1:
+		button_state &= ~1;
+		break;
+	    case Button2:
+		button_state &= ~2;
+		break;
+	    case Button3:
+		button_state &= ~4;
+		break;
+	}
 	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0);
-	// suggest parentheses around arithmetic in operand of |
-	event.data1 =
-	    event.data1
-	    ^ (X_event.xbutton.button == Button1 ? 1 : 0)
-	    ^ (X_event.xbutton.button == Button2 ? 2 : 0)
-	    ^ (X_event.xbutton.button == Button3 ? 4 : 0);
+	event.data1 = button_state;
 	event.data2 = event.data3 = 0;
 	D_PostEvent(&event);
 	// fprintf(stderr, "bu");
 	break;
       case MotionNotify:
 	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xmotion.state & Button1Mask)
-	    | (X_event.xmotion.state & Button2Mask ? 2 : 0)
-	    | (X_event.xmotion.state & Button3Mask ? 4 : 0);
+	event.data1 = button_state;
 	event.data2 = (X_event.xmotion.x - lastmousex) << 2;
 	event.data3 = (lastmousey - X_event.xmotion.y) << 2;
 
