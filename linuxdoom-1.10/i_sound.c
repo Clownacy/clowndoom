@@ -107,7 +107,7 @@ int		channelids[NUM_CHANNELS];
 int		steptable[256];
 
 // Volume lookups.
-int		vol_lookup[128*256];
+int		vol_lookup[16*256];
 
 // Hardware left and right channel volume lookup.
 int*		channelleftvol_lookup[NUM_CHANNELS];
@@ -445,9 +445,9 @@ void I_SetChannels()
   // Generates volume lookup tables
   //  which also turn the unsigned samples
   //  into signed samples.
-  for (i=0 ; i<128 ; i++)
+  for (i=0 ; i<16 ; i++)
     for (j=0 ; j<256 ; j++)
-      vol_lookup[i*256+j] = (i*(j-128)*256)/127;
+      vol_lookup[i*256+j] = (i*(j-128)*256)/15;
 }	
 
  
