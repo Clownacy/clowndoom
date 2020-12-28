@@ -487,6 +487,7 @@ EV_BuildStairs
 	floor->sector = sec;
 	switch(type)
 	{
+	  default:
 	  case build8:
 	    speed = FLOORSPEED/4;
 	    stairsize = 8*FRACUNIT;

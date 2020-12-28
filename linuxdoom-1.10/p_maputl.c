@@ -113,6 +113,7 @@ P_BoxOnLineSide
 	
     switch (ld->slopetype)
     {
+      default:
       case ST_HORIZONTAL:
 	p1 = tmbox[BOXTOP] > ld->v1->y;
 	p2 = tmbox[BOXBOTTOM] > ld->v1->y;
