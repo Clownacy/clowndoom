@@ -506,7 +506,7 @@ void I_SetPalette (byte* palette)
 //  thus there might have been stale
 //  handles accumulating.
 //
-void grabsharedmemory(int size)
+void grabsharedmemory(size_t size)
 {
 
   int			key = ('d'<<24) | ('o'<<16) | ('o'<<8) | 'm';

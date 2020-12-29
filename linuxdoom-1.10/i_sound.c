@@ -130,6 +130,9 @@ int*		channelrightvol_lookup[NUM_CHANNELS];
 //
 static void Callback(ma_device *device, void *output_buffer_void, const void *input_buffer, ma_uint32 frames_to_do)
 {
+  (void)device;
+  (void)input_buffer;
+
   short *output_buffer = output_buffer_void;
 
   // Mix current sound data.
@@ -504,7 +507,7 @@ I_StartSound
 {
 
   // UNUSED
-  priority = 0;
+  (void)priority;
   
     // Debug.
     //fprintf( stderr, "starting sound %d", id );
@@ -527,7 +530,7 @@ void I_StopSound (int handle)
   //  an setting the channel to zero.
   
   // UNUSED.
-  handle = 0;
+  (void)handle;
 }
 
 
@@ -553,7 +556,10 @@ I_UpdateSoundParams
   //  and resetting the channel parameters.
 
   // UNUSED.
-  handle = vol = sep = pitch = 0;
+  (void)handle;
+  (void)vol;
+  (void)sep;
+  (void)pitch;
 }
 
 
@@ -633,26 +639,28 @@ static int	musicdies=-1;
 void I_PlaySong(int handle, int looping)
 {
   // UNUSED.
-  handle = looping = 0;
+  (void)handle;
+  (void)looping;
+
   musicdies = gametic + TICRATE*30;
 }
 
 void I_PauseSong (int handle)
 {
   // UNUSED.
-  handle = 0;
+  (void)handle;
 }
 
 void I_ResumeSong (int handle)
 {
   // UNUSED.
-  handle = 0;
+  (void)handle;
 }
 
 void I_StopSong(int handle)
 {
   // UNUSED.
-  handle = 0;
+  (void)handle;
   
   looping = 0;
   musicdies = 0;
@@ -661,13 +669,13 @@ void I_StopSong(int handle)
 void I_UnRegisterSong(int handle)
 {
   // UNUSED.
-  handle = 0;
+  (void)handle;
 }
 
 int I_RegisterSong(void* data)
 {
   // UNUSED.
-  data = NULL;
+  (void)data;
   
   return 1;
 }
@@ -676,6 +684,7 @@ int I_RegisterSong(void* data)
 int I_QrySongPlaying(int handle)
 {
   // UNUSED.
-  handle = 0;
+  (void)handle;
+
   return looping || musicdies > gametic;
 }

@@ -189,10 +189,10 @@ int             mousex;
 int		mousey;         
 
 int             dclicktime;
-int		dclickstate;
+boolean		dclickstate;
 int		dclicks; 
 int             dclicktime2;
-int		dclickstate2;
+boolean		dclickstate2;
 int		dclicks2;
 
 // joystick values are repeated 
@@ -216,7 +216,7 @@ void*		statcopy;				// for statistics driver
  
 int G_CmdChecksum (ticcmd_t* cmd) 
 { 
-    int		i;
+    size_t	i;
     int		sum = 0; 
 	 
     for (i=0 ; i< sizeof(*cmd)/4 - 1 ; i++) 
@@ -1150,6 +1150,7 @@ void G_WorldDone (void)
 	  case 31:
 	    if (!secretexit)
 		break;
+	    // Fallthrough
 	  case 6:
 	  case 11:
 	  case 20:

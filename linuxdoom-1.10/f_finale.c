@@ -49,7 +49,7 @@
 //  0 = text, 1 = art screen, 2 = character cast
 int		finalestage;
 
-int		finalecount;
+size_t		finalecount;
 
 #define	TEXTSPEED	3
 #define	TEXTWAIT	250

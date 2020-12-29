@@ -55,7 +55,9 @@ I_Tactile
   int	total )
 {
   // UNUSED.
-  on = off = total = 0;
+  (void)on;
+  (void)off;
+  (void)total;
 }
 
 ticcmd_t	emptycmd;
