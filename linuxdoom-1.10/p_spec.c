@@ -126,7 +126,7 @@ animdef_t		animdefs[] =
     {true,	"WFALL4",	"WFALL1",	8},
     {true,	"DBRAIN4",	"DBRAIN1",	8},
 	
-    {-1}
+    {false, "", "", -1}
 };
 
 anim_t		anims[MAXANIMS];
@@ -150,7 +150,7 @@ void P_InitPicAnims (void)
     
     //	Init animation
     lastanim = anims;
-    for (i=0 ; animdefs[i].istexture != -1 ; i++)
+    for (i=0 ; animdefs[i].speed != -1 ; i++)
     {
 	if (animdefs[i].istexture)
 	{
@@ -1314,7 +1314,7 @@ void P_SpawnSpecials (void)
 
 	  case 14:
 	    // DOOR RAISE IN 5 MINUTES
-	    P_SpawnDoorRaiseIn5Mins (sector, i);
+	    P_SpawnDoorRaiseIn5Mins (sector);
 	    break;
 	    
 	  case 17:

@@ -64,18 +64,18 @@ extern  fixed_t*	finecosine;
 // Effective size is 4096.
 extern fixed_t		finetangent[FINEANGLES/2];
 
+typedef unsigned angle_t;
+
 // Binary Angle Measument, BAM.
-#define ANG45			0x20000000
-#define ANG90			0x40000000
-#define ANG180		0x80000000
-#define ANG270		0xc0000000
+#define ANG45			((angle_t)0x20000000)
+#define ANG90			((angle_t)0x40000000)
+#define ANG180		((angle_t)0x80000000)
+#define ANG270		((angle_t)0xc0000000)
 
 
 #define SLOPERANGE		2048
 #define SLOPEBITS		11
 #define DBITS			(FRACBITS-SLOPEBITS)
-
-typedef unsigned angle_t;
 
 
 // Effective size is 2049;

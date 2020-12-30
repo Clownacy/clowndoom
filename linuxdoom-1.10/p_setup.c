@@ -580,9 +580,7 @@ void P_GroupLines (void)
 void
 P_SetupLevel
 ( int		episode,
-  int		map,
-  int		playermask,
-  skill_t	skill)
+  int		map)
 {
     int		i;
     char	lumpname[6];

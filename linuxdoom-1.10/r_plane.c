@@ -130,7 +130,7 @@ R_MapPlane
     if (x2 < x1
 	|| x1<0
 	|| x2>=viewwidth
-	|| (unsigned)y>viewheight)
+	|| (unsigned)y>(unsigned)viewheight)
     {
 	I_Error ("R_MapPlane: %i, %i at %i",x1,x2,y);
     }

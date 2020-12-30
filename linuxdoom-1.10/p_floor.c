@@ -313,6 +313,7 @@ EV_DoFloor
 
 	  case raiseFloorCrush:
 	    floor->crush = true;
+	    // Fallthrough
 	  case raiseFloor:
 	    floor->direction = 1;
 	    floor->sector = sec;

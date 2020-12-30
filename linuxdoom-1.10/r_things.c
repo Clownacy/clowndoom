@@ -392,9 +392,7 @@ void R_DrawMaskedColumn (column_t* column)
 //
 void
 R_DrawVisSprite
-( vissprite_t*		vis,
-  int			x1,
-  int			x2 )
+( vissprite_t*		vis )
 {
     column_t*		column;
     int			texturecolumn;
@@ -501,7 +499,7 @@ void R_ProjectSprite (mobj_t* thing)
     
     // decide which patch to use for sprite relative to player
 #ifdef RANGECHECK
-    if ((unsigned)thing->sprite >= numsprites)
+    if ((unsigned)thing->sprite >= (unsigned)numsprites)
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 thing->sprite);
 #endif
@@ -654,7 +652,7 @@ void R_DrawPSprite (pspdef_t* psp)
     
     // decide which patch to use
 #ifdef RANGECHECK
-    if ( (unsigned)psp->state->sprite >= numsprites)
+    if ( (unsigned)psp->state->sprite >= (unsigned)numsprites)
 	I_Error ("R_ProjectSprite: invalid sprite number %i ",
 		 psp->state->sprite);
 #endif
@@ -732,7 +730,7 @@ void R_DrawPSprite (pspdef_t* psp)
 	vis->colormap = spritelights[MAXLIGHTSCALE-1];
     }
 	
-    R_DrawVisSprite (vis, vis->x1, vis->x2);
+    R_DrawVisSprite (vis);
 }
 
 
@@ -943,7 +941,7 @@ void R_DrawSprite (vissprite_t* spr)
 		
     mfloorclip = clipbot;
     mceilingclip = cliptop;
-    R_DrawVisSprite (spr, spr->x1, spr->x2);
+    R_DrawVisSprite (spr);
 }
 
 

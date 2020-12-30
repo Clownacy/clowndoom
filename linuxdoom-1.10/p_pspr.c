@@ -342,7 +342,8 @@ void A_ReFire
 ( player_t*	player,
   pspdef_t*	psp )
 {
-    
+    (void)psp;
+
     // check for fire
     //  (if a weaponchange is pending, let it go through instead)
     if ( (player->cmd.buttons & BT_ATTACK) 
@@ -365,6 +366,8 @@ A_CheckReload
 ( player_t*	player,
   pspdef_t*	psp )
 {
+    (void)psp;
+
     P_CheckAmmo (player);
 #if 0
     if (player->ammo[am_shell]<2)
@@ -448,6 +451,8 @@ A_GunFlash
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
+    (void)psp;
+
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     P_SetPsprite (player,ps_flash,weaponinfo[player->readyweapon].flashstate);
 }
@@ -471,6 +476,8 @@ A_Punch
     int		damage;
     int		slope;
 	
+    (void)psp;
+
     damage = (P_Random ()%10+1)<<1;
 
     if (player->powers[pw_strength])	
@@ -504,6 +511,8 @@ A_Saw
     angle_t	angle;
     int		damage;
     int		slope;
+
+    (void)psp;
 
     damage = 2*(P_Random ()%10+1);
     angle = player->mo->angle;
@@ -550,6 +559,8 @@ A_FireMissile
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
+    (void)psp;
+
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
     P_SpawnPlayerMissile (player->mo, MT_ROCKET);
 }
@@ -563,6 +574,8 @@ A_FireBFG
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
+    (void)psp;
+
     player->ammo[weaponinfo[player->readyweapon].ammo] -= BFGCELLS;
     P_SpawnPlayerMissile (player->mo, MT_BFG);
 }
@@ -577,6 +590,8 @@ A_FirePlasma
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
+    (void)psp;
+
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
 
     P_SetPsprite (player,
@@ -646,6 +661,8 @@ A_FirePistol
 ( player_t*	player,
   pspdef_t*	psp ) 
 {
+    (void)psp;
+
     S_StartSound (player->mo, sfx_pistol);
 
     P_SetMobjState (player->mo, S_PLAY_ATK2);
@@ -670,6 +687,8 @@ A_FireShotgun
 {
     int		i;
 	
+    (void)psp;
+
     S_StartSound (player->mo, sfx_shotgn);
     P_SetMobjState (player->mo, S_PLAY_ATK2);
 
@@ -699,6 +718,7 @@ A_FireShotgun2
     angle_t	angle;
     int		damage;
 		
+    (void)psp;
 	
     S_StartSound (player->mo, sfx_dshtgn);
     P_SetMobjState (player->mo, S_PLAY_ATK2);
@@ -758,16 +778,22 @@ A_FireCGun
 //
 void A_Light0 (player_t *player, pspdef_t *psp)
 {
+    (void)psp;
+
     player->extralight = 0;
 }
 
 void A_Light1 (player_t *player, pspdef_t *psp)
 {
+    (void)psp;
+
     player->extralight = 1;
 }
 
 void A_Light2 (player_t *player, pspdef_t *psp)
 {
+    (void)psp;
+
     player->extralight = 2;
 }
 
@@ -817,6 +843,8 @@ A_BFGsound
 ( player_t*	player,
   pspdef_t*	psp )
 {
+    (void)psp;
+
     S_StartSound (player->mo, sfx_bfg);
 }
 

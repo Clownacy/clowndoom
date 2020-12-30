@@ -46,22 +46,6 @@
 
 
 
-typedef enum
-{
-    DI_EAST,
-    DI_NORTHEAST,
-    DI_NORTH,
-    DI_NORTHWEST,
-    DI_WEST,
-    DI_SOUTHWEST,
-    DI_SOUTH,
-    DI_SOUTHEAST,
-    DI_NODIR,
-    NUMDIRS
-    
-} dirtype_t;
-
-
 //
 // P_NewChaseDir related LUT.
 //
@@ -365,7 +349,7 @@ void P_NewChaseDir (mobj_t*	actor)
     
     dirtype_t	d[3];
     
-    int		tdir;
+    unsigned int	tdir;
     dirtype_t	olddir;
     
     dirtype_t	turnaround;
@@ -463,7 +447,7 @@ void P_NewChaseDir (mobj_t*	actor)
     else
     {
 	for ( tdir=DI_SOUTHEAST;
-	      tdir != (DI_EAST-1);
+	      tdir != (DI_EAST-1u);
 	      tdir-- )
 	{
 	    if (tdir!=turnaround)
@@ -1774,6 +1758,8 @@ A_OpenShotgun2
 ( player_t*	player,
   pspdef_t*	psp )
 {
+    (void)psp;
+
     S_StartSound (player->mo, sfx_dbopn);
 }
 
@@ -1782,6 +1768,8 @@ A_LoadShotgun2
 ( player_t*	player,
   pspdef_t*	psp )
 {
+    (void)psp;
+
     S_StartSound (player->mo, sfx_dbload);
 }
 
@@ -1810,6 +1798,8 @@ void A_BrainAwake (mobj_t* mo)
     thinker_t*	thinker;
     mobj_t*	m;
 	
+    (void)mo;
+
     // find all the target spots
     numbraintargets = 0;
     braintargeton = 0;
@@ -1837,6 +1827,8 @@ void A_BrainAwake (mobj_t* mo)
 
 void A_BrainPain (mobj_t*	mo)
 {
+    (void)mo;
+
     S_StartSound (NULL,sfx_bospn);
 }
 
@@ -1890,6 +1882,8 @@ void A_BrainExplode (mobj_t* mo)
 
 void A_BrainDie (mobj_t*	mo)
 {
+    (void)mo;
+
     G_ExitLevel ();
 }
 

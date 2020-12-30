@@ -458,7 +458,7 @@ void AM_changeWindowLoc(void)
 void AM_initVariables(void)
 {
     int pnum;
-    static event_t st_notify = { ev_keyup, AM_MSGENTERED };
+    static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
 
     automapactive = true;
     fb = screens[0];
@@ -559,7 +559,7 @@ void AM_LevelInit(void)
 //
 void AM_Stop (void)
 {
-    static event_t st_notify = { 0, ev_keyup, AM_MSGEXITED };
+    static event_t st_notify = { ev_keyup, AM_MSGEXITED, 0, 0 };
 
     AM_unloadPics();
     automapactive = false;
@@ -1281,8 +1281,7 @@ void AM_drawPlayers(void)
 
 void
 AM_drawThings
-( int	colors,
-  int 	colorrange)
+( int	colors)
 {
     int		i;
     mobj_t*	t;
@@ -1337,7 +1336,7 @@ void AM_Drawer (void)
     AM_drawWalls();
     AM_drawPlayers();
     if (cheating==2)
-	AM_drawThings(THINGCOLORS, THINGRANGE);
+	AM_drawThings(THINGCOLORS);
     AM_drawCrosshair(XHAIRCOLORS);
 
     AM_drawMarks();
