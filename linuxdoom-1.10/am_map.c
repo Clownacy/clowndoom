@@ -612,7 +612,7 @@ void AM_maxOutWindowScale(void)
 //
 boolean
 AM_Responder
-( event_t*	ev )
+( const event_t*	ev )
 {
 
     int rc;
