@@ -73,7 +73,9 @@ typedef enum
 
 // If rangecheck is undefined,
 // most parameter validation debugging code will not be compiled
+#ifndef NDEBUG
 #define RANGECHECK
+#endif
 
 // This one switches between MIT SHM (no proper mouse)
 // and XFree86 DGA (mickey sampling). The original

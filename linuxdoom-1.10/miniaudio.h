@@ -12331,6 +12331,7 @@ static ma_result ma_context_init__null(ma_context* pContext, const ma_context_co
     MA_ASSERT(pContext != NULL);
 
     (void)pConfig;
+    (void)pContext;
 
     pCallbacks->onContextInit             = ma_context_init__null;
     pCallbacks->onContextUninit           = ma_context_uninit__null;

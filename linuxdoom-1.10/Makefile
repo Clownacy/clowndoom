@@ -7,7 +7,7 @@
 CC=  gcc  # gcc or g++
 
 ifeq ($(RELEASE),1)
- CFLAGS=-O2 -s
+ CFLAGS=-O2 -s -DNDEBUG
 else
  CFLAGS=-ggdb3 -Og -fsanitize=address
 endif
