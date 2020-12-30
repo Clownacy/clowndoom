@@ -88,7 +88,7 @@
 void D_DoomLoop (void);
 
 
-char*		wadfiles[MAXWADFILES];
+const char*	wadfiles[MAXWADFILES];
 
 
 boolean		devparm;	// started game with -devparm
@@ -146,7 +146,7 @@ int 		eventtail;
 // D_PostEvent
 // Called by the I/O functions when input is detected
 //
-void D_PostEvent (event_t* ev)
+void D_PostEvent (const event_t* ev)
 {
     events[eventhead] = *ev;
     eventhead = (eventhead+1)&(MAXEVENTS-1);
@@ -402,7 +402,7 @@ void D_DoomLoop (void)
 //
 int             demosequence;
 int             pagetic;
-char                    *pagename;
+const char                    *pagename;
 
 
 //
@@ -529,7 +529,7 @@ char            title[128];
 //
 // D_AddFile
 //
-void D_AddFile (char *file)
+void D_AddFile (const char *file)
 {
     int     numwadfiles;
     char    *newfile;
@@ -562,8 +562,8 @@ void IdentifyVersion (void)
     char*	tntwad;
 
 #ifdef NORMALUNIX
-    char *home;
-    char *doomwaddir;
+    const char *home;
+    const char *doomwaddir;
     doomwaddir = getenv("DOOMWADDIR");
     if (!doomwaddir)
 	doomwaddir = ".";

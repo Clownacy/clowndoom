@@ -80,10 +80,10 @@ int filelength (int handle)
 
 void
 ExtractFileBase
-( char*		path,
+( const char*	path,
   char*		dest )
 {
-    char*	src;
+    const char*	src;
     int		length;
 
     src = path + strlen(path) - 1;
@@ -131,10 +131,10 @@ ExtractFileBase
 // But: the reload feature is a fragile hack...
 
 int			reloadlump;
-char*			reloadname;
+const char*		reloadname;
 
 
-void W_AddFile (char *filename)
+void W_AddFile (const char *filename)
 {
     wadinfo_t		header;
     lumpinfo_t*		lump_p;
@@ -285,7 +285,7 @@ void W_Reload (void)
 // The name searcher looks backwards, so a later file
 //  does override all earlier ones.
 //
-void W_InitMultipleFiles (char** filenames)
+void W_InitMultipleFiles (const char** filenames)
 {	
     int		size;
     
@@ -318,9 +318,9 @@ void W_InitMultipleFiles (char** filenames)
 // W_InitFile
 // Just initialize from a single file.
 //
-void W_InitFile (char* filename)
+void W_InitFile (const char* filename)
 {
-    char*	names[2];
+    const char*	names[2];
 
     names[0] = filename;
     names[1] = NULL;
@@ -344,7 +344,7 @@ int W_NumLumps (void)
 // Returns -1 if name not found.
 //
 
-int W_CheckNumForName (char* name)
+int W_CheckNumForName (const char* name)
 {
     union {
 	char	s[9];
@@ -392,7 +392,7 @@ int W_CheckNumForName (char* name)
 // W_GetNumForName
 // Calls W_CheckNumForName, but bombs out if not found.
 //
-int W_GetNumForName (char* name)
+int W_GetNumForName (const char* name)
 {
     int	i;
 
@@ -500,7 +500,7 @@ W_CacheLumpNum
 //
 void*
 W_CacheLumpName
-( char*		name,
+( const char*	name,
   int		tag )
 {
     return W_CacheLumpNum (W_GetNumForName(name), tag);
