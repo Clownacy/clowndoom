@@ -44,6 +44,8 @@
 #define MA_NO_GENERATION
 #include "miniaudio.h"
 
+#include "wildmidi_lib.h"
+
 #include "z_zone.h"
 
 #include "i_system.h"
@@ -118,6 +120,10 @@ int		vol_lookup[128*256];
 int*		channelleftvol_lookup[NUM_CHANNELS];
 int*		channelrightvol_lookup[NUM_CHANNELS];
 
+// Music stuff
+static boolean music_initialised;
+static midi *music_midi;
+static boolean music_playing;
 
 
 //
@@ -157,7 +163,23 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
   (void)device;
   (void)input_buffer;
 
+    memset(output_buffer_void, 0, frames_to_do * 2 * 2);
+
     ma_mutex_lock(&mutex);
+
+    if (music_playing)
+    {
+	size_t bytes_to_do = frames_to_do * 2 * 2;
+	do
+	{
+	    size_t bytes_done = WildMidi_GetOutput(music_midi, output_buffer_void, frames_to_do * 2 * 2);
+
+	    if (bytes_done == 0)
+		break;
+
+	    bytes_to_do -= bytes_done;
+	} while (bytes_to_do != 0);
+    }
 
     // Left and right channel
     //  are in global mixbuffer, alternating.
@@ -215,19 +237,19 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 	// else *leftout = dl;
 
 	if (dl > 0x7fff)
-	    *leftout = 0x7fff;
+	    *leftout += 0x7fff;
 	else if (dl < -0x8000)
-	    *leftout = -0x8000;
+	    *leftout += -0x8000;
 	else
-	    *leftout = dl;
+	    *leftout += dl;
 
 	// Same for right hardware channel.
 	if (dr > 0x7fff)
-	    *rightout = 0x7fff;
+	    *rightout += 0x7fff;
 	else if (dr < -0x8000)
-	    *rightout = -0x8000;
+	    *rightout += -0x8000;
 	else
-	    *rightout = dr;
+	    *rightout += dr;
 
 	// Increment current pointers in mixbuffer.
 	leftout += step;
@@ -641,11 +663,21 @@ I_InitSound()
 // Still no music done.
 // Remains. Dummies.
 //
-void I_InitMusic(void)		{ }
-void I_ShutdownMusic(void)	{ }
 
-static int	looping=0;
-static int	musicdies=-1;
+void I_InitMusic(void)
+{
+    if (WildMidi_Init("wildmidi.cfg", output_sample_rate, 0) == 0)
+	music_initialised = true;
+}
+
+void I_ShutdownMusic(void)
+{
+    if (music_initialised)
+    {
+	WildMidi_Shutdown();
+	music_initialised = false;
+    }
+}
 
 void I_PlaySong(int handle, int looping)
 {
@@ -653,49 +685,62 @@ void I_PlaySong(int handle, int looping)
   (void)handle;
   (void)looping;
 
-  musicdies = gametic + TICRATE*30;
+  if (music_initialised)
+    music_playing = true;
 }
 
 void I_PauseSong (int handle)
 {
   // UNUSED.
   (void)handle;
+
+  if (music_initialised)
+    music_playing = false;
 }
 
 void I_ResumeSong (int handle)
 {
   // UNUSED.
   (void)handle;
+
+  if (music_initialised)
+    music_playing = true;
 }
 
 void I_StopSong(int handle)
 {
   // UNUSED.
   (void)handle;
-  
-  looping = 0;
-  musicdies = 0;
+
+  if (music_initialised)
+  {
+    music_playing = false;
+    WildMidi_FastSeek(music_midi, 0);
+  }
 }
 
 void I_UnRegisterSong(int handle)
 {
   // UNUSED.
   (void)handle;
+
+  if (music_initialised)
+    WildMidi_Close(music_midi);
 }
 
-int I_RegisterSong(void* data)
+int I_RegisterSong(void* data, size_t size)
 {
-  // UNUSED.
-  (void)data;
-  
+  if (music_initialised)
+    music_midi = WildMidi_OpenBuffer(data, size);
+
   return 1;
 }
 
-// Is the song playing?
+// Is the song playing? (unused)
 int I_QrySongPlaying(int handle)
 {
   // UNUSED.
   (void)handle;
 
-  return looping || musicdies > gametic;
+  return 0;
 }

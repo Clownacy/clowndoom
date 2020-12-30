@@ -12,9 +12,9 @@ else
  CFLAGS=-ggdb3 -Og -fsanitize=address
 endif
 
-CFLAGS_ALL=-Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX $(CFLAGS)
+CFLAGS_ALL=-Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX $(shell pkg-config --cflags wildmidi) $(CFLAGS)
 LDFLAGS=-L/usr/X11R6/lib
-LIBS=-lXext -lX11 -lnsl -lm -ldl -lpthread
+LIBS=-lXext -lX11 -lnsl -lm -ldl -lpthread $(shell pkg-config --libs wildmidi)
 
 # subdirectory for objects
 O=linux

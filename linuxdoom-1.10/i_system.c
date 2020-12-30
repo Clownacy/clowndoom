@@ -106,6 +106,7 @@ int  I_GetTime (void)
 void I_Init (void)
 {
     I_InitSound();
+    I_InitMusic();  // Depends on I_InitSound()
     //  I_InitGraphics();
 }
 
