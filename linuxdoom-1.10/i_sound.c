@@ -124,7 +124,6 @@ int*		channelrightvol_lookup[NUM_CHANNELS];
 static boolean music_initialised;
 static midi *music_midi;
 static boolean music_playing;
-static boolean music_looping;
 
 
 //
@@ -143,6 +142,7 @@ static boolean music_looping;
 static void Callback(ma_device *device, void *output_buffer_void, const void *input_buffer, ma_uint32 frames_to_do)
 {
   short *output_buffer = output_buffer_void;
+  const size_t bytes_to_do = frames_to_do * 2 * 2;
   unsigned char		interpolation_scale;
 
   // Mix current sound data.
@@ -164,32 +164,16 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
   (void)device;
   (void)input_buffer;
 
-    memset(output_buffer_void, 0, frames_to_do * 2 * 2);
+    memset(output_buffer_void, 0, bytes_to_do);
 
     ma_mutex_lock(&mutex);
 
     if (music_playing)
     {
-	size_t bytes_to_do = frames_to_do * 2 * 2;
-	do
-	{
-	    size_t bytes_done = WildMidi_GetOutput(music_midi, output_buffer_void, frames_to_do * 2 * 2);
+	const size_t bytes_done = WildMidi_GetOutput(music_midi, output_buffer_void, bytes_to_do);
 
-	    if (bytes_done == 0)
-	    {
-		if (music_looping)
-		{
-		    WildMidi_FastSeek(music_midi, 0);
-		}
-		else
-		{
-		    music_playing = false;
-		    break;
-		}
-	    }
-
-	    bytes_to_do -= bytes_done;
-	} while (bytes_to_do != 0);
+	if (bytes_done < bytes_to_do)
+	    music_playing = false;
     }
 
     // Left and right channel
@@ -508,6 +492,7 @@ void I_SetMusicVolume(int volume)
 {
   // Internal state variable.
   snd_MusicVolume = volume;
+  WildMidi_MasterVolume(snd_MusicVolume);
   // Now set volume on output device.
   // Whatever( snd_MusciVolume );
 }
@@ -698,7 +683,7 @@ void I_PlaySong(int handle, int looping)
   if (music_initialised)
   {
     music_playing = true;
-    music_looping = looping;
+    WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
   }
 }
 
