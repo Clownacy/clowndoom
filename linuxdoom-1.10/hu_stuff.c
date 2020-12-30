@@ -61,7 +61,7 @@
 
 
 
-const char* const	chat_macros[] =
+const char*	chat_macros[] =
 {
     HUSTR_CHATMACRO0,
     HUSTR_CHATMACRO1,

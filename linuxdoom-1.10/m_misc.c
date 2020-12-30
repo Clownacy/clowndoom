@@ -210,13 +210,13 @@ char*		mousetype;
 char*		mousedev;
 #endif
 
-extern char*	chat_macros[];
+extern const char*	chat_macros[];
 
 
 
 typedef struct
 {
-    char*	name;
+    const char*	name;
     int*	location;
     int		defaultvalue;
 //    int		scantranslate;		// PC scan code hack
