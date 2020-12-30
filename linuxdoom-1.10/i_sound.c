@@ -392,12 +392,14 @@ addsfx
     rightvol =
 	volume - ((volume*seperation*seperation) >> 16);	
 
+#ifdef RANGECHECK
     // Sanity check, clamp volume.
     if (rightvol < 0 || rightvol > 127)
 	I_Error("rightvol out of bounds");
     
     if (leftvol < 0 || leftvol > 127)
 	I_Error("leftvol out of bounds");
+#endif
     
     // Get the proper lookup table piece
     //  for this volume level???
