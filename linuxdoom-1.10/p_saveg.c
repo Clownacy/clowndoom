@@ -263,7 +263,7 @@ void P_ArchiveThinkers (void)
 //
 void P_UnArchiveThinkers (void)
 {
-    byte		tclass;
+    thinkerclass_t	tclass;
     thinker_t*		currentthinker;
     thinker_t*		next;
     mobj_t*		mobj;
@@ -324,7 +324,7 @@ void P_UnArchiveThinkers (void)
 //
 // P_ArchiveSpecials
 //
-enum
+typedef enum
 {
     tc_ceiling,
     tc_door,
@@ -472,7 +472,7 @@ void P_ArchiveSpecials (void)
 //
 void P_UnArchiveSpecials (void)
 {
-    byte		tclass;
+    specials_e		tclass;
     ceiling_t*		ceiling;
     vldoor_t*		door;
     floormove_t*	floor;
