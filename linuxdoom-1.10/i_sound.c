@@ -164,8 +164,6 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
   (void)device;
   (void)input_buffer;
 
-    memset(output_buffer_void, 0, bytes_to_do);
-
     ma_mutex_lock(&mutex);
 
     if (music_playing)
@@ -615,7 +613,6 @@ I_InitSound()
   config.playback.format = ma_format_s16;
   config.playback.channels = 2;
   config.sampleRate = 0; // Let miniaudio decide what sample rate to use
-  config.noPreZeroedOutputBuffer = MA_TRUE;
   config.dataCallback = Callback;
   config.pUserData = NULL;
 
