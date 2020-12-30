@@ -124,6 +124,7 @@ int*		channelrightvol_lookup[NUM_CHANNELS];
 static boolean music_initialised;
 static midi *music_midi;
 static boolean music_playing;
+static boolean music_looping;
 
 
 //
@@ -175,7 +176,17 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 	    size_t bytes_done = WildMidi_GetOutput(music_midi, output_buffer_void, frames_to_do * 2 * 2);
 
 	    if (bytes_done == 0)
-		break;
+	    {
+		if (music_looping)
+		{
+		    WildMidi_FastSeek(music_midi, 0);
+		}
+		else
+		{
+		    music_playing = false;
+		    break;
+		}
+	    }
 
 	    bytes_to_do -= bytes_done;
 	} while (bytes_to_do != 0);
@@ -683,10 +694,12 @@ void I_PlaySong(int handle, int looping)
 {
   // UNUSED.
   (void)handle;
-  (void)looping;
 
   if (music_initialised)
+  {
     music_playing = true;
+    music_looping = looping;
+  }
 }
 
 void I_PauseSong (int handle)
@@ -742,5 +755,5 @@ int I_QrySongPlaying(int handle)
   // UNUSED.
   (void)handle;
 
-  return 0;
+  return music_playing;
 }
