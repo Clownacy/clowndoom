@@ -63,7 +63,7 @@
 // Needed for calling the actual sound output.
 #define NUM_CHANNELS		8
 
-#define SAMPLERATE		11025	// Hz
+unsigned int output_sample_rate;	// Hz
 
 // The actual lengths of all sound effects.
 int 		lengths[NUMSFX];
@@ -515,7 +515,7 @@ I_StartSound
     //fprintf( stderr, "starting sound %d", id );
     
     // Returns a handle (not used).
-    id = addsfx( id, vol, S_sfx[id].sample_rate * steptable[pitch] / SAMPLERATE, sep );
+    id = addsfx( id, vol, S_sfx[id].sample_rate * steptable[pitch] / output_sample_rate, sep );
 
     // fprintf( stderr, "/handle is %d\n", id );
     
@@ -589,12 +589,14 @@ I_InitSound()
   config.playback.pDeviceID = NULL;
   config.playback.format = ma_format_s16;
   config.playback.channels = 2;
-  config.sampleRate = SAMPLERATE;
+  config.sampleRate = 0; // Let miniaudio decide what sample rate to use
   config.noPreZeroedOutputBuffer = MA_TRUE;
   config.dataCallback = Callback;
   config.pUserData = NULL;
 
   ma_device_init(&context, &config, &audio_device);
+
+  output_sample_rate = audio_device.sampleRate;
 
   ma_device_start(&audio_device);
     
