@@ -234,7 +234,7 @@ void M_ClearMenus (void);
 //
 // DOOM MENU
 //
-enum
+typedef enum
 {
     newgame = 0,
     options,
@@ -270,7 +270,7 @@ menu_t  MainDef =
 //
 // EPISODE SELECT
 //
-enum
+typedef enum
 {
     ep1,
     ep2,
@@ -300,7 +300,7 @@ menu_t  EpiDef =
 //
 // NEW GAME
 //
-enum
+typedef enum
 {
     killthings,
     toorough,
@@ -334,7 +334,7 @@ menu_t  NewDef =
 //
 // OPTIONS MENU
 //
-enum
+typedef enum
 {
     endgame,
     messages,
@@ -372,7 +372,7 @@ menu_t  OptionsDef =
 //
 // Read This! MENU 1 & 2
 //
-enum
+typedef enum
 {
     rdthsempty1,
     read1_end
@@ -393,7 +393,7 @@ menu_t  ReadDef1 =
     0
 };
 
-enum
+typedef enum
 {
     rdthsempty2,
     read2_end
@@ -417,7 +417,7 @@ menu_t  ReadDef2 =
 //
 // SOUND VOLUME MENU
 //
-enum
+typedef enum
 {
     sfx_vol,
     sfx_empty1,
@@ -447,7 +447,7 @@ menu_t  SoundDef =
 //
 // LOAD GAME MENU
 //
-enum
+typedef enum
 {
     load1,
     load2,
