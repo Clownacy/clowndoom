@@ -103,7 +103,7 @@ int 		channelhandles[NUM_CHANNELS];
 // Used to catch duplicates (like chainsaw).
 int		channelids[NUM_CHANNELS];			
 
-// Pitch to stepping lookup, unused.
+// Pitch to stepping lookup.
 int		steptable[256];
 
 // Volume lookups.
@@ -442,7 +442,6 @@ void I_SetChannels()
   }*/
 
   // This table provides step widths for pitch parameters.
-  // I fail to see that this is currently used.
   for (i=-128 ; i<128 ; i++)
     steptablemid[i] = (int)(pow(2.0, (i/64.0))*65536.0);
   
