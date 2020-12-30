@@ -68,7 +68,7 @@
 unsigned int output_sample_rate;	// Hz
 
 // Maximum volume of music. Useless so far.
-static int	snd_MusicVolume;
+//static int	snd_MusicVolume;
 
 // The actual lengths of all sound effects.
 int 		lengths[NUMSFX];
@@ -489,10 +489,9 @@ void I_SetChannels(void)
 void I_SetMusicVolume(int volume)
 {
   // Internal state variable.
-  snd_MusicVolume = volume;
-  WildMidi_MasterVolume(snd_MusicVolume);
+  //snd_MusicVolume = volume;
   // Now set volume on output device.
-  // Whatever( snd_MusciVolume );
+  WildMidi_MasterVolume(volume);
 }
 
 
