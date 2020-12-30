@@ -598,8 +598,8 @@ void grabsharedmemory(size_t size)
   // attach to the shared memory segment
   image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
   
-  fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
-	  (int) (image->data));
+  fprintf(stderr, "shared memory id=%d, addr=0x%p\n", id,
+	  (void*) (image->data));
 }
 
 void I_InitGraphics(void)
