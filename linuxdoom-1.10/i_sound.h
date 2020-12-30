@@ -32,7 +32,7 @@
 
 
 // Init at program start...
-void I_InitSound();
+void I_InitSound(void);
 
 // ... shut down and relase at program termination.
 void I_ShutdownSound(void);
@@ -43,7 +43,7 @@ void I_ShutdownSound(void);
 //
 
 // Initialize channels?
-void I_SetChannels();
+void I_SetChannels(void);
 
 // Get raw data lump index for sound descriptor.
 int I_GetSfxLumpNum (sfxinfo_t* sfxinfo );

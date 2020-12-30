@@ -455,7 +455,7 @@ addsfx
 // version.
 // See soundserver initdata().
 //
-void I_SetChannels()
+void I_SetChannels(void)
 {
   // Init internal lookups (raw data, mixing buffer, channels).
   // This function sets up internal lookups used during
@@ -600,7 +600,7 @@ void I_ShutdownSound(void)
 
 
 void
-I_InitSound()
+I_InitSound(void)
 {     
   int i;
 
