@@ -65,10 +65,6 @@
 
 unsigned int output_sample_rate;	// Hz
 
-// Maximum volume of a sound effect.
-// Internal default is max out of 0-127.
-static int	snd_SfxVolume;
-
 // Maximum volume of music. Useless so far.
 static int	snd_MusicVolume;
 
@@ -474,16 +470,6 @@ void I_SetChannels()
 }	
 
  
-void I_SetSfxVolume(int volume)
-{
-  // Identical to DOS.
-  // Basically, this should propagate
-  //  the menu/config file setting
-  //  to the state variable used in
-  //  the mixing.
-  snd_SfxVolume = volume;
-}
-
 // MUSIC API - dummy. Some code from DOS version.
 void I_SetMusicVolume(int volume)
 {
