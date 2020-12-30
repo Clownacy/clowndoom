@@ -144,8 +144,8 @@ void HUlib_addLineToSText(hu_stext_t* s);
 void
 HUlib_addMessageToSText
 ( hu_stext_t*	s,
-  char*		prefix,
-  char*		msg );
+  const char*	prefix,
+  const char*	msg );
 
 // draws stext
 void HUlib_drawSText(hu_stext_t* s);
@@ -176,7 +176,7 @@ void HUlib_resetIText(hu_itext_t* it);
 void
 HUlib_addPrefixToIText
 ( hu_itext_t*	it,
-  char*		str );
+  const char*	str );
 
 // whether eaten
 boolean

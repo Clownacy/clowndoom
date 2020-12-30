@@ -212,8 +212,8 @@ void HUlib_addLineToSText(hu_stext_t* s)
 void
 HUlib_addMessageToSText
 ( hu_stext_t*	s,
-  char*		prefix,
-  char*		msg )
+  const char*	prefix,
+  const char*	msg )
 {
     HUlib_addLineToSText(s);
     if (prefix)
@@ -301,7 +301,7 @@ void HUlib_resetIText(hu_itext_t* it)
 void
 HUlib_addPrefixToIText
 ( hu_itext_t*	it,
-  char*		str )
+  const char*	str )
 {
     while (*str)
 	HUlib_addCharToTextLine(&it->l, *(str++));
