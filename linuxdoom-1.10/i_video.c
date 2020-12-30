@@ -602,6 +602,13 @@ void grabsharedmemory(size_t size)
 	  (void*) (image->data));
 }
 
+static void I_Quit_Wrapper(int dummy)
+{
+    (void)dummy;
+
+    I_Quit();
+}
+
 void I_InitGraphics(void)
 {
 
@@ -627,7 +634,7 @@ void I_InitGraphics(void)
 	return;
     firsttime = 0;
 
-    signal(SIGINT, (void (*)(int)) I_Quit);
+    signal(SIGINT, I_Quit_Wrapper);
 
     if (M_CheckParm("-2"))
 	multiply = 2;
