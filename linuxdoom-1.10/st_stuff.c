@@ -485,7 +485,7 @@ cheatseq_t	cheat_mypos = { cheat_mypos_seq, 0 };
 
 
 // 
-extern char*	mapnames[];
+extern const char* const	mapnames[];
 
 
 //

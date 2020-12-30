@@ -44,7 +44,7 @@ int				dirtybox[4];
 
 
 // Now where did these came from?
-byte gammatable[5][256] =
+const byte gammatable[5][256] =
 {
     {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
      17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,
@@ -161,7 +161,7 @@ V_CopyRect
   int		desty,
   int		destscrn ) 
 { 
-    byte*	src;
+    const byte*	src;
     byte*	dest; 
 	 
 #ifdef RANGECHECK 
@@ -201,7 +201,7 @@ V_DrawPatch
 ( int		x,
   int		y,
   int		scrn,
-  patch_t*	patch ) 
+  const patch_t*	patch ) 
 { 
 
     int		count;
@@ -268,7 +268,7 @@ V_DrawPatchFlipped
 ( int		x,
   int		y,
   int		scrn,
-  patch_t*	patch ) 
+  const patch_t*	patch ) 
 { 
 
     int		count;
@@ -276,7 +276,7 @@ V_DrawPatchFlipped
     column_t*	column; 
     byte*	desttop;
     byte*	dest;
-    byte*	source; 
+    const byte*	source; 
     int		w; 
 	 
     y -= SHORT(patch->topoffset); 
@@ -334,7 +334,7 @@ V_DrawPatchDirect
 ( int		x,
   int		y,
   int		scrn,
-  patch_t*	patch ) 
+  const patch_t*	patch ) 
 {
     V_DrawPatch (x,y,scrn, patch); 
 
@@ -404,7 +404,7 @@ V_DrawBlock
   int		scrn,
   int		width,
   int		height,
-  byte*		src ) 
+  const byte*		src ) 
 { 
     byte*	dest; 
 	 
@@ -446,7 +446,7 @@ V_GetBlock
   int		height,
   byte*		dest ) 
 { 
-    byte*	src; 
+    const byte*	src; 
 	 
 #ifdef RANGECHECK 
     if (x<0

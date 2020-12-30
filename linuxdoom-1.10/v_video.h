@@ -48,7 +48,7 @@ extern	byte*		screens[5];
 
 extern  int	dirtybox[4];
 
-extern	byte	gammatable[5][256];
+extern	const byte	gammatable[5][256];
 extern	int	usegamma;
 
 
@@ -73,14 +73,14 @@ V_DrawPatch
 ( int		x,
   int		y,
   int		scrn,
-  patch_t*	patch);
+  const patch_t*	patch);
 
 void
 V_DrawPatchDirect
 ( int		x,
   int		y,
   int		scrn,
-  patch_t*	patch );
+  const patch_t*	patch );
 
 
 // Draw a linear block of pixels into the view buffer.
@@ -91,7 +91,7 @@ V_DrawBlock
   int		scrn,
   int		width,
   int		height,
-  byte*		src );
+  const byte*		src );
 
 // Reads a linear block of pixels into the view buffer.
 void
