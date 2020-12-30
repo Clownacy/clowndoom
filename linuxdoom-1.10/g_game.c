@@ -988,7 +988,6 @@ int cpars[32] =
 // G_DoCompleted 
 //
 boolean		secretexit; 
-extern char*	pagename; 
  
 void G_ExitLevel (void) 
 { 
