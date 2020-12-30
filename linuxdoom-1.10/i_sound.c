@@ -545,20 +545,23 @@ I_StartSound
 
 void I_StopSound (int handle)
 {
-  // You need the handle returned by StartSound.
-  // Would be looping all channels,
-  //  tracking down the handle,
-  //  an setting the channel to zero.
-  
-  // UNUSED.
-  (void)handle;
+  int i;
+
+  for (i=0;i<NUM_CHANNELS;i++)
+    if (channelhandles[i] == handle)
+      channels[i] = NULL;
 }
 
 
 int I_SoundIsPlaying(int handle)
 {
-    // Ouch.
-    return gametic < handle;
+    int i;
+
+    for (i=0;i<NUM_CHANNELS;i++)
+	if (channelhandles[i] == handle)
+	    return channels[i] != NULL;
+
+    return 0; // Sound doesn't exist
 }
 
 
