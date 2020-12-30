@@ -85,9 +85,9 @@ doomdata_t	reboundstore;
 //
 //
 //
-int NetbufferSize (void)
+size_t NetbufferSize (void)
 {
-    return (int)&(((doomdata_t *)0)->cmds[netbuffer->numtics]); 
+    return (size_t)&(((doomdata_t *)0)->cmds[netbuffer->numtics]); 
 }
 
 //
@@ -96,7 +96,7 @@ int NetbufferSize (void)
 unsigned NetbufferChecksum (void)
 {
     unsigned		c;
-    int		i,l;
+    size_t		i,l;
 
     c = 0x1234567;
 
@@ -105,7 +105,7 @@ unsigned NetbufferChecksum (void)
     return 0;			// byte order problems
 #endif
 
-    l = (NetbufferSize () - (int)&(((doomdata_t *)0)->retransmitfrom))/4;
+    l = (NetbufferSize () - (size_t)&(((doomdata_t *)0)->retransmitfrom))/4;
     for (i=0 ; i<l ; i++)
 	c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i+1);
 
@@ -163,7 +163,7 @@ HSendPacket
 	
     if (debugfile)
     {
-	int		i;
+	size_t		i;
 	int		realretrans;
 	if (netbuffer->checksum & NCMD_RETRANSMIT)
 	    realretrans = ExpandTics (netbuffer->retransmitfrom);
@@ -172,7 +172,7 @@ HSendPacket
 
 	fprintf (debugfile,"send (%i + %i, R %i) [%i] ",
 		 ExpandTics(netbuffer->starttic),
-		 netbuffer->numtics, realretrans, doomcom->datalength);
+		 netbuffer->numtics, realretrans, (int)doomcom->datalength);
 	
 	for (i=0 ; i<doomcom->datalength ; i++)
 	    fprintf (debugfile,"%i ",((byte *)netbuffer)[i]);
@@ -212,7 +212,7 @@ boolean HGetPacket (void)
     if (doomcom->datalength != NetbufferSize ())
     {
 	if (debugfile)
-	    fprintf (debugfile,"bad packet length %i\n",doomcom->datalength);
+	    fprintf (debugfile,"bad packet length %i\n",(int)doomcom->datalength);
 	return false;
     }
 	
@@ -226,7 +226,7 @@ boolean HGetPacket (void)
     if (debugfile)
     {
 	int		realretrans;
-	int	i;
+	size_t	i;
 			
 	if (netbuffer->checksum & NCMD_SETUP)
 	    fprintf (debugfile,"setup packet\n");
@@ -240,7 +240,7 @@ boolean HGetPacket (void)
 	    fprintf (debugfile,"get %i = (%i + %i, R %i)[%i] ",
 		     doomcom->remotenode,
 		     ExpandTics(netbuffer->starttic),
-		     netbuffer->numtics, realretrans, doomcom->datalength);
+		     netbuffer->numtics, realretrans, (int)doomcom->datalength);
 
 	    for (i=0 ; i<doomcom->datalength ; i++)
 		fprintf (debugfile,"%i ",((byte *)netbuffer)[i]);

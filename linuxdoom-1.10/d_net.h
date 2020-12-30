@@ -91,7 +91,7 @@ typedef struct
     short		remotenode;
     
     // Number of bytes in doomdata to be sent
-    short		datalength;
+    size_t		datalength;
 
     // Info common to all nodes.
     // Console is allways node 0.
