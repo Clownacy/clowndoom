@@ -206,8 +206,8 @@ extern	int	numChannels;
 
 
 #ifdef LINUX
-char*		mousetype;
-char*		mousedev;
+const char*		mousetype;
+const char*		mousedev;
 #endif
 
 extern const char*	chat_macros[];
@@ -219,68 +219,69 @@ typedef struct
     const char*	name;
     int*	location;
     size_t	defaultvalue;
+    boolean	is_string;
 //    int		scantranslate;		// PC scan code hack
 //    int		untranslated;		// lousy hack
 } default_t;
 
 default_t	defaults[] =
 {
-    {"mouse_sensitivity",&mouseSensitivity, 5},
-    {"sfx_volume",&snd_SfxVolume, 8},
-    {"music_volume",&snd_MusicVolume, 8},
-    {"show_messages",&showMessages, 1},
+    {"mouse_sensitivity",&mouseSensitivity, 5, false},
+    {"sfx_volume",&snd_SfxVolume, 8, false},
+    {"music_volume",&snd_MusicVolume, 8, false},
+    {"show_messages",&showMessages, 1, false},
     
 
 #ifdef NORMALUNIX
-    {"key_right",&key_right, KEY_RIGHTARROW},
-    {"key_left",&key_left, KEY_LEFTARROW},
-    {"key_up",&key_up, KEY_UPARROW},
-    {"key_down",&key_down, KEY_DOWNARROW},
-    {"key_strafeleft",&key_strafeleft, ','},
-    {"key_straferight",&key_straferight, '.'},
+    {"key_right",&key_right, KEY_RIGHTARROW, false},
+    {"key_left",&key_left, KEY_LEFTARROW, false},
+    {"key_up",&key_up, KEY_UPARROW, false},
+    {"key_down",&key_down, KEY_DOWNARROW, false},
+    {"key_strafeleft",&key_strafeleft, ',', false},
+    {"key_straferight",&key_straferight, '.', false},
 
-    {"key_fire",&key_fire, KEY_RCTRL},
-    {"key_use",&key_use, ' '},
-    {"key_strafe",&key_strafe, KEY_RALT},
-    {"key_speed",&key_speed, KEY_RSHIFT},
+    {"key_fire",&key_fire, KEY_RCTRL, false},
+    {"key_use",&key_use, ' ', false},
+    {"key_strafe",&key_strafe, KEY_RALT, false},
+    {"key_speed",&key_speed, KEY_RSHIFT, false},
     
 #endif
 
 #ifdef LINUX
-    {"mousedev", (int*)&mousedev, (size_t)"/dev/ttyS0"},
-    {"mousetype", (int*)&mousetype, (size_t)"microsoft"},
+    {"mousedev", (int*)&mousedev, (size_t)"/dev/ttyS0", true},
+    {"mousetype", (int*)&mousetype, (size_t)"microsoft", true},
 #endif
 
-    {"use_mouse",&usemouse, 1},
-    {"mouseb_fire",&mousebfire,0},
-    {"mouseb_strafe",&mousebstrafe,1},
-    {"mouseb_forward",&mousebforward,2},
+    {"use_mouse",&usemouse, 1, false},
+    {"mouseb_fire",&mousebfire,0, false},
+    {"mouseb_strafe",&mousebstrafe,1, false},
+    {"mouseb_forward",&mousebforward,2, false},
 
-    {"use_joystick",&usejoystick, 0},
-    {"joyb_fire",&joybfire,0},
-    {"joyb_strafe",&joybstrafe,1},
-    {"joyb_use",&joybuse,3},
-    {"joyb_speed",&joybspeed,2},
+    {"use_joystick",&usejoystick, 0, false},
+    {"joyb_fire",&joybfire,0, false},
+    {"joyb_strafe",&joybstrafe,1, false},
+    {"joyb_use",&joybuse,3, false},
+    {"joyb_speed",&joybspeed,2, false},
 
-    {"screenblocks",&screenblocks, 9},
-    {"detaillevel",&detailLevel, 0},
+    {"screenblocks",&screenblocks, 9, false},
+    {"detaillevel",&detailLevel, 0, false},
 
-    {"snd_channels",&numChannels, 3},
+    {"snd_channels",&numChannels, 3, false},
 
 
 
-    {"usegamma",&usegamma, 0},
+    {"usegamma",&usegamma, 0, false},
 
-    {"chatmacro0", (int *) &chat_macros[0], (size_t) HUSTR_CHATMACRO0 },
-    {"chatmacro1", (int *) &chat_macros[1], (size_t) HUSTR_CHATMACRO1 },
-    {"chatmacro2", (int *) &chat_macros[2], (size_t) HUSTR_CHATMACRO2 },
-    {"chatmacro3", (int *) &chat_macros[3], (size_t) HUSTR_CHATMACRO3 },
-    {"chatmacro4", (int *) &chat_macros[4], (size_t) HUSTR_CHATMACRO4 },
-    {"chatmacro5", (int *) &chat_macros[5], (size_t) HUSTR_CHATMACRO5 },
-    {"chatmacro6", (int *) &chat_macros[6], (size_t) HUSTR_CHATMACRO6 },
-    {"chatmacro7", (int *) &chat_macros[7], (size_t) HUSTR_CHATMACRO7 },
-    {"chatmacro8", (int *) &chat_macros[8], (size_t) HUSTR_CHATMACRO8 },
-    {"chatmacro9", (int *) &chat_macros[9], (size_t) HUSTR_CHATMACRO9 }
+    {"chatmacro0", (int *) &chat_macros[0], (size_t) HUSTR_CHATMACRO0, true },
+    {"chatmacro1", (int *) &chat_macros[1], (size_t) HUSTR_CHATMACRO1, true },
+    {"chatmacro2", (int *) &chat_macros[2], (size_t) HUSTR_CHATMACRO2, true },
+    {"chatmacro3", (int *) &chat_macros[3], (size_t) HUSTR_CHATMACRO3, true },
+    {"chatmacro4", (int *) &chat_macros[4], (size_t) HUSTR_CHATMACRO4, true },
+    {"chatmacro5", (int *) &chat_macros[5], (size_t) HUSTR_CHATMACRO5, true },
+    {"chatmacro6", (int *) &chat_macros[6], (size_t) HUSTR_CHATMACRO6, true },
+    {"chatmacro7", (int *) &chat_macros[7], (size_t) HUSTR_CHATMACRO7, true },
+    {"chatmacro8", (int *) &chat_macros[8], (size_t) HUSTR_CHATMACRO8, true },
+    {"chatmacro9", (int *) &chat_macros[9], (size_t) HUSTR_CHATMACRO9, true }
 
 };
 
@@ -303,14 +304,13 @@ void M_SaveDefaults (void)
 		
     for (i=0 ; i<numdefaults ; i++)
     {
-	if (defaults[i].defaultvalue > -0xfff
-	    && defaults[i].defaultvalue < 0xfff)
+	if (!defaults[i].is_string)
 	{
 	    v = *defaults[i].location;
 	    fprintf (f,"%s\t\t%i\n",defaults[i].name,v);
 	} else {
 	    fprintf (f,"%s\t\t\"%s\"\n",defaults[i].name,
-		     * (char **) (defaults[i].location));
+		     * (const char **) (defaults[i].location));
 	}
     }
 	
@@ -337,7 +337,12 @@ void M_LoadDefaults (void)
     // set everything to base values
     numdefaults = sizeof(defaults)/sizeof(defaults[0]);
     for (i=0 ; i<numdefaults ; i++)
-	*defaults[i].location = defaults[i].defaultvalue;
+    {
+	if (defaults[i].is_string)
+	    *(const char**)defaults[i].location = (const char*)defaults[i].defaultvalue;
+	else
+	    *defaults[i].location = defaults[i].defaultvalue;
+    }
     
     // check for a custom default file
     i = M_CheckParm ("-config");
@@ -375,8 +380,8 @@ void M_LoadDefaults (void)
 			if (!isstring)
 			    *defaults[i].location = parm;
 			else
-			    *defaults[i].location =
-				(size_t) newstring;
+			    *(const char**)defaults[i].location =
+				newstring;
 			break;
 		    }
 	    }
