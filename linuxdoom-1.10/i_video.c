@@ -580,7 +580,6 @@ void grabsharedmemory(size_t size)
       id = shmget((key_t)key, size, IPC_CREAT|0777);
       if (id==-1)
       {
-	extern int errno;
 	fprintf(stderr, "errno=%d\n", errno);
 	I_Error("Could not get any shared memory");
       }
