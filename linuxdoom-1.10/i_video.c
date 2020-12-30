@@ -486,7 +486,7 @@ void I_ReadScreen (byte* scr)
 //
 // I_SetPalette
 //
-void I_SetPalette (byte* palette)
+void I_SetPalette (const byte* palette)
 {
     register int	i;
 

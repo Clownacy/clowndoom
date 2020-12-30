@@ -235,7 +235,7 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 //
 void*
 getsfx
-( char*         sfxname,
+( const char*   sfxname,
   int*          len )
 {
     unsigned char*      sfx;

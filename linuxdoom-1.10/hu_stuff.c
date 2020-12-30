@@ -61,7 +61,7 @@
 
 
 
-char*	chat_macros[] =
+const char* const	chat_macros[] =
 {
     HUSTR_CHATMACRO0,
     HUSTR_CHATMACRO1,
@@ -75,7 +75,7 @@ char*	chat_macros[] =
     HUSTR_CHATMACRO9
 };
 
-char*	player_names[] =
+const char* const	player_names[] =
 {
     HUSTR_PLRGREEN,
     HUSTR_PLRINDIGO,
@@ -110,7 +110,7 @@ static boolean		headsupactive = false;
 // The actual names can be found in DStrings.h.
 //
 
-char*	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
+const char* const	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
 {
 
     HUSTR_E1M1,
@@ -164,7 +164,7 @@ char*	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
     "NEWLEVEL"
 };
 
-char*	mapnames2[] =	// DOOM 2 map names.
+const char* const	mapnames2[] =	// DOOM 2 map names.
 {
     HUSTR_1,
     HUSTR_2,
@@ -203,7 +203,7 @@ char*	mapnames2[] =	// DOOM 2 map names.
 };
 
 
-char*	mapnamesp[] =	// Plutonia WAD map names.
+const char* const	mapnamesp[] =	// Plutonia WAD map names.
 {
     PHUSTR_1,
     PHUSTR_2,
@@ -242,7 +242,7 @@ char*	mapnamesp[] =	// Plutonia WAD map names.
 };
 
 
-char *mapnamest[] =	// TNT WAD map names.
+const char* const mapnamest[] =	// TNT WAD map names.
 {
     THUSTR_1,
     THUSTR_2,
@@ -367,7 +367,7 @@ const char english_shiftxform[] =
     '{', '|', '}', '~', 127
 };
 
-char frenchKeyMap[128]=
+const char frenchKeyMap[128]=
 {
     0,
     1,2,3,4,5,6,7,8,9,10,
@@ -418,7 +418,7 @@ void HU_Start(void)
 {
 
     int		i;
-    char*	s;
+    const char*	s;
 
     if (headsupactive)
 	HU_Stop();
@@ -616,7 +616,7 @@ boolean HU_Responder(const event_t *ev)
 {
 
     static char		lastmessage[HU_MAXLINELENGTH+1];
-    char*		macromessage;
+    const char*		macromessage;
     boolean		eatkey = false;
     static boolean	shiftdown = false;
     static boolean	altdown = false;
@@ -624,7 +624,7 @@ boolean HU_Responder(const event_t *ev)
     int			i;
     int			numplayers;
     
-    static char		destination_keys[MAXPLAYERS] =
+    static const char		destination_keys[MAXPLAYERS] =
     {
 	HUSTR_KEYGREEN,
 	HUSTR_KEYINDIGO,
