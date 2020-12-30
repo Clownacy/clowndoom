@@ -44,7 +44,9 @@
 #define MA_NO_GENERATION
 #include "miniaudio.h"
 
+#ifdef WILDMIDI
 #include "wildmidi_lib.h"
+#endif
 
 #include "z_zone.h"
 
@@ -121,9 +123,11 @@ int*		channelleftvol_lookup[NUM_CHANNELS];
 int*		channelrightvol_lookup[NUM_CHANNELS];
 
 // Music stuff
+#ifdef WILDMIDI
 static boolean music_initialised;
 static midi *music_midi;
 static boolean music_playing;
+#endif
 
 
 //
@@ -142,7 +146,9 @@ static boolean music_playing;
 static void Callback(ma_device *device, void *output_buffer_void, const void *input_buffer, ma_uint32 frames_to_do)
 {
   short *output_buffer = output_buffer_void;
+#ifdef WILDMIDI
   const size_t bytes_to_do = frames_to_do * 2 * 2;
+#endif
   unsigned char		interpolation_scale;
 
   // Mix current sound data.
@@ -166,6 +172,7 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 
     ma_mutex_lock(&mutex);
 
+#ifdef WILDMIDI
     if (music_playing)
     {
 	const size_t bytes_done = WildMidi_GetOutput(music_midi, output_buffer_void, bytes_to_do);
@@ -173,6 +180,7 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 	if (bytes_done < bytes_to_do)
 	    music_playing = false;
     }
+#endif
 
     // Left and right channel
     //  are in global mixbuffer, alternating.
@@ -491,7 +499,11 @@ void I_SetMusicVolume(int volume)
   // Internal state variable.
   //snd_MusicVolume = volume;
   // Now set volume on output device.
+#ifndef WILDMIDI
+  (void)volume;
+#else
   WildMidi_MasterVolume(volume);
+#endif
 }
 
 
@@ -661,17 +673,21 @@ I_InitSound(void)
 
 void I_InitMusic(void)
 {
+#ifdef WILDMIDI
     if (WildMidi_Init("wildmidi.cfg", output_sample_rate, 0) == 0)
 	music_initialised = true;
+#endif
 }
 
 void I_ShutdownMusic(void)
 {
+#ifdef WILDMIDI
     if (music_initialised)
     {
 	WildMidi_Shutdown();
 	music_initialised = false;
     }
+#endif
 }
 
 void I_PlaySong(int handle, int looping)
@@ -679,11 +695,15 @@ void I_PlaySong(int handle, int looping)
   // UNUSED.
   (void)handle;
 
+#ifndef WILDMIDI
+  (void)looping;
+#else
   if (music_initialised)
   {
     music_playing = true;
     WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
   }
+#endif
 }
 
 void I_PauseSong (int handle)
@@ -691,8 +711,10 @@ void I_PauseSong (int handle)
   // UNUSED.
   (void)handle;
 
+#ifdef WILDMIDI
   if (music_initialised)
     music_playing = false;
+#endif
 }
 
 void I_ResumeSong (int handle)
@@ -700,8 +722,10 @@ void I_ResumeSong (int handle)
   // UNUSED.
   (void)handle;
 
+#ifdef WILDMIDI
   if (music_initialised)
     music_playing = true;
+#endif
 }
 
 void I_StopSong(int handle)
@@ -709,11 +733,13 @@ void I_StopSong(int handle)
   // UNUSED.
   (void)handle;
 
+#ifdef WILDMIDI
   if (music_initialised)
   {
     music_playing = false;
     WildMidi_FastSeek(music_midi, 0);
   }
+#endif
 }
 
 void I_UnRegisterSong(int handle)
@@ -721,14 +747,21 @@ void I_UnRegisterSong(int handle)
   // UNUSED.
   (void)handle;
 
+#ifdef WILDMIDI
   if (music_initialised)
     WildMidi_Close(music_midi);
+#endif
 }
 
 int I_RegisterSong(void* data, size_t size)
 {
+#ifndef WILDMIDI
+  (void)data;
+  (void)size;
+#else
   if (music_initialised)
     music_midi = WildMidi_OpenBuffer(data, size);
+#endif
 
   return 1;
 }
@@ -739,5 +772,9 @@ int I_QrySongPlaying(int handle)
   // UNUSED.
   (void)handle;
 
+#ifndef WILDMIDI
+  return 0;
+#else
   return music_playing;
+#endif
 }

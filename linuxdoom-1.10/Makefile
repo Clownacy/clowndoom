@@ -6,15 +6,22 @@
 #
 CC=  gcc  # gcc or g++
 
+WILDMIDI ?= 1
+
 ifeq ($(RELEASE),1)
  CFLAGS=-O2 -s -DNDEBUG
 else
  CFLAGS=-ggdb3 -Og -fsanitize=address
 endif
 
-CFLAGS_ALL=-Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX $(shell pkg-config --cflags wildmidi) $(CFLAGS)
+CFLAGS_ALL=-Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX $(CFLAGS)
 LDFLAGS=-L/usr/X11R6/lib
-LIBS=-lXext -lX11 -lnsl -lm -ldl -lpthread $(shell pkg-config --libs wildmidi)
+LIBS=-lXext -lX11 -lnsl -lm -ldl -lpthread
+
+ifeq ($(WILDMIDI),1)
+ CFLAGS_ALL+=$(shell pkg-config --cflags wildmidi) -DWILDMIDI
+ LIBS+=$(shell pkg-config --libs wildmidi)
+endif
 
 # subdirectory for objects
 O=linux
