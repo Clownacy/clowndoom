@@ -222,6 +222,6 @@ sfxinfo_t S_sfx[] =
   { "skeact", false, 70, NULL, -1, -1, NULL, 0, 0, 0 },
   { "skesit", false, 70, NULL, -1, -1, NULL, 0, 0, 0 },
   { "skeatk", false, 70, NULL, -1, -1, NULL, 0, 0, 0 },
-  { "radio", false, 60, NULL, -1, -1, NULL, 0, 0 } 
+  { "radio", false, 60, NULL, -1, -1, NULL, 0, 0, 0 } 
 };
 
