@@ -367,8 +367,6 @@ void M_LoadDefaults (void)
 		    strparm[len-1] = 0;
 		    strcpy(newstring, strparm+1);
 		}
-		else if (strparm[0] == '0' && strparm[1] == 'x')
-		    sscanf(strparm+2, "%x", &parm);
 		else
 		    sscanf(strparm, "%i", &parm);
 		for (i=0 ; i<numdefaults ; i++)

@@ -6,7 +6,7 @@
 #
 CC=  gcc  # gcc or g++
 
-CFLAGS=-ggdb3 -Og -fsanitize=address -Wall -Wextra -DNORMALUNIX -DLINUX -m32 # -DUSEASM 
+CFLAGS=-ggdb3 -Og -fsanitize=address -Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX -m32 # -DUSEASM 
 LDFLAGS=-L/usr/X11R6/lib
 LIBS=-lXext -lX11 -lnsl -lm -ldl -lpthread
 
