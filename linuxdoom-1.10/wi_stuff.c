@@ -584,7 +584,7 @@ void WI_drawAnimatedBack(void)
     int			i;
     anim_t*		a;
 
-    if (commercial)
+    if (gamemode == commercial)
 	return;
 
     if (wbs->epsd > 2)
