@@ -66,11 +66,11 @@
 //
 typedef struct
 {
-    short	originx;
-    short	originy;
-    short	patch;
-    short	stepdir;
-    short	colormap;
+    short	originx : 16;
+    short	originy : 16;
+    short	patch : 16;
+    short	stepdir : 16;
+    short	colormap : 16;
 } mappatch_t;
 
 
@@ -82,11 +82,11 @@ typedef struct
 typedef struct
 {
     char		name[8];
-    boolean		masked;	
-    short		width;
-    short		height;
-    void		**columndirectory;	// OBSOLETE
-    short		patchcount;
+    boolean		masked : 32;
+    short		width : 16;
+    short		height : 16;
+    int			columndirectory : 32;	// OBSOLETE
+    short		patchcount : 16;
     mappatch_t	patches[1];
 } maptexture_t;
 
