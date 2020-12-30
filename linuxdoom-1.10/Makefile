@@ -6,7 +6,13 @@
 #
 CC=  gcc  # gcc or g++
 
-CFLAGS=-ggdb3 -Og -fsanitize=address -Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX # -DUSEASM 
+ifeq ($(RELEASE),1)
+ CFLAGS=-O2 -s
+else
+ CFLAGS=-ggdb3 -Og -fsanitize=address
+endif
+
+CFLAGS_ALL=-Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX $(CFLAGS)
 LDFLAGS=-L/usr/X11R6/lib
 LIBS=-lXext -lX11 -lnsl -lm -ldl -lpthread
 
@@ -84,11 +90,11 @@ clean:
 	rm -f linux/*
 
 $(O)/linuxxdoom:	$(OBJS) $(O)/i_main.o
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
+	$(CC) $(CFLAGS_ALL) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
 	-o $(O)/linuxxdoom $(LIBS)
 
 $(O)/%.o:	%.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS_ALL) -c $< -o $@
 
 #############################################################
 #
