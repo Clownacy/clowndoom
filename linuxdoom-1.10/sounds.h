@@ -61,6 +61,9 @@ struct sfxinfo_struct
 
     // lump number of sfx
     int		lumpnum;		
+
+    // use your imagination
+    unsigned short sample_rate;
 };
 
 

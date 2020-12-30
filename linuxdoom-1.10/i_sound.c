@@ -233,9 +233,9 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 // This function loads the sound data from the WAD lump,
 //  for single sound.
 //
-void*
+void
 getsfx
-( const char*   sfxname,
+( sfxinfo_t*   sfxinfo,
   int*          len )
 {
     unsigned char*      sfx;
@@ -246,7 +246,7 @@ getsfx
     
     // Get the sound data from the WAD, allocate lump
     //  in zone memory.
-    sprintf(name, "ds%s", sfxname);
+    sprintf(name, "ds%s", sfxinfo->name);
 
     // Now, there is a severe problem with the
     //  sound handling, in it is not (yet/anymore)
@@ -277,7 +277,9 @@ getsfx
     *len = size-8;
 
     // Return allocated data.
-    return (void *) (sfx + 8);
+    sfxinfo->data = (void *) (sfx + 8);
+
+    sfxinfo->sample_rate = sfx[2] | (sfx[3] << 8);
 }
 
 
@@ -513,7 +515,7 @@ I_StartSound
     //fprintf( stderr, "starting sound %d", id );
     
     // Returns a handle (not used).
-    id = addsfx( id, vol, steptable[pitch], sep );
+    id = addsfx( id, vol, S_sfx[id].sample_rate * steptable[pitch] / SAMPLERATE, sep );
 
     // fprintf( stderr, "/handle is %d\n", id );
     
@@ -605,7 +607,7 @@ I_InitSound()
     if (!S_sfx[i].link)
     {
       // Load data from WAD file.
-      S_sfx[i].data = getsfx( S_sfx[i].name, &lengths[i] );
+      getsfx( &S_sfx[i], &lengths[i] );
     }	
     else
     {
