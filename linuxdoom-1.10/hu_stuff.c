@@ -24,6 +24,7 @@
 #include <ctype.h>
 
 #include "doomdef.h"
+#include "doomstat.h"
 
 #include "z_zone.h"
 
@@ -101,7 +102,6 @@ static hu_stext_t	w_message;
 static int		message_counter;
 
 extern int		showMessages;
-extern boolean		automapactive;
 
 static boolean		headsupactive = false;
 
