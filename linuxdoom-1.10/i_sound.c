@@ -275,11 +275,9 @@ getsfx
     
     sfx = (unsigned char*)W_CacheLumpNum( sfxlump, PU_STATIC );
     
-    // Preserve padded length.
-    *len = size-8;
+    *len = size-8-16-16;
 
-    // Return allocated data.
-    sfxinfo->data = (void *) (sfx + 8);
+    sfxinfo->data = (void *) (sfx+8+16);
 
     sfxinfo->sample_rate = sfx[2] | (sfx[3] << 8);
 }
