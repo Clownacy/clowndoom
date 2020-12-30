@@ -130,10 +130,8 @@ int*		channelrightvol_lookup[NUM_CHANNELS];
 //
 static void Callback(ma_device *device, void *output_buffer_void, const void *input_buffer, ma_uint32 frames_to_do)
 {
-  (void)device;
-  (void)input_buffer;
-
   short *output_buffer = output_buffer_void;
+  unsigned char		interpolation_scale;
 
   // Mix current sound data.
   // Data, from raw sound, for right and left.
@@ -150,6 +148,9 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 
   // Mixing channel index.
   int				chan;
+
+  (void)device;
+  (void)input_buffer;
     
     // Left and right channel
     //  are in global mixbuffer, alternating.
@@ -178,8 +179,9 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 	    // Check channel, if active.
 	    if (channels[ chan ])
 	    {
-		// Get the raw data from the channel. 
-		sample = *channels[ chan ];
+		interpolation_scale = channelstepremainder[ chan ] >> 8;
+		// Get the interpolated sample. 
+		sample = ((channels[ chan ][0] * (0x100 - interpolation_scale)) + (channels[ chan ][1] * interpolation_scale)) >> 8;
 		// Add left and right part
 		//  for this channel (sound)
 		//  to the current data.
