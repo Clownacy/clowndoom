@@ -24,6 +24,7 @@
 #ifndef __SOUNDS__
 #define __SOUNDS__
 
+#include "doomtype.h"
 
 //
 // SoundFX struct.
@@ -36,7 +37,7 @@ struct sfxinfo_struct
     char*	name;
 
     // Sfx singularity (only one at a time)
-    int		singularity;
+    boolean		singularity;
 
     // Sfx priority
     int		priority;
