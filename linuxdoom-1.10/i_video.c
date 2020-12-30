@@ -266,7 +266,7 @@ void I_GetEvent(void)
 	{
 	    lastmousex = X_event.xmotion.x;
 	    lastmousey = X_event.xmotion.y;
-	    if (X_event.xmotion.x != X_width/2 &&
+	    if (X_event.xmotion.x != X_width/2 ||
 		X_event.xmotion.y != X_height/2)
 	    {
 		D_PostEvent(&event);
