@@ -68,12 +68,14 @@ unsigned int output_sample_rate;	// Hz
 // The actual lengths of all sound effects.
 int 		lengths[NUMSFX];
 
-// The actual output device.
-static ma_device audio_device;
-
 // miniaudio context
 static ma_context context;
 
+// miniaudio context
+static ma_mutex mutex;
+
+// The actual output device.
+static ma_device audio_device;
 
 // The channel step amount...
 unsigned int	channelstep[NUM_CHANNELS];
@@ -151,7 +153,9 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 
   (void)device;
   (void)input_buffer;
-    
+
+    ma_mutex_lock(&mutex);
+
     // Left and right channel
     //  are in global mixbuffer, alternating.
     leftout = output_buffer;
@@ -226,6 +230,8 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 	leftout += step;
 	rightout += step;
     }
+
+    ma_mutex_unlock(&mutex);
 }
 
 
@@ -311,6 +317,8 @@ addsfx
 
     int		rightvol;
     int		leftvol;
+
+    ma_mutex_lock(&mutex);
 
     // Chainsaw troubles.
     // Play these sound effects only one at a time.
@@ -409,6 +417,8 @@ addsfx
     // Preserve sound SFX id,
     //  e.g. for avoiding duplicates of chainsaw.
     channelids[slot] = sfxid;
+
+    ma_mutex_unlock(&mutex);
 
     // You tell me.
     return rc;
@@ -571,6 +581,7 @@ I_UpdateSoundParams
 void I_ShutdownSound(void)
 {    
   ma_device_uninit(&audio_device);
+  ma_mutex_uninit(&mutex);
   ma_context_uninit(&context);
 }
 
@@ -585,6 +596,8 @@ I_InitSound()
   int i;
 
   ma_context_init(NULL, 0, NULL, &context);
+
+  ma_mutex_init(&mutex);
 
   ma_device_config config = ma_device_config_init(ma_device_type_playback);
   config.playback.pDeviceID = NULL;
