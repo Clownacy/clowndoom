@@ -58,6 +58,14 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 #define POINTER_WARP_COUNTDOWN	1
 
+typedef struct Color
+{
+    unsigned char blue;
+    unsigned char green;
+    unsigned char red;
+    unsigned char x;
+} Color;
+
 Display*	X_display=0;
 Window		X_mainWindow;
 Visual*		X_visual;
@@ -70,12 +78,7 @@ int		X_width;
 int		X_height;
 
 // Color palette
-static struct
-{
-    unsigned char red;
-    unsigned char green;
-    unsigned char blue;
-}		colors[256];
+static Color	colors[256];
 
 // MIT SHared Memory extension.
 boolean		doShm;
@@ -395,17 +398,10 @@ void I_FinishUpdate (void)
 
 	for (size_t y = 0; y < SCREENHEIGHT; ++y)
 	{
-	    unsigned char *dst_pointer = (unsigned char*)&image->data[y*X_width*4];
+	    Color *dst_pointer = (Color*)&image->data[y*X_width*4];
 
 	    for (size_t x = 0; x < SCREENWIDTH; ++x)
-	    {
-		const unsigned char pixel = *src_pointer++;
-
-		*dst_pointer++ = colors[pixel].blue;
-		*dst_pointer++ = colors[pixel].green;
-		*dst_pointer++ = colors[pixel].red;
-		*dst_pointer++ = 0;
-	    }
+		*dst_pointer++ = colors[*src_pointer++];
 	}
     }
     else
@@ -414,24 +410,19 @@ void I_FinishUpdate (void)
 
 	for (size_t y = 0; y < SCREENHEIGHT; ++y)
 	{
-	    unsigned char *dst_row = (unsigned char*)&image->data[y*multiply*X_width*4];
-	    unsigned char *dst_pointer = dst_row;
+	    Color *dst_row = (Color*)&image->data[y*multiply*X_width*4];
+	    Color *dst_pointer = dst_row;
 
 	    for (size_t x = 0; x < SCREENWIDTH; ++x)
 	    {
-		const unsigned char pixel = *src_pointer++;
+		const Color pixel = colors[*src_pointer++];
 
 		for (int i = 0; i < multiply; ++i)
-		{
-		    *dst_pointer++ = colors[pixel].blue;
-		    *dst_pointer++ = colors[pixel].green;
-		    *dst_pointer++ = colors[pixel].red;
-		    *dst_pointer++ = 0;
-		}
+		    *dst_pointer++ = pixel;
 	    }
 
 	    for (int i = 1; i < multiply; ++i)
-		memcpy(&dst_row[i*X_width*4], dst_row, X_width*4);
+		memcpy(&dst_row[i*X_width], dst_row, X_width*4);
 	}
     }
 
