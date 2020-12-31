@@ -388,7 +388,7 @@ void I_FinishUpdate (void)
     }
 
     // scales the screen size before blitting it
-    // also converts the screen to RGBX8888
+    // also converts the screen to BGRX8888
     if (multiply == 1)
     {
 	const unsigned char *src_pointer = screens[0];
@@ -401,9 +401,9 @@ void I_FinishUpdate (void)
 	    {
 		const unsigned char pixel = *src_pointer++;
 
-		*dst_pointer++ = colors[pixel].red;
-		*dst_pointer++ = colors[pixel].green;
 		*dst_pointer++ = colors[pixel].blue;
+		*dst_pointer++ = colors[pixel].green;
+		*dst_pointer++ = colors[pixel].red;
 		*dst_pointer++ = 0;
 	    }
 	}
@@ -423,9 +423,9 @@ void I_FinishUpdate (void)
 
 		for (int i = 0; i < multiply; ++i)
 		{
-		    *dst_pointer++ = colors[pixel].red;
-		    *dst_pointer++ = colors[pixel].green;
 		    *dst_pointer++ = colors[pixel].blue;
+		    *dst_pointer++ = colors[pixel].green;
+		    *dst_pointer++ = colors[pixel].red;
 		    *dst_pointer++ = 0;
 		}
 	    }
@@ -494,9 +494,9 @@ void I_SetPalette (const byte* palette)
 
     for (i=0 ; i<256 ; i++)
     {
-	colors[i].blue = gammatable[usegamma][*palette++];
-	colors[i].green = gammatable[usegamma][*palette++];
 	colors[i].red = gammatable[usegamma][*palette++];
+	colors[i].green = gammatable[usegamma][*palette++];
+	colors[i].blue = gammatable[usegamma][*palette++];
     }
 }
 
