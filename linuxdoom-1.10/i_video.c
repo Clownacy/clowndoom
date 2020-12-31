@@ -87,6 +87,7 @@ int		X_shmeventtype;
 // Needs an invisible mouse cursor at least.
 boolean		grabMouse;
 int		doPointerWarp = POINTER_WARP_COUNTDOWN;
+Cursor		nullCursor;
 
 // Blocky mode,
 // replace each 320x200 pixel with multiply*multiply pixels.
@@ -654,9 +655,6 @@ void I_InitGraphics(void)
     else
 	displayname = 0;
 
-    // check if the user wants to grab the mouse (quite unnice)
-    grabMouse = !!M_CheckParm("-grabmouse");
-
     // check for command-line geometry
     if ( (pnum=M_CheckParm("-geom")) ) // suggest parentheses around assignment
     {
@@ -732,8 +730,7 @@ void I_InitGraphics(void)
 					attribmask,
 					&attribs );
 
-    XDefineCursor(X_display, X_mainWindow,
-		  createnullcursor( X_display, X_mainWindow ) );
+    nullCursor = createnullcursor( X_display, X_mainWindow );
 
     // create the GC
     valuemask = GCGraphicsExposures;
@@ -757,13 +754,6 @@ void I_InitGraphics(void)
 	    oktodraw = 1;
 	}
     }
-
-    // grabs the pointer so it is restricted to this window
-    if (grabMouse)
-	XGrabPointer(X_display, X_mainWindow, True,
-		     ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
-		     GrabModeAsync, GrabModeAsync,
-		     X_mainWindow, None, CurrentTime);
 
     if (doShm)
     {
@@ -824,4 +814,23 @@ void I_InitGraphics(void)
 
     screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
 
+}
+
+void I_GrabMouse(boolean grab)
+{
+    grabMouse = grab;
+
+    if (grab)
+    {
+	XGrabPointer(X_display, X_mainWindow, True,
+		     ButtonPressMask|ButtonReleaseMask|PointerMotionMask,
+		     GrabModeAsync, GrabModeAsync,
+		     X_mainWindow, None, CurrentTime);
+	XDefineCursor(X_display, X_mainWindow, nullCursor);
+    }
+    else
+    {
+	XUngrabPointer(X_display, CurrentTime);
+	XUndefineCursor(X_display, X_mainWindow);
+    }
 }
