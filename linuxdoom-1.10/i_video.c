@@ -49,6 +49,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 #include "doomstat.h"
 #include "i_system.h"
+#include "i_video.h"
 #include "v_video.h"
 #include "m_argv.h"
 #include "d_main.h"
@@ -754,6 +755,8 @@ void I_InitGraphics(void)
 	    oktodraw = 1;
 	}
     }
+
+    I_GrabMouse(true);
 
     if (doShm)
     {
