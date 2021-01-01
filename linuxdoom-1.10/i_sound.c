@@ -251,6 +251,53 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 
 
 
+static void
+UpdateSoundParams
+( int	slot,
+  int	vol,
+  int	sep,
+  int	pitch)
+{
+    int		rightvol;
+    int		leftvol;
+
+    // Set stepping???
+    // Kinda getting the impression this is never used.
+    channelstep[slot] = S_sfx[channelids[slot]].sample_rate * steptable[pitch] / output_sample_rate;
+    // ???
+    channelstepremainder[slot] = 0;
+
+    // Separation, that is, orientation/stereo.
+    //  range is: 1 - 256
+    sep += 1;
+
+    // Per left/right channel.
+    //  x^2 seperation,
+    //  adjust volume properly.
+    leftvol =
+	vol - ((vol*sep*sep) >> 16); ///(256*256);
+    sep = sep - 257;
+    rightvol =
+	vol - ((vol*sep*sep) >> 16);	
+
+#ifdef RANGECHECK
+    // Sanity check, clamp volume.
+    if (rightvol < 0 || rightvol > 127)
+	I_Error("rightvol out of bounds");
+    
+    if (leftvol < 0 || leftvol > 127)
+	I_Error("leftvol out of bounds");
+#endif
+    
+    // Get the proper lookup table piece
+    //  for this volume level???
+    channelleftvol_lookup[slot] = &vol_lookup[leftvol*256];
+    channelrightvol_lookup[slot] = &vol_lookup[rightvol*256];
+}
+
+
+
+
 //
 // This function loads the sound data from the WAD lump,
 //  for single sound.
@@ -402,9 +449,6 @@ I_StartSound
     int		oldestnum = 0;
     int		slot;
 
-    int		rightvol;
-    int		leftvol;
-
     ma_mutex_lock(&mutex);
 
     // Chainsaw troubles.
@@ -466,44 +510,14 @@ I_StartSound
     // Preserved so sounds could be stopped (unused).
     channelhandles[slot] = rc = handlenums++;
 
-    // Set stepping???
-    // Kinda getting the impression this is never used.
-    channelstep[slot] = S_sfx[id].sample_rate * steptable[pitch] / output_sample_rate;
-    // ???
-    channelstepremainder[slot] = 0;
     // Should be gametic, I presume.
     channelstart[slot] = gametic;
-
-    // Separation, that is, orientation/stereo.
-    //  range is: 1 - 256
-    sep += 1;
-
-    // Per left/right channel.
-    //  x^2 seperation,
-    //  adjust volume properly.
-    leftvol =
-	vol - ((vol*sep*sep) >> 16); ///(256*256);
-    sep = sep - 257;
-    rightvol =
-	vol - ((vol*sep*sep) >> 16);	
-
-#ifdef RANGECHECK
-    // Sanity check, clamp volume.
-    if (rightvol < 0 || rightvol > 127)
-	I_Error("rightvol out of bounds");
-    
-    if (leftvol < 0 || leftvol > 127)
-	I_Error("leftvol out of bounds");
-#endif
-    
-    // Get the proper lookup table piece
-    //  for this volume level???
-    channelleftvol_lookup[slot] = &vol_lookup[leftvol*256];
-    channelrightvol_lookup[slot] = &vol_lookup[rightvol*256];
 
     // Preserve sound SFX id,
     //  e.g. for avoiding duplicates of chainsaw.
     channelids[slot] = id;
+
+    UpdateSoundParams(slot, vol, sep, pitch);
 
     ma_mutex_unlock(&mutex);
 
@@ -544,16 +558,11 @@ I_UpdateSoundParams
   int	sep,
   int	pitch)
 {
-  // I fail too see that this is used.
-  // Would be using the handle to identify
-  //  on which channel the sound might be active,
-  //  and resetting the channel parameters.
+    int i;
 
-  // UNUSED.
-  (void)handle;
-  (void)vol;
-  (void)sep;
-  (void)pitch;
+    for (i=0;i<NUM_CHANNELS;i++)
+	if (channelhandles[i] == handle)
+	    UpdateSoundParams(i, vol, sep, pitch);
 }
 
 
