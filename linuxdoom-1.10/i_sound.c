@@ -61,7 +61,7 @@ static unsigned int	output_sample_rate;
 //static int		snd_MusicVolume;
 
 // The actual lengths of all sound effects.
-static int		lengths[NUMSFX];
+static size_t		lengths[NUMSFX];
 
 // miniaudio context
 static ma_context	context;
@@ -305,7 +305,7 @@ UpdateSoundParams
 static void
 getsfx
 ( sfxinfo_t*   sfxinfo,
-  int*          len )
+  size_t*      len )
 {
     unsigned char*      sfx;
     int                 size;
