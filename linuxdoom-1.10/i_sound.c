@@ -22,21 +22,9 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-
 #include <math.h>
-
-#include <sys/time.h>
-#include <sys/types.h>
-
-#ifndef LINUX
-#include <sys/filio.h>
-#endif
-
-#include <fcntl.h>
-#include <unistd.h>
 
 #define MINIAUDIO_IMPLEMENTATION
 #define MA_NO_DECODING
