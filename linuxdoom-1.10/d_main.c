@@ -95,6 +95,8 @@ boolean		devparm;	// started game with -devparm
 boolean         nomonsters;	// checkparm of -nomonsters
 boolean         respawnparm;	// checkparm of -respawn
 boolean         fastparm;	// checkparm of -fast
+boolean		novertparm;	// checkparm of -novert
+boolean		alwaysrunparm;	// checkparm of -alwaysrun
 
 boolean         drone;
 
@@ -788,6 +790,8 @@ void D_DoomMain (void)
     nomonsters = M_CheckParm ("-nomonsters");
     respawnparm = M_CheckParm ("-respawn");
     fastparm = M_CheckParm ("-fast");
+    novertparm = M_CheckParm ("-novert");
+    alwaysrunparm = M_CheckParm ("-alwaysrun");
     devparm = M_CheckParm ("-devparm");
     if (M_CheckParm ("-altdeath"))
 	deathmatch = 2;
