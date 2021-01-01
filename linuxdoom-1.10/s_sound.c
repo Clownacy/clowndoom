@@ -92,7 +92,7 @@ typedef struct
     sfxinfo_t*	sfxinfo;
 
     // origin of sound
-    void*	origin;
+    mobj_t*	origin;
 
     // handle of the sound being played
     int		handle;
@@ -127,13 +127,13 @@ static int		nextcleanup;
 //
 // Internals.
 //
-int
+static int
 S_getChannel
-( void*		origin,
+( mobj_t*	origin,
   sfxinfo_t*	sfxinfo );
 
 
-int
+static int
 S_AdjustSoundParams
 ( mobj_t*	listener,
   mobj_t*	source,
@@ -141,7 +141,7 @@ S_AdjustSoundParams
   int*		sep,
   int*		pitch );
 
-void S_StopChannel(int cnum);
+static void S_StopChannel(int cnum);
 
 
 
@@ -244,7 +244,7 @@ void S_Start(void)
 
 void
 S_StartSoundAtVolume
-( void*		origin_p,
+( mobj_t*	origin,
   int		sfx_id,
   int		volume )
 {
@@ -255,8 +255,6 @@ S_StartSoundAtVolume
   int		priority;
   sfxinfo_t*	sfx;
   int		cnum;
-  
-  mobj_t*	origin = (mobj_t *) origin_p;
   
   
   // Debug.
@@ -387,7 +385,7 @@ S_StartSoundAtVolume
 
 void
 S_StartSound
-( void*		origin,
+( mobj_t*	origin,
   int		sfx_id )
 {
 #ifdef SAWDEBUG
@@ -459,7 +457,7 @@ S_StartSound
 
 
 
-void S_StopSound(void *origin)
+void S_StopSound(mobj_t *origin)
 {
 
     int cnum;
@@ -507,7 +505,7 @@ void S_ResumeSound(void)
 //
 // Updates music & sounds
 //
-void S_UpdateSounds(void* listener_p)
+void S_UpdateSounds(mobj_t* listener)
 {
     int		audible;
     int		cnum;
@@ -516,8 +514,6 @@ void S_UpdateSounds(void* listener_p)
     int		pitch;
     sfxinfo_t*	sfx;
     channel_t*	c;
-    
-    mobj_t*	listener = (mobj_t*)listener_p;
 
 
     
@@ -572,7 +568,7 @@ void S_UpdateSounds(void* listener_p)
 
 		// check non-local sounds for distance clipping
 		//  or modify their params
-		if (c->origin && listener_p != c->origin)
+		if (c->origin && listener != c->origin)
 		{
 		    audible = S_AdjustSoundParams(listener,
 						  c->origin,
@@ -696,7 +692,7 @@ void S_StopMusic(void)
 
 
 
-void S_StopChannel(int cnum)
+static void S_StopChannel(int cnum)
 {
 
     int		i;
@@ -740,7 +736,7 @@ void S_StopChannel(int cnum)
 // If the sound is not audible, returns a 0.
 // Otherwise, modifies parameters and returns 1.
 //
-int
+static int
 S_AdjustSoundParams
 ( mobj_t*	listener,
   mobj_t*	source,
@@ -817,9 +813,9 @@ S_AdjustSoundParams
 // S_getChannel :
 //   If none available, return -1.  Otherwise channel #.
 //
-int
+static int
 S_getChannel
-( void*		origin,
+( mobj_t*	origin,
   sfxinfo_t*	sfxinfo )
 {
     // channel number to use
