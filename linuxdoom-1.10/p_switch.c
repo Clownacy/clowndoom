@@ -107,13 +107,22 @@ void P_InitSwitchList(void)
     int		index;
     int		episode;
 	
-    episode = 1;
+    switch (gamemode)
+    {
+	default:
+	case shareware:
+	    episode = 1;
+	    break;
 
-    if (gamemode == registered)
-	episode = 2;
-    else
-	if ( gamemode == commercial )
+	case registered:
+	case retail:
+	    episode = 2;
+	    break;
+
+	case commercial:
 	    episode = 3;
+	    break;
+    }
 		
     for (index = 0,i = 0;i < MAXSWITCHES;i++)
     {
