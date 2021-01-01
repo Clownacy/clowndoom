@@ -1808,7 +1808,7 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 
     wbs = wbstartstruct;
 
-#ifdef RANGECHECK
+#ifdef RANGECHECKING
     if (gamemode != commercial)
     {
       if ( gamemode == retail )
