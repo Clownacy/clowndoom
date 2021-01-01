@@ -307,142 +307,6 @@ getsfx
 
 
 //
-// This function adds a sound to the
-//  list of currently active sounds,
-//  which is maintained as a given number
-//  (eight, usually) of internal channels.
-// Returns a handle.
-//
-int
-addsfx
-( int		sfxid,
-  int		volume,
-  int		step,
-  int		seperation )
-{
-    static unsigned short	handlenums = 0;
- 
-    int		i;
-    int		rc = -1;
-    
-    int		oldest = gametic;
-    int		oldestnum = 0;
-    int		slot;
-
-    int		rightvol;
-    int		leftvol;
-
-    ma_mutex_lock(&mutex);
-
-    // Chainsaw troubles.
-    // Play these sound effects only one at a time.
-    if ( sfxid == sfx_sawup
-	 || sfxid == sfx_sawidl
-	 || sfxid == sfx_sawful
-	 || sfxid == sfx_sawhit
-	 || sfxid == sfx_stnmov
-	 || sfxid == sfx_pistol	 )
-    {
-	// Loop all channels, check.
-	for (i=0 ; i<NUM_CHANNELS ; i++)
-	{
-	    // Active, and using the same SFX?
-	    if ( (channels[i])
-		 && (channelids[i] == sfxid) )
-	    {
-		// Reset.
-		channels[i] = 0;
-		// We are sure that iff,
-		//  there will only be one.
-		break;
-	    }
-	}
-    }
-
-    // Loop all channels to find oldest SFX.
-    for (i=0; (i<NUM_CHANNELS) && (channels[i]); i++)
-    {
-	if (channelstart[i] < oldest)
-	{
-	    oldestnum = i;
-	    oldest = channelstart[i];
-	}
-    }
-
-    // Tales from the cryptic.
-    // If we found a channel, fine.
-    // If not, we simply overwrite the first one, 0.
-    // Probably only happens at startup.
-    if (i == NUM_CHANNELS)
-	slot = oldestnum;
-    else
-	slot = i;
-
-    // Okay, in the less recent channel,
-    //  we will handle the new SFX.
-    // Set pointer to raw data.
-    channels[slot] = (unsigned char *) S_sfx[sfxid].data;
-    // Set pointer to end of raw data.
-    channelsend[slot] = channels[slot] + lengths[sfxid];
-
-    // Reset current handle number, limited to 0..100.
-    if (!handlenums)
-	handlenums = 100;
-
-    // Assign current handle number.
-    // Preserved so sounds could be stopped (unused).
-    channelhandles[slot] = rc = handlenums++;
-
-    // Set stepping???
-    // Kinda getting the impression this is never used.
-    channelstep[slot] = step;
-    // ???
-    channelstepremainder[slot] = 0;
-    // Should be gametic, I presume.
-    channelstart[slot] = gametic;
-
-    // Separation, that is, orientation/stereo.
-    //  range is: 1 - 256
-    seperation += 1;
-
-    // Per left/right channel.
-    //  x^2 seperation,
-    //  adjust volume properly.
-    leftvol =
-	volume - ((volume*seperation*seperation) >> 16); ///(256*256);
-    seperation = seperation - 257;
-    rightvol =
-	volume - ((volume*seperation*seperation) >> 16);	
-
-#ifdef RANGECHECK
-    // Sanity check, clamp volume.
-    if (rightvol < 0 || rightvol > 127)
-	I_Error("rightvol out of bounds");
-    
-    if (leftvol < 0 || leftvol > 127)
-	I_Error("leftvol out of bounds");
-#endif
-    
-    // Get the proper lookup table piece
-    //  for this volume level???
-    channelleftvol_lookup[slot] = &vol_lookup[leftvol*256];
-    channelrightvol_lookup[slot] = &vol_lookup[rightvol*256];
-
-    // Preserve sound SFX id,
-    //  e.g. for avoiding duplicates of chainsaw.
-    channelids[slot] = sfxid;
-
-    ma_mutex_unlock(&mutex);
-
-    // You tell me.
-    return rc;
-}
-
-
-
-
-
-//
 // SFX API
 // Note: this was called by S_Init.
 // However, whatever they did in the
@@ -526,19 +390,125 @@ I_StartSound
   int		pitch,
   int		priority )
 {
-
-  // UNUSED
-  (void)priority;
-  
-    // Debug.
-    //fprintf( stderr, "starting sound %d", id );
+    // UNUSED
+    (void)priority;
     
-    // Returns a handle (not used).
-    id = addsfx( id, vol, S_sfx[id].sample_rate * steptable[pitch] / output_sample_rate, sep );
-
-    // fprintf( stderr, "/handle is %d\n", id );
+    static unsigned short	handlenums = 0;
+ 
+    int		i;
+    int		rc = -1;
     
-    return id;
+    int		oldest = gametic;
+    int		oldestnum = 0;
+    int		slot;
+
+    int		rightvol;
+    int		leftvol;
+
+    ma_mutex_lock(&mutex);
+
+    // Chainsaw troubles.
+    // Play these sound effects only one at a time.
+    if ( id == sfx_sawup
+	 || id == sfx_sawidl
+	 || id == sfx_sawful
+	 || id == sfx_sawhit
+	 || id == sfx_stnmov
+	 || id == sfx_pistol	 )
+    {
+	// Loop all channels, check.
+	for (i=0 ; i<NUM_CHANNELS ; i++)
+	{
+	    // Active, and using the same SFX?
+	    if ( (channels[i])
+		 && (channelids[i] == id) )
+	    {
+		// Reset.
+		channels[i] = 0;
+		// We are sure that iff,
+		//  there will only be one.
+		break;
+	    }
+	}
+    }
+
+    // Loop all channels to find oldest SFX.
+    for (i=0; (i<NUM_CHANNELS) && (channels[i]); i++)
+    {
+	if (channelstart[i] < oldest)
+	{
+	    oldestnum = i;
+	    oldest = channelstart[i];
+	}
+    }
+
+    // Tales from the cryptic.
+    // If we found a channel, fine.
+    // If not, we simply overwrite the first one, 0.
+    // Probably only happens at startup.
+    if (i == NUM_CHANNELS)
+	slot = oldestnum;
+    else
+	slot = i;
+
+    // Okay, in the less recent channel,
+    //  we will handle the new SFX.
+    // Set pointer to raw data.
+    channels[slot] = (unsigned char *) S_sfx[id].data;
+    // Set pointer to end of raw data.
+    channelsend[slot] = channels[slot] + lengths[id];
+
+    // Reset current handle number, limited to 0..100.
+    if (!handlenums)
+	handlenums = 100;
+
+    // Assign current handle number.
+    // Preserved so sounds could be stopped (unused).
+    channelhandles[slot] = rc = handlenums++;
+
+    // Set stepping???
+    // Kinda getting the impression this is never used.
+    channelstep[slot] = S_sfx[id].sample_rate * steptable[pitch] / output_sample_rate;
+    // ???
+    channelstepremainder[slot] = 0;
+    // Should be gametic, I presume.
+    channelstart[slot] = gametic;
+
+    // Separation, that is, orientation/stereo.
+    //  range is: 1 - 256
+    sep += 1;
+
+    // Per left/right channel.
+    //  x^2 seperation,
+    //  adjust volume properly.
+    leftvol =
+	vol - ((vol*sep*sep) >> 16); ///(256*256);
+    sep = sep - 257;
+    rightvol =
+	vol - ((vol*sep*sep) >> 16);	
+
+#ifdef RANGECHECK
+    // Sanity check, clamp volume.
+    if (rightvol < 0 || rightvol > 127)
+	I_Error("rightvol out of bounds");
+    
+    if (leftvol < 0 || leftvol > 127)
+	I_Error("leftvol out of bounds");
+#endif
+    
+    // Get the proper lookup table piece
+    //  for this volume level???
+    channelleftvol_lookup[slot] = &vol_lookup[leftvol*256];
+    channelrightvol_lookup[slot] = &vol_lookup[rightvol*256];
+
+    // Preserve sound SFX id,
+    //  e.g. for avoiding duplicates of chainsaw.
+    channelids[slot] = id;
+
+    ma_mutex_unlock(&mutex);
+
+    // You tell me.
+    return rc;
 }
 
 
