@@ -230,10 +230,8 @@ void R_DrawColumnLow (void)
     //	dccount++; 
 #endif 
     // Blocky mode, need to multiply by 2.
-    dc_x <<= 1;
-    
-    dest = ylookup[dc_yl] + columnofs[dc_x];
-    dest2 = ylookup[dc_yl] + columnofs[dc_x+1];
+    dest = ylookup[dc_yl] + columnofs[dc_x<<1];
+    dest2 = ylookup[dc_yl] + columnofs[(dc_x<<1)+1];
     
     fracstep = dc_iscale; 
     frac = dc_texturemid + (dc_yl-centery)*fracstep;
@@ -363,6 +361,94 @@ void R_DrawFuzzColumn (void)
 	frac += fracstep; 
     } while (count--); 
 } 
+
+void R_DrawFuzzColumnLow (void) 
+{ 
+    int			count; 
+    byte*		dest; 
+    byte*		dest2; 
+    fixed_t		frac;
+    fixed_t		fracstep;
+
+    // Adjust borders. Low... 
+    if (!dc_yl) 
+	dc_yl = 1;
+
+    // .. and high.
+    if (dc_yh == viewheight-1) 
+	dc_yh = viewheight - 2; 
+		 
+    count = dc_yh - dc_yl; 
+
+    // Zero length.
+    if (count < 0) 
+	return; 
+
+    
+#ifdef RANGECHECK 
+    if ((unsigned)dc_x >= SCREENWIDTH
+	|| dc_yl < 0 || dc_yh >= SCREENHEIGHT)
+    {
+	I_Error ("R_DrawFuzzColumnLow: %i to %i at %i",
+		 dc_yl, dc_yh, dc_x);
+    }
+#endif
+
+
+    // Keep till detailshift bug in blocky mode fixed,
+    //  or blocky mode removed.
+    /* WATCOM code 
+    if (detailshift)
+    {
+	if (dc_x & 1)
+	{
+	    outpw (GC_INDEX,GC_READMAP+(2<<8) ); 
+	    outp (SC_INDEX+1,12); 
+	}
+	else
+	{
+	    outpw (GC_INDEX,GC_READMAP); 
+	    outp (SC_INDEX+1,3); 
+	}
+	dest = destview + dc_yl*80 + (dc_x>>1); 
+    }
+    else
+    {
+	outpw (GC_INDEX,GC_READMAP+((dc_x&3)<<8) ); 
+	outp (SC_INDEX+1,1<<(dc_x&3)); 
+	dest = destview + dc_yl*80 + (dc_x>>2); 
+    }*/
+
+    
+    // Does not work with blocky mode.
+    dest = ylookup[dc_yl] + columnofs[dc_x<<1];
+    dest2 = ylookup[dc_yl] + columnofs[(dc_x<<1)+1];
+
+    // Looks familiar.
+    fracstep = dc_iscale; 
+    frac = dc_texturemid + (dc_yl-centery)*fracstep; 
+
+    // Looks like an attempt at dithering,
+    //  using the colormap #6 (of 0-31, a bit
+    //  brighter than average).
+    do 
+    {
+	// Lookup framebuffer, and retrieve
+	//  a pixel that is either one column
+	//  left or right of the current one.
+	// Add index from colormap to index.
+	*dest2 = *dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]]; 
+
+	// Clamp table lookup index.
+	if (++fuzzpos == FUZZTABLE) 
+	    fuzzpos = 0;
+	
+	dest += SCREENWIDTH;
+	dest2 += SCREENWIDTH;
+
+	frac += fracstep; 
+    } while (count--); 
+} 
  
   
  
@@ -438,6 +524,72 @@ void R_DrawTranslatedColumn (void)
 	//  is mapped to gray, red, black/indigo. 
 	*dest = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
 	dest += SCREENWIDTH;
+	
+	frac += fracstep; 
+    } while (count--); 
+} 
+
+void R_DrawTranslatedColumnLow (void) 
+{ 
+    int			count; 
+    byte*		dest; 
+    byte*		dest2; 
+    fixed_t		frac;
+    fixed_t		fracstep;
+ 
+    count = dc_yh - dc_yl; 
+    if (count < 0) 
+	return; 
+				 
+#ifdef RANGECHECK 
+    if ((unsigned)dc_x >= SCREENWIDTH
+	|| dc_yl < 0
+	|| dc_yh >= SCREENHEIGHT)
+    {
+	I_Error ( "R_DrawColumn: %i to %i at %i",
+		  dc_yl, dc_yh, dc_x);
+    }
+    
+#endif 
+
+
+    // WATCOM VGA specific.
+    /* Keep for fixing.
+    if (detailshift)
+    {
+	if (dc_x & 1)
+	    outp (SC_INDEX+1,12); 
+	else
+	    outp (SC_INDEX+1,3);
+	
+	dest = destview + dc_yl*80 + (dc_x>>1); 
+    }
+    else
+    {
+	outp (SC_INDEX+1,1<<(dc_x&3)); 
+
+	dest = destview + dc_yl*80 + (dc_x>>2); 
+    }*/
+
+    
+    dest = ylookup[dc_yl] + columnofs[dc_x<<1]; 
+    dest2 = ylookup[dc_yl] + columnofs[(dc_x<<1)+1]; 
+
+    // Looks familiar.
+    fracstep = dc_iscale; 
+    frac = dc_texturemid + (dc_yl-centery)*fracstep; 
+
+    // Here we do an additional index re-mapping.
+    do 
+    {
+	// Translation tables are used
+	//  to map certain colorramps to other ones,
+	//  used with PLAY sprites.
+	// Thus the "green" ramp of the player 0 sprite
+	//  is mapped to gray, red, black/indigo. 
+	*dest2 = *dest = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
+	dest += SCREENWIDTH;
+	dest2 += SCREENWIDTH;
 	
 	frac += fracstep; 
     } while (count--); 
@@ -661,10 +813,7 @@ void R_DrawSpanLow (void)
     yfrac = ds_yfrac; 
 
     // Blocky mode, need to multiply by 2.
-    ds_x1 <<= 1;
-    ds_x2 <<= 1;
-    
-    dest = ylookup[ds_y] + columnofs[ds_x1];
+    dest = ylookup[ds_y] + columnofs[ds_x1<<1];
   
     
     count = ds_x2 - ds_x1; 
