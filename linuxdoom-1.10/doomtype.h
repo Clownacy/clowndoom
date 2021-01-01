@@ -28,7 +28,6 @@
 
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
-// Fixed to use builtin bool type with C++.
 #ifdef __cplusplus
 typedef unsigned int boolean;
 #else
