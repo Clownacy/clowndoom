@@ -41,8 +41,8 @@
 
 
 // Purpose?
-const char snd_prefixen[]
-= { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 'S', 'S' };
+//const char snd_prefixen[]
+//= { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 'S', 'S' };
 
 #define S_MAX_VOLUME		127
 
@@ -78,11 +78,11 @@ const char snd_prefixen[]
 
 // Current music/sfx card - index useless
 //  w/o a reference LUT in a sound module.
-extern int snd_MusicDevice;
-extern int snd_SfxDevice;
+//extern int snd_MusicDevice;
+//extern int snd_SfxDevice;
 // Config file? Same disclaimer as above.
-extern int snd_DesiredMusicDevice;
-extern int snd_DesiredSfxDevice;
+//extern int snd_DesiredMusicDevice;
+//extern int snd_DesiredSfxDevice;
 
 
 

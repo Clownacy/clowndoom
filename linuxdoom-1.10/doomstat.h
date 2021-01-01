@@ -113,11 +113,11 @@ extern int musicVolume;    // maximum volume for music
 //  w/o a reference LUT in a sound module.
 // Ideally, this would use indices found
 //  in: /usr/include/linux/soundcard.h
-extern int snd_MusicDevice;
-extern int snd_SfxDevice;
+//extern int snd_MusicDevice;
+//extern int snd_SfxDevice;
 // Config file? Same disclaimer as above.
-extern int snd_DesiredMusicDevice;
-extern int snd_DesiredSfxDevice;
+//extern int snd_DesiredMusicDevice;
+//extern int snd_DesiredSfxDevice;
 
 
 // -------------------------
