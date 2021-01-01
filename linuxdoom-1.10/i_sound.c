@@ -401,7 +401,14 @@ void I_SetMusicVolume(int volume)
 #ifndef WILDMIDI
   (void)volume;
 #else
-  WildMidi_MasterVolume(volume);
+  if (music_initialised)
+  {
+    ma_mutex_lock(&mutex);
+
+    WildMidi_MasterVolume(volume);
+
+    ma_mutex_unlock(&mutex);
+  }
 #endif
 }
 
