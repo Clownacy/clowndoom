@@ -55,32 +55,32 @@
 // Needed for calling the actual sound output.
 #define NUM_CHANNELS		8
 
-unsigned int output_sample_rate;	// Hz
+static unsigned int	output_sample_rate;
 
 // Maximum volume of music. Useless so far.
-//static int	snd_MusicVolume;
+//static int		snd_MusicVolume;
 
 // The actual lengths of all sound effects.
-int 		lengths[NUMSFX];
+static int		lengths[NUMSFX];
 
 // miniaudio context
-static ma_context context;
+static ma_context	context;
 
 // miniaudio context
-static ma_mutex mutex;
+static ma_mutex		mutex;
 
 // The actual output device.
-static ma_device audio_device;
+static ma_device	audio_device;
 
 // The channel step amount...
-unsigned int	channelstep[NUM_CHANNELS];
+static unsigned int	channelstep[NUM_CHANNELS];
 // ... and a 0.16 bit remainder of last step.
-unsigned int	channelstepremainder[NUM_CHANNELS];
+static unsigned int	channelstepremainder[NUM_CHANNELS];
 
 
 // The channel data pointers, start and end.
-unsigned char*	channels[NUM_CHANNELS];
-unsigned char*	channelsend[NUM_CHANNELS];
+static unsigned char*	channels[NUM_CHANNELS];
+static unsigned char*	channelsend[NUM_CHANNELS];
 
 
 // Time/gametic that the channel started playing,
@@ -88,27 +88,27 @@ unsigned char*	channelsend[NUM_CHANNELS];
 //  has lowest priority.
 // In case number of active sounds exceeds
 //  available channels.
-int		channelstart[NUM_CHANNELS];
+static int		channelstart[NUM_CHANNELS];
 
 // The sound in channel handles,
 //  determined on registration,
 //  might be used to unregister/stop/modify,
 //  currently unused.
-int 		channelhandles[NUM_CHANNELS];
+static int 		channelhandles[NUM_CHANNELS];
 
 // SFX id of the playing sound effect.
 // Used to catch duplicates (like chainsaw).
-int		channelids[NUM_CHANNELS];			
+static int		channelids[NUM_CHANNELS];			
 
 // Pitch to stepping lookup.
-int		steptable[256];
+static int		steptable[256];
 
 // Volume lookups.
-int		vol_lookup[128*256];
+static int		vol_lookup[128*256];
 
 // Hardware left and right channel volume lookup.
-int*		channelleftvol_lookup[NUM_CHANNELS];
-int*		channelrightvol_lookup[NUM_CHANNELS];
+static int*		channelleftvol_lookup[NUM_CHANNELS];
+static int*		channelrightvol_lookup[NUM_CHANNELS];
 
 // Music stuff
 #ifdef WILDMIDI
@@ -302,7 +302,7 @@ UpdateSoundParams
 // This function loads the sound data from the WAD lump,
 //  for single sound.
 //
-void
+static void
 getsfx
 ( sfxinfo_t*   sfxinfo,
   int*          len )
