@@ -138,8 +138,7 @@ S_AdjustSoundParams
 ( mobj_t*	listener,
   mobj_t*	source,
   int*		vol,
-  int*		sep,
-  int*		pitch );
+  int*		sep );
 
 static void S_StopChannel(int cnum);
 
@@ -297,8 +296,7 @@ S_StartSoundAtVolume
     rc = S_AdjustSoundParams(players[consoleplayer].mo,
 			     origin,
 			     &volume,
-			     &sep,
-			     &pitch);
+			     &sep);
 	
     if ( origin->x == players[consoleplayer].mo->x
 	 && origin->y == players[consoleplayer].mo->y)
@@ -575,8 +573,7 @@ void S_UpdateSounds(mobj_t* listener)
 		    audible = S_AdjustSoundParams(listener,
 						  c->origin,
 						  &volume,
-						  &sep,
-						  &pitch);
+						  &sep);
 		    
 		    if (!audible)
 		    {
@@ -741,15 +738,12 @@ S_AdjustSoundParams
 ( mobj_t*	listener,
   mobj_t*	source,
   int*		vol,
-  int*		sep,
-  int*		pitch )
+  int*		sep )
 {
     fixed_t	approx_dist;
     fixed_t	adx;
     fixed_t	ady;
     angle_t	angle;
-
-    (void)pitch; // Pitch isn't modified. Was it modified in the DOS version?
 
     // calculate the distance to sound origin
     //  and clip it if necessary
