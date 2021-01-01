@@ -532,8 +532,13 @@ void I_StopSound (int handle)
   int i;
 
   for (i=0;i<NUM_CHANNELS;i++)
+  {
     if (channelhandles[i] == handle)
+    {
       channels[i] = NULL;
+      break;
+    }
+  }
 }
 
 
@@ -561,8 +566,13 @@ I_UpdateSoundParams
     int i;
 
     for (i=0;i<NUM_CHANNELS;i++)
+    {
 	if (channelhandles[i] == handle)
+	{
 	    UpdateSoundParams(i, vol, sep, pitch);
+	    break;
+	}
+    }
 }
 
 
