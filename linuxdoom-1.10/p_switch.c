@@ -239,31 +239,25 @@ P_ChangeSwitchTexture
 
 	    return;
 	}
-	else
+	else if (switchlist[i] == texMid)
 	{
-	    if (switchlist[i] == texMid)
-	    {
-		S_StartSound(buttonlist->soundorg,sound);
-		sides[line->sidenum[0]].midtexture = switchlist[i^1];
+	    S_StartSound(buttonlist->soundorg,sound);
+	    sides[line->sidenum[0]].midtexture = switchlist[i^1];
 
-		if (useAgain)
-		    P_StartButton(line, middle,switchlist[i],BUTTONTIME);
+	    if (useAgain)
+		P_StartButton(line, middle,switchlist[i],BUTTONTIME);
 
-		return;
-	    }
-	    else
-	    {
-		if (switchlist[i] == texBot)
-		{
-		    S_StartSound(buttonlist->soundorg,sound);
-		    sides[line->sidenum[0]].bottomtexture = switchlist[i^1];
+	    return;
+	}
+	else if (switchlist[i] == texBot)
+	{
+	    S_StartSound(buttonlist->soundorg,sound);
+	    sides[line->sidenum[0]].bottomtexture = switchlist[i^1];
 
-		    if (useAgain)
-			P_StartButton(line, bottom,switchlist[i],BUTTONTIME);
+	    if (useAgain)
+		P_StartButton(line, bottom,switchlist[i],BUTTONTIME);
 
-		    return;
-		}
-	    }
+	    return;
 	}
     }
 }
