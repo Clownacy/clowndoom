@@ -651,8 +651,12 @@ I_InitSound(void)
 void I_InitMusic(void)
 {
 #ifdef WILDMIDI
+    ma_mutex_lock(&mutex);
+
     if (WildMidi_Init("wildmidi.cfg", output_sample_rate, 0) == 0)
 	music_initialised = true;
+
+    ma_mutex_unlock(&mutex);
 #endif
 }
 
@@ -661,8 +665,12 @@ void I_ShutdownMusic(void)
 #ifdef WILDMIDI
     if (music_initialised)
     {
+	ma_mutex_lock(&mutex);
+
 	WildMidi_Shutdown();
 	music_initialised = false;
+
+	ma_mutex_unlock(&mutex);
     }
 #endif
 }
@@ -677,8 +685,12 @@ void I_PlaySong(int handle, int looping)
 #else
   if (music_initialised)
   {
+    ma_mutex_lock(&mutex);
+
     music_playing = true;
     WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
+
+    ma_mutex_unlock(&mutex);
   }
 #endif
 }
@@ -690,7 +702,13 @@ void I_PauseSong (int handle)
 
 #ifdef WILDMIDI
   if (music_initialised)
+  {
+    ma_mutex_lock(&mutex);
+
     music_playing = false;
+
+    ma_mutex_unlock(&mutex);
+  }
 #endif
 }
 
@@ -701,7 +719,13 @@ void I_ResumeSong (int handle)
 
 #ifdef WILDMIDI
   if (music_initialised)
+  {
+    ma_mutex_lock(&mutex);
+
     music_playing = true;
+
+    ma_mutex_unlock(&mutex);
+  }
 #endif
 }
 
@@ -713,8 +737,12 @@ void I_StopSong(int handle)
 #ifdef WILDMIDI
   if (music_initialised)
   {
+    ma_mutex_lock(&mutex);
+
     music_playing = false;
     WildMidi_FastSeek(music_midi, 0);
+
+    ma_mutex_unlock(&mutex);
   }
 #endif
 }
@@ -726,7 +754,13 @@ void I_UnRegisterSong(int handle)
 
 #ifdef WILDMIDI
   if (music_initialised)
+  {
+    ma_mutex_lock(&mutex);
+
     WildMidi_Close(music_midi);
+
+    ma_mutex_unlock(&mutex);
+  }
 #endif
 }
 
@@ -737,7 +771,13 @@ int I_RegisterSong(void* data, size_t size)
   (void)size;
 #else
   if (music_initialised)
+  {
+    ma_mutex_lock(&mutex);
+
     music_midi = WildMidi_OpenBuffer(data, size);
+
+    ma_mutex_unlock(&mutex);
+  }
 #endif
 
   return 1;
@@ -752,6 +792,12 @@ int I_QrySongPlaying(int handle)
 #ifndef WILDMIDI
   return 0;
 #else
-  return music_playing;
+  ma_mutex_lock(&mutex);
+
+  boolean playing = music_playing;
+
+  ma_mutex_unlock(&mutex);
+
+  return playing;
 #endif
 }
