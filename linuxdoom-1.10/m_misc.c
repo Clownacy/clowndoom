@@ -205,10 +205,10 @@ extern int	showMessages;
 extern	int	numChannels;
 
 
-#ifdef LINUX
-const char*		mousetype;
-const char*		mousedev;
-#endif
+//#ifdef LINUX
+//const char*		mousetype;
+//const char*		mousedev;
+//#endif
 
 extern const char*	chat_macros[];
 
@@ -247,10 +247,10 @@ default_t	defaults[] =
     
 #endif
 
-#ifdef LINUX
-    {"mousedev", (int*)&mousedev, (size_t)"/dev/ttyS0", true},
-    {"mousetype", (int*)&mousetype, (size_t)"microsoft", true},
-#endif
+//#ifdef LINUX
+//    {"mousedev", (int*)&mousedev, (size_t)"/dev/ttyS0", true},
+//    {"mousetype", (int*)&mousetype, (size_t)"microsoft", true},
+//#endif
 
     {"use_mouse",&usemouse, 1, false},
     {"mouseb_fire",&mousebfire,0, false},
