@@ -120,7 +120,7 @@ static musicinfo_t*	mus_playing=0;
 // number of channels available
 int			numChannels;	
 
-static int		nextcleanup;
+//static int		nextcleanup;
 
 
 
@@ -235,7 +235,7 @@ void S_Start(void)
   
   S_ChangeMusic(mnum, true);
   
-  nextcleanup = 15;
+  //nextcleanup = 15;
 }	
 
 
@@ -261,11 +261,13 @@ S_StartSoundAtVolume
   /*fprintf( stderr,
   	   "S_StartSoundAtVolume: playing sound %d (%s)\n",
   	   sfx_id, S_sfx[sfx_id].name );*/
-  
+
+#ifdef RANGECHECK
   // check for bogus sound #
   if (sfx_id < 1 || sfx_id > NUMSFX)
     I_Error("Bad sfx #: %d", sfx_id);
-  
+#endif
+
   sfx = &S_sfx[sfx_id];
   
   // Initialize sound parameters
@@ -602,11 +604,10 @@ void S_UpdateSounds(mobj_t* listener)
 
 void S_SetMusicVolume(int volume)
 {
+#ifdef RANGECHECK
     if (volume < 0 || volume > 127)
-    {
-	I_Error("Attempt to set music volume at %d",
-		volume);
-    }    
+	I_Error("Attempt to set music volume at %d", volume);
+#endif
 
     I_SetMusicVolume(volume);
 }
@@ -615,12 +616,12 @@ void S_SetMusicVolume(int volume)
 
 void S_SetSfxVolume(int volume)
 {
-
+#ifdef RANGECHECK
     if (volume < 0 || volume > 127)
 	I_Error("Attempt to set sfx volume at %d", volume);
+#endif
 
     snd_SfxVolume = volume;
-
 }
 
 //
@@ -639,14 +640,13 @@ S_ChangeMusic
     musicinfo_t*	music;
     char		namebuf[9];
 
+#ifdef RANGECHECK
     if ( (musicnum <= mus_None)
 	 || (musicnum >= NUMMUSIC) )
-    {
 	I_Error("Bad music number %d", musicnum);
-	return;
-    }
-    else
-	music = &S_music[musicnum];
+#endif
+
+    music = &S_music[musicnum];
 
     if (mus_playing == music)
 	return;
