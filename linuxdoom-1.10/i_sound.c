@@ -644,8 +644,6 @@ I_InitSound(void)
 
 //
 // MUSIC API.
-// Still no music done.
-// Remains. Dummies.
 //
 
 void I_InitMusic(void)

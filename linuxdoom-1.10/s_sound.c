@@ -162,7 +162,6 @@ void S_Init
   I_SetChannels();
   
   S_SetSfxVolume(sfxVolume);
-  // No music with Linux - another dummy.
   S_SetMusicVolume(musicVolume);
 
   // Allocating the internal channels for mixing
