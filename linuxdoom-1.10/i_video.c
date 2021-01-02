@@ -51,8 +51,6 @@
 
 #include "doomdef.h"
 
-#define POINTER_WARP_COUNTDOWN	1
-
 typedef struct Color
 {
     unsigned char blue;
@@ -61,32 +59,31 @@ typedef struct Color
     unsigned char x;
 } Color;
 
-Display*	X_display=0;
-Window		X_mainWindow;
-Visual*		X_visual;
-GC		X_gc;
-XEvent		X_event;
-int		X_screen;
-XVisualInfo	X_visualinfo;
-XImage*		image;
-int		X_width;
-int		X_height;
+static Display*	X_display=0;
+static Window		X_mainWindow;
+static Visual*		X_visual;
+static GC		X_gc;
+static XEvent		X_event;
+static int		X_screen;
+static XVisualInfo	X_visualinfo;
+static XImage*		image;
+static int		X_width;
+static int		X_height;
 
 // Color palette
 static Color	colors[256];
 
 // MIT SHared Memory extension.
-boolean		doShm;
+static boolean		doShm;
 
-XShmSegmentInfo	X_shminfo;
-int		X_shmeventtype;
+static XShmSegmentInfo	X_shminfo;
+static int		X_shmeventtype;
 
 // Fake mouse handling.
 // This cannot work properly w/o DGA.
 // Needs an invisible mouse cursor at least.
-boolean		grabMouse;
-int		doPointerWarp = POINTER_WARP_COUNTDOWN;
-Cursor		nullCursor;
+static boolean		grabMouse;
+static Cursor		nullCursor;
 
 // Blocky mode,
 // replace each 320x200 pixel with multiply*multiply pixels.
@@ -195,8 +192,7 @@ void I_StartFrame (void)
 
 static int	lastmousex = 0;
 static int	lastmousey = 0;
-boolean		mousemoved = false;
-boolean		shmFinished;
+static boolean	shmFinished;
 
 void I_GetEvent(void)
 {
@@ -273,10 +269,6 @@ void I_GetEvent(void)
 	    {
 		D_PostEvent(&event);
 		// fprintf(stderr, "m");
-		mousemoved = false;
-	    } else
-	    {
-		mousemoved = true;
 	    }
 	}
 	break;
@@ -334,20 +326,13 @@ void I_StartTic (void)
     //  loose input focus within X11.
     if (grabMouse)
     {
-	if (!--doPointerWarp)
-	{
-	    XWarpPointer( X_display,
-			  None,
-			  X_mainWindow,
-			  0, 0,
-			  0, 0,
-			  X_width/2, X_height/2);
-
-	    doPointerWarp = POINTER_WARP_COUNTDOWN;
-	}
+	XWarpPointer( X_display,
+		      None,
+		      X_mainWindow,
+		      0, 0,
+		      0, 0,
+		      X_width/2, X_height/2);
     }
-
-    mousemoved = false;
 
 }
 
