@@ -419,7 +419,7 @@ void I_SetMusicVolume(int volume)
 // Retrieve the raw data lump index
 //  for a given SFX name.
 //
-int I_GetSfxLumpNum(sfxinfo_t* sfx)
+int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 {
     char namebuf[9];
     sprintf(namebuf, "ds%s", sfx->name);
@@ -771,7 +771,7 @@ void I_UnRegisterSong(int handle)
 #endif
 }
 
-int I_RegisterSong(void* data, size_t size)
+int I_RegisterSong(const void* data, size_t size)
 {
 #ifndef WILDMIDI
   (void)data;
@@ -781,7 +781,7 @@ int I_RegisterSong(void* data, size_t size)
   {
     ma_mutex_lock(&mutex);
 
-    music_midi = WildMidi_OpenBuffer(data, size);
+    music_midi = WildMidi_OpenBuffer((void*)data, size);
 
     ma_mutex_unlock(&mutex);
   }

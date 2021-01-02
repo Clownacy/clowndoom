@@ -60,7 +60,7 @@ void S_Start(void);
 //
 void
 S_StartSound
-( mobj_t*	origin,
+( const mobj_t*	origin,
   int		sound_id );
 
 
@@ -68,13 +68,13 @@ S_StartSound
 // Will start a sound at a given volume.
 void
 S_StartSoundAtVolume
-( mobj_t*	origin,
+( const mobj_t*	origin,
   int		sound_id,
   int		volume );
 
 
 // Stop sound for thing at <origin>
-void S_StopSound(mobj_t* origin);
+void S_StopSound(const mobj_t* origin);
 
 
 // Start music using <music_id> from sounds.h
@@ -98,7 +98,7 @@ void S_ResumeSound(void);
 //
 // Updates music & sounds
 //
-void S_UpdateSounds(mobj_t* listener);
+void S_UpdateSounds(const mobj_t* listener);
 
 void S_SetMusicVolume(int volume);
 void S_SetSfxVolume(int volume);

@@ -44,7 +44,7 @@
 //const char snd_prefixen[]
 //= { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 'S', 'S' };
 
-#define S_MAX_VOLUME		127
+//#define S_MAX_VOLUME		127
 
 // when to clip out sounds
 // Does not fit the large outdoor areas.
@@ -60,20 +60,20 @@
 #define S_ATTENUATOR		((S_CLIPPING_DIST-S_CLOSE_DIST)>>FRACBITS)
 
 // Adjustable by menu.
-#define NORM_VOLUME    		snd_MaxVolume
+//#define NORM_VOLUME    		snd_MaxVolume
 
 #define NORM_PITCH     		128
 #define NORM_PRIORITY		64
 #define NORM_SEP		128
 
-#define S_PITCH_PERTURB		1
+//#define S_PITCH_PERTURB		1
 #define S_STEREO_SWING		(96*0x10000)
 
 // percent attenuation from front to back
-#define S_IFRACVOL		30
+//#define S_IFRACVOL		30
 
-#define NA			0
-#define S_NUMCHANNELS		2
+//#define NA			0
+//#define S_NUMCHANNELS		2
 
 
 // Current music/sfx card - index useless
@@ -92,7 +92,7 @@ typedef struct
     sfxinfo_t*	sfxinfo;
 
     // origin of sound
-    mobj_t*	origin;
+    const mobj_t*	origin;
 
     // handle of the sound being played
     int		handle;
@@ -129,14 +129,14 @@ int			numChannels;
 //
 static int
 S_getChannel
-( mobj_t*	origin,
+( const mobj_t*	origin,
   sfxinfo_t*	sfxinfo );
 
 
 static int
 S_AdjustSoundParams
-( mobj_t*	listener,
-  mobj_t*	source,
+( const mobj_t*	listener,
+  const mobj_t*	source,
   int*		vol,
   int*		sep );
 
@@ -243,7 +243,7 @@ void S_Start(void)
 
 void
 S_StartSoundAtVolume
-( mobj_t*	origin,
+( const mobj_t*	origin,
   int		sfx_id,
   int		volume )
 {
@@ -385,7 +385,7 @@ S_StartSoundAtVolume
 
 void
 S_StartSound
-( mobj_t*	origin,
+( const mobj_t*	origin,
   int		sfx_id )
 {
 #ifdef SAWDEBUG
@@ -457,7 +457,7 @@ S_StartSound
 
 
 
-void S_StopSound(mobj_t *origin)
+void S_StopSound(const mobj_t *origin)
 {
 
     int cnum;
@@ -505,15 +505,15 @@ void S_ResumeSound(void)
 //
 // Updates music & sounds
 //
-void S_UpdateSounds(mobj_t* listener)
+void S_UpdateSounds(const mobj_t* listener)
 {
     int		audible;
     int		cnum;
     int		volume;
     int		sep;
     int		pitch;
-    sfxinfo_t*	sfx;
-    channel_t*	c;
+    const sfxinfo_t*	sfx;
+    const channel_t*	c;
 
 
     
@@ -735,8 +735,8 @@ static void S_StopChannel(int cnum)
 //
 static int
 S_AdjustSoundParams
-( mobj_t*	listener,
-  mobj_t*	source,
+( const mobj_t*	listener,
+  const mobj_t*	source,
   int*		vol,
   int*		sep )
 {
@@ -809,7 +809,7 @@ S_AdjustSoundParams
 //
 static int
 S_getChannel
-( mobj_t*	origin,
+( const mobj_t*	origin,
   sfxinfo_t*	sfxinfo )
 {
     // channel number to use
