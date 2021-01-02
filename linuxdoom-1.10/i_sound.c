@@ -272,7 +272,7 @@ static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 
 //
 // This function loads the sound data from the WAD lump,
-//  for single sound.
+//  for a single sound.
 //
 static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
 {
@@ -280,7 +280,6 @@ static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
     size_t         size;
     char           name[20];
     int            sfxlump;
-
 
     // Get the sound data from the WAD, allocate lump
     //  in zone memory.
@@ -318,12 +317,14 @@ static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
 //
 // SFX API
 //
+
+//
+// This used to set DMX's internal
+// channel count and sample rate, it seems.
+//
 void I_SetChannels(int channels)
 {
     (void)channels;
-
-    // This used to set DMX's internal
-    // channel count and sample rate, it seems.
 }
 
 
@@ -352,8 +353,6 @@ int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 //  it is ignored.
 // As our sound handling does not handle
 //  priority, it is ignored.
-// Pitching (that is, increased speed of playback)
-//  is set, but currently not used by mixing.
 //
 int I_StartSound(int id, int vol, int sep, int pitch)
 {
@@ -416,12 +415,12 @@ int I_StartSound(int id, int vol, int sep, int pitch)
     // Set pointer to end of raw data.
     channelsend[slot] = channels[slot] + lengths[id];
 
-    // Reset current handle number, limited to 0..100.
+    // Disable handle numbers 0-99 (were they error values in DMX?).
     if (handlenums == 0)
         handlenums = 100;
 
     // Assign current handle number.
-    // Preserved so sounds could be stopped (unused).
+    // Preserved so sounds could be stopped.
     channelhandles[slot] = rc = handlenums++;
 
     // Should be gametic, I presume.
@@ -441,7 +440,7 @@ int I_StartSound(int id, int vol, int sep, int pitch)
 
 
 
-void I_StopSound (int handle)
+void I_StopSound(int handle)
 {
     int i;
 
@@ -449,7 +448,11 @@ void I_StopSound (int handle)
     {
         if (channelhandles[i] == handle)
         {
+	    ma_mutex_lock(&mutex);
+
             channels[i] = NULL;
+
+	    ma_mutex_unlock(&mutex);
             break;
         }
     }
@@ -458,13 +461,23 @@ void I_StopSound (int handle)
 
 
 
-int I_SoundIsPlaying(int handle)
+boolean I_SoundIsPlaying(int handle)
 {
     int i;
 
     for (i=0;i<NUM_CHANNELS;++i)
+    {
         if (channelhandles[i] == handle)
-            return channels[i] != NULL;
+	{
+	    ma_mutex_lock(&mutex);
+
+            boolean playing = channels[i] != NULL;
+
+	    ma_mutex_unlock(&mutex);
+
+	    return playing;
+	}
+    }
 
     return 0; // Sound doesn't exist
 }
@@ -480,8 +493,84 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
     {
         if (channelhandles[i] == handle)
         {
+	    ma_mutex_lock(&mutex);
+
             UpdateSoundParams(i, vol, sep, pitch);
+
+	    ma_mutex_unlock(&mutex);
+
             break;
+        }
+    }
+}
+
+
+
+
+void I_StartupSound(void)
+{
+    int i;
+    int j;
+
+      //
+     // Init internal lookups (raw data, mixing buffer, channels).
+    //
+
+    // This table provides step widths for pitch parameters.
+    for (i=0 ; i<256 ; ++i)
+        steptable[i] = (int)(pow(2.0, ((i-128)/64.0))*65536.0);
+
+    // Generates volume lookup tables
+    //  which also turn the unsigned samples
+    //  into signed samples.
+    for (i=0 ; i<128 ; ++i)
+        for (j=0 ; j<256 ; ++j)
+            vol_lookup[i][j] = (i*(j-128)*256)/127;
+
+      //
+     // Set up miniaudio and WildMIDI.
+    //
+
+    ma_context_init(NULL, 0, NULL, &context);
+
+    ma_mutex_init(&mutex);
+
+    ma_device_config config = ma_device_config_init(ma_device_type_playback);
+    config.playback.pDeviceID = NULL;
+    config.playback.format = ma_format_s16;
+    config.playback.channels = 2;
+    config.sampleRate = 0; // Let miniaudio decide what sample rate to use
+    config.dataCallback = Callback;
+    config.pUserData = NULL;
+
+    ma_device_init(&context, &config, &audio_device);
+
+    output_sample_rate = audio_device.sampleRate;
+
+    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
+        music_initialised = true;
+
+    ma_device_start(&audio_device);
+
+      //
+     // Cache sounds.
+    //
+
+    // Initialize external data (all sounds) at start, keep static.
+
+    for (i=1 ; i<NUMSFX ; ++i)
+    {
+        // Alias? Example is the chaingun sound linked to pistol.
+        if (S_sfx[i].link == NULL)
+        {
+            // Load data from WAD file.
+            getsfx(&S_sfx[i], &lengths[i]);
+        }
+        else
+        {
+            // Previously loaded already?
+            S_sfx[i].data = S_sfx[i].link->data;
+            lengths[i] = lengths[(S_sfx[i].link - S_sfx)/sizeof(sfxinfo_t)];
         }
     }
 }
@@ -502,79 +591,11 @@ void I_ShutdownSound(void)
 
 
 
-void I_StartupSound(void)
-{
-    // Init internal lookups (raw data, mixing buffer, channels).
-    int         i;
-    int         j;
-
-    // This table provides step widths for pitch parameters.
-    for (i=0 ; i<256 ; ++i)
-        steptable[i] = (int)(pow(2.0, ((i-128)/64.0))*65536.0);
-
-    // Generates volume lookup tables
-    //  which also turn the unsigned samples
-    //  into signed samples.
-    for (i=0 ; i<128 ; ++i)
-        for (j=0 ; j<256 ; ++j)
-            vol_lookup[i][j] = (i*(j-128)*256)/127;
-
-    // Set up miniaudio
-    ma_context_init(NULL, 0, NULL, &context);
-
-    ma_mutex_init(&mutex);
-
-    ma_device_config config = ma_device_config_init(ma_device_type_playback);
-    config.playback.pDeviceID = NULL;
-    config.playback.format = ma_format_s16;
-    config.playback.channels = 2;
-    config.sampleRate = 0; // Let miniaudio decide what sample rate to use
-    config.dataCallback = Callback;
-    config.pUserData = NULL;
-
-    ma_device_init(&context, &config, &audio_device);
-
-    output_sample_rate = audio_device.sampleRate;
-
-    // Set up WildMIDI
-    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
-        music_initialised = true;
-
-    ma_device_start(&audio_device);
-
-    // Initialize external data (all sounds) at start, keep static.
-    fprintf( stderr, "I_InitSound: ");
-
-    for (i=1 ; i<NUMSFX ; ++i)
-    {
-        // Alias? Example is the chaingun sound linked to pistol.
-        if (S_sfx[i].link == NULL)
-        {
-            // Load data from WAD file.
-            getsfx(&S_sfx[i], &lengths[i]);
-        }
-        else
-        {
-            // Previously loaded already?
-            S_sfx[i].data = S_sfx[i].link->data;
-            lengths[i] = lengths[(S_sfx[i].link - S_sfx)/sizeof(sfxinfo_t)];
-        }
-    }
-
-    fprintf( stderr, " pre-cached all sound data\n");
-
-    // Finished initialization.
-    fprintf(stderr, "I_InitSound: sound module ready\n");
-}
-
-
-
-
 //
 // MUSIC API.
 //
 
-void I_PlaySong(int handle, int looping)
+void I_PlaySong(int handle, boolean looping)
 {
     // UNUSED.
     (void)handle;

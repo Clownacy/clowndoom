@@ -1,7 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
 //-----------------------------------------------------------------------------
-//
-// $Id:$
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -30,7 +27,6 @@
 #include "sounds.h"
 
 
-
 // Init at program start...
 void I_StartupSound(void);
 
@@ -57,7 +53,7 @@ void I_StopSound(int handle);
 // Called by S_*() functions
 //  to see if a channel is still playing.
 // Returns 0 if no longer playing, 1 if playing.
-int I_SoundIsPlaying(int handle);
+boolean I_SoundIsPlaying(int handle);
 
 // Updates the volume, separation,
 //  and pitch of a sound channel.
@@ -77,13 +73,13 @@ void I_PauseSong(int handle);
 void I_ResumeSong(int handle);
 
 // Registers a song handle to song data.
-int I_RegisterSong(const void *data, size_t size);
+int I_RegisterSong(const void* data, size_t size);
 
 // Called by anything that wishes to start music.
 //  plays a song, and when the song is done,
 //  starts playing it again in an endless loop.
 // Horrible thing to do, considering.
-void I_PlaySong(int handle, int looping);
+void I_PlaySong(int handle, boolean looping);
 
 // Stops a song over 3 seconds.
 void I_StopSong(int handle);
@@ -92,10 +88,4 @@ void I_StopSong(int handle);
 void I_UnRegisterSong(int handle);
 
 
-
 #endif
-//-----------------------------------------------------------------------------
-//
-// $Log:$
-//
-//-----------------------------------------------------------------------------

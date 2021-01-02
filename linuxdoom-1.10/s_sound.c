@@ -626,7 +626,7 @@ void S_StartMusic(int m_id)
 void
 S_ChangeMusic
 ( int			musicnum,
-  int			looping )
+  boolean		looping )
 {
     musicinfo_t*	music;
     char		namebuf[9];

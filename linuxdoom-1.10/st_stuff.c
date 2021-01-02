@@ -605,7 +605,7 @@ ST_Responder (const event_t* ev)
 	  if (((buf[0]-'0')*10 + buf[1]-'0') > 35)
 	    plyr->message = STSTR_NOMUS;
 	  else
-	    S_ChangeMusic(musnum, 1);
+	    S_ChangeMusic(musnum, true);
 	}
 	else
 	{
@@ -614,7 +614,7 @@ ST_Responder (const event_t* ev)
 	  if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
 	    plyr->message = STSTR_NOMUS;
 	  else
-	    S_ChangeMusic(musnum, 1);
+	    S_ChangeMusic(musnum, true);
 	}
       }
       // Simplified, accepting both "noclip" and "idspispopd".
