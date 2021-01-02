@@ -547,8 +547,10 @@ void I_StartupSound(void)
 
     output_sample_rate = audio_device.sampleRate;
 
+#ifdef WILDMIDI
     if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
         music_initialised = true;
+#endif
 
     ma_device_start(&audio_device);
 
@@ -584,8 +586,13 @@ void I_ShutdownSound(void)
     ma_mutex_uninit(&mutex);
     ma_context_uninit(&context);
 
-    WildMidi_Shutdown();
-    music_initialised = false;
+#ifdef WILDMIDI
+    if (music_initialised)
+    {
+	WildMidi_Shutdown();
+	music_initialised = false;
+    }
+#endif
 }
 
 
