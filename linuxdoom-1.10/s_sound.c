@@ -156,8 +156,7 @@ void S_Init
 
   fprintf( stderr, "S_Init: default sfx volume %d\n", sfxVolume);
 
-  // Whatever these did with DMX, these are rather dummies now.
-  I_SetChannels();
+  I_SetChannels(numChannels);
   
   S_SetSfxVolume(sfxVolume);
   S_SetMusicVolume(musicVolume);

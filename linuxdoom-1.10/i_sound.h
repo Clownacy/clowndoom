@@ -32,7 +32,7 @@
 
 
 // Init at program start...
-void I_InitSound(void);
+void I_StartupSound(void);
 
 // ... shut down and relase at program termination.
 void I_ShutdownSound(void);
@@ -42,8 +42,8 @@ void I_ShutdownSound(void);
 //  SFX I/O
 //
 
-// Initialize channels
-void I_SetChannels(void);
+// Set channel count
+void I_SetChannels(int channels);
 
 // Get raw data lump index for sound descriptor.
 int I_GetSfxLumpNum (const sfxinfo_t* sfxinfo);
@@ -67,9 +67,6 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch);
 //
 //  MUSIC I/O
 //
-void I_InitMusic(void);
-
-void I_ShutdownMusic(void);
 
 // Volume.
 void I_SetMusicVolume(int volume);

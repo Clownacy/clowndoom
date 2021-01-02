@@ -342,8 +342,10 @@ getsfx
 //
 // SFX API
 //
-void I_SetChannels(void)
+void I_SetChannels(int channels)
 {
+    (void)channels;
+
     // This used to set DMX's internal
     // channel count and sample rate, it seems.
 }
@@ -522,6 +524,9 @@ void I_ShutdownSound(void)
     ma_device_uninit(&audio_device);
     ma_mutex_uninit(&mutex);
     ma_context_uninit(&context);
+
+    WildMidi_Shutdown();
+    music_initialised = false;
 }
 
 
@@ -530,7 +535,7 @@ void I_ShutdownSound(void)
 
 
 void
-I_InitSound(void)
+I_StartupSound(void)
 {
     // Init internal lookups (raw data, mixing buffer, channels).
     int		i;
@@ -546,6 +551,10 @@ I_InitSound(void)
     for (i=0 ; i<128 ; ++i)
         for (j=0 ; j<256 ; ++j)
             vol_lookup[i][j] = (i*(j-128)*256)/127;
+
+    // Set up WildMIDI
+    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
+	music_initialised = true;
 
     // Finally, set up miniaudio
     ma_context_init(NULL, 0, NULL, &context);
@@ -598,33 +607,6 @@ I_InitSound(void)
 //
 // MUSIC API.
 //
-
-void I_InitMusic(void)
-{
-#ifdef WILDMIDI
-    ma_mutex_lock(&mutex);
-
-    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
-	music_initialised = true;
-
-    ma_mutex_unlock(&mutex);
-#endif
-}
-
-void I_ShutdownMusic(void)
-{
-#ifdef WILDMIDI
-    if (music_initialised)
-    {
-	ma_mutex_lock(&mutex);
-
-	WildMidi_Shutdown();
-	music_initialised = false;
-
-	ma_mutex_unlock(&mutex);
-    }
-#endif
-}
 
 void I_PlaySong(int handle, int looping)
 {
