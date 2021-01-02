@@ -98,7 +98,7 @@ int		novert;
 //  Translates the key currently in X_event
 //
 
-int xlatekey(void)
+static int xlatekey(void)
 {
 
     int rc;
@@ -194,7 +194,7 @@ static int	lastmousex = 0;
 static int	lastmousey = 0;
 static boolean	shmFinished;
 
-void I_GetEvent(void)
+static void I_GetEvent(void)
 {
 
     event_t event;
@@ -284,7 +284,7 @@ void I_GetEvent(void)
 
 }
 
-Cursor
+static Cursor
 createnullcursor
 ( Display*	display,
   Window	root )
@@ -481,7 +481,7 @@ void I_SetPalette (const byte* palette)
 //  thus there might have been stale
 //  handles accumulating.
 //
-void grabsharedmemory(size_t size)
+static void grabsharedmemory(size_t size)
 {
 
   int			key = ('d'<<24) | ('o'<<16) | ('o'<<8) | 'm';
