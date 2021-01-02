@@ -188,8 +188,8 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
     while (leftout != leftend)
     {
 	// Reset left/right value. 
-	dl = 0;
-	dr = 0;
+	dl = *leftout;
+	dr = *rightout;
 
 	// Love thy L2 chache - made this a loop.
 	// Now more channels could be set at compile time
@@ -228,19 +228,19 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 	// else *leftout = dl;
 
 	if (dl > 0x7fff)
-	    *leftout += 0x7fff;
+	    *leftout = 0x7fff;
 	else if (dl < -0x8000)
-	    *leftout += -0x8000;
+	    *leftout = -0x8000;
 	else
-	    *leftout += dl;
+	    *leftout = dl;
 
 	// Same for right hardware channel.
 	if (dr > 0x7fff)
-	    *rightout += 0x7fff;
+	    *rightout = 0x7fff;
 	else if (dr < -0x8000)
-	    *rightout += -0x8000;
+	    *rightout = -0x8000;
 	else
-	    *rightout += dr;
+	    *rightout = dr;
 
 	// Increment current pointers in mixbuffer.
 	leftout += step;
