@@ -31,9 +31,7 @@ OBJS=				\
 		$(O)/doomdef.o		\
 		$(O)/doomstat.o		\
 		$(O)/dstrings.o		\
-		$(O)/i_system.o		\
 		$(O)/i_sound.o		\
-		$(O)/i_video.o		\
 		$(O)/i_net.o			\
 		$(O)/tables.o			\
 		$(O)/f_finale.o		\
@@ -90,6 +88,16 @@ OBJS=				\
 		$(O)/info.o				\
 		$(O)/sounds.o
 
+ifeq ($(SDL),1)
+	OBJS+= \
+		$(O)/sdl/i_system.o \
+		$(O)/sdl/i_video.o
+else
+	OBJS+= \
+		$(O)/x11/i_system.o \
+		$(O)/x11/i_video.o
+endif
+
 all:	 $(O)/linuxxdoom
 
 clean:
@@ -101,6 +109,7 @@ $(O)/linuxxdoom:	$(OBJS) $(O)/i_main.o
 	-o $(O)/linuxxdoom $(LIBS)
 
 $(O)/%.o:	%.c
+	mkdir -p $(@D)
 	$(CC) $(CFLAGS_ALL) -c $< -o $@
 
 #############################################################
