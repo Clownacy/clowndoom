@@ -680,7 +680,8 @@ void I_InitGraphics(void)
 	}
     }
 
-    fprintf(stderr, "Using MITSHM extension\n");
+    if (doShm)
+	fprintf(stderr, "Using MITSHM extension\n");
 
     // setup attributes for main window
     attribmask = CWEventMask | CWBorderPixel;
