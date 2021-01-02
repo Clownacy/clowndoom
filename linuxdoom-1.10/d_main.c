@@ -606,6 +606,7 @@ void IdentifyVersion (void)
     if (M_CheckParm ("-shdev"))
     {
 	gamemode = shareware;
+	gamemission = doom;
 	devparm = true;
 	D_AddFile (DEVDATA"doom1.wad");
 	D_AddFile (DEVMAPS"data_se/texture1.lmp");
@@ -615,6 +616,7 @@ void IdentifyVersion (void)
     else if (M_CheckParm ("-regdev"))
     {
 	gamemode = registered;
+	gamemission = doom;
 	devparm = true;
 	D_AddFile (DEVDATA"doom.wad");
 	D_AddFile (DEVMAPS"data_se/texture1.lmp");
@@ -625,6 +627,7 @@ void IdentifyVersion (void)
     else if (M_CheckParm ("-comdev"))
     {
 	gamemode = commercial;
+	gamemission = doom2;
 	devparm = true;
 	/* I don't bother
 	if(plutonia)
@@ -641,6 +644,7 @@ void IdentifyVersion (void)
     else if ( !access (doom2fwad,R_OK) )
     {
 	gamemode = commercial;
+	gamemission = doom2;
 	// C'est ridicule!
 	// Let's handle languages in config files, okay?
 	language = french;
@@ -650,37 +654,44 @@ void IdentifyVersion (void)
     else if ( !access (doom2wad,R_OK) )
     {
 	gamemode = commercial;
+	gamemission = doom2;
 	D_AddFile (doom2wad);
     }
     else if ( !access (plutoniawad, R_OK ) )
     {
       gamemode = commercial;
+      gamemission = pack_plut;
       D_AddFile (plutoniawad);
     }
     else if ( !access ( tntwad, R_OK ) )
     {
       gamemode = commercial;
+      gamemission = pack_tnt;
       D_AddFile (tntwad);
     }
     else if ( !access (doomuwad,R_OK) )
     {
       gamemode = retail;
+      gamemission = doom;
       D_AddFile (doomuwad);
     }
     else if ( !access (doomwad,R_OK) )
     {
       gamemode = registered;
+      gamemission = doom;
       D_AddFile (doomwad);
     }
     else if ( !access (doom1wad,R_OK) )
     {
       gamemode = shareware;
+      gamemission = doom;
       D_AddFile (doom1wad);
     }
     else
     {
 	printf("Game mode indeterminate.\n");
 	gamemode = indetermined;
+        gamemission = none;
 
 	// We don't abort. Let's see what the PWAD contains.
 	//exit(1);
@@ -818,28 +829,32 @@ void D_DoomMain (void)
 		 VERSION/100,VERSION%100);
 	break;
       case commercial:
-	sprintf (title,
-		 "                         "
-		 "DOOM 2: Hell on Earth v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
+        switch (gamemission)
+	{
+	  default:
+	  case doom2:
+	    sprintf (title,
+		     "                         "
+		     "DOOM 2: Hell on Earth v%i.%i"
+		     "                           ",
+		     VERSION/100,VERSION%100);
+            break;
+	  case pack_plut:
+	    sprintf (title,
+		     "                   "
+		     "DOOM 2: Plutonia Experiment v%i.%i"
+		     "                           ",
+		     VERSION/100,VERSION%100);
+	    break;
+	  case pack_tnt:
+	    sprintf (title,
+		     "                     "
+		     "DOOM 2: TNT - Evilution v%i.%i"
+		     "                           ",
+		     VERSION/100,VERSION%100);
+	    break;
+	}
 	break;
-/*FIXME
-       case pack_plut:
-	sprintf (title,
-		 "                   "
-		 "DOOM 2: Plutonia Experiment v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
-	break;
-      case pack_tnt:
-	sprintf (title,
-		 "                     "
-		 "DOOM 2: TNT - Evilution v%i.%i"
-		 "                           ",
-		 VERSION/100,VERSION%100);
-	break;
-*/
       default:
 	sprintf (title,
 		 "                     "
