@@ -1,13 +1,25 @@
-clowndoom
+  ///////////////
+ // clowndoom //
+///////////////
 
-Better than CuckyDOOM.
+Yet another purist DOOM port.
 
-This is a modified version of Linux Doom that runs on modern Linux.
-Namely, its Xorg drawing code has been converted from 8bpp to 24bpp,
-and the sound code has been converted from OSS to the miniaudio
-intermediary library, which itself outputs to OSS, ALSA, JACK,
-PulseAudio, and so on.
+This project aims to repair the Linux Doom source code, restoring
+features that were lost from the DOS version. Additionally, minor
+quality-of-life improvements have been made, such as a `novert` option.
 
-Additionally, bugs and compiler warnings have been addressed,
-quality-of-life improvements have been made, and music support has
-been restored.
+Features:
+* Music support (through WildMIDI)
+* Proper sound effect support (the original source release lacked
+  features like stopping mid-playback and updating positional effects)
+* `novert` and `always_run` options have been added to the configuration
+  file
+* Compiler warnings have been addressed
+* 64-bit support (warning: save files are incompatible)
+* X11 code converted from 8bpp to 24bpp (supported by modern X11
+  servers)
+* OSS audio code converted to miniaudio middleware library (supports
+  OSS, ALSA, PulseAudio, JACK, and more)
+* Assorted bug fixes
+* Low-detail mode has been restored to full working order
+* Better than CuckyDOOM
