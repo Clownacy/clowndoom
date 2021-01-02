@@ -37,7 +37,10 @@
 
 #include "../doomdef.h"
 
+#if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
+#endif
+static SDL_Surface *window_surface;
 static SDL_Surface *surface;
 
 static SDL_Color colors[256];
@@ -55,7 +58,11 @@ int		novert;
 //  Translates the key currently in X_event
 //
 
+#if SDL_MAJOR_VERSION >= 2
 static int xlatekey(SDL_KeyCode keysym)
+#else
+static int xlatekey(SDLKey keysym)
+#endif
 {
 
     int rc;
@@ -104,9 +111,11 @@ static int xlatekey(SDL_KeyCode keysym)
 	break;
 	
       case SDLK_LALT:
-      case SDLK_LGUI:
       case SDLK_RALT:
+#if SDL_MAJOR_VERSION >= 2
+      case SDLK_LGUI:
       case SDLK_RGUI:
+#endif
 	rc = KEY_RALT;
 	break;
 	
@@ -125,9 +134,15 @@ static int xlatekey(SDL_KeyCode keysym)
 void I_ShutdownGraphics(void)
 {
     SDL_FreeSurface(surface);
+#if SDL_MAJOR_VERSION >= 2
     SDL_DestroyWindow(window);
+#endif
 
+#if SDL_MAJOR_VERSION >= 2
     SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+#else
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+#endif
 }
 
 
@@ -142,8 +157,7 @@ void I_StartFrame (void)
 }
 
 
-//    SDL_InitSubsystem(SDL_INIT_VIDEO, SDL_INIT_EVENTS);
-
+//
 // I_StartTic
 //
 void I_StartTic (void)
@@ -294,9 +308,13 @@ void I_FinishUpdate (void)
 
     SDL_UnlockSurface(surface);
 
-    SDL_BlitSurface(surface, NULL, SDL_GetWindowSurface(window), NULL);
+    SDL_BlitSurface(surface, NULL, window_surface, NULL);
 
+#if SDL_MAJOR_VERSION >= 2
     SDL_UpdateWindowSurface(window);
+#else
+    SDL_Flip(window_surface);
+#endif
 }
 
 
@@ -323,7 +341,11 @@ void I_SetPalette (const byte* palette)
 	colors[i].b = gammatable[usegamma][*palette++];
     }
 
+#if SDL_MAJOR_VERSION >= 2
     SDL_SetPaletteColors(surface->format->palette, colors, 0, 256);
+#else
+    SDL_SetPalette(surface, SDL_LOGPAL | SDL_PHYSPAL, colors, 0, 256);
+#endif
 }
 
 
@@ -335,7 +357,11 @@ void I_InitGraphics(void)
 	return;
     firsttime = 0;
 
+#if SDL_MAJOR_VERSION >= 2
     SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+#else
+    SDL_InitSubSystem(SDL_INIT_VIDEO);
+#endif
 
     if (M_CheckParm("-2"))
 	multiply = 2;
@@ -346,14 +372,23 @@ void I_InitGraphics(void)
     if (M_CheckParm("-4"))
 	multiply = 4;
 
+#if SDL_MAJOR_VERSION >= 2
     window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 0);
 
     if (window == NULL)
 	I_Error("Could not create SDL window");
 
+    window_surface = SDL_GetWindowSurface(window);
+#else
+    window_surface = SDL_SetVideoMode(SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 0, SDL_SWSURFACE);
+
+    if (window_surface == NULL)
+	I_Error("Could not create SDL window surface");
+#endif
+
     I_GrabMouse(true);
 
-    surface = SDL_CreateRGBSurfaceWithFormat(0, SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 0, SDL_PIXELFORMAT_INDEX8);
+    surface = SDL_CreateRGBSurface(SDL_SWSURFACE, SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 8, 0, 0, 0, 0);
 
     if (surface == NULL)
 	I_Error("Could not create SDL surface");
@@ -361,5 +396,10 @@ void I_InitGraphics(void)
 
 void I_GrabMouse(boolean grab)
 {
+#if SDL_MAJOR_VERSION >= 2
     SDL_SetRelativeMouseMode(grab ? SDL_ENABLE : SDL_DISABLE);
+#else
+    SDL_WM_GrabInput(grab ? SDL_GRAB_ON : SDL_GRAB_OFF);
+    SDL_ShowCursor(!grab);
+#endif
 }
