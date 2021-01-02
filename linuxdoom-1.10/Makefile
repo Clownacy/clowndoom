@@ -31,6 +31,7 @@ OBJS= \
  $(O)/doomstat.o \
  $(O)/dstrings.o \
  $(O)/i_sound.o \
+ $(O)/i_main.o \
  $(O)/i_net.o \
  $(O)/tables.o \
  $(O)/f_finale.o \
@@ -108,9 +109,8 @@ clean:
 	rm -f *.o *~ *.flc
 	rm -f linux/*
 
-$(O)/linuxxdoom: $(OBJS) $(O)/i_main.o
-	$(CC) $(CFLAGS_ALL) $(LDFLAGS) $(OBJS) $(O)/i_main.o \
-	-o $(O)/linuxxdoom $(LIBS)
+$(O)/linuxxdoom: $(OBJS)
+	$(CC) $(CFLAGS_ALL) $(LDFLAGS) $(OBJS) -o $(O)/linuxxdoom $(LIBS)
 
 $(O)/%.o: %.c
 	mkdir -p $(@D)
