@@ -27,6 +27,7 @@
 #ifndef __Z_ZONE__
 #define __Z_ZONE__
 
+#include <stddef.h>
 #include <stdio.h>
 
 //
@@ -45,19 +46,19 @@
 
 
 void	Z_Init (void);
-void*	Z_Malloc (int size, int tag, void *ptr);
+void*	Z_Malloc (size_t size, int tag, void *ptr);
 void    Z_Free (void *ptr);
 void    Z_FreeTags (int lowtag, int hightag);
 void    Z_DumpHeap (int lowtag, int hightag);
 void    Z_FileDumpHeap (FILE *f);
 void    Z_CheckHeap (void);
 void    Z_ChangeTag2 (void *ptr, int tag);
-int     Z_FreeMemory (void);
+size_t  Z_FreeMemory (void);
 
 
 typedef struct memblock_s
 {
-    int			size;	// including the header and possibly tiny fragments
+    size_t		size;	// including the header and possibly tiny fragments
     void**		user;	// NULL if a free block
     int			tag;	// purgelevel
     int			id;	// should be ZONEID

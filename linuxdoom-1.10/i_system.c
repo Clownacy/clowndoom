@@ -45,7 +45,7 @@
 
 
 
-int	mb_used = 6;
+static size_t	mb_used = 6;
 
 
 void
@@ -60,19 +60,19 @@ I_Tactile
   (void)total;
 }
 
-ticcmd_t	emptycmd;
+static ticcmd_t	emptycmd;
 ticcmd_t*	I_BaseTiccmd(void)
 {
     return &emptycmd;
 }
 
 
-int  I_GetHeapSize (void)
+size_t  I_GetHeapSize (void)
 {
     return mb_used*1024*1024;
 }
 
-byte* I_ZoneBase (int*	size)
+byte* I_ZoneBase (size_t*	size)
 {
     *size = mb_used*1024*1024;
     return (byte *) malloc (*size);
@@ -144,7 +144,7 @@ void I_EndRead(void)
 {
 }
 
-byte*	I_AllocLow(int length)
+byte*	I_AllocLow(size_t length)
 {
     byte*	mem;
         

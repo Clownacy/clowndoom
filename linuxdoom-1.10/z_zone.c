@@ -43,7 +43,7 @@
 typedef struct
 {
     // total bytes malloced, including header
-    int		size;
+    size_t	size;
 
     // start / end cap for linked list
     memblock_t	blocklist;
@@ -90,7 +90,7 @@ void Z_ClearZone (memzone_t* zone)
 void Z_Init (void)
 {
     memblock_t*	block;
-    int		size;
+    size_t	size;
 
     mainzone = (memzone_t *)I_ZoneBase (&size);
     mainzone->size = size;
@@ -179,7 +179,7 @@ void Z_Free (void* ptr)
 
 void*
 Z_Malloc
-( int		size,
+( size_t	size,
   int		tag,
   void*		user )
 {
@@ -214,7 +214,7 @@ Z_Malloc
 	if (rover == start)
 	{
 	    // scanned all the way around the list
-	    I_Error ("Z_Malloc: failed on allocation of %i bytes", size);
+	    I_Error ("Z_Malloc: failed on allocation of %i bytes", (unsigned int)size);
 	}
 	
 	if (rover->user)
@@ -328,7 +328,7 @@ Z_DumpHeap
     memblock_t*	block;
 	
     printf ("zone size: %i  location: %p\n",
-	    mainzone->size,(void*)mainzone);
+	    (unsigned int)mainzone->size,(void*)mainzone);
     
     printf ("tag range: %i to %i\n",
 	    lowtag, hightag);
@@ -337,7 +337,7 @@ Z_DumpHeap
     {
 	if (block->tag >= lowtag && block->tag <= hightag)
 	    printf ("block:%p    size:%7i    user:%p    tag:%3i\n",
-		    (void*)block, block->size, (void*)block->user, block->tag);
+		    (void*)block, (unsigned int)block->size, (void*)block->user, block->tag);
 		
 	if (block->next == &mainzone->blocklist)
 	{
@@ -364,12 +364,12 @@ void Z_FileDumpHeap (FILE* f)
 {
     memblock_t*	block;
 	
-    fprintf (f,"zone size: %i  location: %p\n",mainzone->size,(void*)mainzone);
+    fprintf (f,"zone size: %i  location: %p\n",(unsigned int)mainzone->size,(void*)mainzone);
 	
     for (block = mainzone->blocklist.next ; ; block = block->next)
     {
 	fprintf (f,"block:%p    size:%7i    user:%p    tag:%3i\n",
-		 (void*)block, block->size, (void*)block->user, block->tag);
+		 (void*)block, (unsigned int)block->size, (void*)block->user, block->tag);
 		
 	if (block->next == &mainzone->blocklist)
 	{
@@ -445,10 +445,10 @@ Z_ChangeTag2
 //
 // Z_FreeMemory
 //
-int Z_FreeMemory (void)
+size_t Z_FreeMemory (void)
 {
     memblock_t*		block;
-    int			free;
+    size_t		free;
 	
     free = 0;
     
