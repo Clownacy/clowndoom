@@ -195,6 +195,9 @@ extern int	viewheight;
 extern int	mouseSensitivity;
 extern int	showMessages;
 
+extern int	novert;
+extern int	always_run;
+
 extern int	detailLevel;
 
 extern int	screenblocks;
@@ -232,6 +235,9 @@ default_t	defaults[] =
     {"sfx_volume",&sfxVolume, 8, false},
     {"music_volume",&musicVolume, 8, false},
     {"show_messages",&showMessages, 1, false},
+
+    {"novert",&novert, 0, false},
+    {"always_run",&always_run, 0, false},
     
 
 #ifdef NORMALUNIX

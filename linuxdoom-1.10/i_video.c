@@ -94,6 +94,8 @@ Cursor		nullCursor;
 // to use ....
 static int	multiply=1;
 
+int		novert;
+
 
 //
 //  Translates the key currently in X_event
@@ -260,7 +262,7 @@ void I_GetEvent(void)
 	event.type = ev_mouse;
 	event.data1 = button_state;
 	event.data2 = (X_event.xmotion.x - lastmousex) << 2;
-	event.data3 = novertparm ? 0 : (lastmousey - X_event.xmotion.y) << 2;
+	event.data3 = novert ? 0 : (lastmousey - X_event.xmotion.y) << 2;
 
 	if (event.data2 || event.data3)
 	{

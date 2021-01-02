@@ -139,7 +139,9 @@ short		consistancy[MAXPLAYERS][BACKUPTICS];
  
 byte*		savebuffer;
  
+int		always_run;
  
+
 // 
 // controls (have defaults) 
 // 
@@ -253,7 +255,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
  
     strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe] 
 	|| joybuttons[joybstrafe]; 
-    speed = !!alwaysrunparm != (gamekeydown[key_speed] || joybuttons[joybspeed]);
+    speed = !!always_run != (gamekeydown[key_speed] || joybuttons[joybspeed]);
  
     forward = side = 0;
     
