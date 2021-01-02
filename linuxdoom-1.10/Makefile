@@ -93,7 +93,7 @@ ifeq ($(SDL),1)
   $(O)/sdl/i_system.o \
   $(O)/sdl/i_video.o
 
- CFLAGS+=$(shell pkg-config --cflags sdl2)
+ CFLAGS_ALL+=$(shell pkg-config --cflags sdl2)
  LIBS+=$(shell pkg-config --libs sdl2)
 else
  OBJS+= \
