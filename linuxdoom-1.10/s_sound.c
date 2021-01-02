@@ -63,7 +63,6 @@
 //#define NORM_VOLUME    		snd_MaxVolume
 
 #define NORM_PITCH     		128
-#define NORM_PRIORITY		64
 #define NORM_SEP		128
 
 //#define S_PITCH_PERTURB		1
@@ -251,7 +250,6 @@ S_StartSoundAtVolume
   int		rc;
   int		sep;
   int		pitch;
-  int		priority;
   sfxinfo_t*	sfx;
   int		cnum;
   
@@ -273,7 +271,6 @@ S_StartSoundAtVolume
   if (sfx->link)
   {
     pitch = sfx->pitch;
-    priority = sfx->priority;
     volume += sfx->volume;
     
     if (volume < 1)
@@ -285,7 +282,6 @@ S_StartSoundAtVolume
   else
   {
     pitch = NORM_PITCH;
-    priority = NORM_PRIORITY;
   }
 
 
@@ -379,8 +375,7 @@ S_StartSoundAtVolume
 				       /*sfx->data,*/
 				       volume,
 				       sep,
-				       pitch,
-				       priority);
+				       pitch);
 }	
 
 void

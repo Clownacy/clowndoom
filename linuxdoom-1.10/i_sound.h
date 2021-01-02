@@ -55,8 +55,7 @@ I_StartSound
 ( int		id,
   int		vol,
   int		sep,
-  int		pitch,
-  int		priority );
+  int		pitch );
 
 
 // Stops a sound channel.

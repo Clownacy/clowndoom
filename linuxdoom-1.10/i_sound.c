@@ -443,12 +443,8 @@ I_StartSound
 ( int		id,
   int		vol,
   int		sep,
-  int		pitch,
-  int		priority )
+  int		pitch )
 {
-    // UNUSED
-    (void)priority;
-    
     static unsigned short	handlenums = 0;
  
     int		i;
