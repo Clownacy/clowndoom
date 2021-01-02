@@ -22,4 +22,6 @@ Features:
   OSS, ALSA, PulseAudio, JACK, and more)
 * Assorted bug fixes
 * Low-detail mode has been restored to full working order
+* Mouse-grab is no longer optional, and is instead toggled by the menu
+  being open
 * Better than CuckyDOOM
