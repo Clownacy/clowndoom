@@ -22,9 +22,9 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <math.h>
 #include <stddef.h>
 #include <stdio.h>
-#include <math.h>
 
 #define MINIAUDIO_IMPLEMENTATION
 #define MA_NO_DECODING
@@ -55,7 +55,7 @@
 // Needed for calling the actual sound output.
 #define NUM_CHANNELS		8
 
-const char *wildmidi_config_path;
+const char*		wildmidi_config_path;
 
 static unsigned int	output_sample_rate;
 
@@ -135,89 +135,80 @@ static boolean music_playing;
 //
 static void Callback(ma_device *device, void *output_buffer_void, const void *input_buffer, ma_uint32 frames_to_do)
 {
-  short *output_buffer = output_buffer_void;
-#ifdef WILDMIDI
-  const size_t bytes_to_do = frames_to_do * 2 * 2;
-#endif
-  unsigned char		interpolation_scale;
-
-  // Mix current sound data.
-  // Data, from raw sound, for right and left.
-  register unsigned int	sample;
-  register int		dl;
-  register int		dr;
+    // Mix current sound data.
+    // Data, from raw sound, for right and left.
+    register unsigned char sample;
+    register int           dl;
+    register int           dr;
   
-  // Pointers in global mixbuffer, left, right, end.
-  signed short*		leftout;
-  signed short*		rightout;
-  signed short*		leftend;
-  // Step in mixbuffer, left and right, thus two.
-  int				step;
+    // Pointers in mixbuffer.
+    short*                 output_buffer;
+    short*                 output_buffer_end;
 
-  // Mixing channel index.
-  int				chan;
+    // Mixing channel index.
+    size_t                 chan;
 
-  (void)device;
-  (void)input_buffer;
+#ifdef WILDMIDI
+    size_t                 bytes_to_do;
+#endif
+    unsigned char          interpolation_scale;
+
+    (void)device;
+    (void)input_buffer;
 
     ma_mutex_lock(&mutex);
 
 #ifdef WILDMIDI
     if (music_playing)
     {
-	const size_t bytes_done = WildMidi_GetOutput(music_midi, output_buffer_void, bytes_to_do);
+	bytes_to_do = frames_to_do * sizeof(short) * 2;
 
-	if (bytes_done < bytes_to_do)
+	if ((size_t)WildMidi_GetOutput(music_midi, output_buffer_void, bytes_to_do) < bytes_to_do)
 	    music_playing = false;
     }
 #endif
 
-    // Left and right channel
-    //  are in global mixbuffer, alternating.
-    leftout = output_buffer;
-    rightout = output_buffer+1;
-    step = 2;
+    output_buffer = (short*)output_buffer_void;
 
-    // Determine end, for left channel only
-    //  (right channel is implicit).
-    leftend = output_buffer + frames_to_do*step;
+    // Determine end
+    output_buffer_end = output_buffer + frames_to_do*2;
 
     // Mix sounds into the mixing buffer.
     // Loop over step*SAMPLECOUNT,
     //  that is 512 values for two channels.
-    while (leftout != leftend)
+    while (output_buffer != output_buffer_end)
     {
 	// Reset left/right value. 
-	dl = *leftout;
-	dr = *rightout;
+	dl = output_buffer[0];
+	dr = output_buffer[1];
 
 	// Love thy L2 chache - made this a loop.
 	// Now more channels could be set at compile time
 	//  as well. Thus loop those  channels.
-	for ( chan = 0; chan < NUM_CHANNELS; chan++ )
+	for (chan = 0; chan < NUM_CHANNELS; ++chan)
 	{
 	    // Check channel, if active.
-	    if (channels[ chan ])
+	    if (channels[chan] != NULL)
 	    {
-		interpolation_scale = channelstepremainder[ chan ] >> 8;
+		interpolation_scale = channelstepremainder[chan] >> 8;
 		// Get the interpolated sample. 
-		sample = ((channels[ chan ][0] * (0x100 - interpolation_scale)) + (channels[ chan ][1] * interpolation_scale)) >> 8;
+		sample = ((channels[chan][0] * (0x100 - interpolation_scale)) + (channels[chan][1] * interpolation_scale)) >> 8;
 		// Add left and right part
 		//  for this channel (sound)
 		//  to the current data.
 		// Adjust volume accordingly.
-		dl += channelleftvol_lookup[ chan ][sample];
-		dr += channelrightvol_lookup[ chan ][sample];
+		dl += channelleftvol_lookup[chan][sample];
+		dr += channelrightvol_lookup[chan][sample];
 		// Increment index ???
-		channelstepremainder[ chan ] += channelstep[ chan ];
+		channelstepremainder[chan] += channelstep[chan];
 		// MSB is next sample???
-		channels[ chan ] += channelstepremainder[ chan ] >> 16;
+		channels[chan] += channelstepremainder[chan] >> 16;
 		// Limit to LSB???
-		channelstepremainder[ chan ] &= 65536-1;
+		channelstepremainder[chan] &= 0xFFFF;
 
 		// Check whether we are done.
-		if (channels[ chan ] >= channelsend[ chan ])
-		    channels[ chan ] = 0;
+		if (channels[chan] >= channelsend[chan])
+		    channels[chan] = NULL;
 	    }
 	}
 	
@@ -228,23 +219,19 @@ static void Callback(ma_device *device, void *output_buffer_void, const void *in
 	// else *leftout = dl;
 
 	if (dl > 0x7fff)
-	    *leftout = 0x7fff;
+	    *output_buffer++ = 0x7fff;
 	else if (dl < -0x8000)
-	    *leftout = -0x8000;
+	    *output_buffer++ = -0x8000;
 	else
-	    *leftout = dl;
+	    *output_buffer++ = dl;
 
 	// Same for right hardware channel.
 	if (dr > 0x7fff)
-	    *rightout = 0x7fff;
+	    *output_buffer++ = 0x7fff;
 	else if (dr < -0x8000)
-	    *rightout = -0x8000;
+	    *output_buffer++ = -0x8000;
 	else
-	    *rightout = dr;
-
-	// Increment current pointers in mixbuffer.
-	leftout += step;
-	rightout += step;
+	    *output_buffer++ = dr;
     }
 
     ma_mutex_unlock(&mutex);
@@ -357,40 +344,11 @@ getsfx
 
 //
 // SFX API
-// Note: this was called by S_Init.
-// However, whatever they did in the
-// old DPMS based DOS version, this
-// were simply dummies in the Linux
-// version.
-// See soundserver initdata().
 //
 void I_SetChannels(void)
 {
-  // Init internal lookups (raw data, mixing buffer, channels).
-  // This function sets up internal lookups used during
-  //  the mixing process. 
-  int		i;
-  int		j;
-    
-  int*	steptablemid = steptable + 128;
-  
-  // Okay, reset internal mixing channels to zero.
-  /*for (i=0; i<NUM_CHANNELS; i++)
-  {
-    channels[i] = 0;
-  }*/
-
-  // This table provides step widths for pitch parameters.
-  for (i=-128 ; i<128 ; i++)
-    steptablemid[i] = (int)(pow(2.0, (i/64.0))*65536.0);
-  
-  
-  // Generates volume lookup tables
-  //  which also turn the unsigned samples
-  //  into signed samples.
-  for (i=0 ; i<128 ; i++)
-    for (j=0 ; j<256 ; j++)
-      vol_lookup[i*256+j] = (i*(j-128)*256)/127;
+    // This used to set DMX's internal
+    // channel count and sample rate, it seems.
 }	
 
  
@@ -598,8 +556,31 @@ void I_ShutdownSound(void)
 void
 I_InitSound(void)
 {     
-  int i;
+  // Init internal lookups (raw data, mixing buffer, channels).
+  int		i;
+  int		j;
+    
+  int*	steptablemid = steptable + 128;
+  
+  // Okay, reset internal mixing channels to zero.
+  /*for (i=0; i<NUM_CHANNELS; i++)
+  {
+    channels[i] = 0;
+  }*/
 
+  // This table provides step widths for pitch parameters.
+  for (i=-128 ; i<128 ; i++)
+    steptablemid[i] = (int)(pow(2.0, (i/64.0))*65536.0);
+  
+  
+  // Generates volume lookup tables
+  //  which also turn the unsigned samples
+  //  into signed samples.
+  for (i=0 ; i<128 ; i++)
+    for (j=0 ; j<256 ; j++)
+      vol_lookup[i*256+j] = (i*(j-128)*256)/127;
+
+  // Finally, set up miniaudio
   ma_context_init(NULL, 0, NULL, &context);
 
   ma_mutex_init(&mutex);
@@ -624,7 +605,7 @@ I_InitSound(void)
   for (i=1 ; i<NUMSFX ; i++)
   { 
     // Alias? Example is the chaingun sound linked to pistol.
-    if (!S_sfx[i].link)
+    if (S_sfx[i].link == NULL)
     {
       // Load data from WAD file.
       getsfx( &S_sfx[i], &lengths[i] );
