@@ -204,6 +204,8 @@ extern int	showMessages;
 // machine-independent sound params
 extern	int	numChannels;
 
+extern const char*	wildmidi_config_path;
+
 
 //#ifdef LINUX
 //const char*		mousetype;
@@ -268,6 +270,8 @@ default_t	defaults[] =
 
     {"snd_channels",&numChannels, 3, false},
 
+    {"wildmidi_config_path", (int*)&wildmidi_config_path, (size_t)"wildmidi.cfg", true },
+
 
 
     {"usegamma",&usegamma, 0, false},
@@ -282,7 +286,6 @@ default_t	defaults[] =
     {"chatmacro7", (int *) &chat_macros[7], (size_t) HUSTR_CHATMACRO7, true },
     {"chatmacro8", (int *) &chat_macros[8], (size_t) HUSTR_CHATMACRO8, true },
     {"chatmacro9", (int *) &chat_macros[9], (size_t) HUSTR_CHATMACRO9, true }
-
 };
 
 int	numdefaults;

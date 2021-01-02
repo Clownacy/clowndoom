@@ -55,6 +55,8 @@
 // Needed for calling the actual sound output.
 #define NUM_CHANNELS		8
 
+const char *wildmidi_config_path;
+
 static unsigned int	output_sample_rate;
 
 // Maximum volume of music. Useless so far.
@@ -658,7 +660,7 @@ void I_InitMusic(void)
 #ifdef WILDMIDI
     ma_mutex_lock(&mutex);
 
-    if (WildMidi_Init("wildmidi.cfg", output_sample_rate, 0) == 0)
+    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
 	music_initialised = true;
 
     ma_mutex_unlock(&mutex);
