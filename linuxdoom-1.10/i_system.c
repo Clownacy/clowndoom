@@ -136,6 +136,7 @@ void I_WaitVBL(int count)
 
 void I_BeginRead(void)
 {
+    // This used to be for drawing the disk icon - see the Hexen source code
 }
 
 void I_EndRead(void)
