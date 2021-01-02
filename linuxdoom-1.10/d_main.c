@@ -561,11 +561,12 @@ void IdentifyVersion (void)
     char*	plutoniawad;
     char*	tntwad;
 
-#ifdef NORMALUNIX
     const char *home;
     const char *doomwaddir;
+#ifdef NORMALUNIX
     doomwaddir = getenv("DOOMWADDIR");
     if (!doomwaddir)
+#endif
 	doomwaddir = ".";
 
     // Commercial.
@@ -597,10 +598,13 @@ void IdentifyVersion (void)
     doom2fwad = malloc(strlen(doomwaddir)+1+10+1);
     sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
 
+#ifdef NORMALUNIX
     home = getenv("HOME");
     if (!home)
       I_Error("Please set $HOME to your home directory");
     sprintf(basedefault, "%s/.doomrc", home);
+#else
+    strcpy(basedefault, ".doomrc");
 #endif
 
     if (M_CheckParm ("-shdev"))
