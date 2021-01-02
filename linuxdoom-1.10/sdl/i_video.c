@@ -126,6 +126,8 @@ void I_ShutdownGraphics(void)
 {
     SDL_FreeSurface(surface);
     SDL_DestroyWindow(window);
+
+    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 }
 
 
@@ -140,7 +142,8 @@ void I_StartFrame (void)
 }
 
 
-//
+//    SDL_InitSubsystem(SDL_INIT_VIDEO, SDL_INIT_EVENTS);
+
 // I_StartTic
 //
 void I_StartTic (void)
@@ -331,6 +334,8 @@ void I_InitGraphics(void)
     if (!firsttime)
 	return;
     firsttime = 0;
+
+    SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 
     if (M_CheckParm("-2"))
 	multiply = 2;

@@ -96,6 +96,8 @@ int  I_GetTime (void)
 //
 void I_Init (void)
 {
+    SDL_Init(0);
+
     I_StartupSound();
     //  I_InitGraphics();
 }
@@ -109,6 +111,9 @@ void I_Quit (void)
     I_ShutdownSound();
     M_SaveDefaults ();
     I_ShutdownGraphics();
+
+    SDL_Quit();
+
     exit(0);
 }
 
