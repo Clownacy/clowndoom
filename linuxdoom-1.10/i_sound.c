@@ -1,7 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
-//
-// $Id:$
 //
 // Copyright (C) 1993-1996 by id Software, Inc.
 //
@@ -14,8 +11,6 @@
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-//
-// $Log:$
 //
 // DESCRIPTION:
 //  System interface for sound.
@@ -46,24 +41,9 @@
 
 #include "doomdef.h"
 
-// The number of internal mixing channels,
-//  the samples calculated for each mixing step,
-//  the size of the 16bit, 2 hardware channel (stereo)
-//  mixing buffer, and the samplerate of the raw data.
-
-
-// Needed for calling the actual sound output.
 #define NUM_CHANNELS    8
 
-const char*             wildmidi_config_path;
-
 static unsigned int     output_sample_rate;
-
-// Maximum volume of music.
-//static int            snd_MusicVolume;
-
-// The actual lengths of all sound effects.
-static size_t           lengths[NUMSFX];
 
 // miniaudio context
 static ma_context       context;
@@ -74,16 +54,19 @@ static ma_mutex         mutex;
 // The actual output device.
 static ma_device        audio_device;
 
+
+// The actual lengths of all sound effects.
+static size_t           lengths[NUMSFX];
+
+
 // The channel step amount...
 static unsigned int     channelstep[NUM_CHANNELS];
 // ... and a 0.16 bit remainder of last step.
 static unsigned int     channelstepremainder[NUM_CHANNELS];
 
-
 // The channel data pointers, start and end.
 static unsigned char*   channels[NUM_CHANNELS];
 static unsigned char*   channelsend[NUM_CHANNELS];
-
 
 // Time/gametic that the channel started playing,
 //  used to determine oldest, which automatically
@@ -100,22 +83,31 @@ static int              channelhandles[NUM_CHANNELS];
 // Used to catch duplicates (like chainsaw).
 static int              channelids[NUM_CHANNELS];
 
+// Hardware left and right channel volume lookup.
+static int*             channelleftvol_lookup[NUM_CHANNELS];
+static int*             channelrightvol_lookup[NUM_CHANNELS];
+
 // Pitch to stepping lookup.
 static int              steptable[256];
 
 // Volume lookups.
 static int              vol_lookup[128][256];
 
-// Hardware left and right channel volume lookup.
-static int*             channelleftvol_lookup[NUM_CHANNELS];
-static int*             channelrightvol_lookup[NUM_CHANNELS];
 
 // Music stuff
+
+// Maximum volume of music.
+//static int            snd_MusicVolume;
+
+const char*             wildmidi_config_path;
+
 #ifdef WILDMIDI
 static boolean          music_initialised;
 static midi*            music_midi;
 static boolean          music_playing;
 #endif
+
+
 
 
 //
@@ -131,12 +123,7 @@ static boolean          music_playing;
 //
 // This function currently supports only 16bit.
 //
-static void
-Callback
-( ma_device*    device,
-  void*         output_buffer_void,
-  const void*   input_buffer,
-  ma_uint32     frames_to_do)
+static void Callback(ma_device* device, void* output_buffer_void, const void* input_buffer, ma_uint32 frames_to_do)
 {
     // Mix current sound data.
     // Data, from raw sound, for right and left.
@@ -243,20 +230,13 @@ Callback
 
 
 
-static void
-UpdateSoundParams
-( int   slot,
-  int   vol,
-  int   sep,
-  int   pitch)
+static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 {
     int rightvol;
     int leftvol;
 
-    // Set stepping???
-    // Kinda getting the impression this is never used.
+    // Set stepping
     channelstep[slot] = S_sfx[channelids[slot]].sample_rate * steptable[pitch] / output_sample_rate;
-    // ???
     channelstepremainder[slot] = 0;
 
     // Separation, that is, orientation/stereo.
@@ -282,7 +262,7 @@ UpdateSoundParams
 #endif
 
     // Get the proper lookup table piece
-    //  for this volume level???
+    //  for this volume level
     channelleftvol_lookup[slot] = vol_lookup[leftvol];
     channelrightvol_lookup[slot] = vol_lookup[rightvol];
 }
@@ -294,15 +274,12 @@ UpdateSoundParams
 // This function loads the sound data from the WAD lump,
 //  for single sound.
 //
-static void
-getsfx
-( sfxinfo_t*   sfxinfo,
-  size_t*      len )
+static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
 {
-    unsigned char*      sfx;
-    int                 size;
-    char                name[20];
-    int                 sfxlump;
+    unsigned char* sfx;
+    size_t         size;
+    char           name[20];
+    int            sfxlump;
 
 
     // Get the sound data from the WAD, allocate lump
@@ -319,22 +296,21 @@ getsfx
     // I do not do runtime patches to that
     //  variable. Instead, we will use a
     //  default sound for replacement.
-    if ( W_CheckNumForName(name) == -1 )
+    if (W_CheckNumForName(name) == -1)
       sfxlump = W_GetNumForName("dspistol");
     else
       sfxlump = W_GetNumForName(name);
 
-    size = W_LumpLength( sfxlump );
+    size = W_LumpLength(sfxlump);
 
-    sfx = (unsigned char*)W_CacheLumpNum( sfxlump, PU_STATIC );
+    sfx = (unsigned char*)W_CacheLumpNum(sfxlump, PU_STATIC);
 
     *len = size-8-16-16;
 
-    sfxinfo->data = (void *) (sfx+8+16);
+    sfxinfo->data = (void*)(sfx+8+16);
 
     sfxinfo->sample_rate = sfx[2] | (sfx[3] << 8);
 }
-
 
 
 
@@ -351,6 +327,8 @@ void I_SetChannels(int channels)
 }
 
 
+
+
 //
 // Retrieve the raw data lump index
 //  for a given SFX name.
@@ -361,6 +339,9 @@ int I_GetSfxLumpNum(const sfxinfo_t* sfx)
     sprintf(namebuf, "ds%s", sfx->name);
     return W_GetNumForName(namebuf);
 }
+
+
+
 
 //
 // Starting a sound means adding it
@@ -374,57 +355,49 @@ int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 // Pitching (that is, increased speed of playback)
 //  is set, but currently not used by mixing.
 //
-int
-I_StartSound
-( int		id,
-  int		vol,
-  int		sep,
-  int		pitch )
+int I_StartSound(int id, int vol, int sep, int pitch)
 {
-    static unsigned short	handlenums = 0;
+    static unsigned short handlenums = 0;
 
-    int		i;
-    int		rc = -1;
+    int i;
+    int rc = -1;
 
-    int		oldest = gametic;
-    int		oldestnum = 0;
-    int		slot;
+    int oldest = gametic;
+    int oldestnum = 0;
+    int slot;
 
     ma_mutex_lock(&mutex);
 
     // Chainsaw troubles.
     // Play these sound effects only one at a time.
-    if ( id == sfx_sawup
-	 || id == sfx_sawidl
-	 || id == sfx_sawful
-	 || id == sfx_sawhit
-	 || id == sfx_stnmov
-	 || id == sfx_pistol	 )
+    if (id == sfx_sawup
+     || id == sfx_sawidl
+     || id == sfx_sawful
+     || id == sfx_sawhit
+     || id == sfx_stnmov
+     || id == sfx_pistol)
     {
-	// Loop all channels, check.
-	for (i=0 ; i<NUM_CHANNELS ; i++)
-	{
-	    // Active, and using the same SFX?
-	    if ( (channels[i])
-		 && (channelids[i] == id) )
+        // Loop all channels, check.
+        for (i=0 ; i<NUM_CHANNELS ; ++i)
+        {
+            // Active, and using the same SFX?
+            if (channels[i] != NULL && channelids[i] == id)
             {
-		// Reset.
-		channels[i] = 0;
-		// We are sure that iff,
-		//  there will only be one.
-		break;
-	    }
-	}
+                // Reset.
+                channels[i] = NULL;
+                break;
+            }
+        }
     }
 
     // Loop all channels to find oldest SFX.
-    for (i=0; (i<NUM_CHANNELS) && (channels[i]); i++)
+    for (i=0; i<NUM_CHANNELS && channels[i] != NULL; ++i)
     {
-	if (channelstart[i] < oldest)
-	{
-	    oldestnum = i;
-	    oldest = channelstart[i];
-	}
+        if (channelstart[i] < oldest)
+        {
+            oldestnum = i;
+            oldest = channelstart[i];
+        }
     }
 
     // Tales from the cryptic.
@@ -432,20 +405,20 @@ I_StartSound
     // If not, we simply overwrite the first one, 0.
     // Probably only happens at startup.
     if (i == NUM_CHANNELS)
-	slot = oldestnum;
+        slot = oldestnum;
     else
-	slot = i;
+        slot = i;
 
     // Okay, in the less recent channel,
     //  we will handle the new SFX.
     // Set pointer to raw data.
-    channels[slot] = (unsigned char *) S_sfx[id].data;
+    channels[slot] = (unsigned char*)S_sfx[id].data;
     // Set pointer to end of raw data.
     channelsend[slot] = channels[slot] + lengths[id];
 
     // Reset current handle number, limited to 0..100.
-    if (!handlenums)
-	handlenums = 100;
+    if (handlenums == 0)
+        handlenums = 100;
 
     // Assign current handle number.
     // Preserved so sounds could be stopped (unused).
@@ -462,9 +435,9 @@ I_StartSound
 
     ma_mutex_unlock(&mutex);
 
-    // You tell me.
     return rc;
 }
+
 
 
 
@@ -483,13 +456,15 @@ void I_StopSound (int handle)
 }
 
 
+
+
 int I_SoundIsPlaying(int handle)
 {
     int i;
 
     for (i=0;i<NUM_CHANNELS;++i)
-	if (channelhandles[i] == handle)
-	    return channels[i] != NULL;
+        if (channelhandles[i] == handle)
+            return channels[i] != NULL;
 
     return 0; // Sound doesn't exist
 }
@@ -497,22 +472,17 @@ int I_SoundIsPlaying(int handle)
 
 
 
-void
-I_UpdateSoundParams
-( int	handle,
-  int	vol,
-  int	sep,
-  int	pitch)
+void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
 {
     int i;
 
     for (i=0;i<NUM_CHANNELS;++i)
     {
-	if (channelhandles[i] == handle)
-	{
-	    UpdateSoundParams(i, vol, sep, pitch);
-	    break;
-	}
+        if (channelhandles[i] == handle)
+        {
+            UpdateSoundParams(i, vol, sep, pitch);
+            break;
+        }
     }
 }
 
@@ -532,14 +502,11 @@ void I_ShutdownSound(void)
 
 
 
-
-
-void
-I_StartupSound(void)
+void I_StartupSound(void)
 {
     // Init internal lookups (raw data, mixing buffer, channels).
-    int		i;
-    int		j;
+    int         i;
+    int         j;
 
     // This table provides step widths for pitch parameters.
     for (i=0 ; i<256 ; ++i)
@@ -552,11 +519,7 @@ I_StartupSound(void)
         for (j=0 ; j<256 ; ++j)
             vol_lookup[i][j] = (i*(j-128)*256)/127;
 
-    // Set up WildMIDI
-    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
-	music_initialised = true;
-
-    // Finally, set up miniaudio
+    // Set up miniaudio
     ma_context_init(NULL, 0, NULL, &context);
 
     ma_mutex_init(&mutex);
@@ -573,6 +536,10 @@ I_StartupSound(void)
 
     output_sample_rate = audio_device.sampleRate;
 
+    // Set up WildMIDI
+    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
+        music_initialised = true;
+
     ma_device_start(&audio_device);
 
     // Initialize external data (all sounds) at start, keep static.
@@ -584,7 +551,7 @@ I_StartupSound(void)
         if (S_sfx[i].link == NULL)
         {
             // Load data from WAD file.
-            getsfx( &S_sfx[i], &lengths[i] );
+            getsfx(&S_sfx[i], &lengths[i]);
         }
         else
         {
@@ -598,7 +565,6 @@ I_StartupSound(void)
 
     // Finished initialization.
     fprintf(stderr, "I_InitSound: sound module ready\n");
-
 }
 
 
@@ -618,15 +584,18 @@ void I_PlaySong(int handle, int looping)
 #else
     if (music_initialised)
     {
-	ma_mutex_lock(&mutex);
+        ma_mutex_lock(&mutex);
 
-	music_playing = true;
-	WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
+        music_playing = true;
+        WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
 
-	ma_mutex_unlock(&mutex);
+        ma_mutex_unlock(&mutex);
     }
 #endif
 }
+
+
+
 
 void I_PauseSong (int handle)
 {
@@ -636,14 +605,17 @@ void I_PauseSong (int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-	ma_mutex_lock(&mutex);
+        ma_mutex_lock(&mutex);
 
-	music_playing = false;
+        music_playing = false;
 
-	ma_mutex_unlock(&mutex);
+        ma_mutex_unlock(&mutex);
     }
 #endif
 }
+
+
+
 
 void I_ResumeSong (int handle)
 {
@@ -653,14 +625,17 @@ void I_ResumeSong (int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-	ma_mutex_lock(&mutex);
+        ma_mutex_lock(&mutex);
 
-	music_playing = true;
+        music_playing = true;
 
-	ma_mutex_unlock(&mutex);
+        ma_mutex_unlock(&mutex);
     }
 #endif
 }
+
+
+
 
 void I_StopSong(int handle)
 {
@@ -670,15 +645,18 @@ void I_StopSong(int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-	ma_mutex_lock(&mutex);
+        ma_mutex_lock(&mutex);
 
-	music_playing = false;
-	WildMidi_FastSeek(music_midi, 0);
+        music_playing = false;
+        WildMidi_FastSeek(music_midi, 0);
 
-	ma_mutex_unlock(&mutex);
+        ma_mutex_unlock(&mutex);
     }
 #endif
 }
+
+
+
 
 void I_UnRegisterSong(int handle)
 {
@@ -688,14 +666,17 @@ void I_UnRegisterSong(int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-	ma_mutex_lock(&mutex);
+        ma_mutex_lock(&mutex);
 
-	WildMidi_Close(music_midi);
+        WildMidi_Close(music_midi);
 
-	ma_mutex_unlock(&mutex);
+        ma_mutex_unlock(&mutex);
     }
 #endif
 }
+
+
+
 
 int I_RegisterSong(const void* data, size_t size)
 {
@@ -705,16 +686,19 @@ int I_RegisterSong(const void* data, size_t size)
 #else
     if (music_initialised)
     {
-	ma_mutex_lock(&mutex);
+        ma_mutex_lock(&mutex);
 
-	music_midi = WildMidi_OpenBuffer((void*)data, size);
+        music_midi = WildMidi_OpenBuffer((void*)data, size);
 
-	ma_mutex_unlock(&mutex);
+        ma_mutex_unlock(&mutex);
     }
 #endif
 
     return 1;
 }
+
+
+
 
 // Is the song playing? (unused)
 int I_QrySongPlaying(int handle)
@@ -735,6 +719,9 @@ int I_QrySongPlaying(int handle)
 #endif
 }
 
+
+
+
 void I_SetMusicVolume(int volume)
 {
     // Internal state variable.
@@ -745,11 +732,11 @@ void I_SetMusicVolume(int volume)
 #else
     if (music_initialised)
     {
-	ma_mutex_lock(&mutex);
+        ma_mutex_lock(&mutex);
 
-	WildMidi_MasterVolume(volume);
+        WildMidi_MasterVolume(volume);
 
-	ma_mutex_unlock(&mutex);
+        ma_mutex_unlock(&mutex);
     }
 #endif
 }
