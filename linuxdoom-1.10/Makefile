@@ -15,8 +15,7 @@ else
 endif
 
 CFLAGS_ALL=-Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX $(CFLAGS)
-LDFLAGS=-L/usr/X11R6/lib
-LIBS=-lXext -lX11 -lnsl -lm -ldl -lpthread
+LIBS=-lm -ldl -lpthread
 
 ifeq ($(WILDMIDI),1)
  CFLAGS_ALL+=$(shell pkg-config --cflags wildmidi) -DWILDMIDI
@@ -92,10 +91,15 @@ ifeq ($(SDL),1)
 	OBJS+= \
 		$(O)/sdl/i_system.o \
 		$(O)/sdl/i_video.o
+
+	CFLAGS+=$(shell pkg-config --cflags sdl2)
+	LIBS+=$(shell pkg-config --libs sdl2)
 else
 	OBJS+= \
 		$(O)/x11/i_system.o \
 		$(O)/x11/i_video.o
+
+	LIBS+=-lXext -lX11 -lnsl
 endif
 
 all:	 $(O)/linuxxdoom

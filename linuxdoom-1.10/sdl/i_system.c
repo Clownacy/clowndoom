@@ -26,21 +26,21 @@
 #include <string.h>
 
 #include <stdarg.h>
-#include <sys/time.h>
-#include <unistd.h>
 
-#include "doomdef.h"
-#include "m_misc.h"
-#include "i_video.h"
-#include "i_sound.h"
+#include "SDL.h"
 
-#include "d_net.h"
-#include "g_game.h"
+#include "../doomdef.h"
+#include "../m_misc.h"
+#include "../i_video.h"
+#include "../i_sound.h"
+
+#include "../d_net.h"
+#include "../g_game.h"
 
 #ifdef __GNUG__
-#pragma implementation "i_system.h"
+#pragma implementation "../i_system.h"
 #endif
-#include "i_system.h"
+#include "../i_system.h"
 
 
 
@@ -86,16 +86,7 @@ byte* I_ZoneBase (size_t*	size)
 //
 int  I_GetTime (void)
 {
-    struct timeval	tp;
-    struct timezone	tzp;
-    int			newtics;
-    static int		basetime=0;
-  
-    gettimeofday(&tp, &tzp);
-    if (!basetime)
-	basetime = tp.tv_sec;
-    newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
-    return newtics;
+    return SDL_GetTicks() * TICRATE / 1000;
 }
 
 
@@ -123,15 +114,7 @@ void I_Quit (void)
 
 void I_WaitVBL(int count)
 {
-#ifdef SGI
-    sginap(1);                                           
-#else
-#ifdef SUN
-    sleep(0);
-#else
-    usleep (count * (1000000/70) );                                
-#endif
-#endif
+    SDL_Delay(count * 1000 / 70);
 }
 
 void I_BeginRead(void)
@@ -183,5 +166,5 @@ void I_Error (const char *error, ...)
 
 void I_Sleep(void)
 {
-    usleep(1);
+    SDL_Delay(1);
 }
