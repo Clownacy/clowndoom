@@ -801,8 +801,6 @@ void I_InitGraphics(void)
 
     }
 
-    screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
-
 }
 
 void I_GrabMouse(boolean grab)
