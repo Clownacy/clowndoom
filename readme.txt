@@ -15,7 +15,7 @@ Features:
 * `novert` and `always_run` options have been added to the configuration
   file
 * Compiler warnings have been addressed
-* 64-bit support (warning: save files are incompatible)
+* 64-bit support (warning: save files are incompatible with 32-bit)
 * X11 code converted from 8bpp to 24bpp (supported by modern X11
   servers)
 * OSS audio code converted to miniaudio middleware library (supports
