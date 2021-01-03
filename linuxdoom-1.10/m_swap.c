@@ -28,8 +28,8 @@
 #include "m_swap.h"
 
 
-// Not needed with big endian.
-#ifndef __BIG_ENDIAN__
+// Needed for big endian.
+#ifdef __BIG_ENDIAN__
 
 // Swap 16bit, that is, MSB and LSB byte.
 unsigned short SwapSHORT(unsigned short x)
