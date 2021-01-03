@@ -165,7 +165,7 @@ static int xlatekey(void)
 
 }
 
-void I_ShutdownGraphics(void)
+void IB_ShutdownGraphics(void)
 {
   // Detach from X server
   if (!XShmDetach(X_display, &X_shminfo))
@@ -181,20 +181,11 @@ void I_ShutdownGraphics(void)
 
 
 
-//
-// I_StartFrame
-//
-void I_StartFrame (void)
-{
-    // er?
-
-}
-
 static int	lastmousex = 0;
 static int	lastmousey = 0;
 static boolean	shmFinished;
 
-static void I_GetEvent(void)
+static void IB_GetEvent(void)
 {
 
     event_t event;
@@ -310,16 +301,16 @@ createnullcursor
 }
 
 //
-// I_StartTic
+// IB_StartTic
 //
-void I_StartTic (void)
+void IB_StartTic (void)
 {
 
     if (!X_display)
 	return;
 
     while (XPending(X_display))
-	I_GetEvent();
+	IB_GetEvent();
 
     // Warp the pointer back to the middle of the window
     //  or it will wander off - that is, the game will
@@ -338,39 +329,10 @@ void I_StartTic (void)
 
 
 //
-// I_UpdateNoBlit
+// IB_FinishUpdate
 //
-void I_UpdateNoBlit (void)
+void IB_FinishUpdate (void)
 {
-    // what is this?
-}
-
-//
-// I_FinishUpdate
-//
-void I_FinishUpdate (void)
-{
-
-    static int	lasttic;
-    int		tics;
-    int		i;
-    // UNUSED static unsigned char *bigscreen=0;
-
-    // draws little dots on the bottom of the screen
-    if (devparm)
-    {
-
-	i = I_GetTime();
-	tics = i - lasttic;
-	lasttic = i;
-	if (tics > 20) tics = 20;
-
-	for (i=0 ; i<tics*2 ; i+=2)
-	    screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0xff;
-	for ( ; i<20*2 ; i+=2)
-	    screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0x0;
-    
-    }
 
     // scales the screen size before blitting it
     // also converts the screen to BGRX8888
@@ -425,7 +387,7 @@ void I_FinishUpdate (void)
 	shmFinished = false;
 	do
 	{
-	    I_GetEvent();
+	    IB_GetEvent();
 	} while (!shmFinished);
 
     }
@@ -450,18 +412,9 @@ void I_FinishUpdate (void)
 
 
 //
-// I_ReadScreen
+// IB_SetPalette
 //
-void I_ReadScreen (byte* scr)
-{
-    memcpy (scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
-}
-
-
-//
-// I_SetPalette
-//
-void I_SetPalette (const byte* palette)
+void IB_SetPalette (const byte* palette)
 {
     register int	i;
 
@@ -584,7 +537,7 @@ static void I_Quit_Wrapper(int dummy)
     I_Quit();
 }
 
-void I_InitGraphics(void)
+void IB_InitGraphics(void)
 {
 
     char*		displayname;
@@ -603,11 +556,6 @@ void I_InitGraphics(void)
     XSetWindowAttributes attribs;
     XGCValues		xgcvalues;
     int			valuemask;
-    static int		firsttime=1;
-
-    if (!firsttime)
-	return;
-    firsttime = 0;
 
     signal(SIGINT, I_Quit_Wrapper);
 
@@ -730,8 +678,6 @@ void I_InitGraphics(void)
 	}
     }
 
-    I_GrabMouse(true);
-
     if (doShm)
     {
 
@@ -791,7 +737,7 @@ void I_InitGraphics(void)
 
 }
 
-void I_GrabMouse(boolean grab)
+void IB_GrabMouse(boolean grab)
 {
     grabMouse = grab;
 

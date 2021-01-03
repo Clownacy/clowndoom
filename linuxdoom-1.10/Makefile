@@ -94,15 +94,15 @@ ifeq ($(SDL),2)
 else
   ifeq ($(SDL),1)
     OBJS+= \
-      $(O)/sdl/i_system.o \
-      $(O)/sdl/i_video.o
+      $(O)/sdl/ib_system.o \
+      $(O)/sdl/ib_video.o
 
     CFLAGS_ALL+=$(shell pkg-config --cflags sdl)
     LIBS+=$(shell pkg-config --libs sdl)
   else
     OBJS+= \
-      $(O)/x11/i_system.o \
-      $(O)/x11/i_video.o
+      $(O)/x11/ib_system.o \
+      $(O)/x11/ib_video.o
 
     LIBS+=-lXext -lX11 -lnsl
   endif

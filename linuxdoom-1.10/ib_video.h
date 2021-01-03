@@ -24,16 +24,18 @@
 #ifndef __IB_VIDEO__
 #define __IB_VIDEO__
 
+#include "doomtype.h"
+
 #ifdef __GNUG__
 #pragma interface
 #endif
-
 
 void IB_ShutdownGraphics(void);
 void IB_StartTic (void);
 void IB_FinishUpdate (void);
 void IB_SetPalette (const unsigned char* palette);
 void IB_InitGraphics(void);
+void IB_GrabMouse(boolean);
 
 
 #endif
