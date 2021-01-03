@@ -349,40 +349,24 @@ int W_NumLumps (void)
 
 int W_CheckNumForName (const char* name)
 {
-    union {
-	char	s[9];
-	int	x[2];
-	
-    } name8;
+    char name_upper[9];
     
-    int		v1;
-    int		v2;
     lumpinfo_t*	lump_p;
 
-    // make the name into two integers for easy compares
-    strncpy (name8.s,name,8);
+    strncpy (name_upper,name,8);
 
-    // in case the name was a fill 8 chars
-    name8.s[8] = 0;
+    // in case the name was a full 8 chars
+    name_upper[8] = '\0';
 
     // case insensitive
-    strupr (name8.s);		
-
-    v1 = name8.x[0];
-    v2 = name8.x[1];
-
+    strupr(name_upper);
 
     // scan backwards so patch lump files take precedence
     lump_p = lumpinfo + numlumps;
 
     while (lump_p-- != lumpinfo)
-    {
-	if ( *(int *)lump_p->name == v1
-	     && *(int *)&lump_p->name[4] == v2)
-	{
+	if (!memcmp(lump_p->name, name_upper, 8))
 	    return lump_p - lumpinfo;
-	}
-    }
 
     // TFB. Not found.
     return -1;
