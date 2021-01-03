@@ -174,7 +174,16 @@ void W_AddFile (const char *filename)
     else 
     {
 	// WAD file
-	fread (&header, 1, sizeof(header), handle);
+	fread(header.identification, 1, sizeof(header.identification), handle);
+	header.numlumps = fgetc(handle);
+	header.numlumps |= fgetc(handle) << 8;
+	header.numlumps |= fgetc(handle) << 16;
+	header.numlumps |= fgetc(handle) << 24;
+	header.infotableofs = fgetc(handle);
+	header.infotableofs |= fgetc(handle) << 8;
+	header.infotableofs |= fgetc(handle) << 16;
+	header.infotableofs |= fgetc(handle) << 24;
+
 	if (strncmp(header.identification,"IWAD",4))
 	{
 	    // Homebrew levels?
@@ -186,8 +195,6 @@ void W_AddFile (const char *filename)
 	    
 	    // ???modifiedgame = true;		
 	}
-	header.numlumps = LONG(header.numlumps);
-	header.infotableofs = LONG(header.infotableofs);
 	length = header.numlumps*sizeof(filelump_t);
 	fileinfo = alloca (length);
 	fseek (handle, header.infotableofs, SEEK_SET);
