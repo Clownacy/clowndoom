@@ -28,6 +28,7 @@
 #pragma interface
 #endif
 
+#include <stdio.h>
 
 //
 // TYPES
@@ -56,7 +57,7 @@ typedef struct
 typedef struct
 {
     char	name[8];
-    int		handle;
+    FILE*	handle;
     int		position;
     int		size;
 } lumpinfo_t;
