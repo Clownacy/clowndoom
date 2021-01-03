@@ -1,6 +1,4 @@
-  ///////////////
- // clowndoom //
-///////////////
+# clowndoom
 
 Yet another purist DOOM port.
 
