@@ -22,20 +22,23 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <stdlib.h>
-
-#include <stdarg.h>
+#include <string.h>
 
 #include "SDL.h"
 
 #include "../doomstat.h"
 #include "../i_system.h"
-#include "../i_video.h"
 #include "../v_video.h"
 #include "../m_argv.h"
 #include "../d_main.h"
 
 #include "../doomdef.h"
+
+#ifdef __GNUG__
+#pragma implementation "../ib_video.h"
+#endif
+#include "../ib_video.h"
+
 
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
@@ -131,7 +134,8 @@ static int xlatekey(SDLKey keysym)
 
 }
 
-void I_ShutdownGraphics(void)
+
+void IB_ShutdownGraphics(void)
 {
     SDL_FreeSurface(surface);
 #if SDL_MAJOR_VERSION >= 2
@@ -146,21 +150,10 @@ void I_ShutdownGraphics(void)
 }
 
 
-
 //
-// I_StartFrame
+// IB_StartTic
 //
-void I_StartFrame (void)
-{
-    // er?
-
-}
-
-
-//
-// I_StartTic
-//
-void I_StartTic (void)
+void IB_StartTic (void)
 {
     event_t event;
     static int button_state;
@@ -242,40 +235,10 @@ void I_StartTic (void)
 
 
 //
-// I_UpdateNoBlit
+// IB_FinishUpdate
 //
-void I_UpdateNoBlit (void)
+void IB_FinishUpdate (void)
 {
-    // what is this?
-}
-
-//
-// I_FinishUpdate
-//
-void I_FinishUpdate (void)
-{
-
-    static int	lasttic;
-    int		tics;
-    int		i;
-    // UNUSED static unsigned char *bigscreen=0;
-
-    // draws little dots on the bottom of the screen
-    if (devparm)
-    {
-
-	i = I_GetTime();
-	tics = i - lasttic;
-	lasttic = i;
-	if (tics > 20) tics = 20;
-
-	for (i=0 ; i<tics*2 ; i+=2)
-	    screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0xff;
-	for ( ; i<20*2 ; i+=2)
-	    screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0x0;
-    
-    }
-
     SDL_LockSurface(surface);
 
     // scales the screen size before blitting it
@@ -319,18 +282,9 @@ void I_FinishUpdate (void)
 
 
 //
-// I_ReadScreen
+// IB_SetPalette
 //
-void I_ReadScreen (byte* scr)
-{
-    memcpy (scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
-}
-
-
-//
-// I_SetPalette
-//
-void I_SetPalette (const byte* palette)
+void IB_SetPalette (const byte* palette)
 {
     register int	i;
 
@@ -349,14 +303,8 @@ void I_SetPalette (const byte* palette)
 }
 
 
-void I_InitGraphics(void)
+void IB_InitGraphics(void)
 {
-    static int		firsttime=1;
-
-    if (!firsttime)
-	return;
-    firsttime = 0;
-
 #if SDL_MAJOR_VERSION >= 2
     SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 #else
@@ -386,15 +334,14 @@ void I_InitGraphics(void)
 	I_Error("Could not create SDL window surface");
 #endif
 
-    I_GrabMouse(true);
-
     surface = SDL_CreateRGBSurface(SDL_SWSURFACE, SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 8, 0, 0, 0, 0);
 
     if (surface == NULL)
 	I_Error("Could not create SDL surface");
 }
 
-void I_GrabMouse(boolean grab)
+
+void IB_GrabMouse(boolean grab)
 {
 #if SDL_MAJOR_VERSION >= 2
     SDL_SetRelativeMouseMode(grab ? SDL_ENABLE : SDL_DISABLE);

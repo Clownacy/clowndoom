@@ -27,20 +27,19 @@
 
 #include <stdarg.h>
 
-#include "SDL.h"
+#include "doomdef.h"
+#include "m_misc.h"
+#include "i_video.h"
+#include "i_sound.h"
+#include "ib_system.h"
 
-#include "../doomdef.h"
-#include "../m_misc.h"
-#include "../i_video.h"
-#include "../i_sound.h"
-
-#include "../d_net.h"
-#include "../g_game.h"
+#include "d_net.h"
+#include "g_game.h"
 
 #ifdef __GNUG__
-#pragma implementation "../i_system.h"
+#pragma implementation "i_system.h"
 #endif
-#include "../i_system.h"
+#include "i_system.h"
 
 
 
@@ -86,7 +85,7 @@ byte* I_ZoneBase (size_t*	size)
 //
 int  I_GetTime (void)
 {
-    return SDL_GetTicks() * TICRATE / 1000;
+    return IB_GetTime();
 }
 
 
@@ -96,7 +95,7 @@ int  I_GetTime (void)
 //
 void I_Init (void)
 {
-    SDL_Init(0);
+    IB_Init();
 
     I_StartupSound();
     //  I_InitGraphics();
@@ -112,14 +111,14 @@ void I_Quit (void)
     M_SaveDefaults ();
     I_ShutdownGraphics();
 
-    SDL_Quit();
+    IB_Quit();
 
     exit(0);
 }
 
 void I_WaitVBL(int count)
 {
-    SDL_Delay(count * 1000 / 70);
+    IB_WaitVBL(count);
 }
 
 void I_BeginRead(void)
@@ -171,5 +170,5 @@ void I_Error (const char *error, ...)
 
 void I_Sleep(void)
 {
-    SDL_Delay(1);
+    IB_Sleep();
 }

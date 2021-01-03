@@ -25,6 +25,8 @@ OBJS= \
   $(O)/doomstat.o \
   $(O)/dstrings.o \
   $(O)/i_sound.o \
+  $(O)/i_system.o \
+  $(O)/i_video.o \
   $(O)/i_main.o \
   $(O)/i_net.o \
   $(O)/tables.o \
@@ -84,8 +86,8 @@ OBJS= \
 
 ifeq ($(SDL),2)
   OBJS+= \
-    $(O)/sdl/i_system.o \
-    $(O)/sdl/i_video.o
+    $(O)/sdl/ib_system.o \
+    $(O)/sdl/ib_video.o
 
   CFLAGS_ALL+=$(shell pkg-config --cflags sdl2)
   LIBS+=$(shell pkg-config --libs sdl2)
