@@ -88,7 +88,7 @@ OBJS= \
  $(O)/info.o \
  $(O)/sounds.o
 
-ifeq ($(SDL),1)
+ifeq ($(SDL),2)
  OBJS+= \
   $(O)/sdl/i_system.o \
   $(O)/sdl/i_video.o
@@ -96,11 +96,20 @@ ifeq ($(SDL),1)
  CFLAGS_ALL+=$(shell pkg-config --cflags sdl2)
  LIBS+=$(shell pkg-config --libs sdl2)
 else
- OBJS+= \
-  $(O)/x11/i_system.o \
-  $(O)/x11/i_video.o
+ ifeq ($(SDL),1)
+  OBJS+= \
+   $(O)/sdl/i_system.o \
+   $(O)/sdl/i_video.o
 
- LIBS+=-lXext -lX11 -lnsl
+  CFLAGS_ALL+=$(shell pkg-config --cflags sdl)
+  LIBS+=$(shell pkg-config --libs sdl)
+ else
+  OBJS+= \
+   $(O)/x11/i_system.o \
+   $(O)/x11/i_video.o
+
+  LIBS+=-lXext -lX11 -lnsl
+ endif
 endif
 
 all: $(O)/linuxxdoom
