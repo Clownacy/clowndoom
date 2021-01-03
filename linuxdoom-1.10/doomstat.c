@@ -23,9 +23,6 @@
 //-----------------------------------------------------------------------------
 
 
-#ifdef __GNUG__
-#pragma implementation "doomstat.h"
-#endif
 #include "doomstat.h"
 
 

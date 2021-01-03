@@ -32,9 +32,6 @@
 #include "i_system.h"
 #include "z_zone.h"
 
-#ifdef __GNUG__
-#pragma implementation "w_wad.h"
-#endif
 #include "w_wad.h"
 
 

@@ -25,10 +25,6 @@
 #define __S_SOUND__
 
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 #include "p_mobj.h"
 
 

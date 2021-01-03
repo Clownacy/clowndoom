@@ -33,9 +33,6 @@
 
 #include "doomdef.h"
 
-#ifdef __GNUG__
-#pragma implementation "i_video.h"
-#endif
 #include "i_video.h"
 
 

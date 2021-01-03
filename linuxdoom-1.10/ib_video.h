@@ -26,10 +26,6 @@
 
 #include "doomtype.h"
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 void IB_ShutdownGraphics(void);
 void IB_StartTic (void);
 void IB_FinishUpdate (void);

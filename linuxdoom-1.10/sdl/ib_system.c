@@ -25,9 +25,6 @@
 
 #include "../doomdef.h"
 
-#ifdef __GNUG__
-#pragma implementation "../ib_system.h"
-#endif
 #include "../ib_system.h"
 
 

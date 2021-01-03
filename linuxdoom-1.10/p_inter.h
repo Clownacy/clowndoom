@@ -25,11 +25,6 @@
 #define __P_INTER__
 
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
 boolean	P_GivePower(player_t*, int);
 
 

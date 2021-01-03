@@ -39,10 +39,6 @@
 // and the Frame Sequence table.
 #include "info.h"
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 //
 // Frame flags:

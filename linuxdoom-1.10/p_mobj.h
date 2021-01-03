@@ -42,12 +42,6 @@
 
 
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
-
 //
 // NOTES: mobj_t
 //

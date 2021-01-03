@@ -24,9 +24,6 @@
 // We are referring to sprite numbers.
 #include "info.h"
 
-#ifdef __GNUG__
-#pragma implementation "d_items.h"
-#endif
 #include "d_items.h"
 
 

@@ -41,10 +41,6 @@
 // as commands per game tick.
 #include "d_ticcmd.h"
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 
 

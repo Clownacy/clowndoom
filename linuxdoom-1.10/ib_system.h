@@ -24,10 +24,6 @@
 #ifndef __IB_SYSTEM__
 #define __IB_SYSTEM__
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 
 int  IB_GetTime (void);
 void IB_Init (void);

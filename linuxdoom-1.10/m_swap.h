@@ -25,11 +25,6 @@
 #define __M_SWAP__
 
 
-#ifdef __GNUG__
-#pragma interface
-#endif
-
-
 // Endianess handling.
 // WAD files are stored little endian.
 #ifdef __BIG_ENDIAN__
