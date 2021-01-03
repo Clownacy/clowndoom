@@ -30,9 +30,11 @@
 #define	FGCOLOR		8
 
 
-#ifdef NORMALUNIX
 #include <stdio.h>
 #include <stdlib.h>
+
+
+#ifdef NORMALUNIX
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
