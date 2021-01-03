@@ -219,7 +219,7 @@ void IB_StartTic (void)
 		event.type = ev_mouse;
 		event.data1 = button_state;
 		event.data2 = sdl_event.motion.xrel << 3;
-		event.data3 = sdl_event.motion.yrel << 3;
+		event.data3 = -sdl_event.motion.yrel << 3;
 
 		if (event.data2 || event.data3)
 		{
