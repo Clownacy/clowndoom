@@ -4,7 +4,6 @@
 #
 # $Log:$
 #
-CC=  gcc  # gcc or g++
 
 WILDMIDI ?= 1
 SDL ?= 2
