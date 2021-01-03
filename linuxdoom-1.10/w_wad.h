@@ -58,7 +58,7 @@ typedef struct
 
 extern	void**		lumpcache;
 extern	lumpinfo_t*	lumpinfo;
-extern	int		numlumps;
+extern	size_t		numlumps;
 
 void    W_InitMultipleFiles (const char** filenames);
 void    W_Reload (void);
@@ -66,10 +66,10 @@ void    W_Reload (void);
 int	W_CheckNumForName (const char* name);
 int	W_GetNumForName (const char* name);
 
-int	W_LumpLength (int lump);
-void    W_ReadLump (int lump, void *dest);
+int	W_LumpLength (size_t lump);
+void    W_ReadLump (size_t lump, void *dest);
 
-void*	W_CacheLumpNum (int lump, int tag);
+void*	W_CacheLumpNum (size_t lump, int tag);
 void*	W_CacheLumpName (const char* name, int tag);
 
 

@@ -48,7 +48,7 @@
 
 // Location of each lump on disk.
 lumpinfo_t*		lumpinfo;		
-int			numlumps;
+size_t			numlumps;
 
 void**			lumpcache;
 
@@ -132,7 +132,7 @@ static unsigned long Read32LE(FILE* handle)
 //  specially to allow map reloads.
 // But: the reload feature is a fragile hack...
 
-int			reloadlump;
+size_t			reloadlump;
 const char*		reloadname;
 
 
@@ -140,9 +140,9 @@ void W_AddFile (const char *filename)
 {
     wadinfo_t		header;
     lumpinfo_t*		lump_p;
-    int			i;
+    size_t		i;
     FILE*		handle;
-    int			startlump;
+    size_t		startlump;
     lumpinfo_t		singleinfo;
     FILE*		storehandle;
     boolean		singlelump;
@@ -290,7 +290,7 @@ void W_Reload (void)
 //
 void W_InitMultipleFiles (const char** filenames)
 {	
-    int		size;
+    size_t	size;
     
     // open all the files, load headers, and count lumps
     numlumps = 0;
@@ -412,7 +412,7 @@ int W_GetNumForName (const char* name)
 // W_LumpLength
 // Returns the buffer size needed to load the given lump.
 //
-int W_LumpLength (int lump)
+int W_LumpLength (size_t lump)
 {
     if (lump >= numlumps)
 	I_Error ("W_LumpLength: %i >= numlumps",lump);
@@ -429,7 +429,7 @@ int W_LumpLength (int lump)
 //
 void
 W_ReadLump
-( int		lump,
+( size_t	lump,
   void*		dest )
 {
     size_t	c;
@@ -473,11 +473,11 @@ W_ReadLump
 //
 void*
 W_CacheLumpNum
-( int		lump,
+( size_t	lump,
   int		tag )
 {
-    if ((unsigned)lump >= (unsigned)numlumps)
-	I_Error ("W_CacheLumpNum: %i >= numlumps",lump);
+    if (lump >= numlumps)
+	I_Error ("W_CacheLumpNum: %i >= numlumps",(unsigned int)lump);
 		
     if (!lumpcache[lump])
     {
@@ -514,16 +514,16 @@ W_CacheLumpName
 // W_Profile
 //
 int		info[2500][10];
-int		profilecount;
+size_t		profilecount;
 
 void W_Profile (void)
 {
-    int		i;
+    size_t	i;
     memblock_t*	block;
     void*	ptr;
     char	ch;
     FILE*	f;
-    int		j;
+    size_t	j;
     char	name[9];
 	
 	
