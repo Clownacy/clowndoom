@@ -28,6 +28,7 @@
 #pragma interface
 #endif
 
+#include <stddef.h>
 #include <stdio.h>
 
 //
@@ -37,19 +38,11 @@ typedef struct
 {
     // Should be "IWAD" or "PWAD".
     char		identification[4];		
-    int			numlumps;
-    int			infotableofs;
+    size_t		numlumps;
+    size_t		infotableofs;
     
 } wadinfo_t;
 
-
-typedef struct
-{
-    int			filepos;
-    int			size;
-    char		name[8];
-    
-} filelump_t;
 
 //
 // WADFILE I/O related stuff.
@@ -58,8 +51,8 @@ typedef struct
 {
     char	name[8];
     FILE*	handle;
-    int		position;
-    int		size;
+    size_t	position;
+    size_t	size;
 } lumpinfo_t;
 
 

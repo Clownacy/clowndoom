@@ -27,10 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef NORMALUNIX
-#include <alloca.h>
-#endif
-
 #include "doomtype.h"
 #include "m_swap.h"
 #include "i_system.h"
@@ -75,7 +71,7 @@ static int filelength (FILE* handle)
 }
 
 
-void
+static void
 ExtractFileBase
 ( const char*	path,
   char*		dest )
@@ -104,6 +100,15 @@ ExtractFileBase
 
 	*dest++ = toupper((int)*src++);
     }
+}
+
+static unsigned long Read32LE(FILE* handle)
+{
+    unsigned char bytes[4];
+
+    fread(bytes, 1, 4, handle);
+
+    return bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24);
 }
 
 
@@ -137,11 +142,10 @@ void W_AddFile (const char *filename)
     lumpinfo_t*		lump_p;
     int			i;
     FILE*		handle;
-    int			length;
     int			startlump;
-    filelump_t*		fileinfo;
-    filelump_t		singleinfo;
+    lumpinfo_t		singleinfo;
     FILE*		storehandle;
+    boolean		singlelump;
     
     // open the file and add to directory
 
@@ -153,20 +157,21 @@ void W_AddFile (const char *filename)
 	reloadlump = numlumps;
     }
 		
-    if ( (handle = fopen (filename,"rb")) == NULL)
+    if ((handle = fopen (filename,"rb")) == NULL)
     {
-	printf (" couldn't open %s\n",filename);
+	printf(" couldn't open %s\n",filename);
 	return;
     }
 
-    printf (" adding %s\n",filename);
+    printf(" adding %s\n",filename);
     startlump = numlumps;
 	
-    if (strcmpi (filename+strlen(filename)-3 , "wad" ) )
+    singlelump = strcmpi(filename+strlen(filename)-3 , "wad" );
+
+    if (singlelump)
     {
 	// single lump file
-	fileinfo = &singleinfo;
-	singleinfo.filepos = 0;
+	singleinfo.position = 0;
 	singleinfo.size = filelength(handle);
 	ExtractFileBase (filename, singleinfo.name);
 	numlumps++;
@@ -175,14 +180,8 @@ void W_AddFile (const char *filename)
     {
 	// WAD file
 	fread(header.identification, 1, sizeof(header.identification), handle);
-	header.numlumps = fgetc(handle);
-	header.numlumps |= fgetc(handle) << 8;
-	header.numlumps |= fgetc(handle) << 16;
-	header.numlumps |= fgetc(handle) << 24;
-	header.infotableofs = fgetc(handle);
-	header.infotableofs |= fgetc(handle) << 8;
-	header.infotableofs |= fgetc(handle) << 16;
-	header.infotableofs |= fgetc(handle) << 24;
+	header.numlumps = Read32LE(handle);
+	header.infotableofs = Read32LE(handle);
 
 	if (memcmp(header.identification,"IWAD",4))
 	{
@@ -195,10 +194,7 @@ void W_AddFile (const char *filename)
 	    
 	    // ???modifiedgame = true;		
 	}
-	length = header.numlumps*sizeof(filelump_t);
-	fileinfo = alloca (length);
 	fseek (handle, header.infotableofs, SEEK_SET);
-	fread (fileinfo, 1, length, handle);
 	numlumps += header.numlumps;
     }
 
@@ -206,23 +202,30 @@ void W_AddFile (const char *filename)
     // Fill in lumpinfo
     lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
 
-    if (!lumpinfo)
+    if (lumpinfo == NULL)
 	I_Error ("Couldn't realloc lumpinfo");
 
     lump_p = &lumpinfo[startlump];
 	
     storehandle = reloadname ? NULL : handle;
 	
-    for (i=startlump ; i<numlumps ; i++,lump_p++, fileinfo++)
+    if (singlelump)
     {
-	lump_p->handle = storehandle;
-	lump_p->position = LONG(fileinfo->filepos);
-	lump_p->size = LONG(fileinfo->size);
-	strncpy (lump_p->name, fileinfo->name, 8);
+	*lump_p = singleinfo;
+    }
+    else
+    {
+	for (i=startlump; i<numlumps; i++, lump_p++)
+	{
+	    lump_p->handle = storehandle;
+	    lump_p->position = Read32LE(storehandle);
+	    lump_p->size = Read32LE(storehandle);
+	    fread(lump_p->name, 1, 8, storehandle);
+	}
     }
 	
     if (reloadname)
-	fclose (handle);
+	fclose(handle);
 }
 
 
@@ -235,43 +238,39 @@ void W_AddFile (const char *filename)
 //
 void W_Reload (void)
 {
-    wadinfo_t		header;
-    int			lumpcount;
     lumpinfo_t*		lump_p;
-    int			i;
+    size_t		i;
     FILE*		handle;
-    int			length;
-    filelump_t*		fileinfo;
+    size_t		numlumps;
+    size_t		infotableofs;
 	
     if (!reloadname)
 	return;
 		
-    if ( (handle = fopen (reloadname,"rb")) == NULL)
+    if ((handle = fopen(reloadname,"rb")) == NULL)
 	I_Error ("W_Reload: couldn't open %s",reloadname);
 
-    fread (&header, 1, sizeof(header), handle);
-    lumpcount = LONG(header.numlumps);
-    header.infotableofs = LONG(header.infotableofs);
-    length = lumpcount*sizeof(filelump_t);
-    fileinfo = alloca (length);
-    fseek (handle, header.infotableofs, SEEK_SET);
-    fread (fileinfo, 1, length, handle);
+    fseek(handle, 4, SEEK_CUR);
+    numlumps = Read32LE(handle);
+    infotableofs = Read32LE(handle);
+    fseek (handle, infotableofs, SEEK_SET);
     
     // Fill in lumpinfo
     lump_p = &lumpinfo[reloadlump];
 	
     for (i=reloadlump ;
-	 i<reloadlump+lumpcount ;
-	 i++,lump_p++, fileinfo++)
+	 i<reloadlump+numlumps ;
+	 i++,lump_p++)
     {
-	if (lumpcache[i])
-	    Z_Free (lumpcache[i]);
+	if (lumpcache[i] != NULL)
+	    Z_Free(lumpcache[i]);
 
-	lump_p->position = LONG(fileinfo->filepos);
-	lump_p->size = LONG(fileinfo->size);
+	lump_p->position = Read32LE(handle);
+	lump_p->size = Read32LE(handle);
+	fseek(handle, 8, SEEK_CUR);
     }
 	
-    fclose (handle);
+    fclose(handle);
 }
 
 
@@ -433,7 +432,7 @@ W_ReadLump
 ( int		lump,
   void*		dest )
 {
-    int		c;
+    size_t	c;
     lumpinfo_t*	l;
     FILE*	handle;
 	
