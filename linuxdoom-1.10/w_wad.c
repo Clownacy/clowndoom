@@ -59,12 +59,12 @@ void**			lumpcache;
 
 #define strcmpi	strcasecmp
 
-void strupr (char* s)
+static void strupr (char* s)
 {
     while (*s) { *s = toupper(*s); s++; }
 }
 
-int filelength (FILE* handle) 
+static int filelength (FILE* handle) 
 { 
     long previous_position = ftell(handle);
     fseek(handle, 0, SEEK_END);
@@ -167,7 +167,7 @@ void W_AddFile (const char *filename)
 	// single lump file
 	fileinfo = &singleinfo;
 	singleinfo.filepos = 0;
-	singleinfo.size = LONG(filelength(handle));
+	singleinfo.size = filelength(handle);
 	printf("singleinfo.size = %X\n", singleinfo.size);
 	ExtractFileBase (filename, singleinfo.name);
 	numlumps++;
