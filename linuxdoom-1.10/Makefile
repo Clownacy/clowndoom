@@ -7,6 +7,7 @@
 CC=  gcc  # gcc or g++
 
 WILDMIDI ?= 1
+SDL ?= 2
 
 ifeq ($(RELEASE),1)
  CFLAGS=-O2 -s -DNDEBUG
