@@ -184,10 +184,10 @@ void W_AddFile (const char *filename)
 	header.infotableofs |= fgetc(handle) << 16;
 	header.infotableofs |= fgetc(handle) << 24;
 
-	if (strncmp(header.identification,"IWAD",4))
+	if (memcmp(header.identification,"IWAD",4))
 	{
 	    // Homebrew levels?
-	    if (strncmp(header.identification,"PWAD",4))
+	    if (memcmp(header.identification,"PWAD",4))
 	    {
 		I_Error ("Wad file %s doesn't have IWAD "
 			 "or PWAD id\n", filename);
