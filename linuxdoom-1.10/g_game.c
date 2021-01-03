@@ -214,6 +214,8 @@ int		bodyqueslot;
  
 //void*		statcopy;				// for statistics driver
  
+int		novert;
+
  
  
 int G_CmdChecksum (ticcmd_t* cmd) 
@@ -402,7 +404,9 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	} 
     } 
  
-    forward += mousey; 
+    if (!novert)
+	forward += mousey; 
+
     if (strafe) 
 	side += mousex*2; 
     else 

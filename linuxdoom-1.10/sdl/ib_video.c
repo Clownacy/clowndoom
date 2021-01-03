@@ -54,8 +54,6 @@ static SDL_Color colors[256];
 // to use ....
 static int	multiply=1;
 
-int		novert;
-
 
 //
 //  Translates the key currently in X_event
@@ -221,7 +219,7 @@ void IB_StartTic (void)
 		event.type = ev_mouse;
 		event.data1 = button_state;
 		event.data2 = sdl_event.motion.xrel << 3;
-		event.data3 = novert ? 0 : sdl_event.motion.yrel << 3;
+		event.data3 = sdl_event.motion.yrel << 3;
 
 		if (event.data2 || event.data3)
 		{
