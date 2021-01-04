@@ -36,8 +36,6 @@
 
 #include "i_video.h"
 
-#define SCALER
-
 int aspect_ratio_correction;
 
 static unsigned char *colors;
@@ -46,19 +44,11 @@ static unsigned int bytes_per_pixel;
 
 static unsigned char *colored_screen;
 
-#ifdef SCALER
 static unsigned char *upscale_x_deltas;
 static unsigned char *upscale_y_deltas;
-#endif
 
 static size_t output_width;
 static size_t output_height;
-
-// Blocky mode,
-// replace each 320x200 pixel with multiply*multiply pixels.
-// According to Dave Taylor, it still is a bonehead thing
-// to use ....
-static int	multiply=1;
 
 
 //
@@ -93,11 +83,9 @@ void I_UpdateNoBlit (void)
 //
 void I_FinishUpdate (void)
 {
-
     static int	lasttic;
     int		tics;
     int		i;
-    // UNUSED static unsigned char *bigscreen=0;
 
     // draws little dots on the bottom of the screen
     if (devparm)
@@ -127,14 +115,11 @@ void I_FinishUpdate (void)
 	    *colored_screen_pointer++ = color[j];
     }
 
+    // Step 2. Scale the screen
     unsigned char *pixels;
     size_t pitch;
     IB_GetFramebuffer(&pixels, &pitch);
 
-//    for (size_t y = 0; y < SCREENHEIGHT; ++y)
-//	memcpy(&pixels[y * pitch], &colored_screen[y * SCREENWIDTH * bytes_per_pixel], SCREENWIDTH * bytes_per_pixel);
-
-#ifdef SCALER
     const unsigned char *src_pointer = colored_screen;
     for (size_t y = 0; y < output_height; ++y)
     {
@@ -156,37 +141,8 @@ void I_FinishUpdate (void)
 	    memcpy(&pixels[y * pitch], &pixels[(y-1) * pitch], output_width * bytes_per_pixel);
 	}
     }
-#else
-    // scales the screen size before blitting it
-    if (multiply == 1)
-    {
-	for (size_t y = 0; y < SCREENHEIGHT; ++y)
-	    memcpy(&pixels[y * pitch], &colored_screen[y * SCREENWIDTH * bytes_per_pixel], SCREENWIDTH * bytes_per_pixel);
-    }
-    else
-    {
-	const unsigned char *src_pointer = colored_screen;
 
-	for (size_t y = 0; y < SCREENHEIGHT; ++y)
-	{
-	    unsigned char *dst_row = &pixels[y * multiply * pitch];
-	    unsigned char *dst_pointer = dst_row;
-
-	    for (size_t x = 0; x < SCREENWIDTH; ++x)
-	    {
-		for (int i = 0; i < multiply; ++i)
-		    for (unsigned int j = 0; j < bytes_per_pixel; ++j)
-			*dst_pointer++ = src_pointer[j];
-
-		src_pointer += bytes_per_pixel;
-	    }
-
-	    for (int i = 1; i < multiply; ++i)
-		memcpy(&dst_row[i * pitch], dst_row, output_width * bytes_per_pixel);
-	}
-    }
-#endif
-
+    // Step 3. Display the screen
     IB_FinishUpdate();
 }
 
@@ -225,6 +181,8 @@ void I_InitGraphics(void)
 	return;
     firsttime = 0;
 
+    int multiply = 1;
+
     if (M_CheckParm("-2"))
 	multiply = 2;
 
@@ -249,7 +207,6 @@ void I_InitGraphics(void)
     colors = malloc(256 * bytes_per_pixel);
     colored_screen = malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 
-#ifdef SCALER
     // Create LUTs for the upscaler
     upscale_x_deltas = malloc(output_width);
     upscale_y_deltas = malloc(output_height);
@@ -267,13 +224,12 @@ void I_InitGraphics(void)
 
     for (size_t last = 0, i = 0; i < output_width; ++i)
     {
-	size_t current = (i + 1) * SCREENWIDTH / output_width;	// The +1 here is deliberate, to avoid distortions at 320x240
+	size_t current = (i + 1) * SCREENWIDTH / output_width;	// The +1 here is deliberate, to avoid distortion at 320x240
 
 	upscale_x_deltas[i] = last != current;
 
 	last = current;
     }
-#endif
 }
 
 
@@ -282,10 +238,8 @@ void I_ShutdownGraphics(void)
     free(colors);
     free(colored_screen);
 
-#ifdef SCALER
     free(upscale_x_deltas);
     free(upscale_y_deltas);
-#endif
 
     IB_ShutdownGraphics();
 }
