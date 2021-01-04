@@ -102,6 +102,9 @@ static int xlatekey(SDLKey keysym)
 #if SDL_MAJOR_VERSION >= 2
       case SDLK_LGUI:
       case SDLK_RGUI:
+#else
+      case SDLK_LMETA:
+      case SDLK_RMETA:
 #endif
 	rc = KEY_RALT;
 	break;
