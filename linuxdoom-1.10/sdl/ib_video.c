@@ -22,6 +22,8 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "SDL.h"
@@ -36,6 +38,7 @@
 
 #include "../ib_video.h"
 
+//#define SCALER
 
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
@@ -51,6 +54,12 @@ static SDL_Color colors[256];
 // to use ....
 static int	multiply=1;
 
+#ifdef SCALER
+static unsigned char **upscale_lut;
+#endif
+
+static size_t output_width;
+static size_t output_height;
 
 //
 //  Translates the key currently in X_event
@@ -236,6 +245,20 @@ void IB_FinishUpdate (void)
 {
     SDL_LockSurface(surface);
 
+#ifdef SCALER
+    unsigned char **upscale_lut_pointer = upscale_lut;
+
+    for (size_t y = 0; y < output_height; ++y)
+    {
+	unsigned char *dst_row = (unsigned char*)surface->pixels + y * surface->pitch;
+
+	for (size_t x = 0; x < output_width; ++x)
+	{
+	    *dst_row++ = **upscale_lut_pointer++;
+	}
+    }
+#else
+    
     // scales the screen size before blitting it
     if (multiply == 1)
     {
@@ -263,7 +286,7 @@ void IB_FinishUpdate (void)
 		memcpy(&dst_row[i * SCREENWIDTH * multiply], dst_row, SCREENWIDTH * multiply);
 	}
     }
-
+#endif
     SDL_UnlockSurface(surface);
 
     SDL_BlitSurface(surface, NULL, window_surface, NULL);
@@ -315,24 +338,41 @@ void IB_InitGraphics(void)
     if (M_CheckParm("-4"))
 	multiply = 4;
 
+    output_width = SCREENWIDTH * multiply;
+#ifdef SCALER
+    output_height = SCREENWIDTH * multiply * (3.0/4.0);
+#else
+    output_height = SCREENHEIGHT * multiply;
+#endif
+
 #if SDL_MAJOR_VERSION >= 2
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 0);
+    window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, output_width, output_height, 0);
 
     if (window == NULL)
 	I_Error("Could not create SDL window");
 
     window_surface = SDL_GetWindowSurface(window);
 #else
-    window_surface = SDL_SetVideoMode(SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 0, SDL_SWSURFACE);
+    window_surface = SDL_SetVideoMode(output_width, output_height, 0, SDL_SWSURFACE);
 
     if (window_surface == NULL)
 	I_Error("Could not create SDL window surface");
 #endif
 
-    surface = SDL_CreateRGBSurface(SDL_SWSURFACE, SCREENWIDTH * multiply, SCREENHEIGHT * multiply, 8, 0, 0, 0, 0);
+    surface = SDL_CreateRGBSurface(SDL_SWSURFACE, output_width, output_height, 8, 0, 0, 0, 0);
 
     if (surface == NULL)
 	I_Error("Could not create SDL surface");
+
+#ifdef SCALER
+    // Let's create the upscale LUT
+    upscale_lut = malloc(output_width * output_height * sizeof(*upscale_lut));
+    unsigned char **upscale_lut_pointer = upscale_lut;
+
+    for (size_t y = 0; y < output_height; ++y)
+	for (size_t x = 0; x < output_width; ++x)
+	    *upscale_lut_pointer++ = &screens[0][((y * SCREENHEIGHT / output_height) * SCREENWIDTH) + (x * SCREENWIDTH / output_width)];
+#endif
 }
 
 
