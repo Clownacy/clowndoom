@@ -61,6 +61,14 @@ static int	multiply=1;
 
 void I_ShutdownGraphics(void)
 {
+    free(colors);
+    free(colored_screen);
+
+#ifdef SCALER
+    free(upscale_x_deltas);
+    free(upscale_y_deltas);
+#endif
+
     IB_ShutdownGraphics();
 }
 
@@ -173,7 +181,7 @@ void I_FinishUpdate (void)
 
 	for (size_t y = 0; y < SCREENHEIGHT; ++y)
 	{
-	    unsigned char *dst_row = &pixels[y * 4 * pitch];
+	    unsigned char *dst_row = &pixels[y * multiply * pitch];
 	    unsigned char *dst_pointer = dst_row;
 
 	    for (size_t x = 0; x < SCREENWIDTH; ++x)
@@ -222,6 +230,7 @@ void I_SetPalette (const byte* palette)
 
 void I_InitGraphics(void)
 {
+    // TODO - get rid of this junk
     static int		firsttime=1;
 
     if (!firsttime)
@@ -248,6 +257,7 @@ void I_InitGraphics(void)
 
     I_GrabMouse(true);
 
+    // TODO - handle failed allocations
     colors = malloc(256 * bytes_per_pixel);
     colored_screen = malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 
