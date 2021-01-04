@@ -220,7 +220,6 @@ void IB_FinishUpdate (void)
     SDL_UnlockSurface(surface);
 
 #if SDL_MAJOR_VERSION >= 2
-    SDL_BlitSurface(surface, NULL, SDL_GetWindowSurface(window), NULL);
     SDL_UpdateWindowSurface(window);
 #else
     SDL_Flip(surface);
@@ -251,10 +250,7 @@ void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *by
     if (window == NULL)
 	I_Error("Could not create SDL window");
 
-    surface = SDL_CreateRGBSurface(SDL_SWSURFACE, screen_width, screen_height, 8, 0, 0, 0, 0);
-
-    if (surface == NULL)
-	I_Error("Could not create SDL surface");
+    surface = SDL_GetWindowSurface(window);
 #else
     surface = SDL_SetVideoMode(screen_width, screen_height, 32, SDL_SWSURFACE | SDL_ANYFORMAT);
 
