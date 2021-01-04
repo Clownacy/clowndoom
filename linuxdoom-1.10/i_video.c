@@ -22,6 +22,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <stdlib.h>
 #include <string.h>
 
 #include "doomstat.h"
@@ -45,7 +46,8 @@ static unsigned int bytes_per_pixel;
 static unsigned char colored_screen[SCREENWIDTH * SCREENHEIGHT * 4];
 
 #ifdef SCALER
-static unsigned char **upscale_lut;
+static unsigned char *upscale_x_deltas;
+static unsigned char *upscale_y_deltas;
 #endif
 
 static size_t output_width;
@@ -138,18 +140,25 @@ void I_FinishUpdate (void)
 //	memcpy(&pixels[y * pitch], &colored_screen[y * SCREENWIDTH * bytes_per_pixel], SCREENWIDTH * bytes_per_pixel);
 
 #ifdef SCALER
-    unsigned char **upscale_lut_pointer = upscale_lut;
-
+    const unsigned char *src_pointer = colored_screen;
     for (size_t y = 0; y < output_height; ++y)
     {
-	unsigned char *dst_row = &pixels[y * pitch];
-
-	for (size_t x = 0; x < output_width; ++x)
+	if (upscale_y_deltas[y])
 	{
-	    unsigned char *pixel = *upscale_lut_pointer++;
+	    unsigned char *upscale_line_buffer_pointer = &pixels[y * pitch];
 
-	    for (unsigned int i = 0; i < bytes_per_pixel; ++i)
-		*dst_row++ = pixel[i];
+	    for (size_t x = 0; x < output_width; ++x)
+	    {
+		for (unsigned int i = 0; i < bytes_per_pixel; ++i)
+		    *upscale_line_buffer_pointer++ = src_pointer[i];
+
+		if (upscale_x_deltas[x])
+		    src_pointer += bytes_per_pixel;
+	    }
+	}
+	else
+	{
+	    memcpy(&pixels[y * pitch], &pixels[(y-1) * pitch], output_width * bytes_per_pixel);
 	}
     }
 #else
@@ -241,13 +250,28 @@ void I_InitGraphics(void)
     I_GrabMouse(true);
 
 #ifdef SCALER
-    // Let's create the upscale LUT
-    upscale_lut = malloc(output_width * output_height * sizeof(*upscale_lut));
-    unsigned char **upscale_lut_pointer = upscale_lut;
+    upscale_x_deltas = malloc(output_width);
+    upscale_y_deltas = malloc(output_height);
 
-    for (size_t y = 0; y < output_height; ++y)
-	for (size_t x = 0; x < output_width; ++x)
-	    *upscale_lut_pointer++ = &colored_screen[(((y * SCREENHEIGHT / output_height) * SCREENWIDTH) + (x * SCREENWIDTH / output_width)) * bytes_per_pixel];
+    for (size_t last = 0, i = 0; i < output_height; ++i)
+    {
+	size_t current = i * SCREENHEIGHT / output_height;
+
+	upscale_y_deltas[i] = last != current;
+
+	last = current;
+    }
+
+    for (size_t last = 0, i = 0; i < output_width; ++i)
+    {
+	size_t current = (i + 1) * SCREENWIDTH / output_width;	// The +1 here is deliberate, to avoid distortions at 320x240
+
+	upscale_x_deltas[i] = last != current;
+
+	last = current;
+    }
+
+    upscale_y_deltas[0] = 1;	// Force a redraw on the first line
 #endif
 }
 
