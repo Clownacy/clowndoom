@@ -1762,7 +1762,7 @@ void M_Drawer (void)
     static short	y;
     size_t		i;
     size_t		max;
-    char		string[40];
+    char		string[41];
     size_t		start;
 
     inhelpscreens = false;
