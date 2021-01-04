@@ -38,6 +38,8 @@
 
 #define SCALER
 
+int aspect_ratio_correction;
+
 static unsigned char *colors;
 
 static unsigned int bytes_per_pixel;
@@ -233,11 +235,11 @@ void I_InitGraphics(void)
 	multiply = 4;
 
     output_width = SCREENWIDTH * multiply;
-#ifdef SCALER
-    output_height = SCREENWIDTH * multiply * (3.0/4.0);
-#else
-    output_height = SCREENHEIGHT * multiply;
-#endif
+
+    if (aspect_ratio_correction)
+	output_height = SCREENWIDTH * multiply * 3 / 4;
+    else
+	output_height = SCREENHEIGHT * multiply;
 
     IB_InitGraphics(output_width, output_height, &bytes_per_pixel);
 

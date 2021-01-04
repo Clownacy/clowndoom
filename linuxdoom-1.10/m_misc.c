@@ -202,6 +202,8 @@ extern int	detailLevel;
 
 extern int	screenblocks;
 
+extern int	aspect_ratio_correction;
+
 extern int	showMessages;
 
 // machine-independent sound params
@@ -273,6 +275,7 @@ default_t	defaults[] =
 
     {"screenblocks",&screenblocks, 9, false},
     {"detaillevel",&detailLevel, 0, false},
+    {"aspect_ratio_correction",&aspect_ratio_correction, 0, false},
 
     {"snd_channels",&numChannels, 3, false},
 
