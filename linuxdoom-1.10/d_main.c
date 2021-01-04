@@ -613,7 +613,7 @@ void IdentifyVersion (void)
 	    sprintf(basedefault, "%s/.config/", configdir);
     }
 #endif
-    strcat(basedefault, "doomrc");
+    strcat(basedefault, "clowndoomrc");
 
     if (M_CheckParm ("-shdev"))
     {
