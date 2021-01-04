@@ -263,8 +263,6 @@ void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *by
 #endif
 
     *bytes_per_pixel = surface->format->BytesPerPixel;
-
-    printf("%d\n", surface->format->BytesPerPixel);
 }
 
 

@@ -51,14 +51,6 @@
 
 #include "../doomdef.h"
 
-typedef struct Color
-{
-    unsigned char blue;
-    unsigned char green;
-    unsigned char red;
-    unsigned char x;
-} Color;
-
 static Display*	X_display=0;
 static Window		X_mainWindow;
 static Visual*		X_visual;
@@ -69,9 +61,6 @@ static XVisualInfo	X_visualinfo;
 static XImage*		image;
 static int		X_width;
 static int		X_height;
-
-// Color palette
-static Color	colors[256];
 
 // MIT SHared Memory extension.
 static boolean		doShm;
@@ -84,12 +73,6 @@ static int		X_shmeventtype;
 // Needs an invisible mouse cursor at least.
 static boolean		grabMouse;
 static Cursor		nullCursor;
-
-// Blocky mode,
-// replace each 320x200 pixel with multiply*multiply pixels.
-// According to Dave Taylor, it still is a bonehead thing
-// to use ....
-static int	multiply=1;
 
 
 //
@@ -162,21 +145,6 @@ static int xlatekey(void)
     return rc;
 
 }
-
-void IB_ShutdownGraphics(void)
-{
-  // Detach from X server
-  if (!XShmDetach(X_display, &X_shminfo))
-	    I_Error("XShmDetach() failed in I_ShutdownGraphics()");
-
-  // Release shared memory.
-  shmdt(X_shminfo.shmaddr);
-  shmctl(X_shminfo.shmid, IPC_RMID, 0);
-
-  // Paranoia.
-  image->data = NULL;
-}
-
 
 
 static int	lastmousex = 0;
@@ -326,48 +294,18 @@ void IB_StartTic (void)
 }
 
 
+void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
+{
+    *pixels = (unsigned char*)image->data;
+    *pitch = X_width * 4;
+}
+
+
 //
 // IB_FinishUpdate
 //
 void IB_FinishUpdate (void)
 {
-
-    // scales the screen size before blitting it
-    // also converts the screen to BGRX8888
-    if (multiply == 1)
-    {
-	const unsigned char *src_pointer = screens[0];
-
-	for (size_t y = 0; y < SCREENHEIGHT; ++y)
-	{
-	    Color *dst_pointer = (Color*)&image->data[y*X_width*4];
-
-	    for (size_t x = 0; x < SCREENWIDTH; ++x)
-		*dst_pointer++ = colors[*src_pointer++];
-	}
-    }
-    else
-    {
-	const unsigned char *src_pointer = screens[0];
-
-	for (size_t y = 0; y < SCREENHEIGHT; ++y)
-	{
-	    Color *dst_row = (Color*)&image->data[y*multiply*X_width*4];
-	    Color *dst_pointer = dst_row;
-
-	    for (size_t x = 0; x < SCREENWIDTH; ++x)
-	    {
-		const Color pixel = colors[*src_pointer++];
-
-		for (int i = 0; i < multiply; ++i)
-		    *dst_pointer++ = pixel;
-	    }
-
-	    for (int i = 1; i < multiply; ++i)
-		memcpy(&dst_row[i*X_width], dst_row, X_width*4);
-	}
-    }
-
     if (doShm)
     {
 
@@ -409,19 +347,11 @@ void IB_FinishUpdate (void)
 }
 
 
-//
-// IB_SetPalette
-//
-void IB_SetPalette (const byte* palette)
+void IB_GetColor (unsigned char* bytes, unsigned char red, unsigned char green, unsigned char blue)
 {
-    register int	i;
-
-    for (i=0 ; i<256 ; i++)
-    {
-	colors[i].red = gammatable[usegamma][*palette++];
-	colors[i].green = gammatable[usegamma][*palette++];
-	colors[i].blue = gammatable[usegamma][*palette++];
-    }
+    bytes[0] = blue;
+    bytes[1] = green;
+    bytes[2] = red;
 }
 
 
@@ -535,7 +465,7 @@ static void I_Quit_Wrapper(int dummy)
     I_Quit();
 }
 
-void IB_InitGraphics(void)
+void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *bytes_per_pixel)
 {
 
     char*		displayname;
@@ -557,17 +487,8 @@ void IB_InitGraphics(void)
 
     signal(SIGINT, I_Quit_Wrapper);
 
-    if (M_CheckParm("-2"))
-	multiply = 2;
-
-    if (M_CheckParm("-3"))
-	multiply = 3;
-
-    if (M_CheckParm("-4"))
-	multiply = 4;
-
-    X_width = SCREENWIDTH * multiply;
-    X_height = SCREENHEIGHT * multiply;
+    X_width = screen_width;
+    X_height = screen_height;
 
     // check for command-line display name
     if ( (pnum=M_CheckParm("-disp")) ) // suggest parentheses around assignment
@@ -733,7 +654,24 @@ void IB_InitGraphics(void)
 
     }
 
+    *bytes_per_pixel = 4;
 }
+
+
+void IB_ShutdownGraphics(void)
+{
+  // Detach from X server
+  if (!XShmDetach(X_display, &X_shminfo))
+	    I_Error("XShmDetach() failed in I_ShutdownGraphics()");
+
+  // Release shared memory.
+  shmdt(X_shminfo.shmaddr);
+  shmctl(X_shminfo.shmid, IPC_RMID, 0);
+
+  // Paranoia.
+  image->data = NULL;
+}
+
 
 void IB_GrabMouse(boolean grab)
 {
