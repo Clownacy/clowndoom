@@ -43,7 +43,6 @@
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
 #endif
-static SDL_Surface *window_surface;
 static SDL_Surface *surface;
 
 static SDL_Color colors[256];
@@ -141,8 +140,8 @@ static int xlatekey(SDLKey keysym)
 
 void IB_ShutdownGraphics(void)
 {
-    SDL_FreeSurface(surface);
 #if SDL_MAJOR_VERSION >= 2
+    SDL_FreeSurface(surface);
     SDL_DestroyWindow(window);
 #endif
 
@@ -289,12 +288,11 @@ void IB_FinishUpdate (void)
 #endif
     SDL_UnlockSurface(surface);
 
-    SDL_BlitSurface(surface, NULL, window_surface, NULL);
-
 #if SDL_MAJOR_VERSION >= 2
+    SDL_BlitSurface(surface, NULL, SDL_GetWindowSurface(window), NULL);
     SDL_UpdateWindowSurface(window);
 #else
-    SDL_Flip(window_surface);
+    SDL_Flip(surface);
 #endif
 }
 
@@ -351,18 +349,16 @@ void IB_InitGraphics(void)
     if (window == NULL)
 	I_Error("Could not create SDL window");
 
-    window_surface = SDL_GetWindowSurface(window);
-#else
-    window_surface = SDL_SetVideoMode(output_width, output_height, 0, SDL_SWSURFACE);
-
-    if (window_surface == NULL)
-	I_Error("Could not create SDL window surface");
-#endif
-
     surface = SDL_CreateRGBSurface(SDL_SWSURFACE, output_width, output_height, 8, 0, 0, 0, 0);
 
     if (surface == NULL)
 	I_Error("Could not create SDL surface");
+#else
+    surface = SDL_SetVideoMode(output_width, output_height, 8, SDL_SWSURFACE);
+
+    if (surface == NULL)
+	I_Error("Could not create SDL window surface");
+#endif
 
 #ifdef SCALER
     // Let's create the upscale LUT
