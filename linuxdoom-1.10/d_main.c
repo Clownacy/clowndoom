@@ -610,13 +610,7 @@ void IdentifyVersion (void)
     {
 	configdir = getenv("HOME");
 	if (configdir != NULL)
-	{
 	    sprintf(basedefault, "%s/.config/", configdir);
-	}
-	else
-	{
-	    strcpy(basedefault, "./");
-	}
     }
 #endif
     strcat(basedefault, "doomrc");
