@@ -38,12 +38,11 @@
 
 #define SCALER
 
-// TODO - Dynamically allocate these according to bytes_per_pixel
-static unsigned char colors[256 * 4];
+static unsigned char *colors;
 
 static unsigned int bytes_per_pixel;
 
-static unsigned char colored_screen[SCREENWIDTH * SCREENHEIGHT * 4];
+static unsigned char *colored_screen;
 
 #ifdef SCALER
 static unsigned char *upscale_x_deltas;
@@ -249,7 +248,11 @@ void I_InitGraphics(void)
 
     I_GrabMouse(true);
 
+    colors = malloc(256 * bytes_per_pixel);
+    colored_screen = malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
+
 #ifdef SCALER
+    // Create LUTs for the upscaler
     upscale_x_deltas = malloc(output_width);
     upscale_y_deltas = malloc(output_height);
 
@@ -262,6 +265,8 @@ void I_InitGraphics(void)
 	last = current;
     }
 
+    upscale_y_deltas[0] = 1;	// Force a redraw on the first line
+
     for (size_t last = 0, i = 0; i < output_width; ++i)
     {
 	size_t current = (i + 1) * SCREENWIDTH / output_width;	// The +1 here is deliberate, to avoid distortions at 320x240
@@ -270,8 +275,6 @@ void I_InitGraphics(void)
 
 	last = current;
     }
-
-    upscale_y_deltas[0] = 1;	// Force a redraw on the first line
 #endif
 }
 
