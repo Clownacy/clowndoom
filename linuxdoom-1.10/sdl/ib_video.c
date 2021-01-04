@@ -38,8 +38,6 @@
 
 #include "../ib_video.h"
 
-//#define SCALER
-
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
 #endif

@@ -35,34 +35,10 @@
 
 #include "i_video.h"
 
+#define SCALER
 
-typedef struct Color8Bit
-{
-    unsigned char x[1];
-} Color8Bit;
-
-typedef struct Color16Bit
-{
-    unsigned char x[2];
-} Color16Bit;
-
-typedef struct Color24Bit
-{
-    unsigned char x[3];
-} Color24Bit;
-
-typedef struct Color32Bit
-{
-    unsigned char x[4];
-} Color32Bit;
-
-static union
-{
-    Color8Bit Bit8[256];
-    Color16Bit Bit16[256];
-    Color24Bit Bit24[256];
-    Color32Bit Bit32[256];
-} colors;
+// TODO - Dynamically allocate these according to bytes_per_pixel
+static unsigned char colors[256 * 4];
 
 static unsigned int bytes_per_pixel;
 
@@ -144,45 +120,23 @@ void I_FinishUpdate (void)
 
     // Step 1. Color the screen
     unsigned char *indexed_pixels = screens[0];
-    Color8Bit *colored_screen_8bit = (Color8Bit*)colored_screen;
-    Color16Bit *colored_screen_16bit = (Color16Bit*)colored_screen;
-    Color24Bit *colored_screen_24bit = (Color24Bit*)colored_screen;
-    Color32Bit *colored_screen_32bit = (Color32Bit*)colored_screen;
+    unsigned char *colored_screen_pointer = colored_screen;
 
-    switch (bytes_per_pixel)
+    for (size_t i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
     {
-	case 1:
-	    for (size_t i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
-		*colored_screen_8bit++ = colors.Bit8[*indexed_pixels++];
+	unsigned char *color = &colors[*indexed_pixels++ * bytes_per_pixel];
 
-	    break;
-
-	case 2:
-	    for (size_t i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
-		*colored_screen_16bit++ = colors.Bit16[*indexed_pixels++];
-
-	    break;
-
-	case 3:
-	    for (size_t i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
-		*colored_screen_24bit++ = colors.Bit24[*indexed_pixels++];
-
-	    break;
-
-	case 4:
-	    for (size_t i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
-		*colored_screen_32bit++ = colors.Bit32[*indexed_pixels++];
-
-	    break;
+	for (unsigned int j = 0; j < bytes_per_pixel; ++j)
+	    *colored_screen_pointer++ = color[j];
     }
 
     unsigned char *pixels;
     size_t pitch;
     IB_GetFramebuffer(&pixels, &pitch);
 
-    for (size_t y = 0; y < output_height; ++y)
-	memcpy(&pixels[y * pitch], &colored_screen[y * SCREENWIDTH * bytes_per_pixel], SCREENWIDTH * bytes_per_pixel);
-/*
+//    for (size_t y = 0; y < SCREENHEIGHT; ++y)
+//	memcpy(&pixels[y * pitch], &colored_screen[y * SCREENWIDTH * bytes_per_pixel], SCREENWIDTH * bytes_per_pixel);
+
 #ifdef SCALER
     unsigned char **upscale_lut_pointer = upscale_lut;
 
@@ -192,7 +146,10 @@ void I_FinishUpdate (void)
 
 	for (size_t x = 0; x < output_width; ++x)
 	{
-	    *dst_row++ = **upscale_lut_pointer++;
+	    unsigned char *pixel = *upscale_lut_pointer++;
+
+	    for (unsigned int i = 0; i < bytes_per_pixel; ++i)
+		*dst_row++ = pixel[i];
 	}
     }
 #else
@@ -200,31 +157,32 @@ void I_FinishUpdate (void)
     if (multiply == 1)
     {
 	for (size_t y = 0; y < SCREENHEIGHT; ++y)
-	    memcpy(&pixels[y * pitch], &screens[0][y * SCREENWIDTH], SCREENWIDTH);
+	    memcpy(&pixels[y * pitch], &colored_screen[y * SCREENWIDTH * bytes_per_pixel], SCREENWIDTH * bytes_per_pixel);
     }
     else
     {
-	const unsigned char *src_pointer = screens[0];
+	const unsigned char *src_pointer = colored_screen;
 
 	for (size_t y = 0; y < SCREENHEIGHT; ++y)
 	{
-	    unsigned char *dst_row = &pixels[y * multiply * pitch];
+	    unsigned char *dst_row = &pixels[y * 4 * pitch];
 	    unsigned char *dst_pointer = dst_row;
 
 	    for (size_t x = 0; x < SCREENWIDTH; ++x)
 	    {
-		const unsigned char pixel = *src_pointer++;
-
 		for (int i = 0; i < multiply; ++i)
-		    *dst_pointer++ = pixel;
+		    for (unsigned int j = 0; j < bytes_per_pixel; ++j)
+			*dst_pointer++ = src_pointer[j];
+
+		src_pointer += bytes_per_pixel;
 	    }
 
 	    for (int i = 1; i < multiply; ++i)
-		memcpy(&dst_row[i * SCREENWIDTH * multiply], dst_row, SCREENWIDTH * multiply);
+		memcpy(&dst_row[i * pitch], dst_row, output_width * bytes_per_pixel);
 	}
     }
 #endif
-*/
+
     IB_FinishUpdate();
 }
 
@@ -248,26 +206,7 @@ void I_SetPalette (const byte* palette)
 
     for (i=0 ; i<256 ; i++)
     {
-	switch (bytes_per_pixel)
-	{
-	    case 1:
-		IB_GetColor(colors.Bit8[i].x, gamma[palette[0]], gamma[palette[1]], gamma[palette[2]]);
-		break;
-
-	    case 2:
-		IB_GetColor(colors.Bit16[i].x, gamma[palette[0]], gamma[palette[1]], gamma[palette[2]]);
-		break;
-
-	    case 3:
-		IB_GetColor(colors.Bit24[i].x, gamma[palette[0]], gamma[palette[1]], gamma[palette[2]]);
-		break;
-
-	    case 4:
-		IB_GetColor(colors.Bit32[i].x, gamma[palette[0]], gamma[palette[1]], gamma[palette[2]]);
-		break;
-
-	}
-
+	IB_GetColor(&colors[i * bytes_per_pixel], gamma[palette[0]], gamma[palette[1]], gamma[palette[2]]);
 	palette += 3;
     }
 }
@@ -297,6 +236,10 @@ void I_InitGraphics(void)
     output_height = SCREENHEIGHT * multiply;
 #endif
 
+    IB_InitGraphics(output_width, output_height, &bytes_per_pixel);
+
+    I_GrabMouse(true);
+
 #ifdef SCALER
     // Let's create the upscale LUT
     upscale_lut = malloc(output_width * output_height * sizeof(*upscale_lut));
@@ -304,12 +247,8 @@ void I_InitGraphics(void)
 
     for (size_t y = 0; y < output_height; ++y)
 	for (size_t x = 0; x < output_width; ++x)
-	    *upscale_lut_pointer++ = &screens[0][((y * SCREENHEIGHT / output_height) * SCREENWIDTH) + (x * SCREENWIDTH / output_width)];
+	    *upscale_lut_pointer++ = &colored_screen[(((y * SCREENHEIGHT / output_height) * SCREENWIDTH) + (x * SCREENWIDTH / output_width)) * bytes_per_pixel];
 #endif
-
-    IB_InitGraphics(output_width, output_height, &bytes_per_pixel);
-
-    I_GrabMouse(true);
 }
 
 
