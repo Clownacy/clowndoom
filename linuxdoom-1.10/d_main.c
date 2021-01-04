@@ -563,7 +563,7 @@ void IdentifyVersion (void)
     char*	plutoniawad;
     char*	tntwad;
 
-    const char *home;
+    const char *configdir;
     const char *doomwaddir;
 #ifdef NORMALUNIX
     doomwaddir = getenv("DOOMWADDIR");
@@ -601,13 +601,25 @@ void IdentifyVersion (void)
     sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
 
 #ifdef NORMALUNIX
-    home = getenv("HOME");
-    if (!home)
-      I_Error("Please set $HOME to your home directory");
-    sprintf(basedefault, "%s/.doomrc", home);
-#else
-    strcpy(basedefault, ".doomrc");
+    configdir = getenv("XDG_CONFIG_HOME");
+    if (configdir != NULL)
+    {
+	sprintf(basedefault, "%s/", configdir);
+    }
+    else
+    {
+	configdir = getenv("HOME");
+	if (configdir != NULL)
+	{
+	    sprintf(basedefault, "%s/.config/", configdir);
+	}
+	else
+	{
+	    strcpy(basedefault, "./");
+	}
+    }
 #endif
+    strcat(basedefault, "doomrc");
 
     if (M_CheckParm ("-shdev"))
     {
