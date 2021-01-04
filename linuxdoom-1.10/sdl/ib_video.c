@@ -38,15 +38,12 @@
 
 #include "../ib_video.h"
 
+
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
 #endif
 static SDL_Surface *surface;
 
-
-//
-//  Translates the key currently in X_event
-//
 
 #if SDL_MAJOR_VERSION >= 2
 static int xlatekey(SDL_KeyCode keysym)
@@ -119,21 +116,6 @@ static int xlatekey(SDLKey keysym)
 
     return rc;
 
-}
-
-
-void IB_ShutdownGraphics(void)
-{
-#if SDL_MAJOR_VERSION >= 2
-    SDL_FreeSurface(surface);
-    SDL_DestroyWindow(window);
-#endif
-
-#if SDL_MAJOR_VERSION >= 2
-    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
-#else
-    SDL_QuitSubSystem(SDL_INIT_VIDEO);
-#endif
 }
 
 
@@ -283,6 +265,21 @@ void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *by
     *bytes_per_pixel = surface->format->BytesPerPixel;
 
     printf("%d\n", surface->format->BytesPerPixel);
+}
+
+
+void IB_ShutdownGraphics(void)
+{
+#if SDL_MAJOR_VERSION >= 2
+    SDL_FreeSurface(surface);
+    SDL_DestroyWindow(window);
+#endif
+
+#if SDL_MAJOR_VERSION >= 2
+    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+#else
+    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+#endif
 }
 
 

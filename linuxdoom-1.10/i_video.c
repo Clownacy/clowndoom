@@ -59,20 +59,6 @@ static size_t output_height;
 static int	multiply=1;
 
 
-void I_ShutdownGraphics(void)
-{
-    free(colors);
-    free(colored_screen);
-
-#ifdef SCALER
-    free(upscale_x_deltas);
-    free(upscale_y_deltas);
-#endif
-
-    IB_ShutdownGraphics();
-}
-
-
 //
 // I_StartFrame
 //
@@ -286,6 +272,20 @@ void I_InitGraphics(void)
 	last = current;
     }
 #endif
+}
+
+
+void I_ShutdownGraphics(void)
+{
+    free(colors);
+    free(colored_screen);
+
+#ifdef SCALER
+    free(upscale_x_deltas);
+    free(upscale_y_deltas);
+#endif
+
+    IB_ShutdownGraphics();
 }
 
 

@@ -34,7 +34,7 @@ void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch);
 void IB_FinishUpdate (void);
 void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, unsigned char blue);
 void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *bytes_per_pixel);
-void IB_GrabMouse(boolean);
+void IB_GrabMouse(boolean grab);
 
 
 #endif
