@@ -241,7 +241,7 @@ void I_InitGraphics(void)
     else
 	output_height = SCREENHEIGHT * multiply;
 
-    IB_InitGraphics(output_width, output_height, &bytes_per_pixel);
+    IB_InitGraphics("clowndoom", output_width, output_height, &bytes_per_pixel);
 
     I_GrabMouse(true);
 

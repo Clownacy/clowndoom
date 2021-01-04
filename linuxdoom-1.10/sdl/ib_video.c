@@ -236,7 +236,7 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 }
 
 
-void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *bytes_per_pixel)
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, unsigned int *bytes_per_pixel)
 {
 #if SDL_MAJOR_VERSION >= 2
     SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
@@ -245,7 +245,7 @@ void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *by
 #endif
 
 #if SDL_MAJOR_VERSION >= 2
-    window = SDL_CreateWindow("", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, 0);
+    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, 0);
 
     if (window == NULL)
 	I_Error("Could not create SDL window");
@@ -256,6 +256,8 @@ void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *by
 
     if (surface == NULL)
 	I_Error("Could not create SDL window surface");
+
+    SDL_WM_SetCaption(title, title);
 #endif
 
     *bytes_per_pixel = surface->format->BytesPerPixel;

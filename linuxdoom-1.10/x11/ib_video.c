@@ -465,7 +465,7 @@ static void I_Quit_Wrapper(int dummy)
     I_Quit();
 }
 
-void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *bytes_per_pixel)
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, unsigned int *bytes_per_pixel)
 {
 
     char*		displayname;
@@ -653,6 +653,8 @@ void IB_InitGraphics(size_t screen_width, size_t screen_height, unsigned int *by
     				X_width*4 );
 
     }
+
+    XStoreName(X_display, X_mainWindow, title);
 
     *bytes_per_pixel = 4;
 }
