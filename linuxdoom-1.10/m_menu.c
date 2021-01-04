@@ -1773,12 +1773,12 @@ void M_Drawer (void)
     {
 	start = 0;
 	y = 100 - M_StringHeight(messageString)/2;
-	while(*(messageString+start))
+	while(messageString[start] != '\0')
 	{
 	    for (i = 0;i < strlen(messageString+start);i++)
-		if (*(messageString+start+i) == '\n')
+		if (messageString[start+i] == '\n')
 		{
-		    memset(string,0,40);
+		    memset(string,0,sizeof(string));
 		    strncpy(string,messageString+start,i);
 		    start += i+1;
 		    break;
