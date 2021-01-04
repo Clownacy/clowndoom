@@ -972,7 +972,7 @@ void G_ScreenShot (void)
 
 
 // DOOM Par Times
-int pars[4][10] = 
+int pars[5][10] = 
 { 
     {0}, 
     {0,30,75,120,90,165,180,180,30,165}, 
@@ -1111,7 +1111,7 @@ void G_DoCompleted (void)
     wminfo.maxfrags = 0; 
     if ( gamemode == commercial )
 	wminfo.partime = 35*cpars[gamemap-1]; 
-    else
+    else if ( gameepisode < 4 )
 	wminfo.partime = 35*pars[gameepisode][gamemap]; 
     wminfo.pnum = consoleplayer; 
  
