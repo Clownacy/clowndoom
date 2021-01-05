@@ -86,23 +86,23 @@ OBJS= \
 
 ifeq ($(SDL),2)
   OBJS+= \
-    $(O)/sdl/ib_system.o \
-    $(O)/sdl/ib_video.o
+    $(O)/ib_system/sdl.o \
+    $(O)/ib_video/sdl.o
 
   CFLAGS_ALL+=$(shell pkg-config --cflags sdl2)
   LIBS+=$(shell pkg-config --libs sdl2)
 else
   ifeq ($(SDL),1)
     OBJS+= \
-      $(O)/sdl/ib_system.o \
-      $(O)/sdl/ib_video.o
+      $(O)/ib_system/sdl.o \
+      $(O)/ib_video/sdl.o
 
     CFLAGS_ALL+=$(shell pkg-config --cflags sdl)
     LIBS+=$(shell pkg-config --libs sdl)
   else
     OBJS+= \
-      $(O)/x11/ib_system.o \
-      $(O)/x11/ib_video.o
+      $(O)/ib_system/posix.o \
+      $(O)/ib_video/xlib.o
 
     LIBS+=-lXext -lX11 -lnsl
   endif
