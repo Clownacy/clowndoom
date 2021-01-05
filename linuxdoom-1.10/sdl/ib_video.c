@@ -46,7 +46,7 @@ static SDL_Surface *surface;
 
 
 #if SDL_MAJOR_VERSION >= 2
-static int xlatekey(SDL_KeyCode keysym)
+static int xlatekey(SDL_Keycode keysym)
 #else
 static int xlatekey(SDLKey keysym)
 #endif
