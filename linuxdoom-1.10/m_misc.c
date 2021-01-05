@@ -241,8 +241,6 @@ default_t	defaults[] =
     {"novert",&novert, 0, false},
     {"always_run",&always_run, 0, false},
     
-
-#ifdef NORMALUNIX
     {"key_right",&key_right, KEY_RIGHTARROW, false},
     {"key_left",&key_left, KEY_LEFTARROW, false},
     {"key_up",&key_up, KEY_UPARROW, false},
@@ -255,8 +253,6 @@ default_t	defaults[] =
     {"key_strafe",&key_strafe, KEY_RALT, false},
     {"key_speed",&key_speed, KEY_RSHIFT, false},
     
-#endif
-
 //#ifdef LINUX
 //    {"mousedev", (int*)&mousedev, (size_t)"/dev/ttyS0", true},
 //    {"mousetype", (int*)&mousetype, (size_t)"microsoft", true},
