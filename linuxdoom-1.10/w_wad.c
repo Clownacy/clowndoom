@@ -168,6 +168,7 @@ void W_AddFile (const char *filename)
     if (singlelump)
     {
 	// single lump file
+	singleinfo.handle = handle;
 	singleinfo.position = 0;
 	singleinfo.size = filelength(handle);
 	ExtractFileBase (filename, singleinfo.name);
