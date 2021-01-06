@@ -776,12 +776,20 @@ S_AdjustSoundParams
     }
     else if (gamemode != commercial && gamemap == 8)
     {
-	if (approx_dist > S_CLIPPING_DIST)
-	    approx_dist = S_CLIPPING_DIST;
+	// See https://doomwiki.org/wiki/Sound_effects_behave_differently_on_level_8
+	if (snd_SfxVolume <= 15)
+	{
+	    *vol = snd_SfxVolume;
+	}
+	else
+	{
+	    if (approx_dist > S_CLIPPING_DIST)
+		approx_dist = S_CLIPPING_DIST;
 
-	*vol = 15+ ((snd_SfxVolume-15)
-		    *((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
-	    / S_ATTENUATOR;
+	    *vol = 15+ ((snd_SfxVolume-15)
+			*((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
+		/ S_ATTENUATOR;
+	}
     }
     else
     {
