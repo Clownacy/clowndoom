@@ -59,26 +59,32 @@ const char*	e2text = E2TEXT;
 const char*	e3text = E3TEXT;
 const char*	e4text = E4TEXT;
 
-const char*	c1text = C1TEXT;
-const char*	c2text = C2TEXT;
-const char*	c3text = C3TEXT;
-const char*	c4text = C4TEXT;
-const char*	c5text = C5TEXT;
-const char*	c6text = C6TEXT;
+const char* ctext[] = {
+    C1TEXT,
+    C2TEXT,
+    C3TEXT,
+    C4TEXT,
+    C5TEXT,
+    C6TEXT
+};
 
-const char*	p1text = P1TEXT;
-const char*	p2text = P2TEXT;
-const char*	p3text = P3TEXT;
-const char*	p4text = P4TEXT;
-const char*	p5text = P5TEXT;
-const char*	p6text = P6TEXT;
+const char* ptext[] = {
+    P1TEXT,
+    P2TEXT,
+    P3TEXT,
+    P4TEXT,
+    P5TEXT,
+    P6TEXT
+};
 
-const char*	t1text = T1TEXT;
-const char*	t2text = T2TEXT;
-const char*	t3text = T3TEXT;
-const char*	t4text = T4TEXT;
-const char*	t5text = T5TEXT;
-const char*	t6text = T6TEXT;
+const char* ttext[] = {
+    T1TEXT,
+    T2TEXT,
+    T3TEXT,
+    T4TEXT,
+    T5TEXT,
+    T6TEXT
+};
 
 const char*	finaletext;
 const char*	finaleflat;
@@ -93,6 +99,8 @@ void	F_CastDrawer (void);
 //
 void F_StartFinale (void)
 {
+    unsigned int finaletextindex = 0;
+
     gameaction = ga_nothing;
     gamestate = GS_FINALE;
     viewactive = false;
@@ -145,32 +153,49 @@ void F_StartFinale (void)
 	  {
 	    case 6:
 	      finaleflat = "SLIME16";
-	      finaletext = c1text;
+	      finaletextindex = 0;
 	      break;
 	    case 11:
 	      finaleflat = "RROCK14";
-	      finaletext = c2text;
+	      finaletextindex = 1;
 	      break;
 	    case 20:
 	      finaleflat = "RROCK07";
-	      finaletext = c3text;
+	      finaletextindex = 2;
 	      break;
 	    case 30:
 	      finaleflat = "RROCK17";
-	      finaletext = c4text;
+	      finaletextindex = 3;
 	      break;
 	    case 15:
 	      finaleflat = "RROCK13";
-	      finaletext = c5text;
+	      finaletextindex = 4;
 	      break;
 	    case 31:
 	      finaleflat = "RROCK19";
-	      finaletext = c6text;
+	      finaletextindex = 5;
 	      break;
 	    default:
 	      // Ouch.
 	      break;
 	  }
+
+	  switch (gamemission)
+	  {
+	    case doom2:
+	      finaletext = ctext[finaletextindex];
+	      break;
+	    case pack_tnt:
+	      finaletext = ttext[finaletextindex];
+	      break;
+	    case pack_plut:
+	      finaletext = ptext[finaletextindex];
+	      break;
+	    default:
+	      // Ouch.
+	      break;
+	  }
+
 	  break;
       }	
 
@@ -179,7 +204,7 @@ void F_StartFinale (void)
       default:
 	S_ChangeMusic(mus_read_m, true);
 	finaleflat = "F_SKY1"; // Not used anywhere else.
-	finaletext = c1text;  // FIXME - other text, music?
+	finaletext = ctext[0];  // FIXME - other text, music?
 	break;
     }
     
