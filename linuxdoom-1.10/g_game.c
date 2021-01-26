@@ -69,7 +69,7 @@
 #include "g_game.h"
 
 
-#define SAVEGAMESIZE	0x2c000
+#define SAVEGAMESIZE	(SCREENWIDTH*SCREENHEIGHT*4*2)
 #define SAVESTRINGSIZE	24
 
 
