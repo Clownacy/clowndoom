@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.19)
 
 project(clowndoom LANGUAGES C)
 
+set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, and SDL2")
+
 add_executable(clowndoom
 	"linuxdoom-1.10/am_map.c"
 	"linuxdoom-1.10/am_map.h"
@@ -129,22 +131,49 @@ add_executable(clowndoom
 	"linuxdoom-1.10/w_wad.c"
 	"linuxdoom-1.10/w_wad.h"
 	"linuxdoom-1.10/z_zone.c"
-	"linuxdoom-1.10/ib_system/sdl.c"
-	"linuxdoom-1.10/ib_video/sdl.c"
 )
 
 target_compile_definitions(clowndoom PRIVATE NORMALUNIX LINUX)
 
 set_target_properties(clowndoom PROPERTIES C_STANDARD 99)
 
-# SDL2
-find_package(SDL2 REQUIRED)
+# Handle backend
+if(BACKEND STREQUAL "Xlib")
+    target_sources(clowndoom PRIVATE
+        "linuxdoom-1.10/ib_system/posix.c"
+        "linuxdoom-1.10/ib_video/xlib.c"
+    )
 
-#if(sdl2-NOTFOUND)
-#  add_subdirectory("external/sdl2" EXCLUDE_FROM_ALL)
-#endif()
+    target_link_libraries(clowndoom PRIVATE Xext X11)
+elseif(BACKEND STREQUAL "SDL1")
+    target_sources(clowndoom PRIVATE
+        "linuxdoom-1.10/ib_system/sdl.c"
+        "linuxdoom-1.10/ib_video/sdl.c"
+    )
 
-target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+    find_package(SDL REQUIRED)
+
+    #if(SDL-NOTFOUND)
+    #  add_subdirectory("external/sdl1" EXCLUDE_FROM_ALL)
+    #endif()
+
+    target_link_libraries(clowndoom PRIVATE SDL::SDL)
+elseif(BACKEND STREQUAL "SDL2")
+    target_sources(clowndoom PRIVATE
+        "linuxdoom-1.10/ib_system/sdl.c"
+        "linuxdoom-1.10/ib_video/sdl.c"
+    )
+
+    find_package(SDL2 REQUIRED)
+
+    #if(SDL2-NOTFOUND)
+    #  add_subdirectory("external/sdl2" EXCLUDE_FROM_ALL)
+    #endif()
+
+    target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+else()
+    message(FATAL_ERROR "Invalid BACKEND")
+endif()
 
 # Linux stuff
 target_link_libraries(clowndoom PRIVATE m dl pthread)
