@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.19)
 
 project(clowndoom LANGUAGES C)
 
-set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, and SDL2")
-option(WILDMIDI "Render MIDI using WildMIDI" ON)
+set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, or SDL2")
+option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 
 add_executable(clowndoom
 	"linuxdoom-1.10/am_map.c"
@@ -138,6 +138,7 @@ target_compile_definitions(clowndoom PRIVATE NORMALUNIX LINUX)
 
 set_target_properties(clowndoom PROPERTIES C_STANDARD 99)
 
+# Handling linking/building WildMIDI
 if(WILDMIDI)
 	target_compile_definitions(clowndoom PRIVATE WILDMIDI)
 
@@ -159,7 +160,7 @@ if(WILDMIDI)
 	target_link_libraries(clowndoom PRIVATE libwildmidi_static)
 endif()
 
-# Handle backend
+# Handle backends
 if(BACKEND STREQUAL "Xlib")
 	target_sources(clowndoom PRIVATE
 		"linuxdoom-1.10/ib_system/posix.c"
@@ -190,7 +191,7 @@ elseif(BACKEND STREQUAL "SDL2")
 
 	find_package(SDL2 REQUIRED)
 
-	# TODO - Add support for in-tree builds (I don't think it's
+	# TODO - Add support for in-tree builds
 	#if(NOT SDL2-FOUND)
 	#  add_subdirectory("external/sdl2" EXCLUDE_FROM_ALL)
 	#endif()
@@ -202,4 +203,4 @@ endif()
 
 # TODO - Get rid of this for non-Linux builds
 # Linux stuff
-target_link_libraries(clowndoom PRIVATE m dl pthread)
+target_link_libraries(clowndoom PRIVATE m ${CMAKE_DL_LIBS} pthread)
