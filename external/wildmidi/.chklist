@@ -1,0 +1,19 @@
+Edit files for version number (and possibly other changes) :
+- djgpp/config.h
+- os2/config.h
+- amiga/config.h
+- android/jni/config.h
+- macosx/config.h
+- macosx/Makefile
+- mingw/config.h
+
+Edit files for possibly other changes:
+- djgpp/Makefile
+- os2/makefile
+- amiga/Makefile*
+- amiga/*.cfg
+- android/*
+- android/jni/*.mk
+- macosx/Makefile (make sure to update dylib versions here..)
+- mingw/makefile
+

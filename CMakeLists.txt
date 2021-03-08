@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.19)
 project(clowndoom LANGUAGES C)
 
 set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, and SDL2")
+option(WILDMIDI "Render MIDI using WildMIDI" ON)
 
 add_executable(clowndoom
 	"linuxdoom-1.10/am_map.c"
@@ -137,43 +138,68 @@ target_compile_definitions(clowndoom PRIVATE NORMALUNIX LINUX)
 
 set_target_properties(clowndoom PROPERTIES C_STANDARD 99)
 
-# Handle backend
-if(BACKEND STREQUAL "Xlib")
-    target_sources(clowndoom PRIVATE
-        "linuxdoom-1.10/ib_system/posix.c"
-        "linuxdoom-1.10/ib_video/xlib.c"
-    )
+if(WILDMIDI)
+	target_compile_definitions(clowndoom PRIVATE WILDMIDI)
 
-    target_link_libraries(clowndoom PRIVATE Xext X11)
-elseif(BACKEND STREQUAL "SDL1")
-    target_sources(clowndoom PRIVATE
-        "linuxdoom-1.10/ib_system/sdl.c"
-        "linuxdoom-1.10/ib_video/sdl.c"
-    )
+	# TODO - Add support for system library
+	#find_package(WildMidi)
 
-    find_package(SDL REQUIRED)
+	#if(NOT WildMidi-FOUND)
+		# Set and hide these internal options
+		set(WANT_ALSA OFF CACHE INTERNAL "" FORCE)
+		set(WANT_DEVTEST OFF CACHE INTERNAL "" FORCE)
+		set(WANT_OPENAL OFF CACHE INTERNAL "" FORCE)
+		set(WANT_OSS OFF CACHE INTERNAL "" FORCE)
+		set(WANT_OSX_DEPLOYMENT OFF CACHE INTERNAL "" FORCE)
+		set(WANT_STATIC ON CACHE INTERNAL "" FORCE)
 
-    #if(SDL-NOTFOUND)
-    #  add_subdirectory("external/sdl1" EXCLUDE_FROM_ALL)
-    #endif()
+		add_subdirectory("external/wildmidi" EXCLUDE_FROM_ALL)
+	#endif()
 
-    target_link_libraries(clowndoom PRIVATE SDL::SDL)
-elseif(BACKEND STREQUAL "SDL2")
-    target_sources(clowndoom PRIVATE
-        "linuxdoom-1.10/ib_system/sdl.c"
-        "linuxdoom-1.10/ib_video/sdl.c"
-    )
-
-    find_package(SDL2 REQUIRED)
-
-    #if(SDL2-NOTFOUND)
-    #  add_subdirectory("external/sdl2" EXCLUDE_FROM_ALL)
-    #endif()
-
-    target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
-else()
-    message(FATAL_ERROR "Invalid BACKEND")
+	target_link_libraries(clowndoom PRIVATE libwildmidi_static)
 endif()
 
+# Handle backend
+if(BACKEND STREQUAL "Xlib")
+	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_system/posix.c"
+		"linuxdoom-1.10/ib_video/xlib.c"
+	)
+
+	target_link_libraries(clowndoom PRIVATE Xext X11)
+elseif(BACKEND STREQUAL "SDL1")
+	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_system/sdl.c"
+		"linuxdoom-1.10/ib_video/sdl.c"
+	)
+
+	find_package(SDL REQUIRED)
+
+	# TODO - Add support for in-tree builds (I don't think it's
+	# actually possible with SDL1 since it lacks a CMake build system)
+	#if(NOT SDL-FOUND)
+	#  add_subdirectory("external/sdl1" EXCLUDE_FROM_ALL)
+	#endif()
+
+	target_link_libraries(clowndoom PRIVATE SDL::SDL)
+elseif(BACKEND STREQUAL "SDL2")
+	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_system/sdl.c"
+		"linuxdoom-1.10/ib_video/sdl.c"
+	)
+
+	find_package(SDL2 REQUIRED)
+
+	# TODO - Add support for in-tree builds (I don't think it's
+	#if(NOT SDL2-FOUND)
+	#  add_subdirectory("external/sdl2" EXCLUDE_FROM_ALL)
+	#endif()
+
+	target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+else()
+	message(FATAL_ERROR "Invalid BACKEND")
+endif()
+
+# TODO - Get rid of this for non-Linux builds
 # Linux stuff
 target_link_libraries(clowndoom PRIVATE m dl pthread)
