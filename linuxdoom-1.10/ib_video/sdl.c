@@ -239,7 +239,7 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 }
 
 
-void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, unsigned int *bytes_per_pixel)
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel)
 {
 #if SDL_MAJOR_VERSION >= 2
     SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);

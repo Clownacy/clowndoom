@@ -40,7 +40,7 @@ int aspect_ratio_correction;
 
 static unsigned char *colors;
 
-static unsigned int bytes_per_pixel;
+static size_t bytes_per_pixel;
 
 static unsigned char *colored_screen;
 
@@ -111,7 +111,7 @@ void I_FinishUpdate (void)
     {
 	unsigned char *color = &colors[*indexed_pixels++ * bytes_per_pixel];
 
-	for (unsigned int j = 0; j < bytes_per_pixel; ++j)
+	for (size_t j = 0; j < bytes_per_pixel; ++j)
 	    *colored_screen_pointer++ = color[j];
     }
 
@@ -129,7 +129,7 @@ void I_FinishUpdate (void)
 
 	    for (size_t x = 0; x < output_width; ++x)
 	    {
-		for (unsigned int i = 0; i < bytes_per_pixel; ++i)
+		for (size_t i = 0; i < bytes_per_pixel; ++i)
 		    *upscale_line_buffer_pointer++ = src_pointer[i];
 
 		if (upscale_x_deltas[x])
