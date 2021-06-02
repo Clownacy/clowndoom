@@ -60,9 +60,9 @@ static size_t           lengths[NUMSFX];
 
 
 // The channel step amount...
-static unsigned long     channelstep[NUM_CHANNELS];
+static unsigned long    channelstep[NUM_CHANNELS];
 // ... and a 0.16 bit remainder of last step.
-static unsigned long     channelstepremainder[NUM_CHANNELS];
+static unsigned long    channelstepremainder[NUM_CHANNELS];
 
 // The channel data pointers, start and end.
 static unsigned char*   channels[NUM_CHANNELS];
@@ -84,14 +84,14 @@ static int              channelhandles[NUM_CHANNELS];
 static int              channelids[NUM_CHANNELS];
 
 // Hardware left and right channel volume lookup.
-static int*             channelleftvol_lookup[NUM_CHANNELS];
-static int*             channelrightvol_lookup[NUM_CHANNELS];
+static short*           channelleftvol_lookup[NUM_CHANNELS];
+static short*           channelrightvol_lookup[NUM_CHANNELS];
 
 // Pitch to stepping lookup.
-static int              steptable[256];
+static long             steptable[256];
 
 // Volume lookups.
-static int              vol_lookup[128][256];
+static short            vol_lookup[128][256];
 
 
 // Music stuff
@@ -507,7 +507,7 @@ void I_StartupSound(void)
 
     // This table provides step widths for pitch parameters.
     for (i=0 ; i<256 ; ++i)
-        steptable[i] = (int)(pow(2.0, ((i-128)/64.0))*65536.0);
+        steptable[i] = (long)(pow(2.0, ((i-128)/64.0))*65536.0);
 
     // Generates volume lookup tables
     //  which also turn the unsigned samples
