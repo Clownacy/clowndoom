@@ -60,9 +60,9 @@ static size_t           lengths[NUMSFX];
 
 
 // The channel step amount...
-static unsigned int     channelstep[NUM_CHANNELS];
+static unsigned long     channelstep[NUM_CHANNELS];
 // ... and a 0.16 bit remainder of last step.
-static unsigned int     channelstepremainder[NUM_CHANNELS];
+static unsigned long     channelstepremainder[NUM_CHANNELS];
 
 // The channel data pointers, start and end.
 static unsigned char*   channels[NUM_CHANNELS];
@@ -128,8 +128,8 @@ static void Callback(ma_device* device, void* output_buffer_void, const void* in
     // Mix current sound data.
     // Data, from raw sound, for right and left.
     register unsigned char sample;
-    register int           dl;
-    register int           dr;
+    register long          dl;
+    register long          dr;
 
     // Pointers in mixbuffer.
     short*                 output_buffer;
