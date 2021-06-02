@@ -160,54 +160,43 @@ static void Callback(ma_device* device, void* output_buffer_void, const void* in
 
     output_buffer = (short*)output_buffer_void;
 
-    // Determine end
-    output_buffer_end = output_buffer + frames_to_do*2;
+    // Determine where the sample ends
+    output_buffer_end = output_buffer + frames_to_do * 2;
 
-    // Mix sounds into the mixing buffer.
-    // Loop over step*SAMPLECOUNT,
-    //  that is 512 values for two channels.
+    // Mix sounds into the mix buffer
     while (output_buffer != output_buffer_end)
     {
-        // Reset left/right value.
+        // Obtain base values for mixing
         dl = output_buffer[0];
         dr = output_buffer[1];
 
-        // Love thy L2 chache - made this a loop.
-        // Now more channels could be set at compile time
-        //  as well. Thus loop those  channels.
         for (chan = 0; chan < NUM_CHANNELS; ++chan)
         {
-            // Check channel, if active.
+            // Check if channel is playing anything
             if (channels[chan] != NULL)
             {
+                // Get interpolated sample
                 interpolation_scale = channelstepremainder[chan] >> 8;
-                // Get the interpolated sample.
                 sample = ((channels[chan][0] * (0x100 - interpolation_scale)) + (channels[chan][1] * interpolation_scale)) >> 8;
-                // Add left and right part
-                //  for this channel (sound)
-                //  to the current data.
-                // Adjust volume accordingly.
+
+                // Add volume-adjusted sample to mix buffer
                 dl += channelleftvol_lookup[chan][sample];
                 dr += channelrightvol_lookup[chan][sample];
-                // Increment index ???
+
+                // Increment sample position
                 channelstepremainder[chan] += channelstep[chan];
-                // MSB is next sample???
                 channels[chan] += channelstepremainder[chan] >> 16;
-                // Limit to LSB???
                 channelstepremainder[chan] &= 0xFFFF;
 
-                // Check whether we are done.
+                // Disable channel if sound has finished
                 if (channels[chan] >= channelsend[chan])
                     channels[chan] = NULL;
             }
         }
 
-        // Clamp to range. Left hardware channel.
-        // Has been char instead of short.
-        // if (dl > 127) *leftout = 127;
-        // else if (dl < -128) *leftout = -128;
-        // else *leftout = dl;
+        // Clamp mixed samples to 16-bit range and write them back to the buffer
 
+        // Left channel
         if (dl > 0x7FFF)
             *output_buffer++ = 0x7FFF;
         else if (dl < -0x7FFF)
@@ -215,7 +204,7 @@ static void Callback(ma_device* device, void* output_buffer_void, const void* in
         else
             *output_buffer++ = dl;
 
-        // Same for right hardware channel.
+        // Right channel
         if (dr > 0x7FFF)
             *output_buffer++ = 0x7FFF;
         else if (dr < -0x7FFF)
