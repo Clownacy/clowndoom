@@ -208,18 +208,18 @@ static void Callback(ma_device* device, void* output_buffer_void, const void* in
         // else if (dl < -128) *leftout = -128;
         // else *leftout = dl;
 
-        if (dl > 0x7fff)
-            *output_buffer++ = 0x7fff;
-        else if (dl < -0x7fff)
-            *output_buffer++ = -0x7fff;
+        if (dl > 0x7FFF)
+            *output_buffer++ = 0x7FFF;
+        else if (dl < -0x7FFF)
+            *output_buffer++ = -0x7FFF;
         else
             *output_buffer++ = dl;
 
         // Same for right hardware channel.
-        if (dr > 0x7fff)
-            *output_buffer++ = 0x7fff;
-        else if (dr < -0x7fff)
-            *output_buffer++ = -0x7fff;
+        if (dr > 0x7FFF)
+            *output_buffer++ = 0x7FFF;
+        else if (dr < -0x7FFF)
+            *output_buffer++ = -0x7FFF;
         else
             *output_buffer++ = dr;
     }
