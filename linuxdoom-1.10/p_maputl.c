@@ -563,7 +563,10 @@ PIT_AddLineIntercepts (line_t* ld)
     int			s2;
     fixed_t		frac;
     divline_t		dl;
-	
+
+    if (intercept_p == intercepts + MAXINTERCEPTS)
+	return true;	// intercept array full
+
     // avoid precision problems with two routines
     if ( trace.dx > FRACUNIT*16
 	 || trace.dy > FRACUNIT*16
@@ -626,7 +629,10 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
     divline_t		dl;
     
     fixed_t		frac;
-	
+
+    if (intercept_p == intercepts + MAXINTERCEPTS)
+	return true;		// intercept array full
+
     tracepositive = (trace.dx ^ trace.dy)>0;
 		
     // check a corner to corner crossection for hit
