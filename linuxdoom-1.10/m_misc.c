@@ -212,7 +212,7 @@ extern	int	numChannels;
 extern const char*	wildmidi_config_path;
 
 
-//#ifdef LINUX
+//#ifdef __linux__
 //const char*		mousetype;
 //const char*		mousedev;
 //#endif
@@ -253,7 +253,7 @@ default_t	defaults[] =
     {"key_strafe",&key_strafe, KEY_RALT, false},
     {"key_speed",&key_speed, KEY_RSHIFT, false},
     
-//#ifdef LINUX
+//#ifdef __linux__
 //    {"mousedev", (int*)&mousedev, (size_t)"/dev/ttyS0", true},
 //    {"mousetype", (int*)&mousetype, (size_t)"microsoft", true},
 //#endif

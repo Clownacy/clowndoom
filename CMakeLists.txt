@@ -136,8 +136,6 @@ add_executable(clowndoom
 	"linuxdoom-1.10/z_zone.c"
 )
 
-target_compile_definitions(clowndoom PRIVATE NORMALUNIX LINUX)
-
 set_target_properties(clowndoom PROPERTIES C_STANDARD 99)
 
 # Handling linking/building WildMIDI

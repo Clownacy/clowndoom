@@ -8,7 +8,7 @@ else
   CFLAGS=-ggdb3 -Og -fsanitize=address
 endif
 
-CFLAGS_ALL=-Wall -Wextra -Wpedantic -DNORMALUNIX -DLINUX $(CFLAGS)
+CFLAGS_ALL=-Wall -Wextra -Wpedantic $(CFLAGS)
 LIBS=-lm -ldl -lpthread
 
 ifeq ($(WILDMIDI),1)

@@ -34,7 +34,7 @@
 #include <stdlib.h>
 
 
-#ifdef NORMALUNIX
+#ifdef __unix__
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -142,6 +142,22 @@ void D_DoAdvanceDemo (void);
 event_t         events[MAXEVENTS];
 int             eventhead;
 int 		eventtail;
+
+
+static int FileExists(const char* const filename)
+{
+    FILE* const file = fopen(filename, "rb");
+
+    if (file != NULL)
+    {
+        fclose(file);
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
 
 
 //
@@ -563,9 +579,11 @@ void IdentifyVersion (void)
     char*	plutoniawad;
     char*	tntwad;
 
+#ifdef __unix__
     const char *configdir;
+#endif
     const char *doomwaddir;
-#ifdef NORMALUNIX
+#ifdef __unix__
     doomwaddir = getenv("DOOMWADDIR");
     if (!doomwaddir)
 #endif
@@ -600,7 +618,7 @@ void IdentifyVersion (void)
     doom2fwad = malloc(strlen(doomwaddir)+1+10+1);
     sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
 
-#ifdef NORMALUNIX
+#ifdef __unix__
     configdir = getenv("XDG_CONFIG_HOME");
     if (configdir != NULL)
     {
@@ -612,6 +630,8 @@ void IdentifyVersion (void)
 	if (configdir != NULL)
 	    sprintf(basedefault, "%s/.config/", configdir);
     }
+#else
+    basedefault[0] = '\0';
 #endif
     strcat(basedefault, "clowndoomrc");
 
@@ -653,7 +673,7 @@ void IdentifyVersion (void)
 	D_AddFile (DEVMAPS"cdata/pnames.lmp");
 	strcpy (basedefault,DEVDATA"default.cfg");
     }
-    else if ( !access (doom2fwad,R_OK) )
+    else if ( FileExists (doom2fwad) )
     {
 	gamemode = commercial;
 	gamemission = doom2;
@@ -663,37 +683,37 @@ void IdentifyVersion (void)
 	printf("French version\n");
 	D_AddFile (doom2fwad);
     }
-    else if ( !access (doom2wad,R_OK) )
+    else if ( FileExists (doom2wad) )
     {
 	gamemode = commercial;
 	gamemission = doom2;
 	D_AddFile (doom2wad);
     }
-    else if ( !access (plutoniawad, R_OK ) )
+    else if ( FileExists (plutoniawad ) )
     {
       gamemode = commercial;
       gamemission = pack_plut;
       D_AddFile (plutoniawad);
     }
-    else if ( !access ( tntwad, R_OK ) )
+    else if ( FileExists ( tntwad ) )
     {
       gamemode = commercial;
       gamemission = pack_tnt;
       D_AddFile (tntwad);
     }
-    else if ( !access (doomuwad,R_OK) )
+    else if ( FileExists (doomuwad) )
     {
       gamemode = retail;
       gamemission = doom;
       D_AddFile (doomuwad);
     }
-    else if ( !access (doomwad,R_OK) )
+    else if ( FileExists (doomwad) )
     {
       gamemode = registered;
       gamemission = doom;
       D_AddFile (doomwad);
     }
-    else if ( !access (doom1wad,R_OK) )
+    else if ( FileExists (doom1wad) )
     {
       gamemode = shareware;
       gamemission = doom;
