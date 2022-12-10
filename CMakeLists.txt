@@ -39,6 +39,8 @@ add_executable(clowndoom
 	"linuxdoom-1.10/hu_lib.h"
 	"linuxdoom-1.10/hu_stuff.c"
 	"linuxdoom-1.10/hu_stuff.h"
+	"linuxdoom-1.10/ib_sound.c"
+	"linuxdoom-1.10/ib_sound.h"
 	"linuxdoom-1.10/ib_system.h"
 	"linuxdoom-1.10/ib_video.h"
 	"linuxdoom-1.10/i_main.c"

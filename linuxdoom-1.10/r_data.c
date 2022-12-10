@@ -39,9 +39,7 @@
 #include "doomstat.h"
 #include "r_sky.h"
 
-#ifdef LINUX
-#include  <alloca.h>
-#endif
+#include <stdlib.h>
 
 
 #include "r_data.h"
@@ -314,8 +312,7 @@ void R_GenerateLookup (int texnum)
     //  that are covered by more than one patch.
     // Fill in the lump / offset, so columns
     //  with only a single patch are all done.
-    patchcount = (byte *)alloca (texture->width);
-    memset (patchcount, 0, texture->width);
+    patchcount = (byte *)calloc (1, texture->width);
     patch = texture->patches;
 		
     for (i=0 , patch = texture->patches;
@@ -366,6 +363,8 @@ void R_GenerateLookup (int texnum)
 	    texturecompositesize[texnum] += texture->height;
 	}
     }	
+
+    free(patchcount);
 }
 
 
@@ -443,7 +442,7 @@ void R_InitTextures (void)
     names = W_CacheLumpName ("PNAMES", PU_STATIC);
     nummappatches = LONG ( *((int *)names) );
     name_p = names+4;
-    patchlookup = alloca (nummappatches*sizeof(*patchlookup));
+    patchlookup = malloc (nummappatches*sizeof(*patchlookup));
     
     for (i=0 ; i<nummappatches ; i++)
     {
@@ -552,6 +551,8 @@ void R_InitTextures (void)
 		
 	totalwidth += texture->width;
     }
+
+    free(patchlookup);
 
     Z_Free (maptex1);
     if (maptex2)
@@ -754,8 +755,7 @@ void R_PrecacheLevel (void)
 	return;
     
     // Precache flats.
-    flatpresent = alloca(numflats);
-    memset (flatpresent,0,numflats);	
+    flatpresent = calloc(1, numflats);
 
     for (i=0 ; i<numsectors ; i++)
     {
@@ -775,9 +775,10 @@ void R_PrecacheLevel (void)
 	}
     }
     
+    free(flatpresent);
+    
     // Precache textures.
-    texturepresent = alloca(numtextures);
-    memset (texturepresent,0, numtextures);
+    texturepresent = calloc(1, numtextures);
 	
     for (i=0 ; i<numsides ; i++)
     {
@@ -810,9 +811,10 @@ void R_PrecacheLevel (void)
 	}
     }
     
+    free(texturepresent);
+    
     // Precache sprites.
-    spritepresent = alloca(numsprites);
-    memset (spritepresent,0, numsprites);
+    spritepresent = calloc(1, numsprites);
 	
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
@@ -837,6 +839,8 @@ void R_PrecacheLevel (void)
 	    }
 	}
     }
+
+    free(spritepresent);
 }
 
 

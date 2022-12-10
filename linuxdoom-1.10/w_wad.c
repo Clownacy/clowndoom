@@ -52,7 +52,8 @@ void**			lumpcache;
 
 #define strcmpi	strcasecmp
 
-static void strupr (char* s)
+// This was originally called 'strupr', but it conflicted with the standard library so I renamed it.
+static void MakeStringUppercase (char* s)
 {
     while (*s) { *s = toupper(*s); s++; }
 }
@@ -357,7 +358,7 @@ int W_CheckNumForName (const char* name)
     name_upper[8] = '\0';
 
     // case insensitive
-    strupr(name_upper);
+    MakeStringUppercase(name_upper);
 
     // scan backwards so patch lump files take precedence
     lump_p = lumpinfo + numlumps;

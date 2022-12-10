@@ -21,12 +21,6 @@
 #include <stddef.h>
 #include <stdio.h>
 
-#define MINIAUDIO_IMPLEMENTATION
-#define MA_NO_DECODING
-#define MA_NO_ENCODING
-#define MA_NO_GENERATION
-#include "miniaudio.h"
-
 #ifdef WILDMIDI
 #include "wildmidi_lib.h"
 #endif
@@ -35,6 +29,7 @@
 
 #include "i_system.h"
 #include "i_sound.h"
+#include "ib_sound.h"
 #include "m_argv.h"
 #include "m_misc.h"
 #include "w_wad.h"
@@ -44,15 +39,6 @@
 #define NUM_CHANNELS    8
 
 static unsigned int     output_sample_rate;
-
-// miniaudio context
-static ma_context       context;
-
-// miniaudio context
-static ma_mutex         mutex;
-
-// The actual output device.
-static ma_device        audio_device;
 
 
 // The actual lengths of all sound effects.
@@ -123,7 +109,7 @@ static boolean          music_playing;
 //
 // This function currently supports only 16bit.
 //
-static void Callback(ma_device* device, void* output_buffer_void, const void* input_buffer, ma_uint32 frames_to_do)
+static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_data)
 {
     // Mix current sound data.
     // Data, from raw sound, for right and left.
@@ -132,7 +118,6 @@ static void Callback(ma_device* device, void* output_buffer_void, const void* in
     register long          dr;
 
     // Pointers in mixbuffer.
-    short*                 output_buffer;
     short*                 output_buffer_end;
 
     // Mixing channel index.
@@ -143,22 +128,17 @@ static void Callback(ma_device* device, void* output_buffer_void, const void* in
 #endif
     unsigned char          interpolation_scale;
 
-    (void)device;
-    (void)input_buffer;
-
-    ma_mutex_lock(&mutex);
+    (void)user_data;
 
 #ifdef WILDMIDI
     if (music_playing)
     {
         bytes_to_do = frames_to_do * sizeof(short) * 2;
 
-        if ((size_t)WildMidi_GetOutput(music_midi, output_buffer_void, bytes_to_do) < bytes_to_do)
+        if ((size_t)WildMidi_GetOutput(music_midi, (int8_t*)output_buffer, bytes_to_do) < bytes_to_do)
             music_playing = false;
     }
 #endif
-
-    output_buffer = (short*)output_buffer_void;
 
     // Determine where the sample ends
     output_buffer_end = output_buffer + frames_to_do * 2;
@@ -212,8 +192,6 @@ static void Callback(ma_device* device, void* output_buffer_void, const void* in
         else
             *output_buffer++ = dr;
     }
-
-    ma_mutex_unlock(&mutex);
 }
 
 
@@ -354,7 +332,7 @@ int I_StartSound(int id, int vol, int sep, int pitch)
     int oldestnum = 0;
     int slot;
 
-    ma_mutex_lock(&mutex);
+    IB_LockSound();
 
     // Chainsaw troubles.
     // Play these sound effects only one at a time.
@@ -421,7 +399,7 @@ int I_StartSound(int id, int vol, int sep, int pitch)
 
     UpdateSoundParams(slot, vol, sep, pitch);
 
-    ma_mutex_unlock(&mutex);
+    IB_UnlockSound();
 
     return rc;
 }
@@ -437,11 +415,11 @@ void I_StopSound(int handle)
     {
         if (channelhandles[i] == handle)
         {
-	    ma_mutex_lock(&mutex);
+            IB_LockSound();
 
             channels[i] = NULL;
 
-	    ma_mutex_unlock(&mutex);
+            IB_UnlockSound();
             break;
         }
     }
@@ -458,11 +436,11 @@ boolean I_SoundIsPlaying(int handle)
     {
         if (channelhandles[i] == handle)
 	{
-	    ma_mutex_lock(&mutex);
+            IB_LockSound();
 
             boolean playing = channels[i] != NULL;
 
-	    ma_mutex_unlock(&mutex);
+            IB_UnlockSound();
 
 	    return playing;
 	}
@@ -482,11 +460,11 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
     {
         if (channelhandles[i] == handle)
         {
-	    ma_mutex_lock(&mutex);
+            IB_LockSound();
 
             UpdateSoundParams(i, vol, sep, pitch);
 
-	    ma_mutex_unlock(&mutex);
+            IB_UnlockSound();
 
             break;
         }
@@ -495,6 +473,18 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
 
 
 
+
+static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
+{
+    (void)user_data;
+
+    output_sample_rate = _output_sample_rate;
+
+#ifdef WILDMIDI
+    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
+        music_initialised = true;
+#endif
+}
 
 void I_StartupSound(void)
 {
@@ -516,32 +506,7 @@ void I_StartupSound(void)
         for (j=0 ; j<256 ; ++j)
             vol_lookup[i][j] = (i*(j-128)*256)/127;
 
-      //
-     // Set up miniaudio and WildMIDI.
-    //
-
-    ma_context_init(NULL, 0, NULL, &context);
-
-    ma_mutex_init(&mutex);
-
-    ma_device_config config = ma_device_config_init(ma_device_type_playback);
-    config.playback.pDeviceID = NULL;
-    config.playback.format = ma_format_s16;
-    config.playback.channels = 2;
-    config.sampleRate = 0; // Let miniaudio decide what sample rate to use
-    config.dataCallback = Callback;
-    config.pUserData = NULL;
-
-    ma_device_init(&context, &config, &audio_device);
-
-    output_sample_rate = audio_device.sampleRate;
-
-#ifdef WILDMIDI
-    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
-        music_initialised = true;
-#endif
-
-    ma_device_start(&audio_device);
+    IB_StartupSound(StartupCallback, AudioCallback, NULL);
 
       //
      // Cache sounds.
@@ -571,9 +536,7 @@ void I_StartupSound(void)
 
 void I_ShutdownSound(void)
 {
-    ma_device_uninit(&audio_device);
-    ma_mutex_uninit(&mutex);
-    ma_context_uninit(&context);
+    IB_ShutdownSound();
 
 #ifdef WILDMIDI
     if (music_initialised)
@@ -601,12 +564,12 @@ void I_PlaySong(int handle, boolean looping)
 #else
     if (music_initialised)
     {
-        ma_mutex_lock(&mutex);
+        IB_LockSound();
 
         music_playing = true;
         WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
 
-        ma_mutex_unlock(&mutex);
+        IB_UnlockSound();
     }
 #endif
 }
@@ -622,11 +585,11 @@ void I_PauseSong (int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-        ma_mutex_lock(&mutex);
+        IB_LockSound();
 
         music_playing = false;
 
-        ma_mutex_unlock(&mutex);
+        IB_UnlockSound();
     }
 #endif
 }
@@ -642,11 +605,11 @@ void I_ResumeSong (int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-        ma_mutex_lock(&mutex);
+        IB_LockSound();
 
         music_playing = true;
 
-        ma_mutex_unlock(&mutex);
+        IB_UnlockSound();
     }
 #endif
 }
@@ -662,12 +625,12 @@ void I_StopSong(int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-        ma_mutex_lock(&mutex);
+        IB_LockSound();
 
         music_playing = false;
         WildMidi_FastSeek(music_midi, 0);
 
-        ma_mutex_unlock(&mutex);
+        IB_UnlockSound();
     }
 #endif
 }
@@ -683,11 +646,11 @@ void I_UnRegisterSong(int handle)
 #ifdef WILDMIDI
     if (music_initialised)
     {
-        ma_mutex_lock(&mutex);
+        IB_LockSound();
 
         WildMidi_Close(music_midi);
 
-        ma_mutex_unlock(&mutex);
+        IB_UnlockSound();
     }
 #endif
 }
@@ -703,11 +666,11 @@ int I_RegisterSong(const void* data, size_t size)
 #else
     if (music_initialised)
     {
-        ma_mutex_lock(&mutex);
+        IB_LockSound();
 
         music_midi = WildMidi_OpenBuffer((void*)data, size);
 
-        ma_mutex_unlock(&mutex);
+        IB_UnlockSound();
     }
 #endif
 
@@ -726,11 +689,11 @@ int I_QrySongPlaying(int handle)
 #ifndef WILDMIDI
     return 0;
 #else
-    ma_mutex_lock(&mutex);
+    IB_LockSound();
 
     boolean playing = music_playing;
 
-    ma_mutex_unlock(&mutex);
+    IB_UnlockSound();
 
     return playing;
 #endif
@@ -749,11 +712,11 @@ void I_SetMusicVolume(int volume)
 #else
     if (music_initialised)
     {
-        ma_mutex_lock(&mutex);
+        IB_LockSound();
 
         WildMidi_MasterVolume(volume);
 
-        ma_mutex_unlock(&mutex);
+        IB_UnlockSound();
     }
 #endif
 }

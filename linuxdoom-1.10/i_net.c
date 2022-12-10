@@ -25,6 +25,8 @@
 #include <string.h>
 #include <stdio.h>
 
+/* TODO: Abstract this away. */
+#ifdef __unix__
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -32,6 +34,7 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
+#endif
 
 #include "i_system.h"
 #include "d_event.h"
@@ -46,6 +49,7 @@
 
 
 
+#ifdef __unix__
 // For some odd reason...
 #ifndef ntohl
 #define ntohl(x) \
@@ -240,6 +244,7 @@ int GetLocalAddress (void)
 		
     return *(int *)hostentry->h_addr_list[0];
 }
+#endif
 
 
 //
@@ -273,6 +278,7 @@ void I_InitNetwork (void)
     else
 	doomcom-> extratics = 0;
 		
+#ifdef __unix__
     p = M_CheckParm ("-port");
     if (p && p<myargc-1)
     {
@@ -285,12 +291,14 @@ void I_InitNetwork (void)
     i = M_CheckParm ("-net");
     if (!i)
     {
+#endif
 	// single player game
 	netgame = false;
 	doomcom->id = DOOMCOM_ID;
 	doomcom->numplayers = doomcom->numnodes = 1;
 	doomcom->deathmatch = false;
 	doomcom->consoleplayer = 0;
+#ifdef __unix__
 	return;
     }
 
@@ -333,11 +341,13 @@ void I_InitNetwork (void)
     ioctl (insocket, FIONBIO, &trueval);
 
     sendsocket = UDPsocket ();
+#endif
 }
 
 
 void I_NetCmd (void)
 {
+#ifdef __unix__
     if (doomcom->command == CMD_SEND)
     {
 	netsend ();
@@ -348,5 +358,6 @@ void I_NetCmd (void)
     }
     else
 	I_Error ("Bad net cmd: %i\n",doomcom->command);
+#endif
 }
 
