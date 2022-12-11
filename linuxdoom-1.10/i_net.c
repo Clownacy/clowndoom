@@ -252,10 +252,14 @@ int GetLocalAddress (void)
 //
 void I_InitNetwork (void)
 {
+#ifdef __unix__
     boolean		trueval = true;
+#endif
     int			i;
+#ifdef __unix__
     int			p;
     struct hostent*	hostentry;	// host information entry
+#endif
 	
     doomcom = malloc (sizeof (*doomcom) );
     memset (doomcom, 0, sizeof(*doomcom) );
