@@ -5,11 +5,11 @@ SDL ?= 2
 ifeq ($(RELEASE),1)
   CFLAGS=-O2 -s -DNDEBUG
 else
-  CFLAGS=-ggdb3 -Og -fsanitize=address
+  CFLAGS=-ggdb3 -Og -fsanitize=address -fwrapv
 endif
 
-CFLAGS_ALL=-Wall -Wextra -Wpedantic $(CFLAGS)
-LIBS=-lm -ldl -lpthread
+CFLAGS_ALL=-Wall -Wextra -Wpedantic -Wshift-overflow=2 $(CFLAGS)
+LIBS=
 
 ifeq ($(WILDMIDI),1)
   CFLAGS_ALL+=$(shell pkg-config --cflags wildmidi) -DWILDMIDI
@@ -86,6 +86,7 @@ OBJS= \
 
 ifeq ($(SDL),2)
   OBJS+= \
+    $(O)/ib_sound/sdl.o \
     $(O)/ib_system/sdl.o \
     $(O)/ib_video/sdl.o
 
@@ -94,6 +95,7 @@ ifeq ($(SDL),2)
 else
   ifeq ($(SDL),1)
     OBJS+= \
+      $(O)/ib_sound/sdl.o \
       $(O)/ib_system/sdl.o \
       $(O)/ib_video/sdl.o
 
@@ -101,10 +103,11 @@ else
     LIBS+=$(shell pkg-config --libs sdl)
   else
     OBJS+= \
+      $(O)/ib_sound/miniaudio.o \
       $(O)/ib_system/posix.o \
       $(O)/ib_video/xlib.o
 
-    LIBS+=-lXext -lX11 -lnsl
+    LIBS+=-lXext -lX11 -lnsl -lm -ldl -lpthread
   endif
 endif
 
