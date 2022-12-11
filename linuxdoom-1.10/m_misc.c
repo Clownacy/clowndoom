@@ -534,19 +534,15 @@ int M_strncasecmp(const char *s1, const char *s2, size_t n)
         char c1, c2, delta;
 
         c1 = *s1++;
-
-        if (c1 == '\0')
-            break;
-
         c2 = *s2++;
-
-        if (c2 == '\0')
-            break;
 
         delta = toupper(c1) - toupper(c2);
 
         if (delta != 0)
             return delta;
+
+        if (c1 == '\0' && c2 == '\0')
+            break;
     }
 
     return 0;
