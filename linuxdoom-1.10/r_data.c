@@ -38,6 +38,7 @@
 
 #include "doomstat.h"
 #include "r_sky.h"
+#include "m_misc.h"
 
 #include <stdlib.h>
 
@@ -698,7 +699,7 @@ int	R_CheckTextureNumForName (const char *name)
 	return 0;
 		
     for (i=0 ; i<numtextures ; i++)
-	if (!strncasecmp (textures[i]->name, name, 8) )
+	if (!M_strncasecmp (textures[i]->name, name, 8) )
 	    return i;
 		
     return -1;

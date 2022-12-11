@@ -23,10 +23,6 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 #include <stdlib.h>
 #include <ctype.h>
 
@@ -515,7 +511,7 @@ menu_t  SaveDef =
 //
 void M_ReadSaveStrings(void)
 {
-    int             handle;
+    FILE*           handle;
     int             i;
     char    name[256];
 	
@@ -526,15 +522,15 @@ void M_ReadSaveStrings(void)
 	else
 	    sprintf(name,SAVEGAMENAME"%d.dsg",i);
 
-	handle = open (name, O_RDONLY | 0, 0666);
-	if (handle == -1)
+	handle = fopen (name, "rb");
+	if (handle == NULL)
 	{
 	    strcpy(&savegamestrings[i][0],EMPTYSTRING);
 	    LoadMenu[i].status = 0;
 	    continue;
 	}
-	read (handle, &savegamestrings[i], SAVESTRINGSIZE);
-	close (handle);
+	fread (&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
+	fclose (handle);
 	LoadMenu[i].status = 1;
     }
 }

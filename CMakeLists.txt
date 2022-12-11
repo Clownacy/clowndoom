@@ -191,18 +191,24 @@ elseif(BACKEND STREQUAL "SDL2")
 		"linuxdoom-1.10/ib_video/sdl.c"
 	)
 
-	find_package(SDL2 REQUIRED)
+	find_package(SDL2)
 
-	# TODO - Add support for in-tree builds
-	#if(NOT SDL2-FOUND)
-	#  add_subdirectory("external/sdl2" EXCLUDE_FROM_ALL)
-	#endif()
+	if(NOT SDL2-FOUND)
+		add_subdirectory("external/SDL" EXCLUDE_FROM_ALL)
+		if(SDL_STATIC)
+			target_link_libraries(clowndoom PRIVATE SDL2::SDL2-static)
+		else()
+			target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+		endif()
+	else()
+		target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+	endif()
 
-	target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+	target_link_libraries(clowndoom PRIVATE SDL2::SDL2main)
 else()
 	message(FATAL_ERROR "Invalid BACKEND")
 endif()
 
-# TODO - Get rid of this for non-Linux builds
-# Linux stuff
-target_link_libraries(clowndoom PRIVATE m ${CMAKE_DL_LIBS} pthread)
+if(UNIX)
+	target_link_libraries(clowndoom PRIVATE m ${CMAKE_DL_LIBS} pthread)
+endif()

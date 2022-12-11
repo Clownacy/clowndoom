@@ -25,11 +25,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <fcntl.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include <ctype.h>
 
@@ -103,26 +99,22 @@ M_DrawText
 //
 // M_WriteFile
 //
-#ifndef O_BINARY
-#define O_BINARY 0
-#endif
-
 boolean
 M_WriteFile
 ( char const*	name,
   void*		source,
   int		length )
 {
-    int		handle;
+    FILE*	handle;
     int		count;
 	
-    handle = open ( name, O_WRONLY | O_CREAT | O_TRUNC | O_BINARY, 0666);
+    handle = fopen ( name, "wb");
 
-    if (handle == -1)
+    if (handle == NULL)
 	return false;
 
-    count = write (handle, source, length);
-    close (handle);
+    count = fwrite (source, 1, length, handle);
+    fclose (handle);
 	
     if (count < length)
 	return false;
@@ -139,25 +131,32 @@ M_ReadFile
 ( char const*	name,
   byte**	buffer )
 {
-    int	handle, count, length;
-    struct stat	fileinfo;
+    FILE*	handle;
+    long	count, length;
     byte		*buf;
 	
-    handle = open (name, O_RDONLY | O_BINARY, 0666);
-    if (handle == -1)
-	I_Error ("Couldn't read file %s", name);
-    if (fstat (handle,&fileinfo) == -1)
-	I_Error ("Couldn't read file %s", name);
-    length = fileinfo.st_size;
-    buf = Z_Malloc (length, PU_STATIC, NULL);
-    count = read (handle, buf, length);
-    close (handle);
-	
-    if (count < length)
-	I_Error ("Couldn't read file %s", name);
-		
-    *buffer = buf;
-    return length;
+    handle = fopen (name, "rb");
+    if (handle != NULL)
+    {
+        fseek(handle, 0, SEEK_END);
+        length = ftell(handle);
+        if (length != -1)
+        {
+            buf = Z_Malloc (length, PU_STATIC, NULL);
+            rewind(handle);
+            count = fread (buf, 1, length, handle);
+            fclose (handle);
+
+            if (count == length)
+            {
+                *buffer = buf;
+                return length;
+            }
+        }
+    }
+
+    I_Error ("Couldn't read file %s", name);
+    return -1;
 }
 
 
@@ -528,4 +527,27 @@ void M_ScreenShot (void)
     players[consoleplayer].message = "screen shot";
 }
 
+int M_strncasecmp(const char *s1, const char *s2, size_t n)
+{
+    while (n-- != 0)
+    {
+        char c1, c2, delta;
 
+        c1 = *s1++;
+
+        if (c1 == '\0')
+            break;
+
+        c2 = *s2++;
+
+        if (c2 == '\0')
+            break;
+
+        delta = toupper(c1) - toupper(c2);
+
+        if (delta != 0)
+            return delta;
+    }
+
+    return 0;
+}

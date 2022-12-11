@@ -31,6 +31,7 @@
 #include "m_swap.h"
 #include "i_system.h"
 #include "z_zone.h"
+#include "m_misc.h"
 
 #include "w_wad.h"
 
@@ -49,8 +50,6 @@ size_t			numlumps;
 
 void**			lumpcache;
 
-
-#define strcmpi	strcasecmp
 
 // This was originally called 'strupr', but it conflicted with the standard library so I renamed it.
 static void MakeStringUppercase (char* s)
@@ -164,7 +163,7 @@ void W_AddFile (const char *filename)
     printf(" adding %s\n",filename);
     startlump = numlumps;
 	
-    singlelump = strcmpi(filename+strlen(filename)-3 , "wad" );
+    singlelump = M_strcasecmp(filename+strlen(filename)-3 , "wad" );
 
     if (singlelump)
     {
