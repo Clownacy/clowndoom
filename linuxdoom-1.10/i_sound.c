@@ -506,7 +506,8 @@ void I_StartupSound(void)
         for (j=0 ; j<256 ; ++j)
             vol_lookup[i][j] = (i*(j-128)*256)/127;
 
-    IB_StartupSound(StartupCallback, AudioCallback, NULL);
+    if (!IB_StartupSound(StartupCallback, AudioCallback, NULL))
+        I_Error("I_StartupSound: Failed to initialize backend");
 
       //
      // Cache sounds.

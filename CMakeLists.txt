@@ -39,7 +39,6 @@ add_executable(clowndoom
 	"linuxdoom-1.10/hu_lib.h"
 	"linuxdoom-1.10/hu_stuff.c"
 	"linuxdoom-1.10/hu_stuff.h"
-	"linuxdoom-1.10/ib_sound.c"
 	"linuxdoom-1.10/ib_sound.h"
 	"linuxdoom-1.10/ib_system.h"
 	"linuxdoom-1.10/ib_video.h"
@@ -62,7 +61,6 @@ add_executable(clowndoom
 	"linuxdoom-1.10/m_cheat.h"
 	"linuxdoom-1.10/m_fixed.c"
 	"linuxdoom-1.10/m_fixed.h"
-	"linuxdoom-1.10/miniaudio.h"
 	"linuxdoom-1.10/m_menu.c"
 	"linuxdoom-1.10/m_menu.h"
 	"linuxdoom-1.10/m_misc.c"
@@ -163,6 +161,8 @@ endif()
 # Handle backends
 if(BACKEND STREQUAL "Xlib")
 	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_sound/miniaudio.c"
+		"linuxdoom-1.10/ib_sound/miniaudio.h"
 		"linuxdoom-1.10/ib_system/posix.c"
 		"linuxdoom-1.10/ib_video/xlib.c"
 	)
@@ -170,6 +170,7 @@ if(BACKEND STREQUAL "Xlib")
 	target_link_libraries(clowndoom PRIVATE Xext X11)
 elseif(BACKEND STREQUAL "SDL1")
 	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_sound/sdl.c"
 		"linuxdoom-1.10/ib_system/sdl.c"
 		"linuxdoom-1.10/ib_video/sdl.c"
 	)
@@ -185,6 +186,7 @@ elseif(BACKEND STREQUAL "SDL1")
 	target_link_libraries(clowndoom PRIVATE SDL::SDL)
 elseif(BACKEND STREQUAL "SDL2")
 	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_sound/sdl.c"
 		"linuxdoom-1.10/ib_system/sdl.c"
 		"linuxdoom-1.10/ib_video/sdl.c"
 	)
