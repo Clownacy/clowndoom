@@ -144,22 +144,6 @@ int             eventhead;
 int 		eventtail;
 
 
-static int FileExists(const char* const filename)
-{
-    FILE* const file = fopen(filename, "rb");
-
-    if (file != NULL)
-    {
-        fclose(file);
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-
-
 //
 // D_PostEvent
 // Called by the I/O functions when input is detected
@@ -673,7 +657,7 @@ void IdentifyVersion (void)
 	D_AddFile (DEVMAPS"cdata/pnames.lmp");
 	strcpy (basedefault,DEVDATA"default.cfg");
     }
-    else if ( FileExists (doom2fwad) )
+    else if ( M_FileExists (doom2fwad) )
     {
 	gamemode = commercial;
 	gamemission = doom2;
@@ -683,37 +667,37 @@ void IdentifyVersion (void)
 	printf("French version\n");
 	D_AddFile (doom2fwad);
     }
-    else if ( FileExists (doom2wad) )
+    else if ( M_FileExists (doom2wad) )
     {
 	gamemode = commercial;
 	gamemission = doom2;
 	D_AddFile (doom2wad);
     }
-    else if ( FileExists (plutoniawad ) )
+    else if ( M_FileExists (plutoniawad ) )
     {
       gamemode = commercial;
       gamemission = pack_plut;
       D_AddFile (plutoniawad);
     }
-    else if ( FileExists ( tntwad ) )
+    else if ( M_FileExists ( tntwad ) )
     {
       gamemode = commercial;
       gamemission = pack_tnt;
       D_AddFile (tntwad);
     }
-    else if ( FileExists (doomuwad) )
+    else if ( M_FileExists (doomuwad) )
     {
       gamemode = retail;
       gamemission = doom;
       D_AddFile (doomuwad);
     }
-    else if ( FileExists (doomwad) )
+    else if ( M_FileExists (doomwad) )
     {
       gamemode = registered;
       gamemission = doom;
       D_AddFile (doomwad);
     }
-    else if ( FileExists (doom1wad) )
+    else if ( M_FileExists (doom1wad) )
     {
       gamemode = shareware;
       gamemission = doom;

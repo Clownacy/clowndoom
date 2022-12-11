@@ -513,7 +513,7 @@ void M_ScreenShot (void)
     {
 	lbmname[4] = i/10 + '0';
 	lbmname[5] = i%10 + '0';
-	if (access(lbmname,0) == -1)
+	if (!M_FileExists(lbmname))
 	    break;	// file doesn't exist
     }
     if (i==100)
@@ -550,4 +550,19 @@ int M_strncasecmp(const char *s1, const char *s2, size_t n)
     }
 
     return 0;
+}
+
+boolean M_FileExists(const char* const filename)
+{
+    FILE* const file = fopen(filename, "rb");
+
+    if (file != NULL)
+    {
+        fclose(file);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
