@@ -192,8 +192,8 @@ void IB_StartTic (void)
 	    case SDL_MOUSEMOTION:
 		event.type = ev_mouse;
 		event.data1 = button_state;
-		event.data2 = sdl_event.motion.xrel << 3;
-		event.data3 = -sdl_event.motion.yrel << 3;
+		event.data2 = sdl_event.motion.xrel * (1 << 5);
+		event.data3 = -sdl_event.motion.yrel * (1 << 5);
 
 		if (event.data2 || event.data3)
 		{
