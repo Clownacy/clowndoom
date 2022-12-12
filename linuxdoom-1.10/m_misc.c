@@ -270,7 +270,7 @@ default_t	defaults[] =
     /* Audio */
     {"music_volume",&musicVolume, 8, false},
     {"sfx_volume",&sfxVolume, 8, false},
-    {"snd_channels",&numChannels, 3, false},
+    {"snd_channels",&numChannels, 8, false},
     {"wildmidi_config_path", (int*)&wildmidi_config_path, (size_t)"wildmidi.cfg", true },
 
     /* Chat macros */
