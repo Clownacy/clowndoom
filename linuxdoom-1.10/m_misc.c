@@ -235,12 +235,12 @@ default_t	defaults[] =
 
     /* Keyboard */
     /* Movement */
-    {"key_right",&key_right, KEY_RIGHTARROW, false},
-    {"key_left",&key_left, KEY_LEFTARROW, false},
-    {"key_up",&key_up, KEY_UPARROW, false},
-    {"key_down",&key_down, KEY_DOWNARROW, false},
-    {"key_strafeleft",&key_strafeleft, ',', false},
-    {"key_straferight",&key_straferight, '.', false},
+    {"key_right",&key_right, ',', false},
+    {"key_left",&key_left, '.', false},
+    {"key_up",&key_up, 'w', false},
+    {"key_down",&key_down, 's', false},
+    {"key_strafeleft",&key_strafeleft, 'a', false},
+    {"key_straferight",&key_straferight, 'd', false},
     /* Actions */
     {"key_fire",&key_fire, KEY_RCTRL, false},
     {"key_use",&key_use, ' ', false},
