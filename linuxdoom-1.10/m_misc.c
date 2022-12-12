@@ -229,9 +229,9 @@ default_t	defaults[] =
 {
     /* General */
     {"show_messages",&showMessages, 1, false},
-    {"novert",&novert, 0, false},
-    {"always_run",&always_run, 0, false},
-    {"bmp_screenshots",&bmp_screenshots, 0, false},
+    {"novert",&novert, 1, false},
+    {"always_run",&always_run, 1, false},
+    {"bmp_screenshots",&bmp_screenshots, 1, false},
 
     /* Keyboard */
     /* Movement */
@@ -265,7 +265,7 @@ default_t	defaults[] =
     {"screenblocks",&screenblocks, 9, false},
     {"detaillevel",&detailLevel, 0, false},
     {"usegamma",&usegamma, 0, false},
-    {"aspect_ratio_correction",&aspect_ratio_correction, 0, false},
+    {"aspect_ratio_correction",&aspect_ratio_correction, 1, false},
 
     /* Audio */
     {"music_volume",&musicVolume, 8, false},
