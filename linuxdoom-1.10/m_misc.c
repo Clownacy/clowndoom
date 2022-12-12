@@ -443,13 +443,13 @@ WritePCXfile
     /* Y minimum */
     WriteU16LE(&pcx[6], 0);
     /* X maximum */
-    WriteU16LE(&pcx[8], SHORT(width-1));
+    WriteU16LE(&pcx[8], width-1);
     /* Y maximum */
-    WriteU16LE(&pcx[0xA], SHORT(height-1));
+    WriteU16LE(&pcx[0xA], height-1);
     /* Horizontal resolution */
-    WriteU16LE(&pcx[0xC], SHORT(width));
+    WriteU16LE(&pcx[0xC], width);
     /* Vertical resolution */
-    WriteU16LE(&pcx[0xE], SHORT(height));
+    WriteU16LE(&pcx[0xE], height);
     /* Palette */
     memset(&pcx[0x10], 0, 0x30);
     /* Reserved */
@@ -457,9 +457,9 @@ WritePCXfile
     /* Color planes */
     pcx[0x41] = 1;      /* Chunky image */
     /* Bytes per line */
-    WriteU16LE(&pcx[0x42], SHORT(width));
+    WriteU16LE(&pcx[0x42], width);
     /* Palette type */
-    WriteU16LE(&pcx[0x44], SHORT(2)); /* Not a grey scale */
+    WriteU16LE(&pcx[0x44], 2); /* Not a grey scale */
     /* Filler */
     memset(&pcx[0x46], 0, 0x3A);
 
