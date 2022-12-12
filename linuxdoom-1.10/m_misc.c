@@ -211,12 +211,6 @@ extern	int	numChannels;
 
 extern const char*	wildmidi_config_path;
 
-
-//#ifdef __linux__
-//const char*		mousetype;
-//const char*		mousedev;
-//#endif
-
 extern const char*	chat_macros[];
 
 
@@ -233,56 +227,53 @@ typedef struct
 
 default_t	defaults[] =
 {
-    {"mouse_sensitivity",&mouseSensitivity, 5, false},
-    {"sfx_volume",&sfxVolume, 8, false},
-    {"music_volume",&musicVolume, 8, false},
+    /* General */
     {"show_messages",&showMessages, 1, false},
-
     {"novert",&novert, 0, false},
     {"always_run",&always_run, 0, false},
-    
+    {"bmp_screenshots",&bmp_screenshots, 0, false},
+
+    /* Keyboard */
+    /* Movement */
     {"key_right",&key_right, KEY_RIGHTARROW, false},
     {"key_left",&key_left, KEY_LEFTARROW, false},
     {"key_up",&key_up, KEY_UPARROW, false},
     {"key_down",&key_down, KEY_DOWNARROW, false},
     {"key_strafeleft",&key_strafeleft, ',', false},
     {"key_straferight",&key_straferight, '.', false},
-
+    /* Actions */
     {"key_fire",&key_fire, KEY_RCTRL, false},
     {"key_use",&key_use, ' ', false},
     {"key_strafe",&key_strafe, KEY_RALT, false},
     {"key_speed",&key_speed, KEY_RSHIFT, false},
-    
-//#ifdef __linux__
-//    {"mousedev", (int*)&mousedev, (size_t)"/dev/ttyS0", true},
-//    {"mousetype", (int*)&mousetype, (size_t)"microsoft", true},
-//#endif
 
+    /* Mouse */
     {"use_mouse",&usemouse, 1, false},
     {"mouseb_fire",&mousebfire,0, false},
     {"mouseb_strafe",&mousebstrafe,1, false},
     {"mouseb_forward",&mousebforward,2, false},
+    {"mouse_sensitivity",&mouseSensitivity, 5, false},
 
+    /* Joystick */
     {"use_joystick",&usejoystick, 0, false},
     {"joyb_fire",&joybfire,0, false},
     {"joyb_strafe",&joybstrafe,1, false},
     {"joyb_use",&joybuse,3, false},
     {"joyb_speed",&joybspeed,2, false},
 
+    /* Video */
     {"screenblocks",&screenblocks, 9, false},
     {"detaillevel",&detailLevel, 0, false},
+    {"usegamma",&usegamma, 0, false},
     {"aspect_ratio_correction",&aspect_ratio_correction, 0, false},
 
+    /* Audio */
+    {"music_volume",&musicVolume, 8, false},
+    {"sfx_volume",&sfxVolume, 8, false},
     {"snd_channels",&numChannels, 3, false},
-
     {"wildmidi_config_path", (int*)&wildmidi_config_path, (size_t)"wildmidi.cfg", true },
 
-
-
-    {"usegamma",&usegamma, 0, false},
-
-    {"bmp_screenshots",&bmp_screenshots, 0, false},
-
+    /* Chat macros */
     {"chatmacro0", (int *) &chat_macros[0], (size_t) HUSTR_CHATMACRO0, true },
     {"chatmacro1", (int *) &chat_macros[1], (size_t) HUSTR_CHATMACRO1, true },
     {"chatmacro2", (int *) &chat_macros[2], (size_t) HUSTR_CHATMACRO2, true },
