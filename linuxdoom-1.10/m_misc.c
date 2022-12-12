@@ -638,23 +638,20 @@ void M_ScreenShot (void)
 
 int M_strncasecmp(const char *s1, const char *s2, size_t n)
 {
+    int delta = 0;
+
     while (n-- != 0)
     {
-        char c1, c2, delta;
-
-        c1 = *s1++;
-        c2 = *s2++;
+        const int c1 = *s1++;
+        const int c2 = *s2++;
 
         delta = toupper(c1) - toupper(c2);
 
-        if (delta != 0)
-            return delta;
-
-        if (c1 == '\0' && c2 == '\0')
+        if (delta != 0 || c1 == '\0')
             break;
     }
 
-    return 0;
+    return delta;
 }
 
 boolean M_FileExists(const char* const filename)
