@@ -53,7 +53,11 @@ int IB_StartupSound(void (*initial_callback)(unsigned int output_sample_rate, vo
         }
         else
         {
+#if SDL_MAJOR_VERSION >= 2
+            initial_callback(obtained_audio_specification.freq, user_data);
+#else
             initial_callback(desired_audio_specification.freq, user_data);
+#endif
 
 #if SDL_MAJOR_VERSION >= 2
             SDL_PauseAudioDevice(audio_device, 0);
