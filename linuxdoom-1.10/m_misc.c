@@ -398,31 +398,16 @@ void M_LoadDefaults (void)
 //
 
 
-typedef struct
+static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int total_bytes)
 {
-    char		manufacturer;
-    char		version;
-    char		encoding;
-    char		bits_per_pixel;
+    unsigned int i;
 
-    unsigned short	xmin;
-    unsigned short	ymin;
-    unsigned short	xmax;
-    unsigned short	ymax;
-    
-    unsigned short	hres;
-    unsigned short	vres;
+    for (i = 0; i < total_bytes; ++i)
+        *pointer++ = (value >> (8 * i)) & 0xFF;
+}
 
-    unsigned char	palette[48];
-    
-    char		reserved;
-    char		color_planes;
-    unsigned short	bytes_per_line;
-    unsigned short	palette_type;
-    
-    char		filler[58];
-    unsigned char	data;		// unbounded
-} pcx_t;
+#define WriteU16LE(pointer, value) WriteLE(pointer, value, 2)
+#define WriteU32LE(pointer, value) WriteLE(pointer, value, 4)
 
 
 //
@@ -437,66 +422,71 @@ WritePCXfile
   byte*		palette )
 {
     int		i;
-    int		length;
-    pcx_t*	pcx;
+    size_t	length;
+    byte*	pcx;
     byte*	pack;
-	
-    pcx = Z_Malloc (width*height*2+1000, PU_STATIC, NULL);
 
-    pcx->manufacturer = 0x0a;		// PCX id
-    pcx->version = 5;			// 256 color
-    pcx->encoding = 1;			// uncompressed
-    pcx->bits_per_pixel = 8;		// 256 color
-    pcx->xmin = 0;
-    pcx->ymin = 0;
-    pcx->xmax = SHORT(width-1);
-    pcx->ymax = SHORT(height-1);
-    pcx->hres = SHORT(width);
-    pcx->vres = SHORT(height);
-    memset (pcx->palette,0,sizeof(pcx->palette));
-    pcx->color_planes = 1;		// chunky image
-    pcx->bytes_per_line = SHORT(width);
-    pcx->palette_type = SHORT(2);	// not a grey scale
-    memset (pcx->filler,0,sizeof(pcx->filler));
+    length = 0x80 + 1 + (1 << 8) * 3;
 
+    pcx = Z_Malloc(length + width * height * 2, PU_STATIC, NULL);
 
-    // pack the image
-    pack = &pcx->data;
-	
-    for (i=0 ; i<width*height ; i++)
+    /* Manufacturer */
+    pcx[0] = 0x0A;      /* PCX ID */
+    /* Version */
+    pcx[1] = 5;         /* 256 color */
+    /* Encoding */
+    pcx[2] = 1;         /* Uncompressed */
+    /* Bits per pixel */
+    pcx[3] = 8;         /* 256 colors */
+    /* X minimum */
+    WriteU16LE(&pcx[4], 0);
+    /* Y minimum */
+    WriteU16LE(&pcx[6], 0);
+    /* X maximum */
+    WriteU16LE(&pcx[8], SHORT(width-1));
+    /* Y maximum */
+    WriteU16LE(&pcx[0xA], SHORT(height-1));
+    /* Horizontal resolution */
+    WriteU16LE(&pcx[0xC], SHORT(width));
+    /* Vertical resolution */
+    WriteU16LE(&pcx[0xE], SHORT(height));
+    /* Palette */
+    memset(&pcx[0x10], 0, 0x30);
+    /* Reserved */
+    pcx[0x40] = 0;
+    /* Color planes */
+    pcx[0x41] = 1;      /* Chunky image */
+    /* Bytes per line */
+    WriteU16LE(&pcx[0x42], SHORT(width));
+    /* Palette type */
+    WriteU16LE(&pcx[0x44], SHORT(2)); /* Not a grey scale */
+    /* Filler */
+    memset(&pcx[0x46], 0, 0x3A);
+
+    /* Pack the image */
+    pack = &pcx[0x80];
+
+    for (i = 0; i < width * height; ++i)
     {
-	if ( (*data & 0xc0) != 0xc0)
-	    *pack++ = *data++;
-	else
-	{
-	    *pack++ = 0xc1;
-	    *pack++ = *data++;
-	}
+        if ((*data & 0xC0) == 0xC0)
+        {
+            *pack++ = 0xC1;
+            ++length;
+        }
+
+        *pack++ = *data++;
+        ++length;
     }
-    
-    // write the palette
-    *pack++ = 0x0c;	// palette ID byte
-    for (i=0 ; i<768 ; i++)
-	*pack++ = *palette++;
-    
-    // write output file
-    length = pack - (byte *)pcx;
-    M_WriteFile (filename, pcx, length);
 
-    Z_Free (pcx);
+    /* Write the palette */
+    *pack++ = 0x0C; /* Palette ID byte */
+    memcpy(pack, palette, (1 << 8) * 3);
+
+    /* Write output file */
+    M_WriteFile(filename, pcx, length);
+
+    Z_Free(pcx);
 }
-
-
-static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int total_bytes)
-{
-    unsigned int i;
-
-    for (i = 0; i < total_bytes; ++i)
-        *pointer++ = (value >> (8 * i)) & 0xFF;
-}
-
-#define WriteU16LE(pointer, value) WriteLE(pointer, value, 2)
-#define WriteU32LE(pointer, value) WriteLE(pointer, value, 4)
 
 
 //
@@ -511,7 +501,7 @@ WriteBMPfile
   byte*		palette )
 {
     unsigned int i;
-    unsigned char *bmp, *bmp_pointer;
+    byte *bmp, *bmp_pointer;
 
     const unsigned long rounded_width = (width + (4 - 1)) / 4 * 4; /* Pad width to a multiple of 4, as required by the BMP file format. */
     const unsigned long bitmap_offset = 0x1A + 0x100 * 3;
@@ -560,9 +550,9 @@ WriteBMPfile
 
     for (i = 0; i < 1 << 8; ++i)
     {
-        const unsigned char blue  = *palette++;
-        const unsigned char green = *palette++;
-        const unsigned char red   = *palette++;
+        const byte blue  = *palette++;
+        const byte green = *palette++;
+        const byte red   = *palette++;
 
         *bmp_pointer++ = red;
         *bmp_pointer++ = green;
@@ -577,11 +567,8 @@ WriteBMPfile
 
         bmp_pointer = &bmp[bitmap_offset + rounded_width * (height - i - 1)];
 
-        for (j = 0; j < width; ++j)
-            *bmp_pointer++ = *data++;
-
-        for (; j < rounded_width; ++j)
-            *bmp_pointer++ = 0;
+        memcpy(bmp_pointer, data, width);
+        memset(bmp_pointer + width, 0, rounded_width - width);
     }
 
     /* Write output file */
