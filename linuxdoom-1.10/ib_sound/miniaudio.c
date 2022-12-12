@@ -46,6 +46,7 @@ int IB_StartupSound(void (*initial_callback)(unsigned int output_sample_rate, vo
     config.sampleRate = 0; // Let miniaudio decide what sample rate to use
     config.dataCallback = Callback;
     config.pUserData = user_data;
+    config.noPreZeroedOutputBuffer = ma_true;
 
     ma_device_init(&context, &config, &audio_device);
 

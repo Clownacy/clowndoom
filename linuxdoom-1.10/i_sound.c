@@ -20,6 +20,7 @@
 #include <math.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 
 #ifdef WILDMIDI
 #include "wildmidi_lib.h"
@@ -123,22 +124,26 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
     // Mixing channel index.
     size_t                 chan;
 
-#ifdef WILDMIDI
-    size_t                 bytes_to_do;
-#endif
     unsigned char          interpolation_scale;
+    size_t                 bytes_done;
+
+    const size_t bytes_to_do = frames_to_do * sizeof(short) * 2;
 
     (void)user_data;
+
+    bytes_done = 0;
 
 #ifdef WILDMIDI
     if (music_playing)
     {
-        bytes_to_do = frames_to_do * sizeof(short) * 2;
+        bytes_done = (size_t)WildMidi_GetOutput(music_midi, (int8_t*)output_buffer, bytes_to_do);
 
-        if ((size_t)WildMidi_GetOutput(music_midi, (int8_t*)output_buffer, bytes_to_do) < bytes_to_do)
+        if (bytes_done < bytes_to_do)
             music_playing = false;
     }
 #endif
+
+    memset((char*)output_buffer + bytes_done, 0, bytes_to_do - bytes_done);
 
     // Determine where the sample ends
     output_buffer_end = output_buffer + frames_to_do * 2;
