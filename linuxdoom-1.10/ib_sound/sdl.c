@@ -72,6 +72,11 @@ int IB_StartupSound(void (*initial_callback)(unsigned int output_sample_rate, vo
 
 void IB_ShutdownSound(void)
 {
+#if SDL_MAJOR_VERSION >= 2
+    SDL_CloseAudioDevice(audio_device);
+#else
+    SDL_CloseAudio();
+#endif
     SDL_QuitSubSystem(SDL_INIT_AUDIO);
 }
 
