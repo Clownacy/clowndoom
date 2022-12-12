@@ -165,6 +165,7 @@ M_ReadFile
 //
 int		usemouse;
 int		usejoystick;
+int		bmp_screenshots;
 
 extern int	key_right;
 extern int	key_left;
@@ -279,6 +280,8 @@ default_t	defaults[] =
 
 
     {"usegamma",&usegamma, 0, false},
+
+    {"bmp_screenshots",&bmp_screenshots, 0, false},
 
     {"chatmacro0", (int *) &chat_macros[0], (size_t) HUSTR_CHATMACRO0, true },
     {"chatmacro1", (int *) &chat_macros[1], (size_t) HUSTR_CHATMACRO1, true },
@@ -438,8 +441,8 @@ void
 WritePCXfile
 ( char*		filename,
   byte*		data,
-  int		width,
-  int		height,
+  unsigned int	width,
+  unsigned int	height,
   byte*		palette )
 {
     int		i;
@@ -493,6 +496,110 @@ WritePCXfile
 }
 
 
+static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int total_bytes)
+{
+    unsigned int i;
+
+    for (i = 0; i < total_bytes; ++i)
+        *pointer++ = (value >> (8 * i)) & 0xFF;
+}
+
+#define WriteU16LE(pointer, value) WriteLE(pointer, value, 2)
+#define WriteU32LE(pointer, value) WriteLE(pointer, value, 4)
+
+
+//
+// WriteBMPfile
+//
+void
+WriteBMPfile
+( char*		filename,
+  byte*		data,
+  unsigned int	width,
+  unsigned int	height,
+  byte*		palette )
+{
+    unsigned int i;
+    unsigned char *bmp, *bmp_pointer;
+
+    const unsigned long rounded_width = (width + (4 - 1)) / 4 * 4; /* Pad width to a multiple of 4, as required by the BMP file format. */
+    const unsigned long bitmap_offset = 0x1A + 0x100 * 3;
+    const unsigned long length = bitmap_offset + rounded_width * height;
+
+    bmp = Z_Malloc(length, PU_STATIC, NULL);
+
+    /* BMP file header */
+
+    /* Identifier */
+    bmp[0] = 'B';
+    bmp[1] = 'M';
+
+    /* Size of file in bytes */
+    WriteU32LE(&bmp[2], length);
+
+    /* Reserved */
+    WriteU16LE(&bmp[6], 0);
+
+    /* Reserved */
+    WriteU16LE(&bmp[8], 0);
+
+    /* Offset of pixel array */
+    WriteU32LE(&bmp[0xA], bitmap_offset);
+
+    /* BITMAPCOREHEADER */
+
+    /* Size of 'BITMAPCOREHEADER' */
+    WriteU32LE(&bmp[0xE], 0x1A - 0xE);
+
+    /* Width of bitmap in pixels */
+    WriteU16LE(&bmp[0x12], width);
+
+    /* Height of bitmap in pixels */
+    WriteU16LE(&bmp[0x14], height);
+
+    /* Number of color planes */
+    WriteU16LE(&bmp[0x16], 1);
+
+    /* Bits per pixel */
+    WriteU16LE(&bmp[0x18], 8);
+
+    /* Color table */
+
+    bmp_pointer = &bmp[0x1A];
+
+    for (i = 0; i < 1 << 8; ++i)
+    {
+        const unsigned char blue  = *palette++;
+        const unsigned char green = *palette++;
+        const unsigned char red   = *palette++;
+
+        *bmp_pointer++ = red;
+        *bmp_pointer++ = green;
+        *bmp_pointer++ = blue;
+    }
+
+    /* Pixel array */
+
+    for (i = 0; i < height; ++i)
+    {
+        unsigned int j;
+
+        bmp_pointer = &bmp[bitmap_offset + rounded_width * (height - i - 1)];
+
+        for (j = 0; j < width; ++j)
+            *bmp_pointer++ = *data++;
+
+        for (; j < rounded_width; ++j)
+            *bmp_pointer++ = 0;
+    }
+
+    /* Write output file */
+    M_WriteFile(filename, bmp, length);
+
+    Z_Free(bmp);
+}
+
+
 //
 // M_ScreenShot
 //
@@ -508,6 +615,8 @@ void M_ScreenShot (void)
     
     // find a file name to save it to
     strcpy(lbmname,"DOOM00.pcx");
+    if (bmp_screenshots)
+        strcpy(&lbmname[7],"bmp");
 		
     for (i=0 ; i<=99 ; i++)
     {
@@ -517,10 +626,10 @@ void M_ScreenShot (void)
 	    break;	// file doesn't exist
     }
     if (i==100)
-	I_Error ("M_ScreenShot: Couldn't create a PCX");
+	I_Error ("M_ScreenShot: Couldn't create a screenshot");
     
-    // save the pcx file
-    WritePCXfile (lbmname, linear,
+    // save the screenshot file
+    (bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
 		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	
