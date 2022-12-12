@@ -262,7 +262,7 @@ default_t	defaults[] =
     {"joyb_speed",&joybspeed,2, false},
 
     /* Video */
-    {"screenblocks",&screenblocks, 9, false},
+    {"screenblocks",&screenblocks, 10, false},
     {"detaillevel",&detailLevel, 0, false},
     {"usegamma",&usegamma, 0, false},
     {"aspect_ratio_correction",&aspect_ratio_correction, 1, false},
