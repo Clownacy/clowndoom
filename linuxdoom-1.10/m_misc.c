@@ -421,7 +421,7 @@ WritePCXfile
   unsigned int	height,
   byte*		palette )
 {
-    int		i;
+    size_t	bytes_remaining;
     size_t	length;
     byte*	pcx;
     byte*	pack;
@@ -433,9 +433,9 @@ WritePCXfile
     /* Manufacturer */
     pcx[0] = 0x0A;      /* PCX ID */
     /* Version */
-    pcx[1] = 5;         /* 256 color */
+    pcx[1] = 5;         /* 256 colors */
     /* Encoding */
-    pcx[2] = 1;         /* Uncompressed */
+    pcx[2] = 1;         /* RLE */
     /* Bits per pixel */
     pcx[3] = 8;         /* 256 colors */
     /* X minimum */
@@ -466,16 +466,33 @@ WritePCXfile
     /* Pack the image */
     pack = &pcx[0x80];
 
-    for (i = 0; i < width * height; ++i)
+    bytes_remaining = width * height;
+
+    while (bytes_remaining != 0)
     {
-        if ((*data & 0xC0) == 0xC0)
+        size_t run_length;
+
+        const size_t run_length_limit = bytes_remaining < 0x3F ? bytes_remaining : 0x3F;
+        const byte run_length_value = *data++;
+
+        run_length = 1;
+
+        while (*data == run_length_value && run_length < run_length_limit)
         {
-            *pack++ = 0xC1;
+            ++data;
+            ++run_length;
+        }
+
+        if (run_length != 1 || (run_length_value & 0xC0) == 0xC0)
+        {
+            *pack++ = 0xC0 | run_length;
             ++length;
         }
 
-        *pack++ = *data++;
+        *pack++ = run_length_value;
         ++length;
+
+        bytes_remaining -= run_length;
     }
 
     /* Write the palette */
