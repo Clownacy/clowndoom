@@ -22,6 +22,10 @@
 //
 //-----------------------------------------------------------------------------
 
+#ifdef INCLUDE_SDL2_MAIN
+#include "SDL_main.h"
+#endif
+
 #include "doomdef.h"
 
 #include "m_argv.h"

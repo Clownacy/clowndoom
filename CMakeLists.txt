@@ -5,7 +5,7 @@ project(clowndoom LANGUAGES C)
 set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, or SDL2")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 
-add_executable(clowndoom
+add_executable(clowndoom WIN32
 	"linuxdoom-1.10/am_map.c"
 	"linuxdoom-1.10/am_map.h"
 	"linuxdoom-1.10/d_englsh.h"
@@ -193,18 +193,18 @@ elseif(BACKEND STREQUAL "SDL2")
 
 	find_package(SDL2)
 
-	if(NOT SDL2-FOUND)
+	if(NOT SDL2_FOUND)
 		add_subdirectory("external/SDL" EXCLUDE_FROM_ALL)
 		if(SDL_STATIC)
-			target_link_libraries(clowndoom PRIVATE SDL2::SDL2-static)
+			target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2-static)
 		else()
-			target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+			target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
 		endif()
 	else()
-		target_link_libraries(clowndoom PRIVATE SDL2::SDL2)
+		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
 	endif()
 
-	target_link_libraries(clowndoom PRIVATE SDL2::SDL2main)
+	target_compile_definitions(clowndoom PRIVATE INCLUDE_SDL2_MAIN)
 else()
 	message(FATAL_ERROR "Invalid BACKEND")
 endif()
