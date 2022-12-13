@@ -113,19 +113,11 @@ static boolean          music_playing;
 static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_data)
 {
     // Mix current sound data.
-    // Data, from raw sound, for right and left.
-    register unsigned char sample;
-    register long          dl;
-    register long          dr;
 
     // Pointers in mixbuffer.
-    short*                 output_buffer_end;
+    short* output_buffer_end;
 
-    // Mixing channel index.
-    size_t                 chan;
-
-    unsigned char          interpolation_scale;
-    size_t                 bytes_done;
+    size_t bytes_done;
 
     const size_t bytes_to_do = frames_to_do * sizeof(short) * 2;
 
@@ -151,9 +143,11 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
     // Mix sounds into the mix buffer
     while (output_buffer != output_buffer_end)
     {
+        size_t chan;
+
         // Obtain base values for mixing
-        dl = output_buffer[0];
-        dr = output_buffer[1];
+        long dl = output_buffer[0];
+        long dr = output_buffer[1];
 
         for (chan = 0; chan < NUM_CHANNELS; ++chan)
         {
@@ -161,8 +155,8 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
             if (channels[chan] != NULL)
             {
                 // Get interpolated sample
-                interpolation_scale = channelstepremainder[chan] >> 8;
-                sample = ((channels[chan][0] * (0x100 - interpolation_scale)) + (channels[chan][1] * interpolation_scale)) >> 8;
+                const int interpolation_scale = channelstepremainder[chan] / (1 << 8);
+                const int sample = channels[chan][0] + (((channels[chan][1] - channels[chan][0]) * interpolation_scale) / (1 << 8));
 
                 // Add volume-adjusted sample to mix buffer
                 dl += channelleftvol_lookup[chan][sample];
@@ -170,8 +164,8 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
 
                 // Increment sample position
                 channelstepremainder[chan] += channelstep[chan];
-                channels[chan] += channelstepremainder[chan] >> 16;
-                channelstepremainder[chan] &= 0xFFFF;
+                channels[chan] += channelstepremainder[chan] / (1 << 16);
+                channelstepremainder[chan] %= 1 << 16;
 
                 // Disable channel if sound has finished
                 if (channels[chan] >= channelsend[chan])
@@ -179,23 +173,27 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
             }
         }
 
+#define CAP ((1 << 15) - 1)
+
         // Clamp mixed samples to 16-bit range and write them back to the buffer
 
         // Left channel
-        if (dl > 0x7FFF)
-            *output_buffer++ = 0x7FFF;
-        else if (dl < -0x7FFF)
-            *output_buffer++ = -0x7FFF;
+        if (dl > CAP)
+            *output_buffer++ = CAP;
+        else if (dl < -CAP)
+            *output_buffer++ = -CAP;
         else
             *output_buffer++ = dl;
 
         // Right channel
-        if (dr > 0x7FFF)
-            *output_buffer++ = 0x7FFF;
-        else if (dr < -0x7FFF)
-            *output_buffer++ = -0x7FFF;
+        if (dr > CAP)
+            *output_buffer++ = CAP;
+        else if (dr < -CAP)
+            *output_buffer++ = -CAP;
         else
             *output_buffer++ = dr;
+
+#undef CAP
     }
 }
 
@@ -219,10 +217,10 @@ static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
     //  x^2 seperation,
     //  adjust volume properly.
     leftvol =
-        vol - ((vol*sep*sep) >> 16); ///(256*256);
+        vol - ((vol*sep*sep) / (1 << 16)); ///(256*256);
     sep = sep - 257;
     rightvol =
-        vol - ((vol*sep*sep) >> 16);
+        vol - ((vol*sep*sep) / (1 << 16));
 
 #ifdef RANGECHECK
     // Sanity check, clamp volume.
