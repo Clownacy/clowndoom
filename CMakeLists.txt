@@ -167,7 +167,11 @@ if(BACKEND STREQUAL "Xlib")
 		"linuxdoom-1.10/ib_video/xlib.c"
 	)
 
+	# These are for the X11 stuff.
 	target_link_libraries(clowndoom PRIVATE Xext X11)
+
+	# These are for miniaudio.
+	target_link_libraries(clowndoom PRIVATE m ${CMAKE_DL_LIBS} pthread)
 elseif(BACKEND STREQUAL "SDL1")
 	target_sources(clowndoom PRIVATE
 		"linuxdoom-1.10/ib_sound/sdl.c"
@@ -207,8 +211,4 @@ elseif(BACKEND STREQUAL "SDL2")
 	target_compile_definitions(clowndoom PRIVATE INCLUDE_SDL2_MAIN)
 else()
 	message(FATAL_ERROR "Invalid BACKEND")
-endif()
-
-if(UNIX)
-	target_link_libraries(clowndoom PRIVATE m ${CMAKE_DL_LIBS} pthread)
 endif()
