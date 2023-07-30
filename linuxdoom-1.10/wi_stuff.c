@@ -166,41 +166,41 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 {
 	/* Episode 0 World Map */
 	{
-		{ 185, 164 },   /* location of level 0 (CJ) */
-		{ 148, 143 },   /* location of level 1 (CJ) */
-		{ 69, 122 },    /* location of level 2 (CJ) */
-		{ 209, 102 },   /* location of level 3 (CJ) */
-		{ 116, 89 },    /* location of level 4 (CJ) */
-		{ 166, 55 },    /* location of level 5 (CJ) */
-		{ 71, 56 },     /* location of level 6 (CJ) */
-		{ 135, 29 },    /* location of level 7 (CJ) */
-		{ 71, 24 }      /* location of level 8 (CJ) */
+		{ SCREEN_X_OFFSET(185), SCREEN_Y_OFFSET(164) },   /* location of level 0 (CJ) */
+		{ SCREEN_X_OFFSET(148), SCREEN_Y_OFFSET(143) },   /* location of level 1 (CJ) */
+		{ SCREEN_X_OFFSET(69) , SCREEN_Y_OFFSET(122) },   /* location of level 2 (CJ) */
+		{ SCREEN_X_OFFSET(209), SCREEN_Y_OFFSET(102) },   /* location of level 3 (CJ) */
+		{ SCREEN_X_OFFSET(116), SCREEN_Y_OFFSET(89)  },   /* location of level 4 (CJ) */
+		{ SCREEN_X_OFFSET(166), SCREEN_Y_OFFSET(55)  },   /* location of level 5 (CJ) */
+		{ SCREEN_X_OFFSET(71) , SCREEN_Y_OFFSET(56)  },   /* location of level 6 (CJ) */
+		{ SCREEN_X_OFFSET(135), SCREEN_Y_OFFSET(29)  },   /* location of level 7 (CJ) */
+		{ SCREEN_X_OFFSET(71) , SCREEN_Y_OFFSET(24)  }    /* location of level 8 (CJ) */
 	},
 
 	/* Episode 1 World Map should go here */
 	{
-		{ 254, 25 },    /* location of level 0 (CJ) */
-		{ 97, 50 },     /* location of level 1 (CJ) */
-		{ 188, 64 },    /* location of level 2 (CJ) */
-		{ 128, 78 },    /* location of level 3 (CJ) */
-		{ 214, 92 },    /* location of level 4 (CJ) */
-		{ 133, 130 },   /* location of level 5 (CJ) */
-		{ 208, 136 },   /* location of level 6 (CJ) */
-		{ 148, 140 },   /* location of level 7 (CJ) */
-		{ 235, 158 }    /* location of level 8 (CJ) */
+		{ SCREEN_X_OFFSET(254), SCREEN_Y_OFFSET(25)  },   /* location of level 0 (CJ) */
+		{ SCREEN_X_OFFSET(97) , SCREEN_Y_OFFSET(50)  },   /* location of level 1 (CJ) */
+		{ SCREEN_X_OFFSET(188), SCREEN_Y_OFFSET(64)  },   /* location of level 2 (CJ) */
+		{ SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(78)  },   /* location of level 3 (CJ) */
+		{ SCREEN_X_OFFSET(214), SCREEN_Y_OFFSET(92)  },   /* location of level 4 (CJ) */
+		{ SCREEN_X_OFFSET(133), SCREEN_Y_OFFSET(130) },   /* location of level 5 (CJ) */
+		{ SCREEN_X_OFFSET(208), SCREEN_Y_OFFSET(136) },   /* location of level 6 (CJ) */
+		{ SCREEN_X_OFFSET(148), SCREEN_Y_OFFSET(140) },   /* location of level 7 (CJ) */
+		{ SCREEN_X_OFFSET(235), SCREEN_Y_OFFSET(158) }    /* location of level 8 (CJ) */
 	},
 
 	/* Episode 2 World Map should go here */
 	{
-		{ 156, 168 },   /* location of level 0 (CJ) */
-		{ 48, 154 },    /* location of level 1 (CJ) */
-		{ 174, 95 },    /* location of level 2 (CJ) */
-		{ 265, 75 },    /* location of level 3 (CJ) */
-		{ 130, 48 },    /* location of level 4 (CJ) */
-		{ 279, 23 },    /* location of level 5 (CJ) */
-		{ 198, 48 },    /* location of level 6 (CJ) */
-		{ 140, 25 },    /* location of level 7 (CJ) */
-		{ 281, 136 }    /* location of level 8 (CJ) */
+		{ SCREEN_X_OFFSET(156), SCREEN_Y_OFFSET(168) },   /* location of level 0 (CJ) */
+		{ SCREEN_X_OFFSET(48) , SCREEN_Y_OFFSET(154) },   /* location of level 1 (CJ) */
+		{ SCREEN_X_OFFSET(174), SCREEN_Y_OFFSET(95)  },   /* location of level 2 (CJ) */
+		{ SCREEN_X_OFFSET(265), SCREEN_Y_OFFSET(75)  },   /* location of level 3 (CJ) */
+		{ SCREEN_X_OFFSET(130), SCREEN_Y_OFFSET(48)  },   /* location of level 4 (CJ) */
+		{ SCREEN_X_OFFSET(279), SCREEN_Y_OFFSET(23)  },   /* location of level 5 (CJ) */
+		{ SCREEN_X_OFFSET(198), SCREEN_Y_OFFSET(48)  },   /* location of level 6 (CJ) */
+		{ SCREEN_X_OFFSET(140), SCREEN_Y_OFFSET(25)  },   /* location of level 7 (CJ) */
+		{ SCREEN_X_OFFSET(281), SCREEN_Y_OFFSET(136) }    /* location of level 8 (CJ) */
 	}
 
 };
@@ -211,39 +211,39 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 /*  as they replace 320x200 full screen frames. */
 static anim_t epsd0animinfo[] =
 {
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 224, 104 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 184, 160 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 112, 136 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 72, 112 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 88, 96 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 64, 48 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 192, 40 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 136, 16 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 80, 16 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 64, 24 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(224), SCREEN_Y_OFFSET(104) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(184), SCREEN_Y_OFFSET(160) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(112), SCREEN_Y_OFFSET(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(72) , SCREEN_Y_OFFSET(112) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(88) , SCREEN_Y_OFFSET(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(64) , SCREEN_Y_OFFSET(48)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(192), SCREEN_Y_OFFSET(40)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(136), SCREEN_Y_OFFSET(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(80) , SCREEN_Y_OFFSET(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(64) , SCREEN_Y_OFFSET(24)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static anim_t epsd1animinfo[] =
 {
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 1, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 2, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 3, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 4, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 5, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 6, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 7, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 3, { 192, 144 }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 1, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 2, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 3, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 4, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 5, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 6, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 7, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 3, { SCREEN_X_OFFSET(192), SCREEN_Y_OFFSET(144) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static anim_t epsd2animinfo[] =
 {
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 104, 168 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 40, 136 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 160, 96 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 104, 80 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 120, 32 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/4, 3, { 40, 0 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(104), SCREEN_Y_OFFSET(168) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(40) , SCREEN_Y_OFFSET(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(160), SCREEN_Y_OFFSET(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(104), SCREEN_Y_OFFSET(80)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(120), SCREEN_Y_OFFSET(32)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/4, 3, { SCREEN_X_OFFSET(40) , SCREEN_Y_OFFSET(0)   }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static int NUMANIMS[NUMEPISODES] =
@@ -1527,7 +1527,7 @@ void WI_loadData(void)
 
 	/* background */
 	bg = (patch_t*)W_CacheLumpName(name, PU_CACHE);
-	V_DrawPatch(0, 0, 1, bg);
+	V_DrawPatch(SCREEN_X_OFFSET(0), SCREEN_Y_OFFSET(0), 1, bg);
 
 
 	/* UNUSED unsigned char *pic = screens[1]; */

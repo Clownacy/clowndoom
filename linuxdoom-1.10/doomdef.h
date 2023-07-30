@@ -83,8 +83,8 @@ typedef enum
 #define SCREENWIDTH  (320*SCREEN_MUL)
 #define SCREENHEIGHT (200*SCREEN_MUL)
 
-#define SCREEN_X_OFFSET ((SCREENWIDTH - 320) / 2)
-#define SCREEN_Y_OFFSET ((SCREENHEIGHT - 200) / 2)
+#define SCREEN_X_OFFSET(x) ((SCREENWIDTH - 320) / 2 + (x))
+#define SCREEN_Y_OFFSET(x) ((SCREENHEIGHT - 200) / 2 + (x))
 
 
 
