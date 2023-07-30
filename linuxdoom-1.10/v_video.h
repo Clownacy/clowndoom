@@ -23,6 +23,7 @@
 #ifndef __V_VIDEO__
 #define __V_VIDEO__
 
+#include <stddef.h>
 #include <string.h>
 
 #include "doomtype.h"
@@ -120,6 +121,7 @@ V_GetBlock
   colourindex_t* dest );
 
 /* Selects palette to display. */
+unsigned char((*V_GetPalette(size_t *length))[0x100][3]);
 void V_SetPalette(const int palette_id);
 
 #endif

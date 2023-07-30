@@ -149,7 +149,6 @@ M_ReadFile
 /* DEFAULTS */
 int             usemouse;
 int             usejoystick;
-int             bmp_screenshots;
 int             show_stats;
 int             full_colour;
 
@@ -215,7 +214,6 @@ default_t       defaults[] =
 	{"show_messages",&showMessages, 1, d_false},
 	{"novert",&novert, 1, d_false},
 	{"always_run",&always_run, 1, d_false},
-	{"bmp_screenshots",&bmp_screenshots, 1, d_false},
 	{"show_stats",&show_stats, 1, d_false},
 
 	/* Keyboard */
@@ -386,117 +384,20 @@ static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int to
 #define WriteU32LE(pointer, value) WriteLE(pointer, value, 4)
 
 
-/* WritePCXfile */
-void
-WritePCXfile
-( char*         filename,
-  unsigned char*         data,
-  unsigned int  width,
-  unsigned int  height,
-  unsigned char*         palette )
-{
-	size_t         bytes_remaining;
-	size_t         length;
-	unsigned char* pcx;
-	unsigned char* pack;
-
-	length = 0x80 + 1 + (1 << 8) * 3;
-
-	pcx = (unsigned char*)malloc(length + width * height * 2);
-
-	if (pcx != NULL)
-	{
-		/* Manufacturer */
-		pcx[0] = 0x0A;      /* PCX ID */
-		/* Version */
-		pcx[1] = 5;         /* 256 colors */
-		/* Encoding */
-		pcx[2] = 1;         /* RLE */
-		/* Bits per pixel */
-		pcx[3] = 8;         /* 256 colors */
-		/* X minimum */
-		WriteU16LE(&pcx[4], 0);
-		/* Y minimum */
-		WriteU16LE(&pcx[6], 0);
-		/* X maximum */
-		WriteU16LE(&pcx[8], width-1);
-		/* Y maximum */
-		WriteU16LE(&pcx[0xA], height-1);
-		/* Horizontal resolution */
-		WriteU16LE(&pcx[0xC], width);
-		/* Vertical resolution */
-		WriteU16LE(&pcx[0xE], height);
-		/* Palette */
-		memset(&pcx[0x10], 0, 0x30);
-		/* Reserved */
-		pcx[0x40] = 0;
-		/* Color planes */
-		pcx[0x41] = 1;      /* Chunky image */
-		/* Bytes per line */
-		WriteU16LE(&pcx[0x42], width);
-		/* Palette type */
-		WriteU16LE(&pcx[0x44], 2); /* Not a grey scale */
-		/* Filler */
-		memset(&pcx[0x46], 0, 0x3A);
-
-		/* Pack the image */
-		pack = &pcx[0x80];
-
-		bytes_remaining = width * height;
-
-		while (bytes_remaining != 0)
-		{
-			size_t run_length;
-
-			const size_t run_length_limit = bytes_remaining < 0x3F ? bytes_remaining : 0x3F;
-			const unsigned char run_length_value = *data++;
-
-			run_length = 1;
-
-			while (*data == run_length_value && run_length < run_length_limit)
-			{
-				++data;
-				++run_length;
-			}
-
-			if (run_length != 1 || (run_length_value & 0xC0) == 0xC0)
-			{
-				*pack++ = 0xC0 | run_length;
-				++length;
-			}
-
-			*pack++ = run_length_value;
-			++length;
-
-			bytes_remaining -= run_length;
-		}
-
-		/* Write the palette */
-		*pack++ = 0x0C; /* Palette ID byte */
-		memcpy(pack, palette, (1 << 8) * 3);
-
-		/* Write output file */
-		M_WriteFile(filename, pcx, length);
-
-		free(pcx);
-	}
-}
-
-
 /* WriteBMPfile */
-void
+static void
 WriteBMPfile
 ( char*          filename,
-  unsigned char* data,
+  const colourindex_t* data,
   unsigned int   width,
   unsigned int   height,
-  unsigned char* palette )
+  unsigned char  ((*palette)[3]) )
 {
 	unsigned int i;
 	unsigned char *bmp, *bmp_pointer;
 
-	const unsigned long rounded_width = (width + (4 - 1)) / 4 * 4; /* Pad width to a multiple of 4, as required by the BMP file format. */
-	const unsigned long bitmap_offset = 0x1A + 0x100 * 3;
+	const unsigned long rounded_width = (width * 3 + (4 - 1)) / 4 * 4; /* Pad width to a multiple of 4, as required by the BMP file format. */
+	const unsigned long bitmap_offset = 0x1A;
 	const unsigned long length = bitmap_offset + rounded_width * height;
 
 	bmp = (unsigned char*)malloc(length);
@@ -536,31 +437,27 @@ WriteBMPfile
 		WriteU16LE(&bmp[0x16], 1);
 
 		/* Bits per pixel */
-		WriteU16LE(&bmp[0x18], 8);
-
-		/* Color table */
-
-		bmp_pointer = &bmp[0x1A];
-
-		for (i = 0; i < 1 << 8; ++i)
-		{
-			const unsigned char blue  = *palette++;
-			const unsigned char green = *palette++;
-			const unsigned char red   = *palette++;
-
-			*bmp_pointer++ = red;
-			*bmp_pointer++ = green;
-			*bmp_pointer++ = blue;
-		}
+		WriteU16LE(&bmp[0x18], 24);
 
 		/* Pixel array */
+		bmp_pointer = &bmp[0x1A];
 
 		for (i = 0; i < height; ++i)
 		{
+			unsigned int j;
+
 			bmp_pointer = &bmp[bitmap_offset + rounded_width * (height - i - 1)];
 
-			memcpy(bmp_pointer, &data[i * width], width);
-			memset(bmp_pointer + width, 0, rounded_width - width);
+			for (j = 0; j < width; ++j)
+			{
+				const colourindex_t pixel = data[i * width + j];
+
+				*bmp_pointer++ = palette[pixel][2];
+				*bmp_pointer++ = palette[pixel][1];
+				*bmp_pointer++ = palette[pixel][0];
+			}
+
+			memset(bmp_pointer + width * 3, 0, rounded_width - width * 3);
 		}
 
 		/* Write output file */
@@ -574,14 +471,13 @@ WriteBMPfile
 /* M_ScreenShot */
 void M_ScreenShot (void)
 {
-	int         i;
-	unsigned char*       linear;
-	char        lbmname[12];
+	int i;
+	colourindex_t* linear;
+	char lbmname[12];
+	unsigned char ((* palette)[0x100][3]);
 
 	/* find a file name to save it to */
-	strcpy(lbmname,"DOOM00.pcx");
-	if (bmp_screenshots)
-		strcpy(&lbmname[7],"bmp");
+	strcpy(lbmname,"DOOM00.bmp");
 
 	for (i=0 ; i<=99 ; i++)
 	{
@@ -604,10 +500,12 @@ void M_ScreenShot (void)
 			linear[j * SCREENWIDTH + i] = screens[SCREEN_FRAMEBUFFER][i * SCREENHEIGHT + j];
 	}
 
+	palette = V_GetPalette(NULL);
+
 	/* save the screenshot file */
-	(bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
+	WriteBMPfile(lbmname, linear,
 				  SCREENWIDTH, SCREENHEIGHT,
-				  (unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+				  palette[0]);
 
 	players[consoleplayer].message = "screen shot";
 }

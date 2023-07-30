@@ -377,17 +377,19 @@ void V_Init (void)
 
 
 
+static int current_palette_id;
 
-void V_SetPalette(const int palette_id)
+unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's syntax is insane sometimes. */
 {
 	extern int full_colour;
-
-	unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
+	unsigned char(*calculated_palette)[0x100][3];
 
 	if (!full_colour)
 	{
-		I_SetPalette(&palettes[palette_id], 1);
-		Z_ChangeTag(palettes, PU_CACHE);
+		if (length != NULL)
+			*length = 1;
+		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(1 * 0x100 * 3, PU_STATIC, NULL);
+		W_ReadLump(W_GetNumForName("PLAYPAL"), calculated_palette);
 	}
 	else
 	{
@@ -396,9 +398,13 @@ void V_SetPalette(const int palette_id)
 		   to generate palettes with the proper brightness fall-off and tint. */
 		int tint[3], shift, steps;
 		size_t i;
-		unsigned char (* const calculated_palette)[0x100][3] = (unsigned char (*)[0x100][3])Z_Malloc(NUMCOLORMAPS * 0x100 * 3, PU_STATIC, NULL);
+		unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
+		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(NUMCOLORMAPS * 0x100 * 3, PU_STATIC, NULL);
 
-		if (palette_id >= 13)
+		if (length != NULL)
+			*length = NUMCOLORMAPS;
+
+		if (current_palette_id >= 13)
 		{
 			/* Radiation suit. */
 			tint[0] = 0;
@@ -407,22 +413,22 @@ void V_SetPalette(const int palette_id)
 			shift = 1;
 			steps = 8;
 		}
-		else if (palette_id >= 9)
+		else if (current_palette_id >= 9)
 		{
 			/* Item pickup. */
 			tint[0] = 215;
 			tint[1] = 186;
 			tint[2] = 69;
-			shift = palette_id - 9 + 1;
+			shift = current_palette_id - 9 + 1;
 			steps = 8;
 		}
-		else if (palette_id >= 1)
+		else if (current_palette_id >= 1)
 		{
 			/* Pain. */
 			tint[0] = 255;
 			tint[1] = 0;
 			tint[2] = 0;
-			shift = palette_id - 1 + 1;
+			shift = current_palette_id - 1 + 1;
 			steps = 9;
 		}
 		else
@@ -462,9 +468,19 @@ void V_SetPalette(const int palette_id)
 		}
 
 		Z_ChangeTag(palettes, PU_CACHE);
-
-		I_SetPalette(calculated_palette, NUMCOLORMAPS);
-
-		Z_Free(calculated_palette);
 	}
+
+	return calculated_palette;
+}
+
+void V_SetPalette(const int palette_id)
+{
+	unsigned char(*palette)[0x100][3];
+	size_t palette_length;
+
+	current_palette_id = palette_id;
+
+	palette = V_GetPalette(&palette_length);
+	I_SetPalette(palette, palette_length);
+	Z_Free(palette);
 }
