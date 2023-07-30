@@ -1355,31 +1355,31 @@ d_bool M_Responder (event_t* ev)
 		if (ev->type == ev_mouse && mousewait < I_GetTime())
 		{
 			mousey += ev->data3;
-			if (mousey < lasty-30)
+			if (mousey < lasty-30*4)
 			{
 				ch = KEY_DOWNARROW;
 				mousewait = I_GetTime() + 5;
-				mousey = lasty -= 30;
+				mousey = lasty -= 30*4;
 			}
-			else if (mousey > lasty+30)
+			else if (mousey > lasty+30*4)
 			{
 				ch = KEY_UPARROW;
 				mousewait = I_GetTime() + 5;
-				mousey = lasty += 30;
+				mousey = lasty += 30*4;
 			}
 
 			mousex += ev->data2;
-			if (mousex < lastx-30)
+			if (mousex < lastx-30*4)
 			{
 				ch = KEY_LEFTARROW;
 				mousewait = I_GetTime() + 5;
-				mousex = lastx -= 30;
+				mousex = lastx -= 30*4;
 			}
-			else if (mousex > lastx+30)
+			else if (mousex > lastx+30*44)
 			{
 				ch = KEY_RIGHTARROW;
 				mousewait = I_GetTime() + 5;
-				mousex = lastx += 30;
+				mousex = lastx += 30*4;
 			}
 
 			if (ev->data1&1)
