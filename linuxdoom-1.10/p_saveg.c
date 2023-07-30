@@ -25,21 +25,21 @@
 #include "doomstat.h"
 #include "r_state.h"
 
-unsigned char*           save_p;
-
-
 /* Pads save_p to a 4-byte boundary */
 /*  so that the load/save works on SGI&Gecko. */
-#define PADSAVEP()      save_p += (4 - ((size_t) save_p & 3)) & 3
+#define PADSAVEP()      index += (4 - ((size_t) &buffer[index] & 3)) & 3
 
 
 
 /* P_ArchivePlayers */
-void P_ArchivePlayers (void)
+size_t P_ArchivePlayers (unsigned char* const buffer)
 {
+	size_t      index;
 	int         i;
 	int         j;
 	player_t*   dest;
+
+	index = 0;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -48,27 +48,36 @@ void P_ArchivePlayers (void)
 
 		PADSAVEP();
 
-		dest = (player_t *)save_p;
-		memcpy (dest,&players[i],sizeof(player_t));
-		save_p += sizeof(player_t);
-		for (j=0 ; j<NUMPSPRITES ; j++)
+		if (buffer != NULL)
 		{
-			if (dest->psprites[j].state)
+			dest = (player_t *)&buffer[index];
+			memcpy (dest,&players[i],sizeof(player_t));
+			for (j=0 ; j<NUMPSPRITES ; j++)
 			{
-				dest->psprites[j].state
-					= (state_t *)(dest->psprites[j].state-states);
+				if (dest->psprites[j].state)
+				{
+					dest->psprites[j].state
+						= (state_t *)(dest->psprites[j].state-states);
+				}
 			}
 		}
+
+		index += sizeof(player_t);
 	}
+
+	return index;
 }
 
 
 
 /* P_UnArchivePlayers */
-void P_UnArchivePlayers (void)
+size_t P_UnArchivePlayers (const unsigned char* const buffer)
 {
+	size_t      index;
 	int         i;
 	int         j;
+
+	index = 0;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -77,8 +86,8 @@ void P_UnArchivePlayers (void)
 
 		PADSAVEP();
 
-		memcpy (&players[i],save_p, sizeof(player_t));
-		save_p += sizeof(player_t);
+		memcpy (&players[i],&buffer[index], sizeof(player_t));
+		index += sizeof(player_t);
 
 		/* will be set when unarc thinker */
 		players[i].mo = NULL;
@@ -94,12 +103,15 @@ void P_UnArchivePlayers (void)
 			}
 		}
 	}
+
+	return index;
 }
 
 
 /* P_ArchiveWorld */
-void P_ArchiveWorld (void)
+size_t P_ArchiveWorld (unsigned char* const buffer)
 {
+	size_t              index;
 	int                 i;
 	int                 j;
 	sector_t*           sec;
@@ -107,50 +119,69 @@ void P_ArchiveWorld (void)
 	side_t*             si;
 	short*              put;
 
-	put = (short *)save_p;
+	index = 0;
+
+	put = (short *)buffer;
 
 	/* do sectors */
 	for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
 	{
-		*put++ = sec->floorheight >> FRACBITS;
-		*put++ = sec->ceilingheight >> FRACBITS;
-		*put++ = sec->floorpic;
-		*put++ = sec->ceilingpic;
-		*put++ = sec->lightlevel;
-		*put++ = sec->special;          /* needed? */
-		*put++ = sec->tag;              /* needed? */
+		if (buffer != NULL)
+		{
+			*put++ = sec->floorheight >> FRACBITS;
+			*put++ = sec->ceilingheight >> FRACBITS;
+			*put++ = sec->floorpic;
+			*put++ = sec->ceilingpic;
+			*put++ = sec->lightlevel;
+			*put++ = sec->special;          /* needed? */
+			*put++ = sec->tag;              /* needed? */
+		}
+
+		index += 7;
 	}
 
 
 	/* do lines */
 	for (i=0, li = lines ; i<numlines ; i++,li++)
 	{
-		*put++ = li->flags;
-		*put++ = li->special;
-		*put++ = li->tag;
+		if (buffer != NULL)
+		{
+			*put++ = li->flags;
+			*put++ = li->special;
+			*put++ = li->tag;
+		}
+
+		index += 3;
+
 		for (j=0 ; j<2 ; j++)
 		{
 			if (li->sidenum[j] == -1)
 				continue;
 
-			si = &sides[li->sidenum[j]];
+			if (buffer != NULL)
+			{
+				si = &sides[li->sidenum[j]];
 
-			*put++ = si->textureoffset >> FRACBITS;
-			*put++ = si->rowoffset >> FRACBITS;
-			*put++ = si->toptexture;
-			*put++ = si->bottomtexture;
-			*put++ = si->midtexture;
+				*put++ = si->textureoffset >> FRACBITS;
+				*put++ = si->rowoffset >> FRACBITS;
+				*put++ = si->toptexture;
+				*put++ = si->bottomtexture;
+				*put++ = si->midtexture;
+			}
+
+			index += 5;
 		}
 	}
 
-	save_p = (unsigned char *)put;
+	return index * sizeof(short);
 }
 
 
 
 /* P_UnArchiveWorld */
-void P_UnArchiveWorld (void)
+size_t P_UnArchiveWorld (const unsigned char* const buffer)
 {
+	size_t              index;
 	int                 i;
 	int                 j;
 	sector_t*           sec;
@@ -158,7 +189,9 @@ void P_UnArchiveWorld (void)
 	side_t*             si;
 	short*              get;
 
-	get = (short *)save_p;
+	index = 0;
+
+	get = (short *)buffer;
 
 	/* do sectors */
 	for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
@@ -172,6 +205,8 @@ void P_UnArchiveWorld (void)
 		sec->tag = *get++;              /* needed? */
 		sec->specialdata = 0;
 		sec->soundtarget = 0;
+
+		index += 7;
 	}
 
 	/* do lines */
@@ -180,6 +215,7 @@ void P_UnArchiveWorld (void)
 		li->flags = *get++;
 		li->special = *get++;
 		li->tag = *get++;
+		index += 3;
 		for (j=0 ; j<2 ; j++)
 		{
 			if (li->sidenum[j] == -1)
@@ -190,9 +226,10 @@ void P_UnArchiveWorld (void)
 			si->toptexture = *get++;
 			si->bottomtexture = *get++;
 			si->midtexture = *get++;
+			index += 5;
 		}
 	}
-	save_p = (unsigned char *)get;
+	return index * sizeof(short);
 }
 
 
@@ -210,25 +247,33 @@ typedef enum
 
 
 /* P_ArchiveThinkers */
-void P_ArchiveThinkers (void)
+size_t P_ArchiveThinkers (unsigned char* const buffer)
 {
+	size_t              index;
 	thinker_t*          th;
 	mobj_t*             mobj;
+
+	index = 0;
 
 	/* save off the current thinkers */
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
 	{
 		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
 		{
-			*save_p++ = tc_mobj;
+			if (buffer != NULL)
+				buffer[index] = tc_mobj;
+			++index;
 			PADSAVEP();
-			mobj = (mobj_t *)save_p;
-			memcpy (mobj, th, sizeof(*mobj));
-			save_p += sizeof(*mobj);
-			mobj->state = (state_t *)(mobj->state - states);
+			if (buffer != NULL)
+			{
+				mobj = (mobj_t *)&buffer[index];
+				memcpy (mobj, th, sizeof(*mobj));
+				mobj->state = (state_t *)(mobj->state - states);
 
-			if (mobj->player)
-				mobj->player = (player_t *)((mobj->player-players) + 1);
+				if (mobj->player)
+					mobj->player = (player_t *)((mobj->player-players) + 1);
+			}
+			index += sizeof(*mobj);
 			continue;
 		}
 
@@ -236,18 +281,24 @@ void P_ArchiveThinkers (void)
 	}
 
 	/* add a terminating marker */
-	*save_p++ = tc_end;
+	if (buffer != NULL)
+		buffer[index] = tc_end;
+	++index;
+	return index;
 }
 
 
 
 /* P_UnArchiveThinkers */
-void P_UnArchiveThinkers (void)
+size_t P_UnArchiveThinkers (const unsigned char* const buffer)
 {
+	size_t              index;
 	thinkerclass_t      tclass;
 	thinker_t*          currentthinker;
 	thinker_t*          next;
 	mobj_t*             mobj;
+
+	index = 0;
 
 	/* remove all the current thinkers */
 	currentthinker = thinkercap.next;
@@ -267,17 +318,17 @@ void P_UnArchiveThinkers (void)
 	/* read in saved thinkers */
 	while (1)
 	{
-		tclass = (thinkerclass_t)*save_p++;
+		tclass = (thinkerclass_t)buffer[index++];
 		switch (tclass)
 		{
 		  case tc_end:
-			return;     /* end of list */
+			return index;     /* end of list */
 
 		  case tc_mobj:
 			PADSAVEP();
 			mobj = (mobj_t*)Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
-			memcpy (mobj, save_p, sizeof(*mobj));
-			save_p += sizeof(*mobj);
+			memcpy (mobj, &buffer[index], sizeof(*mobj));
+			index += sizeof(*mobj);
 			mobj->state = &states[(size_t)mobj->state];
 			mobj->target = NULL;
 			if (mobj->player)
@@ -299,6 +350,7 @@ void P_UnArchiveThinkers (void)
 
 	}
 
+	return index;
 }
 
 
@@ -326,8 +378,9 @@ typedef enum
 /* T_StrobeFlash, (strobe_t: sector_t *), */
 /* T_Glow, (glow_t: sector_t *), */
 /* T_PlatRaise, (plat_t: sector_t *), - active list */
-void P_ArchiveSpecials (void)
+size_t P_ArchiveSpecials (unsigned char* const buffer)
 {
+	size_t              index;
 	thinker_t*          th;
 	ceiling_t*          ceiling;
 	vldoor_t*           door;
@@ -337,6 +390,8 @@ void P_ArchiveSpecials (void)
 	strobe_t*           strobe;
 	glow_t*             glow;
 	int                 i;
+
+	index = 0;
 
 	/* save off the current thinkers */
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
@@ -349,103 +404,146 @@ void P_ArchiveSpecials (void)
 
 			if (i<MAXCEILINGS)
 			{
-				*save_p++ = tc_ceiling;
+				if (buffer != NULL)
+					buffer[index] = tc_ceiling;
+				++index;
 				PADSAVEP();
-				ceiling = (ceiling_t *)save_p;
-				memcpy (ceiling, th, sizeof(*ceiling));
-				save_p += sizeof(*ceiling);
-				ceiling->sector = (sector_t *)(ceiling->sector - sectors);
+				if (buffer != NULL)
+				{
+					ceiling = (ceiling_t *)&buffer[index];
+					memcpy (ceiling, th, sizeof(*ceiling));
+					ceiling->sector = (sector_t *)(ceiling->sector - sectors);
+				}
+				index += sizeof(*ceiling);
 			}
 			continue;
 		}
 
 		if (th->function.acp1 == (actionf_p1)T_MoveCeiling)
 		{
-			*save_p++ = tc_ceiling;
+			if (buffer != NULL)
+				buffer[index] = tc_ceiling;
+			++index;
 			PADSAVEP();
-			ceiling = (ceiling_t *)save_p;
-			memcpy (ceiling, th, sizeof(*ceiling));
-			save_p += sizeof(*ceiling);
-			ceiling->sector = (sector_t *)(ceiling->sector - sectors);
+			if (buffer != NULL)
+			{
+				ceiling = (ceiling_t *)&buffer[index];
+				memcpy (ceiling, th, sizeof(*ceiling));
+				ceiling->sector = (sector_t *)(ceiling->sector - sectors);
+			}
+			index += sizeof(*ceiling);
 			continue;
 		}
 
 		if (th->function.acp1 == (actionf_p1)T_VerticalDoor)
 		{
-			*save_p++ = tc_door;
+			if (buffer != NULL)
+				buffer[index] = tc_door;
+			++index;
 			PADSAVEP();
-			door = (vldoor_t *)save_p;
-			memcpy (door, th, sizeof(*door));
-			save_p += sizeof(*door);
-			door->sector = (sector_t *)(door->sector - sectors);
+			if (buffer != NULL)
+			{
+				door = (vldoor_t *)&buffer[index];
+				memcpy (door, th, sizeof(*door));
+				door->sector = (sector_t *)(door->sector - sectors);
+			}
+			index += sizeof(*door);
 			continue;
 		}
 
 		if (th->function.acp1 == (actionf_p1)T_MoveFloor)
 		{
-			*save_p++ = tc_floor;
+			if (buffer != NULL)
+				buffer[index] = tc_floor;
+			++index;
 			PADSAVEP();
-			floor = (floormove_t *)save_p;
-			memcpy (floor, th, sizeof(*floor));
-			save_p += sizeof(*floor);
-			floor->sector = (sector_t *)(floor->sector - sectors);
+			if (buffer != NULL)
+			{
+				floor = (floormove_t *)&buffer[index];
+				memcpy (floor, th, sizeof(*floor));
+				floor->sector = (sector_t *)(floor->sector - sectors);
+			}
+			index += sizeof(*floor);
 			continue;
 		}
 
 		if (th->function.acp1 == (actionf_p1)T_PlatRaise)
 		{
-			*save_p++ = tc_plat;
+			if (buffer != NULL)
+				buffer[index] = tc_plat;
+			++index;
 			PADSAVEP();
-			plat = (plat_t *)save_p;
-			memcpy (plat, th, sizeof(*plat));
-			save_p += sizeof(*plat);
-			plat->sector = (sector_t *)(plat->sector - sectors);
+			if (buffer != NULL)
+			{
+				plat = (plat_t *)&buffer[index];
+				memcpy (plat, th, sizeof(*plat));
+				plat->sector = (sector_t *)(plat->sector - sectors);
+			}
+			index += sizeof(*plat);
 			continue;
 		}
 
 		if (th->function.acp1 == (actionf_p1)T_LightFlash)
 		{
-			*save_p++ = tc_flash;
+			if (buffer != NULL)
+				buffer[index] = tc_flash;
+			++index;
 			PADSAVEP();
-			flash = (lightflash_t *)save_p;
-			memcpy (flash, th, sizeof(*flash));
-			save_p += sizeof(*flash);
-			flash->sector = (sector_t *)(flash->sector - sectors);
+			if (buffer != NULL)
+			{
+				flash = (lightflash_t *)&buffer[index];
+				memcpy (flash, th, sizeof(*flash));
+				flash->sector = (sector_t *)(flash->sector - sectors);
+			}
+			index += sizeof(*flash);
 			continue;
 		}
 
 		if (th->function.acp1 == (actionf_p1)T_StrobeFlash)
 		{
-			*save_p++ = tc_strobe;
+			if (buffer != NULL)
+				buffer[index] = tc_strobe;
+			++index;
 			PADSAVEP();
-			strobe = (strobe_t *)save_p;
-			memcpy (strobe, th, sizeof(*strobe));
-			save_p += sizeof(*strobe);
-			strobe->sector = (sector_t *)(strobe->sector - sectors);
+			if (buffer != NULL)
+			{
+				strobe = (strobe_t *)&buffer[index];
+				memcpy (strobe, th, sizeof(*strobe));
+				strobe->sector = (sector_t *)(strobe->sector - sectors);
+			}
+			index += sizeof(*strobe);
 			continue;
 		}
 
 		if (th->function.acp1 == (actionf_p1)T_Glow)
 		{
-			*save_p++ = tc_glow;
+			if (buffer != NULL)
+				buffer[index] = tc_glow;
+			++index;
 			PADSAVEP();
-			glow = (glow_t *)save_p;
-			memcpy (glow, th, sizeof(*glow));
-			save_p += sizeof(*glow);
-			glow->sector = (sector_t *)(glow->sector - sectors);
+			if (buffer != NULL)
+			{
+				glow = (glow_t *)&buffer[index];
+				memcpy (glow, th, sizeof(*glow));
+				glow->sector = (sector_t *)(glow->sector - sectors);
+			}
+			index += sizeof(*glow);
 			continue;
 		}
 	}
 
 	/* add a terminating marker */
-	*save_p++ = tc_endspecials;
-
+	if (buffer != NULL)
+		buffer[index] = tc_endspecials;
+	++index;
+	return index;
 }
 
 
 /* P_UnArchiveSpecials */
-void P_UnArchiveSpecials (void)
+size_t P_UnArchiveSpecials (const unsigned char* const buffer)
 {
+	size_t              index;
 	specials_e          tclass;
 	ceiling_t*          ceiling;
 	vldoor_t*           door;
@@ -455,21 +553,22 @@ void P_UnArchiveSpecials (void)
 	strobe_t*           strobe;
 	glow_t*             glow;
 
+	index = 0;
 
 	/* read in saved thinkers */
 	while (1)
 	{
-		tclass = (specials_e)*save_p++;
+		tclass = (specials_e)buffer[index++];
 		switch (tclass)
 		{
 		  case tc_endspecials:
-			return;     /* end of list */
+			return index;     /* end of list */
 
 		  case tc_ceiling:
 			PADSAVEP();
 			ceiling = (ceiling_t*)Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL);
-			memcpy (ceiling, save_p, sizeof(*ceiling));
-			save_p += sizeof(*ceiling);
+			memcpy (ceiling, &buffer[index], sizeof(*ceiling));
+			index += sizeof(*ceiling);
 			ceiling->sector = &sectors[(size_t)ceiling->sector];
 			ceiling->sector->specialdata = ceiling;
 
@@ -483,8 +582,8 @@ void P_UnArchiveSpecials (void)
 		  case tc_door:
 			PADSAVEP();
 			door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVEL, NULL);
-			memcpy (door, save_p, sizeof(*door));
-			save_p += sizeof(*door);
+			memcpy (door, &buffer[index], sizeof(*door));
+			index += sizeof(*door);
 			door->sector = &sectors[(size_t)door->sector];
 			door->sector->specialdata = door;
 			door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
@@ -494,8 +593,8 @@ void P_UnArchiveSpecials (void)
 		  case tc_floor:
 			PADSAVEP();
 			floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVEL, NULL);
-			memcpy (floor, save_p, sizeof(*floor));
-			save_p += sizeof(*floor);
+			memcpy (floor, &buffer[index], sizeof(*floor));
+			index += sizeof(*floor);
 			floor->sector = &sectors[(size_t)floor->sector];
 			floor->sector->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
@@ -505,8 +604,8 @@ void P_UnArchiveSpecials (void)
 		  case tc_plat:
 			PADSAVEP();
 			plat = (plat_t*)Z_Malloc (sizeof(*plat), PU_LEVEL, NULL);
-			memcpy (plat, save_p, sizeof(*plat));
-			save_p += sizeof(*plat);
+			memcpy (plat, &buffer[index], sizeof(*plat));
+			index += sizeof(*plat);
 			plat->sector = &sectors[(size_t)plat->sector];
 			plat->sector->specialdata = plat;
 
@@ -520,8 +619,8 @@ void P_UnArchiveSpecials (void)
 		  case tc_flash:
 			PADSAVEP();
 			flash = (lightflash_t*)Z_Malloc (sizeof(*flash), PU_LEVEL, NULL);
-			memcpy (flash, save_p, sizeof(*flash));
-			save_p += sizeof(*flash);
+			memcpy (flash, &buffer[index], sizeof(*flash));
+			index += sizeof(*flash);
 			flash->sector = &sectors[(size_t)flash->sector];
 			flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
 			P_AddThinker (&flash->thinker);
@@ -530,8 +629,8 @@ void P_UnArchiveSpecials (void)
 		  case tc_strobe:
 			PADSAVEP();
 			strobe = (strobe_t*)Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL);
-			memcpy (strobe, save_p, sizeof(*strobe));
-			save_p += sizeof(*strobe);
+			memcpy (strobe, &buffer[index], sizeof(*strobe));
+			index += sizeof(*strobe);
 			strobe->sector = &sectors[(size_t)strobe->sector];
 			strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
 			P_AddThinker (&strobe->thinker);
@@ -540,8 +639,8 @@ void P_UnArchiveSpecials (void)
 		  case tc_glow:
 			PADSAVEP();
 			glow = (glow_t*)Z_Malloc (sizeof(*glow), PU_LEVEL, NULL);
-			memcpy (glow, save_p, sizeof(*glow));
-			save_p += sizeof(*glow);
+			memcpy (glow, &buffer[index], sizeof(*glow));
+			index += sizeof(*glow);
 			glow->sector = &sectors[(size_t)glow->sector];
 			glow->thinker.function.acp1 = (actionf_p1)T_Glow;
 			P_AddThinker (&glow->thinker);
@@ -554,5 +653,6 @@ void P_UnArchiveSpecials (void)
 
 	}
 
+	return index;
 }
 

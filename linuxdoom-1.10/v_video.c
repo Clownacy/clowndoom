@@ -544,7 +544,7 @@ void V_Init (void)
 
 	/* stick these in low dos memory on PCs */
 
-	base = I_AllocLow (SCREENWIDTH*SCREENHEIGHT*4*2); /* *2 to fit the savedata in TNT's MAP09: Stronghold */ /* TODO: Stupid hack: get rid of it. */
+	base = I_AllocLow (SCREENWIDTH*SCREENHEIGHT*4);
 
 	for (i=0 ; i<4 ; i++)
 		screens[i] = base + i*SCREENWIDTH*SCREENHEIGHT;

@@ -64,7 +64,6 @@
 #include "g_game.h"
 
 
-#define SAVEGAMESIZE    (SCREENWIDTH*SCREENHEIGHT*4*2)
 #define SAVESTRINGSIZE  24
 
 
@@ -131,8 +130,6 @@ d_bool         precache = d_true;        /* if true, load all graphics at start 
 wbstartstruct_t wminfo;                 /* parms for world map / intermission */
 
 short           consistancy[MAXPLAYERS][BACKUPTICS];
-
-unsigned char*           savebuffer;
 
 int             always_run;
 
@@ -1154,44 +1151,51 @@ void G_LoadGame (const char* name)
 
 void G_DoLoadGame (void)
 {
-	int         i;
-	int         a,b,c;
-	char        vcheck[VERSIONSIZE];
+	int            i;
+	int            a,b,c;
+	char           vcheck[VERSIONSIZE];
+	unsigned char *savebuffer;
+	size_t         index;
+
+	index = 0;
 
 	gameaction = ga_nothing;
 
 	M_ReadFile (savename, &savebuffer);
-	save_p = savebuffer + SAVESTRINGSIZE;
+	index += SAVESTRINGSIZE;
 
 	/* skip the description field */
 	memset (vcheck,0,sizeof(vcheck));
 	sprintf (vcheck,"version %i",VERSION);
-	if (strcmp ((char*)save_p, vcheck))
+	if (memcmp (&savebuffer[index], vcheck, VERSIONSIZE))
+	{
+		Z_Free(savebuffer);
 		return;                         /* bad version */
-	save_p += VERSIONSIZE;
+	}
+	index += VERSIONSIZE;
 
-	gameskill = (skill_t)*save_p++;
-	gameepisode = *save_p++;
-	gamemap = *save_p++;
+	gameskill = (skill_t)savebuffer[index++];
+	gameepisode = savebuffer[index++];
+	gamemap = savebuffer[index++];
 	for (i=0 ; i<MAXPLAYERS ; i++)
-		playeringame[i] = *save_p++;
+		playeringame[i] = savebuffer[index++];
 
 	/* load a base level */
 	G_InitNew (gameskill, gameepisode, gamemap);
 
 	/* get the times */
-	a = *save_p++;
-	b = *save_p++;
-	c = *save_p++;
+	a = savebuffer[index++];
+	b = savebuffer[index++];
+	c = savebuffer[index++];
 	leveltime = (a<<16) + (b<<8) + c;
 
 	/* dearchive all the modifications */
-	P_UnArchivePlayers ();
-	P_UnArchiveWorld ();
-	P_UnArchiveThinkers ();
-	P_UnArchiveSpecials ();
+	index += P_UnArchivePlayers (&savebuffer[index]);
+	index += P_UnArchiveWorld (&savebuffer[index]);
+	index += P_UnArchiveThinkers (&savebuffer[index]);
+	index += P_UnArchiveSpecials (&savebuffer[index]);
 
-	if (*save_p != 0x1d)
+	if (savebuffer[index] != 0x1d)
 		I_Error ("Bad savegame");
 
 	/* done */
@@ -1218,51 +1222,73 @@ G_SaveGame
 	sendsave = d_true;
 }
 
+static size_t ArchiveToBuffer(unsigned char* const buffer)
+{
+	size_t      index;
+	char        name2[VERSIONSIZE];
+	int         i;
+
+	index = 0;
+
+	if (buffer != NULL)
+		memcpy(&buffer[index], savedescription, SAVESTRINGSIZE);
+	index += SAVESTRINGSIZE;
+	if (buffer != NULL)
+	{
+		memset(name2, 0, sizeof(name2));
+		sprintf(name2, "version %i", VERSION);
+		memcpy(&buffer[index], name2, VERSIONSIZE);
+	}
+	index += VERSIONSIZE;
+
+	if (buffer != NULL)
+	{
+		buffer[index++] = gameskill;
+		buffer[index++] = gameepisode;
+		buffer[index++] = gamemap;
+		for (i = 0; i < MAXPLAYERS; i++)
+			buffer[index++] = playeringame[i];
+		buffer[index++] = leveltime >> 16;
+		buffer[index++] = leveltime >> 8;
+		buffer[index++] = leveltime;
+	}
+	else
+	{
+		index += 3 + MAXPLAYERS + 3;
+	}
+
+	index += P_ArchivePlayers(&buffer[index]);
+	index += P_ArchiveWorld(&buffer[index]);
+	index += P_ArchiveThinkers(&buffer[index]);
+	index += P_ArchiveSpecials(&buffer[index]);
+
+	if (buffer != NULL)
+		buffer[index] = 0x1d;           /* consistancy marker */
+	++index;
+
+	return index;
+}
+
 void G_DoSaveGame (void)
 {
-	char        name[100];
-	char        name2[VERSIONSIZE];
-	const char* description;
-	int         length;
-	int         i;
+	char           name[100];
+	size_t         length;
+	unsigned char *savebuffer;
 
 	if (M_CheckParm("-cdrom"))
 		sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",savegameslot);
 	else
 		sprintf (name,SAVEGAMENAME"%d.dsg",savegameslot);
-	description = savedescription;
 
-	save_p = savebuffer = screens[1]+0x4000; /* TODO: Kill this magic number */
+	length = ArchiveToBuffer(NULL);
 
-	memcpy (save_p, description, SAVESTRINGSIZE);
-	save_p += SAVESTRINGSIZE;
-	memset (name2,0,sizeof(name2));
-	sprintf (name2,"version %i",VERSION);
-	memcpy (save_p, name2, VERSIONSIZE);
-	save_p += VERSIONSIZE;
+	savebuffer = (unsigned char*)malloc(length);
 
-	*save_p++ = gameskill;
-	*save_p++ = gameepisode;
-	*save_p++ = gamemap;
-	for (i=0 ; i<MAXPLAYERS ; i++)
-		*save_p++ = playeringame[i];
-	*save_p++ = leveltime>>16;
-	*save_p++ = leveltime>>8;
-	*save_p++ = leveltime;
+	if (savebuffer != NULL)
+		M_WriteFile(name, savebuffer, length);
 
-	P_ArchivePlayers ();
-	P_ArchiveWorld ();
-	P_ArchiveThinkers ();
-	P_ArchiveSpecials ();
-
-	*save_p++ = 0x1d;           /* consistancy marker */
-
-	length = save_p - savebuffer;
-	if (length > SAVEGAMESIZE)
-		I_Error ("Savegame buffer overrun");
-	M_WriteFile (name, savebuffer, length);
 	gameaction = ga_nothing;
-	savedescription[0] = 0;
+	savedescription[0] = '\0';
 
 	players[consoleplayer].message = GGSAVED;
 
