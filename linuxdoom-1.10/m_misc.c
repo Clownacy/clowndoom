@@ -403,81 +403,84 @@ WritePCXfile
 
 	length = 0x80 + 1 + (1 << 8) * 3;
 
-	pcx = (unsigned char*)Z_Malloc(length + width * height * 2, PU_STATIC, NULL);
+	pcx = (unsigned char*)malloc(length + width * height * 2);
 
-	/* Manufacturer */
-	pcx[0] = 0x0A;      /* PCX ID */
-	/* Version */
-	pcx[1] = 5;         /* 256 colors */
-	/* Encoding */
-	pcx[2] = 1;         /* RLE */
-	/* Bits per pixel */
-	pcx[3] = 8;         /* 256 colors */
-	/* X minimum */
-	WriteU16LE(&pcx[4], 0);
-	/* Y minimum */
-	WriteU16LE(&pcx[6], 0);
-	/* X maximum */
-	WriteU16LE(&pcx[8], width-1);
-	/* Y maximum */
-	WriteU16LE(&pcx[0xA], height-1);
-	/* Horizontal resolution */
-	WriteU16LE(&pcx[0xC], width);
-	/* Vertical resolution */
-	WriteU16LE(&pcx[0xE], height);
-	/* Palette */
-	memset(&pcx[0x10], 0, 0x30);
-	/* Reserved */
-	pcx[0x40] = 0;
-	/* Color planes */
-	pcx[0x41] = 1;      /* Chunky image */
-	/* Bytes per line */
-	WriteU16LE(&pcx[0x42], width);
-	/* Palette type */
-	WriteU16LE(&pcx[0x44], 2); /* Not a grey scale */
-	/* Filler */
-	memset(&pcx[0x46], 0, 0x3A);
-
-	/* Pack the image */
-	pack = &pcx[0x80];
-
-	bytes_remaining = width * height;
-
-	while (bytes_remaining != 0)
+	if (pcx != NULL)
 	{
-		size_t run_length;
+		/* Manufacturer */
+		pcx[0] = 0x0A;      /* PCX ID */
+		/* Version */
+		pcx[1] = 5;         /* 256 colors */
+		/* Encoding */
+		pcx[2] = 1;         /* RLE */
+		/* Bits per pixel */
+		pcx[3] = 8;         /* 256 colors */
+		/* X minimum */
+		WriteU16LE(&pcx[4], 0);
+		/* Y minimum */
+		WriteU16LE(&pcx[6], 0);
+		/* X maximum */
+		WriteU16LE(&pcx[8], width-1);
+		/* Y maximum */
+		WriteU16LE(&pcx[0xA], height-1);
+		/* Horizontal resolution */
+		WriteU16LE(&pcx[0xC], width);
+		/* Vertical resolution */
+		WriteU16LE(&pcx[0xE], height);
+		/* Palette */
+		memset(&pcx[0x10], 0, 0x30);
+		/* Reserved */
+		pcx[0x40] = 0;
+		/* Color planes */
+		pcx[0x41] = 1;      /* Chunky image */
+		/* Bytes per line */
+		WriteU16LE(&pcx[0x42], width);
+		/* Palette type */
+		WriteU16LE(&pcx[0x44], 2); /* Not a grey scale */
+		/* Filler */
+		memset(&pcx[0x46], 0, 0x3A);
 
-		const size_t run_length_limit = bytes_remaining < 0x3F ? bytes_remaining : 0x3F;
-		const unsigned char run_length_value = *data++;
+		/* Pack the image */
+		pack = &pcx[0x80];
 
-		run_length = 1;
+		bytes_remaining = width * height;
 
-		while (*data == run_length_value && run_length < run_length_limit)
+		while (bytes_remaining != 0)
 		{
-			++data;
-			++run_length;
-		}
+			size_t run_length;
 
-		if (run_length != 1 || (run_length_value & 0xC0) == 0xC0)
-		{
-			*pack++ = 0xC0 | run_length;
+			const size_t run_length_limit = bytes_remaining < 0x3F ? bytes_remaining : 0x3F;
+			const unsigned char run_length_value = *data++;
+
+			run_length = 1;
+
+			while (*data == run_length_value && run_length < run_length_limit)
+			{
+				++data;
+				++run_length;
+			}
+
+			if (run_length != 1 || (run_length_value & 0xC0) == 0xC0)
+			{
+				*pack++ = 0xC0 | run_length;
+				++length;
+			}
+
+			*pack++ = run_length_value;
 			++length;
+
+			bytes_remaining -= run_length;
 		}
 
-		*pack++ = run_length_value;
-		++length;
+		/* Write the palette */
+		*pack++ = 0x0C; /* Palette ID byte */
+		memcpy(pack, palette, (1 << 8) * 3);
 
-		bytes_remaining -= run_length;
+		/* Write output file */
+		M_WriteFile(filename, pcx, length);
+
+		free(pcx);
 	}
-
-	/* Write the palette */
-	*pack++ = 0x0C; /* Palette ID byte */
-	memcpy(pack, palette, (1 << 8) * 3);
-
-	/* Write output file */
-	M_WriteFile(filename, pcx, length);
-
-	Z_Free(pcx);
 }
 
 
@@ -497,72 +500,75 @@ WriteBMPfile
 	const unsigned long bitmap_offset = 0x1A + 0x100 * 3;
 	const unsigned long length = bitmap_offset + rounded_width * height;
 
-	bmp = (unsigned char*)Z_Malloc(length, PU_STATIC, NULL);
+	bmp = (unsigned char*)malloc(length);
 
-	/* BMP file header */
-
-	/* Identifier */
-	bmp[0] = 'B';
-	bmp[1] = 'M';
-
-	/* Size of file in bytes */
-	WriteU32LE(&bmp[2], length);
-
-	/* Reserved */
-	WriteU16LE(&bmp[6], 0);
-
-	/* Reserved */
-	WriteU16LE(&bmp[8], 0);
-
-	/* Offset of pixel array */
-	WriteU32LE(&bmp[0xA], bitmap_offset);
-
-	/* BITMAPCOREHEADER */
-
-	/* Size of 'BITMAPCOREHEADER' */
-	WriteU32LE(&bmp[0xE], 0x1A - 0xE);
-
-	/* Width of bitmap in pixels */
-	WriteU16LE(&bmp[0x12], width);
-
-	/* Height of bitmap in pixels */
-	WriteU16LE(&bmp[0x14], height);
-
-	/* Number of color planes */
-	WriteU16LE(&bmp[0x16], 1);
-
-	/* Bits per pixel */
-	WriteU16LE(&bmp[0x18], 8);
-
-	/* Color table */
-
-	bmp_pointer = &bmp[0x1A];
-
-	for (i = 0; i < 1 << 8; ++i)
+	if (bmp != NULL)
 	{
-		const unsigned char blue  = *palette++;
-		const unsigned char green = *palette++;
-		const unsigned char red   = *palette++;
+		/* BMP file header */
 
-		*bmp_pointer++ = red;
-		*bmp_pointer++ = green;
-		*bmp_pointer++ = blue;
+		/* Identifier */
+		bmp[0] = 'B';
+		bmp[1] = 'M';
+
+		/* Size of file in bytes */
+		WriteU32LE(&bmp[2], length);
+
+		/* Reserved */
+		WriteU16LE(&bmp[6], 0);
+
+		/* Reserved */
+		WriteU16LE(&bmp[8], 0);
+
+		/* Offset of pixel array */
+		WriteU32LE(&bmp[0xA], bitmap_offset);
+
+		/* BITMAPCOREHEADER */
+
+		/* Size of 'BITMAPCOREHEADER' */
+		WriteU32LE(&bmp[0xE], 0x1A - 0xE);
+
+		/* Width of bitmap in pixels */
+		WriteU16LE(&bmp[0x12], width);
+
+		/* Height of bitmap in pixels */
+		WriteU16LE(&bmp[0x14], height);
+
+		/* Number of color planes */
+		WriteU16LE(&bmp[0x16], 1);
+
+		/* Bits per pixel */
+		WriteU16LE(&bmp[0x18], 8);
+
+		/* Color table */
+
+		bmp_pointer = &bmp[0x1A];
+
+		for (i = 0; i < 1 << 8; ++i)
+		{
+			const unsigned char blue  = *palette++;
+			const unsigned char green = *palette++;
+			const unsigned char red   = *palette++;
+
+			*bmp_pointer++ = red;
+			*bmp_pointer++ = green;
+			*bmp_pointer++ = blue;
+		}
+
+		/* Pixel array */
+
+		for (i = 0; i < height; ++i)
+		{
+			bmp_pointer = &bmp[bitmap_offset + rounded_width * (height - i - 1)];
+
+			memcpy(bmp_pointer, &data[i * width], width);
+			memset(bmp_pointer + width, 0, rounded_width - width);
+		}
+
+		/* Write output file */
+		M_WriteFile(filename, bmp, length);
+
+		free(bmp);
 	}
-
-	/* Pixel array */
-
-	for (i = 0; i < height; ++i)
-	{
-		bmp_pointer = &bmp[bitmap_offset + rounded_width * (height - i - 1)];
-
-		memcpy(bmp_pointer, &data[i * width], width);
-		memset(bmp_pointer + width, 0, rounded_width - width);
-	}
-
-	/* Write output file */
-	M_WriteFile(filename, bmp, length);
-
-	Z_Free(bmp);
 }
 
 
