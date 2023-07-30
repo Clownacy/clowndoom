@@ -1739,6 +1739,7 @@ void WI_unloadData(void)
 	Z_ChangeTag(victims, PU_CACHE);
 	Z_ChangeTag(killers, PU_CACHE);
 	Z_ChangeTag(total, PU_CACHE);
+	/* Don't change the tag for these because they're also allocated by the status bar code. */
 	/*  Z_ChangeTag(star, PU_CACHE); */
 	/*  Z_ChangeTag(bstar, PU_CACHE); */
 
