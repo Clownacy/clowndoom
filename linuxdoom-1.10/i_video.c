@@ -83,17 +83,21 @@ void I_FinishUpdate (void)
 	/* draws little dots on the bottom of the screen */
 	if (devparm)
 	{
-		int i;
+		int i,x,y;
 
 		i = I_GetTime();
 		tics = i - lasttic;
 		lasttic = i;
 		if (tics > 20) tics = 20;
 
-		for (i=0 ; i<tics*2 ; i+=2)
-			screens[0][ SCREENHEIGHT-1 + i*SCREENHEIGHT] = 0xff;
-		for ( ; i<20*2 ; i+=2)
-			screens[0][ SCREENHEIGHT-1 + i*SCREENHEIGHT] = 0x0;
+		for (i=0 ; i<tics*2*HUD_SCALE ; i+=2*HUD_SCALE)
+			for (x=0 ; x<HUD_SCALE ; ++x)
+				for (y=0 ; y<HUD_SCALE ; ++y)
+					screens[0][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0xff;
+		for ( ; i<20*2*HUD_SCALE ; i+=2*HUD_SCALE)
+			for (x=0 ; x<HUD_SCALE ; ++x)
+				for (y=0 ; y<HUD_SCALE ; ++y)
+					screens[0][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0x0;
 	}
 
 	/* Step 1. Color the screen */
