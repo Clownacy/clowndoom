@@ -53,7 +53,7 @@
 /* Index of the special effects (INVUL inverse) map. */
 #define INVERSECOLORMAP         (NUMCOLORMAPS+0)
 
-#define FUZZCOLORMAPS           (NUMCOLORMAPS+1)
+#define FUZZCOLORMAPS           (NUMCOLORMAPS+2)
 
 
 
