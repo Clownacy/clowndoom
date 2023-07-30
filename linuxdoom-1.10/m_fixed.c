@@ -135,18 +135,6 @@ FixedDiv
 ( fixed_t       a,
   fixed_t       b )
 {
-	if ( (labs(a)>>14) >= labs(b))
-		return (a^b)<0 ? MINLONG : MAXLONG;
-	return FixedDiv2 (a,b);
-}
-
-
-
-fixed_t
-FixedDiv2
-( fixed_t       a,
-  fixed_t       b )
-{
 	/* Horrific fixed point division using only 32-bit integers. */
 	SplitInteger dividend, divisor;
 	unsigned int shift_amount;
@@ -154,6 +142,9 @@ FixedDiv2
 
 	const unsigned long a_absolute = labs(a);
 	const unsigned long b_absolute = labs(b);
+
+	if ((a_absolute >> 14) >= b_absolute)
+		return (a ^ b) < 0 ? MINLONG : MAXLONG;
 
 	/* Note that this sneakily multiplies by FRACUNIT. */
 	dividend.splits[0] = (a_absolute >> 16) & 0xFFFF;
@@ -199,6 +190,18 @@ FixedDiv2
 
 #if 0
 /* Old legacy code. */
+fixed_t
+FixedDiv
+( fixed_t       a,
+  fixed_t       b )
+{
+	if ( (labs(a)>>14) >= labs(b))
+		return (a^b)<0 ? MINLONG : MAXLONG;
+	return FixedDiv2 (a,b);
+}
+
+
+
 fixed_t
 FixedDiv2
 ( fixed_t       a,
