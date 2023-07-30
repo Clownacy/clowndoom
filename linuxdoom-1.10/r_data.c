@@ -661,7 +661,7 @@ void R_InitColormaps (void)
 	else
 	{
 		/* Use the second-brightest regular colour map. */
-		memcpy(&colormaps[LIGHTAMPCOLORMAP], &colormaps[1], sizeof(colormaps[1]));
+		memcpy(&colormaps[LIGHTAMPCOLORMAP], &colormaps[1*NUMLIGHTCOLORMAPS_MUL], sizeof(colormaps[1*NUMLIGHTCOLORMAPS_MUL]));
 	}
 }
 

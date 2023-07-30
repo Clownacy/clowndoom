@@ -249,7 +249,7 @@ void R_DrawFuzzColumn (void)
 		/* Add index from colormap to index. */
 		/* This wacky new logic converts from full-colour back down to 256-colour to authentically recreate the fuzz effect. */
 		const unsigned int pixel = dest[fuzzoffset[fuzzpos]];
-		*dest = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100][pixel % 0x100]];
+		*dest = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100 / NUMLIGHTCOLORMAPS_MUL][pixel % 0x100]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
@@ -308,7 +308,7 @@ void R_DrawFuzzColumnLow (void)
 		/* Add index from colormap to index. */
 		/* This wacky new logic converts from full-colour back down to 256-colour to authentically recreate the fuzz effect. */
 		const unsigned int pixel = dest[0][fuzzoffset[fuzzpos]];
-		*dest[0] = *dest[1] = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100][pixel % 0x100]];
+		*dest[0] = *dest[1] = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100 / NUMLIGHTCOLORMAPS_MUL][pixel % 0x100]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
