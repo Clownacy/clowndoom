@@ -610,7 +610,7 @@ void R_InitColormaps (void)
 	unsigned char(* const original_colour_maps)[0x100] = (unsigned char(*)[0x100])W_CacheLumpName("COLORMAP", PU_STATIC);
 
 	/* Load-in the original light tables. */
-	for (i = 0; i < NUMLIGHTCOLORMAPS; ++i)
+	for (i = 0; i < NUMLIGHTCOLORMAPS/NUMLIGHTCOLORMAPS_MUL; ++i)
 		for (j = 0; j < D_COUNT_OF(colormaps[FUZZCOLORMAPS + i]); ++j)
 			colormaps[FUZZCOLORMAPS + i][j] = original_colour_maps[i][j];
 
@@ -628,7 +628,9 @@ void R_InitColormaps (void)
 	else
 	{
 		/* Load the original colour maps. */
-		memcpy(colormaps[0], colormaps[FUZZCOLORMAPS], sizeof(colormaps[0]) * NUMLIGHTCOLORMAPS);
+		for (i = 0; i < NUMLIGHTCOLORMAPS / NUMLIGHTCOLORMAPS_MUL; ++i)
+			for (j = 0; j < NUMLIGHTCOLORMAPS_MUL; ++j)
+				memcpy(colormaps[i * NUMLIGHTCOLORMAPS_MUL + j], colormaps[FUZZCOLORMAPS + i], sizeof(colormaps[0]));
 	}
 
 	/* Set-up the light-amplification visor colour map. */
@@ -661,7 +663,7 @@ void R_InitColormaps (void)
 	else
 	{
 		/* Use the second-brightest regular colour map. */
-		memcpy(&colormaps[LIGHTAMPCOLORMAP], &colormaps[1*NUMLIGHTCOLORMAPS_MUL], sizeof(colormaps[1*NUMLIGHTCOLORMAPS_MUL]));
+		memcpy(&colormaps[LIGHTAMPCOLORMAP], &colormaps[1*NUMLIGHTCOLORMAPS_MUL], sizeof(colormaps[0]));
 	}
 }
 

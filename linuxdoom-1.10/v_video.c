@@ -19,6 +19,7 @@
 
 ******************************************************************************/
 
+#include <string.h>
 
 #include "i_system.h"
 #include "r_local.h"
@@ -383,13 +384,14 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 {
 	extern int full_colour;
 	unsigned char(*calculated_palette)[0x100][3];
+	unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
 
 	if (!full_colour)
 	{
 		if (length != NULL)
 			*length = 1;
 		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(1 * 0x100 * 3, PU_STATIC, NULL);
-		W_ReadLump(W_GetNumForName("PLAYPAL"), calculated_palette);
+		memcpy(calculated_palette[0], palettes[current_palette_id], sizeof(calculated_palette[0]));
 	}
 	else
 	{
@@ -398,7 +400,6 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 		   to generate palettes with the proper brightness fall-off and tint. */
 		int tint[3], shift, steps;
 		size_t i;
-		unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
 		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(NUMLIGHTCOLORMAPS * 0x100 * 3, PU_STATIC, NULL);
 
 		if (length != NULL)
@@ -466,9 +467,9 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 				}
 			}
 		}
-
-		Z_ChangeTag(palettes, PU_CACHE);
 	}
+
+	Z_ChangeTag(palettes, PU_CACHE);
 
 	return calculated_palette;
 }
