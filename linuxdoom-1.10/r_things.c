@@ -387,8 +387,8 @@ R_DrawVisSprite
 	else if (vis->mobjflags & MF_TRANSLATION)
 	{
 		colfunc = transcolfunc;
-		dc_translation = translationtables - 256 +
-			( (vis->mobjflags & MF_TRANSLATION) >> (MF_TRANSSHIFT-8) );
+		dc_translation = translationtables[
+			( (vis->mobjflags & MF_TRANSLATION) >> MF_TRANSSHIFT ) - 1];
 	}
 
 	dc_iscale = abs(vis->xiscale)>>detailshift;

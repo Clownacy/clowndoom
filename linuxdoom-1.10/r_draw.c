@@ -326,8 +326,8 @@ void R_DrawFuzzColumnLow (void)
 /*  tables, e.g. the lighter colored version */
 /*  of the BaronOfHell, the HellKnight, uses */
 /*  identical sprites, kinda brightened up. */
-unsigned char*   dc_translation;
-unsigned char*   translationtables;
+unsigned char   *dc_translation;
+unsigned char   translationtables[3][0x100];
 
 void R_DrawTranslatedColumn (void)
 {
@@ -425,24 +425,21 @@ void R_InitTranslationTables (void)
 {
 	int         i;
 
-	translationtables = (unsigned char*)Z_Malloc (256*3+255, PU_STATIC, NULL);
-	translationtables = (unsigned char *)(( (size_t)translationtables + 255 )& ~255);
-
 	/* translate just the 16 green colors */
-	for (i=0 ; i<256 ; i++)
+	for (i=0 ; i<0x100 ; i++)
 	{
 		if (i >= 0x70 && i<= 0x7f)
 		{
 			/* map green ramp to gray, brown, red */
-			translationtables[i] = 0x60 + (i&0xf);
-			translationtables [i+256] = 0x40 + (i&0xf);
-			translationtables [i+512] = 0x20 + (i&0xf);
+			translationtables[0][i] = 0x60 + (i&0xf);
+			translationtables[1][i] = 0x40 + (i&0xf);
+			translationtables[2][i] = 0x20 + (i&0xf);
 		}
 		else
 		{
 			/* Keep all other colors as is. */
-			translationtables[i] = translationtables[i+256]
-				= translationtables[i+512] = i;
+			translationtables[0][i] = translationtables[1][i]
+				= translationtables[2][i] = i;
 		}
 	}
 }

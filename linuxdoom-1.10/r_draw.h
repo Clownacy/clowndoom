@@ -72,8 +72,8 @@ extern fixed_t          ds_ystep;
 /* start of a 64*64 tile image */
 extern unsigned char*            ds_source;
 
-extern unsigned char*            translationtables;
-extern unsigned char*            dc_translation;
+extern unsigned char            translationtables[3][0x100];
+extern unsigned char            *dc_translation;
 
 
 /* Span blitting for rows, floor/ceiling. */
