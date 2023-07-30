@@ -32,19 +32,19 @@
 
 typedef struct SplitInteger
 {
-	unsigned int splits[3];
+	unsigned long splits[3];
 } SplitInteger;
 
 static void Subtract(SplitInteger * const minuend, const SplitInteger * const subtrahend)
 {
-    unsigned int carry;
+    unsigned long carry;
     unsigned int i;
 
     carry = 0;
 
     for (i = 3; i-- != 0; )
     {
-        const unsigned int difference = minuend->splits[i] - subtrahend->splits[i] + carry;
+        const unsigned long difference = minuend->splits[i] - subtrahend->splits[i] + carry;
 
         /* Isolate and sign-extend the overflow to obtain the new carry. */
         carry = difference >> 16;
@@ -72,14 +72,14 @@ static boolean GreaterThan(const SplitInteger * const a, const SplitInteger * co
 
 static void LeftShift(SplitInteger * const value)
 {
-    unsigned int carry;
+    unsigned long carry;
     unsigned int i;
 
     carry = 0;
 
     for (i = 3; i-- != 0; )
     {
-        const unsigned int new_carry = value->splits[i] >> 15;
+        const unsigned long new_carry = value->splits[i] >> 15;
         value->splits[i] <<= 1;
 	value->splits[i] |= carry;
 	carry = new_carry;
@@ -89,14 +89,14 @@ static void LeftShift(SplitInteger * const value)
 
 static void RightShift(SplitInteger * const value)
 {
-    unsigned int carry;
+    unsigned long carry;
     unsigned int i;
 
     carry = 0;
 
     for (i = 0; i < 3; ++i)
     {
-        const unsigned int new_carry = value->splits[i] << 15;
+        const unsigned long new_carry = value->splits[i] << 15;
         value->splits[i] >>= 1;
 	value->splits[i] |= carry;
 	carry = new_carry;
@@ -113,15 +113,15 @@ FixedMul
 ( fixed_t	a,
   fixed_t	b )
 {
-    const unsigned int a_absolute = abs(a);
-    const unsigned int b_absolute = abs(b);
+    const unsigned long a_absolute = labs(a);
+    const unsigned long b_absolute = labs(b);
 
-    const unsigned int a_upper = a_absolute / FRACUNIT;
-    const unsigned int a_lower = a_absolute % FRACUNIT;
-    const unsigned int b_upper = b_absolute / FRACUNIT;
-    const unsigned int b_lower = b_absolute % FRACUNIT;
+    const unsigned long a_upper = a_absolute / FRACUNIT;
+    const unsigned long a_lower = a_absolute % FRACUNIT;
+    const unsigned long b_upper = b_absolute / FRACUNIT;
+    const unsigned long b_lower = b_absolute % FRACUNIT;
 
-    const int result = (int)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + (a_lower * b_lower / FRACUNIT));
+    const long result = (long)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + (a_lower * b_lower / FRACUNIT));
 
     return (a < 0) != (b < 0) ? -result : result;
 
@@ -157,10 +157,10 @@ FixedDiv2
     /* Horrific fixed point division using only 32-bit integers. */
     SplitInteger dividend, divisor;
     unsigned int shift_amount;
-    unsigned int result;
+    unsigned long result;
 
-    const unsigned int a_absolute = abs(a);
-    const unsigned int b_absolute = abs(b);
+    const unsigned long a_absolute = labs(a);
+    const unsigned long b_absolute = labs(b);
 
     /* Note that this sneakily multiplies by FRACUNIT. */
     dividend.splits[0] = (a_absolute >> 16) & 0xFFFF;
@@ -186,7 +186,7 @@ FixedDiv2
         do
         {
             if (shift_amount == 0)
-                return (a < 0) != (b < 0) ? -(int)result : (int)result;
+                return (a < 0) != (b < 0) ? -(long)result : (long)result;
 
             RightShift(&divisor);
             --shift_amount;

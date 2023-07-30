@@ -439,7 +439,7 @@ void R_InitTextures (void)
 
     
     // Load the patch names from pnames.lmp.
-    name[8] = 0;	
+    name[sizeof(name) - 1] = '\0';
     names = W_CacheLumpName ("PNAMES", PU_STATIC);
     nummappatches = LONG ( *((int *)names) );
     name_p = names+4;

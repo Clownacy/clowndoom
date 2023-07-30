@@ -39,7 +39,7 @@
 // Each screen is [SCREENWIDTH*SCREENHEIGHT]; 
 byte*				screens[5];	
  
-int				dirtybox[4]; 
+fixed_t				dirtybox[4];
 
 
 
