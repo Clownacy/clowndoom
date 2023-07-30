@@ -48,20 +48,13 @@ wipe_shittyColMajorXform
   int            height )
 {
 	int x,y,i;
-	unsigned char* dest;
-
-	/* This used to be a `Z_Malloc` call, but high resolutions would exhaust the memory pool. */
-	/* TODO: Create a `Z_Malloc`-esque function that calls `malloc` and errors on allocation failure. */
-	dest = (unsigned char*) malloc(width*height*PIXELS_PER_COLUMN);
+	static unsigned char dest[SCREENWIDTH*SCREENHEIGHT];
 
 	for(y=0;y<height;y++)
 		for(x=0;x<width;x++)
 			memcpy(&dest[(x*height+y)*PIXELS_PER_COLUMN], &array[(y*width+x)*PIXELS_PER_COLUMN], PIXELS_PER_COLUMN);
 
 	memcpy(array, dest, width*height*PIXELS_PER_COLUMN);
-
-	free(dest);
-
 }
 
 int
@@ -136,7 +129,7 @@ wipe_exitColorXForm
 }
 
 
-static int*     y;
+static int     y[SCREENWIDTH];
 
 int
 wipe_initMelt
@@ -158,7 +151,6 @@ wipe_initMelt
 
 	/* setup initial column positions */
 	/* (y<0 => not ready to scroll yet) */
-	y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
 	y[0] = -(M_Random()%16);
 	for (i=1;i<width;i++)
 	{
@@ -236,7 +228,6 @@ wipe_exitMelt
 	(void)height;
 	(void)ticks;
 
-	Z_Free(y);
 	return 0;
 }
 
