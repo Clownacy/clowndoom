@@ -1041,16 +1041,49 @@ void M_QuitResponse(int ch)
 
 void M_QuitDOOM(int choice)
 {
-  (void)choice;
+	static const char* const endmsg[] =
+	{
+		QUITMSG,
+		QUITMSG1,
+		QUITMSGDEV
+	};
 
-  /* We pick index 0 which is language sensitive, */
-  /*  or one at random, between 1 and maximum number. */
-  if (language != english )
-	sprintf(endstring,"%s\n\n"DOSY, endmsg[0] );
-  else
-	sprintf(endstring,"%s\n\n"DOSY, endmsg[gametic%NUM_QUITMESSAGES]);
+	static const char* const endmsg2[] =
+	{
+		QUITMSG,
+		QUITMSG2,
+		QUITMSGDEV
+	};
 
-  M_StartMessage(endstring,M_QuitResponse,d_true);
+	const char *message;
+
+	(void)choice;
+
+	/* We pick index 0 which is language sensitive, */
+	/*  or one at random, between 1 and maximum number. */
+	if (language != english)
+	{
+		message = QUITMSG;
+	}
+	else
+	{
+		switch (gamemode)
+		{
+			case shareware:
+			case registered:
+			case retail:
+				message = endmsg[gametic % D_COUNT_OF(endmsg)];
+				break;
+
+			case commercial:
+			case indetermined:
+				message = endmsg2[gametic % D_COUNT_OF(endmsg2)];
+				break;
+		}
+	}
+
+	sprintf(endstring,"%s\n\n"DOSY, message);
+	M_StartMessage(endstring,M_QuitResponse,d_true);
 }
 
 
