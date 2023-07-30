@@ -937,7 +937,8 @@ int pars[5][10] =
 	{0},
 	{0,30,75,120,90,165,180,180,30,165},
 	{0,90,90,90,120,90,360,240,30,170},
-	{0,90,45,90,150,90,90,165,30,135}
+	{0,90,45,90,150,90,90,165,30,135},
+	{0,165,255,135,150,180,390,135,360,180}
 };
 
 /* DOOM II Par Times */
@@ -1069,7 +1070,7 @@ void G_DoCompleted (void)
 	wminfo.maxfrags = 0;
 	if ( gamemode == commercial )
 		wminfo.partime = 35*cpars[gamemap-1];
-	else if ( gameepisode < 4 )
+	else
 		wminfo.partime = 35*pars[gameepisode][gamemap];
 	wminfo.pnum = consoleplayer;
 

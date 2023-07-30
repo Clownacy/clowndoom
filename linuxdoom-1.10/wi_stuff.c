@@ -1432,12 +1432,8 @@ void WI_drawStats(void)
 	V_DrawPatch(SP_TIMEX, SP_TIMEY, FB, time);
 	WI_drawTime(SCREENWIDTH - SP_TIMEX - ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, cnt_time);
 
-	if (wbs->epsd < 3)
-	{
-		V_DrawPatch(SP_TIMEX + ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, FB, par);
-		WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
-	}
-
+	V_DrawPatch(SP_TIMEX + ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, FB, par);
+	WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
 }
 
 void WI_checkForAccelerate(void)
