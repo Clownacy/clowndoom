@@ -39,7 +39,7 @@
 #include "sounds.h"
 
 /* Locally used constants, shortcuts. */
-#define HU_TITLE        (mapnames[(gameepisode-1)*9+gamemap-1])
+#define HU_TITLE        (mapnames[gameepisode-1][gamemap-1])
 #define HU_TITLE2       (mapnames2[gamemap-1])
 #define HU_TITLEP       (mapnamesp[gamemap-1])
 #define HU_TITLET       (mapnamest[gamemap-1])
@@ -102,58 +102,52 @@ static d_bool          headsupactive = d_false;
 /* Builtin map names. */
 /* The actual names can be found in DStrings.h. */
 
-const char* const       mapnames[] =    /* DOOM shareware/registered/retail (Ultimate) names. */
+const char* const       mapnames[][9] =    /* DOOM shareware/registered/retail (Ultimate) names. */
 {
-
-	HUSTR_E1M1,
-	HUSTR_E1M2,
-	HUSTR_E1M3,
-	HUSTR_E1M4,
-	HUSTR_E1M5,
-	HUSTR_E1M6,
-	HUSTR_E1M7,
-	HUSTR_E1M8,
-	HUSTR_E1M9,
-
-	HUSTR_E2M1,
-	HUSTR_E2M2,
-	HUSTR_E2M3,
-	HUSTR_E2M4,
-	HUSTR_E2M5,
-	HUSTR_E2M6,
-	HUSTR_E2M7,
-	HUSTR_E2M8,
-	HUSTR_E2M9,
-
-	HUSTR_E3M1,
-	HUSTR_E3M2,
-	HUSTR_E3M3,
-	HUSTR_E3M4,
-	HUSTR_E3M5,
-	HUSTR_E3M6,
-	HUSTR_E3M7,
-	HUSTR_E3M8,
-	HUSTR_E3M9,
-
-	HUSTR_E4M1,
-	HUSTR_E4M2,
-	HUSTR_E4M3,
-	HUSTR_E4M4,
-	HUSTR_E4M5,
-	HUSTR_E4M6,
-	HUSTR_E4M7,
-	HUSTR_E4M8,
-	HUSTR_E4M9,
-
-	"NEWLEVEL",
-	"NEWLEVEL",
-	"NEWLEVEL",
-	"NEWLEVEL",
-	"NEWLEVEL",
-	"NEWLEVEL",
-	"NEWLEVEL",
-	"NEWLEVEL",
-	"NEWLEVEL"
+	{
+		HUSTR_E1M1,
+		HUSTR_E1M2,
+		HUSTR_E1M3,
+		HUSTR_E1M4,
+		HUSTR_E1M5,
+		HUSTR_E1M6,
+		HUSTR_E1M7,
+		HUSTR_E1M8,
+		HUSTR_E1M9
+	},
+	{
+		HUSTR_E2M1,
+		HUSTR_E2M2,
+		HUSTR_E2M3,
+		HUSTR_E2M4,
+		HUSTR_E2M5,
+		HUSTR_E2M6,
+		HUSTR_E2M7,
+		HUSTR_E2M8,
+		HUSTR_E2M9
+	},
+	{
+		HUSTR_E3M1,
+		HUSTR_E3M2,
+		HUSTR_E3M3,
+		HUSTR_E3M4,
+		HUSTR_E3M5,
+		HUSTR_E3M6,
+		HUSTR_E3M7,
+		HUSTR_E3M8,
+		HUSTR_E3M9
+	},
+	{
+		HUSTR_E4M1,
+		HUSTR_E4M2,
+		HUSTR_E4M3,
+		HUSTR_E4M4,
+		HUSTR_E4M5,
+		HUSTR_E4M6,
+		HUSTR_E4M7,
+		HUSTR_E4M8,
+		HUSTR_E4M9
+	}
 };
 
 const char* const       mapnames2[] =   /* DOOM 2 map names. */
