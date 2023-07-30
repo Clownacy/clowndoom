@@ -85,6 +85,7 @@ typedef enum
 #define SCREENWIDTH  ORIGINAL_SCREEN_WIDTH
 #define SCREENHEIGHT ORIGINAL_SCREEN_HEIGHT
 
+/* Try to keep this to powers of two to prevent rounding errors. */
 #define HUD_SCALE 1
 
 #define X_CENTRE(x) ((SCREENWIDTH / 2) - ((ORIGINAL_SCREEN_WIDTH / 2 - (x)) * HUD_SCALE))
