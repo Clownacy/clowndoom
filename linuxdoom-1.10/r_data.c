@@ -609,10 +609,14 @@ void R_InitColormaps (void)
 	size_t i, j;
 	unsigned char(* const original_colour_maps)[0x100] = (unsigned char(*)[0x100])W_CacheLumpName("COLORMAP", PU_STATIC);
 
-	/* Load-in the original light tables. */
-	for (i = 0; i < NUMLIGHTCOLORMAPS/NUMLIGHTCOLORMAPS_MUL; ++i)
+	/* Load the original light tables for the Spectre effect. */
+	for (i = 0; i < 32; ++i)
 		for (j = 0; j < D_COUNT_OF(colormaps[FUZZCOLORMAPS + i]); ++j)
 			colormaps[FUZZCOLORMAPS + i][j] = original_colour_maps[i][j];
+
+	/* Load the invulnerability effect. */
+	for (i = 0; i < D_COUNT_OF(colormaps[INVERSECOLORMAP]); ++i)
+		colormaps[INVERSECOLORMAP][i] = original_colour_maps[32][i];
 
 	/* Release the `COLORMAP` buffer. */
 	Z_ChangeTag(original_colour_maps, PU_CACHE);
@@ -627,7 +631,7 @@ void R_InitColormaps (void)
 	}
 	else
 	{
-		/* Load the original colour maps. */
+		/* Use the original colour maps. */
 		for (i = 0; i < NUMLIGHTCOLORMAPS / NUMLIGHTCOLORMAPS_MUL; ++i)
 			for (j = 0; j < NUMLIGHTCOLORMAPS_MUL; ++j)
 				memcpy(colormaps[i * NUMLIGHTCOLORMAPS_MUL + j], colormaps[FUZZCOLORMAPS + i], sizeof(colormaps[0]));
