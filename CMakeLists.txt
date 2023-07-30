@@ -67,7 +67,6 @@ add_executable(clowndoom WIN32
 	"linuxdoom-1.10/m_misc.h"
 	"linuxdoom-1.10/m_random.c"
 	"linuxdoom-1.10/m_random.h"
-	"linuxdoom-1.10/m_swap.c"
 	"linuxdoom-1.10/m_swap.h"
 	"linuxdoom-1.10/p_ceilng.c"
 	"linuxdoom-1.10/p_doors.c"
@@ -135,6 +134,11 @@ add_executable(clowndoom WIN32
 )
 
 set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
+
+if(CMAKE_C_BYTE_ORDER STREQUAL "BIG_ENDIAN")
+	target_compile_definitions(clowndoom PRIVATE BIG_ENDIAN)
+	target_sources(clowndoom "linuxdoom-1.10/m_swap.c")
+endif()
 
 # Handling linking/building WildMIDI
 if(WILDMIDI)

@@ -21,7 +21,7 @@
 
 
 /* Needed for big endian. */
-#ifdef __BIG_ENDIAN__
+#if defined(BIG_ENDIAN) || defined(__BIG_ENDIAN__)
 
 /* Swap 16bit, that is, MSB and LSB byte. */
 unsigned short SwapSHORT(unsigned short x)
