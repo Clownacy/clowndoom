@@ -42,79 +42,128 @@ static SDL_Surface *surface;
 static void (*output_size_changed_callback)(size_t width, size_t height);
 
 #if SDL_MAJOR_VERSION >= 2
-static int xlatekey(SDL_Keycode keysym)
+static int SDLKeyToNative(const SDL_Keycode keycode, const SDL_Scancode scancode)
 #else
-static int xlatekey(SDLKey keysym)
+static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
 #endif
 {
-
-	int rc;
-
-	switch(rc = keysym)
+	switch (keycode)
 	{
-	  case SDLK_LEFT:   rc = KEY_LEFTARROW;     break;
-	  case SDLK_RIGHT:  rc = KEY_RIGHTARROW;    break;
-	  case SDLK_DOWN:   rc = KEY_DOWNARROW;     break;
-	  case SDLK_UP:     rc = KEY_UPARROW;       break;
-	  case SDLK_ESCAPE: rc = KEY_ESCAPE;        break;
-	  case SDLK_RETURN: rc = KEY_ENTER;         break;
-	  case SDLK_TAB:    rc = KEY_TAB;           break;
-	  case SDLK_F1:     rc = KEY_F1;            break;
-	  case SDLK_F2:     rc = KEY_F2;            break;
-	  case SDLK_F3:     rc = KEY_F3;            break;
-	  case SDLK_F4:     rc = KEY_F4;            break;
-	  case SDLK_F5:     rc = KEY_F5;            break;
-	  case SDLK_F6:     rc = KEY_F6;            break;
-	  case SDLK_F7:     rc = KEY_F7;            break;
-	  case SDLK_F8:     rc = KEY_F8;            break;
-	  case SDLK_F9:     rc = KEY_F9;            break;
-	  case SDLK_F10:    rc = KEY_F10;           break;
-	  case SDLK_F11:    rc = KEY_F11;           break;
-	  case SDLK_F12:    rc = KEY_F12;           break;
+		case SDLK_LEFT:   return KEY_LEFTARROW;
+		case SDLK_RIGHT:  return KEY_RIGHTARROW;
+		case SDLK_DOWN:   return KEY_DOWNARROW;
+		case SDLK_UP:     return KEY_UPARROW;
+		case SDLK_ESCAPE: return KEY_ESCAPE;
+		case SDLK_RETURN: return KEY_ENTER;
+		case SDLK_TAB:    return KEY_TAB;
+		case SDLK_F1:     return KEY_F1;
+		case SDLK_F2:     return KEY_F2;
+		case SDLK_F3:     return KEY_F3;
+		case SDLK_F4:     return KEY_F4;
+		case SDLK_F5:     return KEY_F5;
+		case SDLK_F6:     return KEY_F6;
+		case SDLK_F7:     return KEY_F7;
+		case SDLK_F8:     return KEY_F8;
+		case SDLK_F9:     return KEY_F9;
+		case SDLK_F10:    return KEY_F10;
+		case SDLK_F11:    return KEY_F11;
+		case SDLK_F12:    return KEY_F12;
 
-	  case SDLK_BACKSPACE:
-	  case SDLK_DELETE: rc = KEY_BACKSPACE;     break;
+		case SDLK_BACKSPACE:
+		case SDLK_DELETE: return KEY_BACKSPACE;
 
-	  case SDLK_PAUSE:  rc = KEY_PAUSE;         break;
+		case SDLK_PAUSE:  return KEY_PAUSE;
 
-	  case SDLK_KP_EQUALS:
-	  case SDLK_EQUALS: rc = KEY_EQUALS;        break;
+		case SDLK_LSHIFT:
+		case SDLK_RSHIFT: return KEY_RSHIFT;
 
-	  case SDLK_KP_MINUS:
-	  case SDLK_MINUS:  rc = KEY_MINUS;         break;
+		case SDLK_LCTRL:
+		case SDLK_RCTRL:  return KEY_RCTRL;
 
-	  case SDLK_LSHIFT:
-	  case SDLK_RSHIFT:
-		rc = KEY_RSHIFT;
-		break;
-
-	  case SDLK_LCTRL:
-	  case SDLK_RCTRL:
-		rc = KEY_RCTRL;
-		break;
-
-	  case SDLK_LALT:
-	  case SDLK_RALT:
+		case SDLK_LALT:
+		case SDLK_RALT:
 #if SDL_MAJOR_VERSION >= 2
-	  case SDLK_LGUI:
-	  case SDLK_RGUI:
+		case SDLK_LGUI:
+		case SDLK_RGUI:
 #else
-	  case SDLK_LMETA:
-	  case SDLK_RMETA:
+		case SDLK_LMETA:
+		case SDLK_RMETA:
 #endif
-		rc = KEY_RALT;
-		break;
+			return KEY_RALT;
 
-	  default:
-		if (rc >= SDLK_SPACE && rc <= SDLK_BACKQUOTE)
-			rc = rc - SDLK_SPACE + ' ';
-		else if (rc >= 'A' && rc <= 'Z')
-			rc = rc - 'A' + 'a';
-		break;
+		default:
+			break;
 	}
 
-	return rc;
+	switch(scancode)
+	{
+	#if SDL_MAJOR_VERSION >= 2
+		#define SCANCODE_WRAPPER(sdl2, linux, macos) SDL_SCANCODE_##sdl2
+	#elif defined(_WIN32)
+		#define SCANCODE_WRAPPER(sdl2, linux, macos) linux - 8
+	#elif defined(__MACOSX__)
+		#define SCANCODE_WRAPPER(sdl2, linux, macos) macos
+	#else
+		#define SCANCODE_WRAPPER(sdl2, linux, macos) linux
+	#endif
 
+		case SCANCODE_WRAPPER(EQUALS      , 0x15, 0x18): return KEY_EQUALS;
+		case SCANCODE_WRAPPER(MINUS       , 0x14, 0x1B): return KEY_MINUS;
+		case SCANCODE_WRAPPER(SPACE       , 0x41, 0x31): return ' ';
+		case SCANCODE_WRAPPER(LEFTBRACKET , 0x22, 0x21): return '[';
+		case SCANCODE_WRAPPER(RIGHTBRACKET, 0x23, 0x1E): return ']';
+		case SCANCODE_WRAPPER(BACKSLASH   , 0x33, 0x2A): return '\\';
+		case SCANCODE_WRAPPER(SEMICOLON   , 0x2F, 0x29): return ';';
+		case SCANCODE_WRAPPER(APOSTROPHE  , 0x30, 0x27): return '\'';
+		case SCANCODE_WRAPPER(GRAVE       , 0x31, 0x32): return '`';
+		case SCANCODE_WRAPPER(COMMA       , 0x3B, 0x2B): return ',';
+		case SCANCODE_WRAPPER(PERIOD      , 0x3C, 0x2F): return '.';
+		case SCANCODE_WRAPPER(SLASH       , 0x3D, 0x2C): return '/';
+		case SCANCODE_WRAPPER(0, 0x13, 0x1D): return '0';
+		case SCANCODE_WRAPPER(1, 0x0A, 0x12): return '1';
+		case SCANCODE_WRAPPER(2, 0x0B, 0x13): return '2';
+		case SCANCODE_WRAPPER(3, 0x0C, 0x14): return '3';
+		case SCANCODE_WRAPPER(4, 0x0D, 0x15): return '4';
+		case SCANCODE_WRAPPER(5, 0x0E, 0x16): return '5';
+		case SCANCODE_WRAPPER(6, 0x0F, 0x17): return '6';
+		case SCANCODE_WRAPPER(7, 0x10, 0x18): return '7';
+		case SCANCODE_WRAPPER(8, 0x11, 0x19): return '8';
+		case SCANCODE_WRAPPER(9, 0x12, 0x1A): return '9';
+		case SCANCODE_WRAPPER(A, 0x26, 0x00): return 'a';
+		case SCANCODE_WRAPPER(B, 0x38, 0x0B): return 'b';
+		case SCANCODE_WRAPPER(C, 0x36, 0x08): return 'c';
+		case SCANCODE_WRAPPER(D, 0x28, 0x02): return 'd';
+		case SCANCODE_WRAPPER(E, 0x1A, 0x0E): return 'e';
+		case SCANCODE_WRAPPER(F, 0x29, 0x03): return 'f';
+		case SCANCODE_WRAPPER(G, 0x2A, 0x05): return 'g';
+		case SCANCODE_WRAPPER(H, 0x2B, 0x04): return 'h';
+		case SCANCODE_WRAPPER(I, 0x1F, 0x22): return 'i';
+		case SCANCODE_WRAPPER(J, 0x2C, 0x26): return 'j';
+		case SCANCODE_WRAPPER(K, 0x2D, 0x28): return 'k';
+		case SCANCODE_WRAPPER(L, 0x2E, 0x25): return 'l';
+		case SCANCODE_WRAPPER(M, 0x3A, 0x2E): return 'm';
+		case SCANCODE_WRAPPER(N, 0x39, 0x2D): return 'n';
+		case SCANCODE_WRAPPER(O, 0x20, 0x1F): return 'o';
+		case SCANCODE_WRAPPER(P, 0x21, 0x23): return 'p';
+		case SCANCODE_WRAPPER(Q, 0x18, 0x0C): return 'q';
+		case SCANCODE_WRAPPER(R, 0x1B, 0x0F): return 'r';
+		case SCANCODE_WRAPPER(S, 0x27, 0x01): return 's';
+		case SCANCODE_WRAPPER(T, 0x1C, 0x11): return 't';
+		case SCANCODE_WRAPPER(U, 0x1E, 0x20): return 'u';
+		case SCANCODE_WRAPPER(V, 0x37, 0x09): return 'v';
+		case SCANCODE_WRAPPER(W, 0x19, 0x0D): return 'w';
+		case SCANCODE_WRAPPER(X, 0x35, 0x07): return 'x';
+		case SCANCODE_WRAPPER(Y, 0x1D, 0x10): return 'y';
+		case SCANCODE_WRAPPER(Z, 0x34, 0x06): return 'z';
+
+	#undef CONVERT_SCANCODE
+	#undef SCANCODE_WRAPPER
+
+		default:
+			break;
+	}
+
+	return -1;
 }
 
 
@@ -135,14 +184,16 @@ void IB_StartTic (void)
 
 			case SDL_KEYDOWN:
 				event.type = ev_keydown;
-				event.data1 = xlatekey(sdl_event.key.keysym.sym);
-				D_PostEvent(&event);
+				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
+				if (event.data1 != -1)
+					D_PostEvent(&event);
 				/* fprintf(stderr, "k"); */
 				break;
 			case SDL_KEYUP:
 				event.type = ev_keyup;
-				event.data1 = xlatekey(sdl_event.key.keysym.sym);
-				D_PostEvent(&event);
+				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
+				if (event.data1 != -1)
+					D_PostEvent(&event);
 				/* fprintf(stderr, "ku"); */
 				break;
 			case SDL_MOUSEBUTTONDOWN:
