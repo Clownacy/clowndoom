@@ -212,7 +212,7 @@ V_DrawPatch
 		|| (unsigned)scrn>4)
 	{
 	  fprintf( stderr, "Patch at %d,%d exceeds LFB\n", x,y );
-	  /* No I_Error abort - what is up with TNT.WAD? */
+	  /* TODO: No I_Error abort - what is up with TNT.WAD? */
 	  fprintf( stderr, "V_DrawPatch: bad patch (ignored)\n");
 	  return;
 	}
