@@ -375,6 +375,8 @@ static patch_t*         bp[MAXPLAYERS];
  /* Name graphics of each level (centered) */
 static patch_t**        lnames;
 
+static int kill_percent[MAXPLAYERS], item_percent[MAXPLAYERS], secret_percent[MAXPLAYERS];
+
 /* CODE */
 
 /* slam background */
@@ -1093,9 +1095,9 @@ void WI_updateNetgameStats(void)
 			if (!playeringame[i])
 				continue;
 
-			cnt_kills[i] = (plrs[i].skills * 100) / wbs->maxkills;
-			cnt_items[i] = (plrs[i].sitems * 100) / wbs->maxitems;
-			cnt_secret[i] = (plrs[i].ssecret * 100) / wbs->maxsecret;
+			cnt_kills[i] = kill_percent[i];
+			cnt_items[i] = item_percent[i];
+			cnt_secret[i] = secret_percent[i];
 
 			if (dofrags)
 				cnt_frags[i] = WI_fragSum(i);
@@ -1118,8 +1120,8 @@ void WI_updateNetgameStats(void)
 
 			cnt_kills[i] += 2;
 
-			if (cnt_kills[i] >= (plrs[i].skills * 100) / wbs->maxkills)
-				cnt_kills[i] = (plrs[i].skills * 100) / wbs->maxkills;
+			if (cnt_kills[i] >= kill_percent[i])
+				cnt_kills[i] = kill_percent[i];
 			else
 				stillticking = d_true;
 		}
@@ -1143,8 +1145,8 @@ void WI_updateNetgameStats(void)
 				continue;
 
 			cnt_items[i] += 2;
-			if (cnt_items[i] >= (plrs[i].sitems * 100) / wbs->maxitems)
-				cnt_items[i] = (plrs[i].sitems * 100) / wbs->maxitems;
+			if (cnt_items[i] >= item_percent[i])
+				cnt_items[i] = item_percent[i];
 			else
 				stillticking = d_true;
 		}
@@ -1168,8 +1170,8 @@ void WI_updateNetgameStats(void)
 
 			cnt_secret[i] += 2;
 
-			if (cnt_secret[i] >= (plrs[i].ssecret * 100) / wbs->maxsecret)
-				cnt_secret[i] = (plrs[i].ssecret * 100) / wbs->maxsecret;
+			if (cnt_secret[i] >= secret_percent[i])
+				cnt_secret[i] = secret_percent[i];
 			else
 				stillticking = d_true;
 		}
@@ -1306,9 +1308,9 @@ void WI_updateStats(void)
 	if (acceleratestage && sp_state != 10)
 	{
 		acceleratestage = 0;
-		cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
-		cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
-		cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
+		cnt_kills[0] = kill_percent[me];
+		cnt_items[0] = item_percent[me];
+		cnt_secret[0] = secret_percent[me];
 		cnt_time = plrs[me].stime / TICRATE;
 		cnt_par = wbs->partime / TICRATE;
 		S_StartSound(0, sfx_barexp);
@@ -1322,9 +1324,9 @@ void WI_updateStats(void)
 		if (!(bcnt&3))
 			S_StartSound(0, sfx_pistol);
 
-		if (cnt_kills[0] >= (plrs[me].skills * 100) / wbs->maxkills)
+		if (cnt_kills[0] >= kill_percent[me])
 		{
-			cnt_kills[0] = (plrs[me].skills * 100) / wbs->maxkills;
+			cnt_kills[0] = kill_percent[me];
 			S_StartSound(0, sfx_barexp);
 			sp_state++;
 		}
@@ -1336,9 +1338,9 @@ void WI_updateStats(void)
 		if (!(bcnt&3))
 			S_StartSound(0, sfx_pistol);
 
-		if (cnt_items[0] >= (plrs[me].sitems * 100) / wbs->maxitems)
+		if (cnt_items[0] >= item_percent[me])
 		{
-			cnt_items[0] = (plrs[me].sitems * 100) / wbs->maxitems;
+			cnt_items[0] = item_percent[me];
 			S_StartSound(0, sfx_barexp);
 			sp_state++;
 		}
@@ -1350,9 +1352,9 @@ void WI_updateStats(void)
 		if (!(bcnt&3))
 			S_StartSound(0, sfx_pistol);
 
-		if (cnt_secret[0] >= (plrs[me].ssecret * 100) / wbs->maxsecret)
+		if (cnt_secret[0] >= secret_percent[me])
 		{
-			cnt_secret[0] = (plrs[me].ssecret * 100) / wbs->maxsecret;
+			cnt_secret[0] = secret_percent[me];
 			S_StartSound(0, sfx_barexp);
 			sp_state++;
 		}
@@ -1781,6 +1783,7 @@ void WI_Drawer (void)
 
 void WI_initVariables(wbstartstruct_t* wbstartstruct)
 {
+	int i;
 
 	wbs = wbstartstruct;
 
@@ -1807,14 +1810,13 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 	me = wbs->pnum;
 	plrs = wbs->plyr;
 
-	if (!wbs->maxkills)
-		wbs->maxkills = 1;
-
-	if (!wbs->maxitems)
-		wbs->maxitems = 1;
-
-	if (!wbs->maxsecret)
-		wbs->maxsecret = 1;
+	for (i = 0; i < MAXPLAYERS; ++i)
+	{
+		/* The original would treat 0/0 as 0%. */
+		kill_percent[i] = wbs->maxkills == 0 ? 100 : plrs[i].skills * 100 / wbs->maxkills;
+		item_percent[i] = wbs->maxitems == 0 ? 100 : plrs[i].sitems * 100 / wbs->maxitems;
+		secret_percent[i] = wbs->maxsecret == 0 ? 100 : plrs[i].ssecret * 100 / wbs->maxsecret;
+	}
 
 	if ( gamemode != retail )
 	  if (wbs->epsd > 2)
