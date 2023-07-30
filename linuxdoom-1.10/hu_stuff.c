@@ -305,7 +305,7 @@ const char french_shiftxform[] =
 	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
 	'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	'[', /* shift-[ */
-	'!', /* shift-backslash - OH MY GOD DOES WATCOM SUCK */
+	'\\', /* shift-backslash */
 	']', /* shift-] */
 	'"', '_',
 	'\'', /* shift-` */
@@ -348,7 +348,7 @@ const char english_shiftxform[] =
 	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
 	'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
 	'[', /* shift-[ */
-	'!', /* shift-backslash - OH MY GOD DOES WATCOM SUCK */
+	'\\', /* shift-backslash */
 	']', /* shift-] */
 	'"', '_',
 	'\'', /* shift-` */
