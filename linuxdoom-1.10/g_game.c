@@ -1285,7 +1285,10 @@ void G_DoSaveGame (void)
 	savebuffer = (unsigned char*)malloc(length);
 
 	if (savebuffer != NULL)
+	{
+		ArchiveToBuffer(savebuffer);
 		M_WriteFile(name, savebuffer, length);
+	}
 
 	gameaction = ga_nothing;
 	savedescription[0] = '\0';
