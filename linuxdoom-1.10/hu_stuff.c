@@ -514,9 +514,11 @@ void HU_Drawer(void)
 	HUlib_drawIText(&w_chat);
 	if (automapactive)
 	{
+		extern int show_stats;
+
 		HUlib_drawTextLine(&w_title, d_false);
 
-		if (deathmatch == DM_OFF)
+		if (deathmatch == DM_OFF && show_stats)
 		{
 			int i, kills, items, secrets;
 

@@ -149,6 +149,7 @@ M_ReadFile
 int             usemouse;
 int             usejoystick;
 int             bmp_screenshots;
+int             show_stats;
 
 extern int      key_right;
 extern int      key_left;
@@ -180,7 +181,6 @@ extern int      showMessages;
 
 extern int      novert;
 extern int      always_run;
-extern int      secret_notify;
 
 extern int      detailLevel;
 
@@ -216,7 +216,7 @@ default_t       defaults[] =
 	{"novert",&novert, 1, d_false},
 	{"always_run",&always_run, 1, d_false},
 	{"bmp_screenshots",&bmp_screenshots, 1, d_false},
-	{"secret_notify",&secret_notify, 1, d_false},
+	{"show_stats",&show_stats, 1, d_false},
 
 	/* Keyboard */
 	/* Movement */

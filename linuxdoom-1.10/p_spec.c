@@ -122,14 +122,13 @@ animdef_t               animdefs[] =
 anim_t          anims[MAXANIMS];
 anim_t*         lastanim;
 
-int             secret_notify;
-
 
 /*      Animating line specials */
 #define MAXLINEANIMS            64
 
 extern  short   numlinespecials;
 extern  line_t* linespeciallist[MAXLINEANIMS];
+extern  int     show_stats;
 
 
 
@@ -1006,7 +1005,7 @@ void P_PlayerInSpecialSector (player_t* player)
 		/* SECRET SECTOR */
 		player->secretcount++;
 		sector->special = 0;
-		if (deathmatch == DM_OFF && secret_notify)
+		if (deathmatch == DM_OFF && show_stats)
 		{
 			players[consoleplayer].message = SECRETFOUND;
 			S_StartSound(NULL, sfx_itmbk);
