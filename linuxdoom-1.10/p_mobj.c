@@ -431,7 +431,7 @@ void P_MobjThinker (mobj_t* mobj)
 	else
 	{
 		/* check for nightmare respawn */
-		if (! (mobj->flags & MF_COUNTKILL || (gamemission == doom && mobj - mobjinfo == MT_SKULL)) )
+		if (! (mobj->flags & MF_COUNTKILL || (gamemission == doom && mobj->type == MT_SKULL)) )
 			return;
 
 		if (!respawnmonsters)
@@ -757,7 +757,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 
 	if (mobj->tics > 0)
 		mobj->tics = 1 + (P_Random () % mobj->tics);
-	if (mobj->flags & MF_COUNTKILL || (gamemission == doom && i == MT_SKULL))
+	if (mobj->flags & MF_COUNTKILL || (gamemission == doom && mobj->type == MT_SKULL))
 		totalkills++;
 	if (mobj->flags & MF_COUNTITEM)
 		totalitems++;
