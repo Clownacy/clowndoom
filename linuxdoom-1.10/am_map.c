@@ -767,7 +767,9 @@ void AM_Ticker (void)
 /* Clear automap frame buffer. */
 void AM_clearFB(int color)
 {
-	memset(fb, color, f_w*f_h);
+	int i;
+	for (i = 0; i < f_w; ++i)
+		memset(&fb[i * SCREENHEIGHT], color, f_h);
 }
 
 
@@ -931,7 +933,7 @@ AM_drawFline
 		return;
 	}
 
-#define PUTDOT(xx,yy,cc) fb[(yy)*f_w+(xx)]=(cc)
+#define PUTDOT(xx,yy,cc) fb[(yy)+(xx)*SCREENHEIGHT]=(cc)
 
 	dx = fl->b.x - fl->a.x;
 	ax = 2 * (dx<0 ? -dx : dx);
@@ -1246,7 +1248,7 @@ void AM_drawMarks(void)
 
 void AM_drawCrosshair(int color)
 {
-	fb[(f_w*(f_h+1))/2] = color; /* single point for now */
+	fb[f_w/2*SCREENHEIGHT+f_h/2] = color; /* single point for now */
 
 }
 

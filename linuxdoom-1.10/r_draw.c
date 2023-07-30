@@ -125,9 +125,8 @@ void R_DrawColumn (void)
 	{
 		/* Re-map color indices from wall texture column */
 		/*  using a lighting/special effects LUT. */
-		*dest = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
+		*dest++ = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
 
-		dest += SCREENWIDTH;
 		frac += fracstep;
 
 	} while (count--);
@@ -228,9 +227,7 @@ void R_DrawColumnLow (void)
 	do
 	{
 		/* Hack. Does not work corretly. */
-		*dest2 = *dest = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
-		dest += SCREENWIDTH;
-		dest2 += SCREENWIDTH;
+		*dest2++ = *dest++ = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
 		frac += fracstep;
 
 	} while (count--);
@@ -335,13 +332,11 @@ void R_DrawFuzzColumn (void)
 		/*  a pixel that is either one column */
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
-		*dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
+		*dest++ = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
 			fuzzpos = 0;
-
-		dest += SCREENWIDTH;
 
 		frac += fracstep;
 	} while (count--);
@@ -422,14 +417,11 @@ void R_DrawFuzzColumnLow (void)
 		/*  a pixel that is either one column */
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
-		*dest2 = *dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
+		*dest2++ = *dest++ = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
 			fuzzpos = 0;
-
-		dest += SCREENWIDTH;
-		dest2 += SCREENWIDTH;
 
 		frac += fracstep;
 	} while (count--);
@@ -504,8 +496,7 @@ void R_DrawTranslatedColumn (void)
 		/*  used with PLAY sprites. */
 		/* Thus the "green" ramp of the player 0 sprite */
 		/*  is mapped to gray, red, black/indigo. */
-		*dest = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
-		dest += SCREENWIDTH;
+		*dest++ = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
 
 		frac += fracstep;
 	} while (count--);
@@ -569,9 +560,7 @@ void R_DrawTranslatedColumnLow (void)
 		/*  used with PLAY sprites. */
 		/* Thus the "green" ramp of the player 0 sprite */
 		/*  is mapped to gray, red, black/indigo. */
-		*dest2 = *dest = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
-		dest += SCREENWIDTH;
-		dest2 += SCREENWIDTH;
+		*dest2++ = *dest++ = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
 
 		frac += fracstep;
 	} while (count--);
@@ -679,7 +668,9 @@ void R_DrawSpan (void)
 
 		/* Lookup pixel from flat texture tile, */
 		/*  re-index using light/colormap. */
-		*dest++ = ds_colormap[ds_source[spot]];
+		*dest = ds_colormap[ds_source[spot]];
+
+		dest += SCREENHEIGHT; /* TODO: Is there a way to make this linear again? */
 
 		/* Next step in u,v. */
 		xfrac += ds_xstep;
@@ -797,8 +788,10 @@ void R_DrawSpanLow (void)
 		spot = ((yfrac>>(16-6))&(63*64)) + ((xfrac>>16)&63);
 		/* Lowres/blocky mode does it twice, */
 		/*  while scale is adjusted appropriately. */
-		*dest++ = ds_colormap[ds_source[spot]];
-		*dest++ = ds_colormap[ds_source[spot]];
+		*dest = ds_colormap[ds_source[spot]];
+		dest += SCREENHEIGHT; /* TODO: Can this be made linear again? */
+		*dest = ds_colormap[ds_source[spot]];
+		dest += SCREENHEIGHT; /* TODO: Can this be made linear again? */
 
 		xfrac += ds_xstep;
 		yfrac += ds_ystep;
@@ -825,7 +818,7 @@ R_InitBuffer
 
 	/* Column offset. For windows. */
 	for (i=0 ; i<width ; i++)
-		columnofs[i] = viewwindowx + i;
+		columnofs[i] = (viewwindowx + i) * SCREENHEIGHT;
 
 	/* Same with base row offset. */
 	if (width == SCREENWIDTH)
@@ -835,7 +828,7 @@ R_InitBuffer
 
 	/* Preclaculate all row offsets. */
 	for (i=0 ; i<height ; i++)
-		ylookup[i] = screens[0] + (i+viewwindowy)*SCREENWIDTH;
+		ylookup[i] = screens[0] + viewwindowy + i;
 }
 
 
@@ -941,22 +934,20 @@ void R_DrawViewBorder (void)
 	top = ((SCREENHEIGHT-SBARHEIGHT)-viewheight)/2;
 	side = (SCREENWIDTH-scaledviewwidth)/2;
 
-	/* copy top and one line of left side */
-	R_VideoErase (0, top*SCREENWIDTH+side);
+	/* Copy left side. */
+	for (i = 0; i < side; ++i)
+		R_VideoErase(i * SCREENHEIGHT, SCREENHEIGHT - SBARHEIGHT);
 
-	/* copy one line of right side and bottom */
-	ofs = (viewheight+top)*SCREENWIDTH-side;
-	R_VideoErase (ofs, top*SCREENWIDTH+side);
-
-	/* copy sides using wraparound */
-	ofs = top*SCREENWIDTH + SCREENWIDTH-side;
-	side <<= 1;
-
-	for (i=1 ; i<viewheight ; i++)
+	/* Copy top and bottom. */
+	for (i = 0; i < scaledviewwidth; ++i)
 	{
-		R_VideoErase (ofs, side);
-		ofs += SCREENWIDTH;
+		R_VideoErase((side + i) * SCREENHEIGHT, top);
+		R_VideoErase((side + i) * SCREENHEIGHT + top + viewheight, top);
 	}
+
+	/* Copy right side. */
+	for (i = 0; i < side; ++i)
+		R_VideoErase((side + scaledviewwidth + i) * SCREENHEIGHT, SCREENHEIGHT - SBARHEIGHT);
 }
 
 

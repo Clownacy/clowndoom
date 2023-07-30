@@ -42,22 +42,6 @@ static unsigned char*    wipe_scr_end;
 static unsigned char*    wipe_scr;
 
 
-void
-wipe_shittyColMajorXform
-( unsigned char* array,
-  int            width,
-  int            height )
-{
-	int x,y;
-	static unsigned char dest[SCREENWIDTH*SCREENHEIGHT];
-
-	for(y=0;y<height;y++)
-		for(x=0;x<width;x++)
-			memcpy(&dest[(x*height+y)*PIXELS_PER_COLUMN], &array[(y*width+x)*PIXELS_PER_COLUMN], PIXELS_PER_COLUMN);
-
-	memcpy(array, dest, width*height*PIXELS_PER_COLUMN);
-}
-
 int
 wipe_initColorXForm
 ( int   width,
@@ -132,11 +116,6 @@ wipe_initMelt
 	/* copy start screen to main screen */
 	memcpy(wipe_scr, wipe_scr_start, width*height);
 
-	/* makes this wipe faster (in theory) */
-	/* to have stuff in column-major format */
-	wipe_shittyColMajorXform(wipe_scr_start, width/PIXELS_PER_COLUMN, height);
-	wipe_shittyColMajorXform(wipe_scr_end, width/PIXELS_PER_COLUMN, height);
-
 	/* setup initial column positions */
 	/* (y<0 => not ready to scroll yet) */
 	y[0] = -(M_Random()%16);
@@ -161,12 +140,12 @@ wipe_doMelt
 {
 	int         i;
 	int         j;
-	int         dy;
+	int         k;
 
 	unsigned char *s, *d;
 	d_bool     done = d_true;
 
-	width/=PIXELS_PER_COLUMN;
+	width/=PIXELS_PER_COLUMN; /* TODO: Maybe the caller should handle this, to prevent out-of-bounds errors. */
 
 	while (ticks--)
 	{
@@ -178,25 +157,22 @@ wipe_doMelt
 			}
 			else if (y[i] < height)
 			{
-				dy = (y[i] < 16*MELT_SCALE) ? y[i]+1*MELT_SCALE : 8*MELT_SCALE;
-				if (y[i]+dy >= height) dy = height - y[i];
-				s = &wipe_scr_end[(i*height+y[i])*PIXELS_PER_COLUMN];
-				d = &wipe_scr[(y[i]*width+i)*PIXELS_PER_COLUMN];
-				for (j=dy;j;j--)
+				int dy, y_offset_incremented;
+				const int y_offset = y[i];
+
+				dy = (y_offset < 16 * MELT_SCALE) ? y_offset + 1 * MELT_SCALE : 8 * MELT_SCALE;
+				if (y_offset + dy >= height) dy = height - y[i];
+				y_offset_incremented = y_offset + dy;
+
+				for (k=0;k<PIXELS_PER_COLUMN;++k)
 				{
-					memcpy(d, s, PIXELS_PER_COLUMN);
-					s += PIXELS_PER_COLUMN;
-					d += width*PIXELS_PER_COLUMN;
+					const int x_offset = (i * PIXELS_PER_COLUMN + k) * height;
+
+					memcpy(&wipe_scr[x_offset + y_offset], &wipe_scr_end[x_offset + y_offset], dy);
+					memcpy(&wipe_scr[x_offset + y_offset_incremented], &wipe_scr_start[x_offset], height - y_offset_incremented);
 				}
+
 				y[i] += dy;
-				s = &wipe_scr_start[(i*height)*PIXELS_PER_COLUMN];
-				d = &wipe_scr[(y[i]*width+i)*PIXELS_PER_COLUMN];
-				for (j=height-y[i];j;j--)
-				{
-					memcpy(d, s, PIXELS_PER_COLUMN);
-					s += PIXELS_PER_COLUMN;
-					d += width*PIXELS_PER_COLUMN;
-				}
 				done = d_false;
 			}
 		}

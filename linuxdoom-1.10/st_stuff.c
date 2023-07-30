@@ -1405,5 +1405,6 @@ void ST_Init (void)
 	/* TODO: Fix this. */
 	/* Also, this used to be a `Z_Malloc` call, but at higher resolutions this exhausts the memory pool.
 	   This is inconsistent with the other screens anyway, which use `I_AllocLow`. */
-	screens[4] = (unsigned char *) I_AllocLow(SCREENWIDTH*ST_HEIGHT);
+	/* TODO: FIX ME NOW THAT I'VE BEEN CHANGED FOR COLUMN-MAJOR */
+	screens[4] = (unsigned char *) I_AllocLow(SCREENWIDTH*SCREENHEIGHT);
 }

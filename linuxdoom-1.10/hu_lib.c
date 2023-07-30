@@ -134,9 +134,7 @@ HUlib_drawTextLine
 /* sorta called by HU_Erase and just better darn get things straight */
 void HUlib_eraseTextLine(hu_textline_t* l)
 {
-	int                 lh;
-	int                 y;
-	int                 yoffset;
+	int                 x;
 
 	/* Only erases when NOT in automap and the screen is reduced, */
 	/* and the text must either need updating or refreshing */
@@ -145,17 +143,42 @@ void HUlib_eraseTextLine(hu_textline_t* l)
 	if (!automapactive &&
 		viewwindowx && l->needsupdate)
 	{
+		int lh, top, bottom, count, x_offset;
+
 		lh = (SHORT(l->f[0]->height) + 1) * HUD_SCALE;
-		for (y=l->y,yoffset=y*SCREENWIDTH ; y<l->y+lh ; y++,yoffset+=SCREENWIDTH)
+		top = l->y;
+		bottom = top + lh;
+
+		if (top < viewwindowy || top >= viewwindowy + viewheight)
+			top = viewwindowy + viewheight;
+
+		if (bottom < viewwindowy || bottom >= viewwindowy + viewheight)
+			bottom = viewwindowy;
+
+		count = bottom - top;
+
+		x_offset = 0;
+
+		/* erase left border */
+		for (x = 0; x < viewwindowx; ++x)
 		{
-			if (y < viewwindowy || y >= viewwindowy + viewheight)
-				R_VideoErase(yoffset, SCREENWIDTH); /* erase entire line */
-			else
+			R_VideoErase(l->y + x_offset, lh);
+			x_offset += SCREENHEIGHT;
+		}
+		/* erase middle part (which may overlap the screen) */
+		if (count > 0)
+		{
+			for (; x < viewwindowx + scaledviewwidth; ++x)
 			{
-				R_VideoErase(yoffset, viewwindowx); /* erase left border */
-				R_VideoErase(yoffset + viewwindowx + viewwidth, viewwindowx);
-				/* erase right border */
+				R_VideoErase(top + x_offset, count);
+				x_offset += SCREENHEIGHT;
 			}
+		}
+		/* erase right border */
+		for (; x < SCREENWIDTH; ++x)
+		{
+			R_VideoErase(l->y + x_offset, lh);
+			x_offset += SCREENHEIGHT;
 		}
 	}
 

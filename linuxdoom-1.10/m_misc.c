@@ -597,7 +597,7 @@ void M_ScreenShot (void)
 
 	/* save the screenshot file */
 	(bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
-				  SCREENWIDTH, SCREENHEIGHT,
+				  SCREENHEIGHT, SCREENWIDTH,
 				  (unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
 	players[consoleplayer].message = "screen shot";

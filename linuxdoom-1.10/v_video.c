@@ -159,14 +159,14 @@ V_CopyRect
 	}
 #endif
 
-	src = screens[srcscrn]+SCREENWIDTH*srcy+srcx;
-	dest = screens[destscrn]+SCREENWIDTH*desty+destx;
+	src = screens[srcscrn]+srcy+SCREENHEIGHT*srcx;
+	dest = screens[destscrn]+desty+SCREENHEIGHT*destx;
 
-	for ( ; height>0 ; height--)
+	for ( ; width>0 ; width--)
 	{
-		memcpy (dest, src, width);
-		src += SCREENWIDTH;
-		dest += SCREENWIDTH;
+		memcpy (dest, src, height);
+		src += SCREENHEIGHT;
+		dest += SCREENHEIGHT;
 	}
 }
 
@@ -187,26 +187,25 @@ V_DrawPatchColumnInternal
 	/* step through the posts in a column */
 	while (column->topdelta != 0xff )
 	{
-		source = (unsigned char *)column + 3;
-		dest = desttop + column->topdelta*SCREENWIDTH*HUD_SCALE;
-		count = column->length;
+		int x;
 
-		while (count--)
+		for (x = 0; x < HUD_SCALE; ++x)
 		{
-			int y;
+			source = (unsigned char *)column + 3;
+			dest = desttop + column->topdelta*HUD_SCALE + x*SCREENHEIGHT;
+			count = column->length;
 
-			const unsigned char pixel = *source++;
-
-			for (y = 0; y < HUD_SCALE; ++y)
+			while (count--)
 			{
-				int x;
+				int y;
 
-				for (x = 0; x < HUD_SCALE; ++x)
-					dest[x] = pixel;
+				const unsigned char pixel = *source++;
 
-				dest += SCREENWIDTH;
+				for (y = 0; y < HUD_SCALE; ++y)
+					*dest++ = pixel;
 			}
 		}
+
 		column = (column_t *)((unsigned char *)column + column->length + 4);
 	}
 }
@@ -247,11 +246,11 @@ V_DrawPatchInternal
 #endif
 
 	col = 0;
-	desttop = screens[scrn]+y*SCREENWIDTH+x;
+	desttop = screens[scrn]+y+x*SCREENHEIGHT;
 
 	w = SHORT(patch->width);
 
-	for ( ; col<w ; col++, desttop += HUD_SCALE)
+	for ( ; col<w ; col++, desttop += SCREENHEIGHT*HUD_SCALE)
 		V_DrawPatchColumnInternal(desttop, patch, flip ? w - 1 - col : col);
 }
 
@@ -265,7 +264,7 @@ V_DrawPatchColumn
   const patch_t* patch,
   int            col )
 {
-	V_DrawPatchColumnInternal(screens[scrn]+y*SCREENWIDTH+x, patch, col);
+	V_DrawPatchColumnInternal(screens[scrn]+y+x*SCREENHEIGHT, patch, col);
 }
 
 
@@ -294,13 +293,13 @@ V_DrawBlock
 	}
 #endif
 
-	dest = screens[scrn] + y*SCREENWIDTH+x;
+	dest = screens[scrn] + y+x*SCREENHEIGHT;
 
-	while (height--)
+	while (width--)
 	{
-		memcpy (dest, src, width);
-		src += width;
-		dest += SCREENWIDTH;
+		memcpy (dest, src, height);
+		src += height;
+		dest += SCREENHEIGHT;
 	}
 }
 
@@ -330,13 +329,13 @@ V_GetBlock
 	}
 #endif
 
-	src = screens[scrn] + y*SCREENWIDTH+x;
+	src = screens[scrn] + y+x*SCREENHEIGHT;
 
-	while (height--)
+	while (width--)
 	{
-		memcpy (dest, src, width);
-		src += SCREENWIDTH;
-		dest += width;
+		memcpy (dest, src, height);
+		src += SCREENHEIGHT;
+		dest += height;
 	}
 }
 
@@ -354,24 +353,25 @@ V_FillScreenWithPattern
 	const unsigned char* const src = (unsigned char*)W_CacheLumpName ( lump_name , PU_CACHE);
 	unsigned char *dest = screens[screen];
 
-	for (y=0 ; y<(height+(HUD_SCALE-1))/HUD_SCALE ; y++)
+	for (x=0 ; x<(SCREENWIDTH+(HUD_SCALE-1))/HUD_SCALE ; x++)
 	{
 		static unsigned char line_buffer[BG_TILE_DST_SIZE];
 
 		/* Upscale a row of pixels. */
-		for (x=0 ; x<BG_TILE_SRC_SIZE ; x++)
+		for (y=0 ; y<BG_TILE_SRC_SIZE ; y++)
 			for (w=0 ; w<HUD_SCALE; w++)
-				line_buffer[x*HUD_SCALE+w] = src[((y%BG_TILE_SRC_SIZE)*BG_TILE_SRC_SIZE)+x];
+				line_buffer[y*HUD_SCALE+w] = src[y*BG_TILE_SRC_SIZE+x%BG_TILE_SRC_SIZE];
 
 		/* Repeatedly copy the upscaled row to the screen. */
-		for (w=0 ; w<D_MIN(HUD_SCALE,height-y*HUD_SCALE); w++)
+		for (w=0 ; w<D_MIN(HUD_SCALE,SCREENWIDTH-x*HUD_SCALE); w++)
 		{
-			for (x=0 ; x<SCREENWIDTH ; x+=BG_TILE_DST_SIZE)
+			for (y=0 ; y<height; y+=BG_TILE_DST_SIZE)
 			{
-				const int bytes_to_do = D_MIN(BG_TILE_DST_SIZE, SCREENWIDTH - x);
+				const int bytes_to_do = D_MIN(BG_TILE_DST_SIZE, height - y);
 				memcpy (dest, line_buffer, bytes_to_do);
 				dest += bytes_to_do;
 			}
+			dest += SCREENHEIGHT - height;
 		}
 	}
 }

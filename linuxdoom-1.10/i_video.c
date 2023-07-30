@@ -73,7 +73,7 @@ void I_FinishUpdate (void)
 {
 	static int lasttic;
 	int tics;
-	size_t i,y;
+	size_t i,x,y;
 	unsigned char *indexed_pixels;
 	unsigned char *colored_screen_pointer;
 	unsigned char *pixels;
@@ -91,23 +91,26 @@ void I_FinishUpdate (void)
 		if (tics > 20) tics = 20;
 
 		for (i=0 ; i<tics*2 ; i+=2)
-			screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0xff;
+			screens[0][ SCREENHEIGHT-1 + i*SCREENHEIGHT] = 0xff;
 		for ( ; i<20*2 ; i+=2)
-			screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0x0;
+			screens[0][ SCREENHEIGHT-1 + i*SCREENHEIGHT] = 0x0;
 	}
 
 	/* Step 1. Color the screen */
 	indexed_pixels = screens[0];
 	colored_screen_pointer = colored_screen;
 
-	for (i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
+	for (y = 0; y < SCREENHEIGHT; ++y)
 	{
-		size_t j;
+		for (x = 0; x < SCREENWIDTH; ++x)
+		{
+			size_t j;
 
-		const unsigned char * const color = &colors[*indexed_pixels++ * bytes_per_pixel];
+			const unsigned char * const color = &colors[indexed_pixels[x * SCREENHEIGHT + y] * bytes_per_pixel];
 
-		for (j = 0; j < bytes_per_pixel; ++j)
-			*colored_screen_pointer++ = color[j];
+			for (j = 0; j < bytes_per_pixel; ++j)
+				*colored_screen_pointer++ = color[j];
+		}
 	}
 
 	/* Step 2. Scale the screen */
