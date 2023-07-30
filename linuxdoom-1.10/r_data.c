@@ -135,7 +135,7 @@ fixed_t*                textureheight;
 int*                    texturecompositesize;
 short**                 texturecolumnlump;
 unsigned short**        texturecolumnofs;
-unsigned char**                  texturecomposite;
+unsigned char**         texturecomposite;
 
 /* for global animation */
 int*            flattranslation;
@@ -166,14 +166,14 @@ lighttable_t    *colormaps;
 /*  from a patch into a cached post. */
 void
 R_DrawColumnInCache
-( column_t*     patch,
-  unsigned char*         cache,
-  int           originy,
-  int           cacheheight )
+( column_t*      patch,
+  unsigned char* cache,
+  int            originy,
+  int            cacheheight )
 {
-	int         count;
-	int         position;
-	unsigned char*       source;
+	int            count;
+	int            position;
+	unsigned char* source;
 
 	while (patch->topdelta != 0xff)
 	{
@@ -205,7 +205,7 @@ R_DrawColumnInCache
 /*  and each column is cached. */
 void R_GenerateComposite (int texnum)
 {
-	unsigned char*               block;
+	unsigned char*      block;
 	texture_t*          texture;
 	texpatch_t*         patch;
 	patch_t*            realpatch;
@@ -272,7 +272,7 @@ void R_GenerateComposite (int texnum)
 void R_GenerateLookup (int texnum)
 {
 	texture_t*          texture;
-	unsigned char*               patchcount;     /* patchcount[texture->width] */
+	unsigned char*      patchcount;     /* patchcount[texture->width] */
 	texpatch_t*         patch;
 	patch_t*            realpatch;
 	int                 x;
