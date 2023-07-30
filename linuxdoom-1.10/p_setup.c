@@ -1,7 +1,5 @@
 /******************************************************************************
   
-   $Id:$
-  
    Copyright (C) 1993-1996 by id Software, Inc.
   
    This program is free software; you can redistribute it and/or
@@ -13,8 +11,6 @@
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
-   $Log:$
   
    DESCRIPTION:
   	Do all the WAD I/O, get map description,

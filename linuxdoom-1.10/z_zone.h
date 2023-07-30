@@ -1,25 +1,23 @@
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This source is available for distribution and/or modification
-// only under the terms of the DOOM Source Code License as
-// published by id Software. All rights reserved.
-//
-// The source is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-// for more details.
-//
-// DESCRIPTION:
-//      Zone Memory Allocation, perhaps NeXT ObjectiveC inspired.
-//	Remark: this was the only stuff that, according
-//	 to John Carmack, might have been useful for
-//	 Quake.
-//
-//---------------------------------------------------------------------
+/******************************************************************************
+  
+   Copyright (C) 1993-1996 by id Software, Inc.
+  
+   This source is available for distribution and/or modification
+   only under the terms of the DOOM Source Code License as
+   published by id Software. All rights reserved.
+  
+   The source is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
+   for more details.
+  
+   DESCRIPTION:
+        Zone Memory Allocation, perhaps NeXT ObjectiveC inspired.
+  	Remark: this was the only stuff that, according
+  	 to John Carmack, might have been useful for
+  	 Quake.
+  
+******************************************************************************/
 
 
 
@@ -29,7 +27,6 @@
 #include <stddef.h>
 #include <stdio.h>
 
-//
 // ZONE MEMORY
 // PU - purge tags.
 // Tags < 100 are not overwritten until freed.
@@ -65,10 +62,8 @@ typedef struct memblock_s
     struct memblock_s*	prev;
 } memblock_t;
 
-//
 // This is used to get the local FILE:LINE info from CPP
 // prior to really call the function in question.
-//
 #define Z_ChangeTag(p,t) \
 { \
     if (( (memblock_t *)( (byte *)(p) - sizeof(memblock_t)))->id!=0x1d4a11) \
