@@ -661,3 +661,33 @@ boolean M_FileExists(const char* const filename)
         return false;
     }
 }
+
+#define SIGN_EXTEND(type, bit, value) (((value) & (((type)1 << (bit)) - 1)) - (value & ((type)1 << (bit))))
+#define SIGN_EXTEND_SHORT(value) SIGN_EXTEND(unsigned int,  16 - 1, value)
+#define SIGN_EXTEND_LONG(value)  SIGN_EXTEND(unsigned long, 32 - 1, value)
+
+int M_BytesToShort(const byte * const data)
+{
+    unsigned int result;
+    unsigned int i;
+
+    result = 0;
+
+    for (i = 0; i < 2; ++i)
+        result |= (unsigned int)data[i] << (8 * i);
+
+    return (int)SIGN_EXTEND_SHORT(result);
+}
+
+long M_BytesToLong(const byte * const data)
+{
+    unsigned long result;
+    unsigned int i;
+
+    result = 0;
+
+    for (i = 0; i < 4; ++i)
+        result |= (unsigned long)data[i] << (8 * i);
+
+    return (long)SIGN_EXTEND_LONG(result);
+}

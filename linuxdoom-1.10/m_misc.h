@@ -62,6 +62,8 @@ int M_strncasecmp(const char *s1, const char *s2, size_t n);
 
 boolean M_FileExists(const char* const filename);
 
+int M_BytesToShort(const byte * const data);
+long M_BytesToLong(const byte * const data);
 
 #endif
 //-----------------------------------------------------------------------------

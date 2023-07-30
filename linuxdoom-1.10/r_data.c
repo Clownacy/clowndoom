@@ -63,14 +63,15 @@
 // into the rectangular texture space using origin
 // and possibly other attributes.
 //
-typedef struct
+enum
 {
-    short	originx : 16;
-    short	originy : 16;
-    short	patch : 16;
-    short	stepdir : 16;
-    short	colormap : 16;
-} mappatch_t;
+    MAPPATCH_ORIGIN_X  = 0,
+    MAPPATCH_ORIGIN_Y  = 2,
+    MAPPATCH_PATCH     = 4,
+    MAPPATCH_STEP_DIR  = 6,
+    MAPPATCH_COLOR_MAP = 8,
+    MAPPATCH_SIZEOF    = 10
+};
 
 
 //
@@ -78,16 +79,16 @@ typedef struct
 // A DOOM wall texture is a list of patches
 // which are to be combined in a predefined order.
 //
-typedef struct
+enum
 {
-    char		name[8];
-    boolean		masked : 32;
-    short		width : 16;
-    short		height : 16;
-    int			columndirectory : 32;	// OBSOLETE
-    short		patchcount : 16;
-    mappatch_t	patches[1];
-} maptexture_t;
+    MAPTEXTURE_NAME             = 0,
+    MAPTEXTURE_MASKED           = 8,
+    MAPTEXTURE_WIDTH            = 12,
+    MAPTEXTURE_HEIGHT           = 14,
+    MAPTEXTURE_COLUMN_DIRECTORY = 16,
+    MAPTEXTURE_PATCH_COUNT      = 20,
+    MAPTEXTURE_PATCHES          = 22
+};
 
 
 // A single patch from a texture definition,
@@ -315,6 +316,8 @@ void R_GenerateLookup (int texnum)
     //  with only a single patch are all done.
     patchcount = (byte *)calloc (1, texture->width);
     patch = texture->patches;
+
+    printf ("Trying\n");
 		
     for (i=0 , patch = texture->patches;
 	 i<texture->patchcount;
@@ -323,6 +326,9 @@ void R_GenerateLookup (int texnum)
 	realpatch = W_CacheLumpNum (patch->patch, PU_CACHE);
 	x1 = patch->originx;
 	x2 = x1 + SHORT(realpatch->width);
+
+	printf ("R_GenerateLookup: x1 %X\n", x1);
+	printf ("R_GenerateLookup: x2 %X\n", x2);
 	
 	if (x1 < 0)
 	    x = 0;
@@ -331,6 +337,7 @@ void R_GenerateLookup (int texnum)
 
 	if (x2 > texture->width)
 	    x2 = texture->width;
+	printf ("R_GenerateLookup: width %X\n", texture->width);
 	for ( ; x<x2 ; x++)
 	{
 	    patchcount[x]++;
@@ -345,7 +352,7 @@ void R_GenerateLookup (int texnum)
 	{
 	    printf ("R_GenerateLookup: column without a patch (%s)\n",
 		    texture->name);
-	    return;
+	    break;
 	}
 	// I_Error ("R_GenerateLookup: column without a patch");
 	
@@ -405,21 +412,21 @@ R_GetColumn
 //
 void R_InitTextures (void)
 {
-    maptexture_t*	mtexture;
+    byte*		mtexture;
     texture_t*		texture;
-    mappatch_t*		mpatch;
+    byte*		mpatch;
     texpatch_t*		patch;
 
     int			i;
     int			j;
 
-    int*		maptex;
-    int*		maptex2;
-    int*		maptex1;
+    byte*		maptex;
+    byte*		maptex2;
+    byte*		maptex1;
     
     char		name[9];
-    char*		names;
-    char*		name_p;
+    byte*		names;
+    const char*		name_p;
     
     int*		patchlookup;
     
@@ -431,7 +438,7 @@ void R_InitTextures (void)
     int			numtextures1;
     int			numtextures2;
 
-    int*		directory;
+    byte*		directory;
     
     int			temp1;
     int			temp2;
@@ -441,8 +448,8 @@ void R_InitTextures (void)
     // Load the patch names from pnames.lmp.
     name[sizeof(name) - 1] = '\0';
     names = W_CacheLumpName ("PNAMES", PU_STATIC);
-    nummappatches = LONG ( *((int *)names) );
-    name_p = names+4;
+    nummappatches = M_BytesToLong(names);
+    name_p = (const char*)names+4;
     patchlookup = malloc (nummappatches*sizeof(*patchlookup));
     
     for (i=0 ; i<nummappatches ; i++)
@@ -456,14 +463,14 @@ void R_InitTextures (void)
     // The data is contained in one or two lumps,
     //  TEXTURE1 for shareware, plus TEXTURE2 for commercial.
     maptex = maptex1 = W_CacheLumpName ("TEXTURE1", PU_STATIC);
-    numtextures1 = LONG(*maptex);
+    numtextures1 = M_BytesToLong(maptex);
     maxoff = W_LumpLength (W_GetNumForName ("TEXTURE1"));
-    directory = maptex+1;
+    directory = maptex+4;
 	
     if (W_CheckNumForName ("TEXTURE2") != -1)
     {
 	maptex2 = W_CacheLumpName ("TEXTURE2", PU_STATIC);
-	numtextures2 = LONG(*maptex2);
+	numtextures2 = M_BytesToLong(maptex2);
 	maxoff2 = W_LumpLength (W_GetNumForName ("TEXTURE2"));
     }
     else
@@ -496,7 +503,7 @@ void R_InitTextures (void)
 	printf("\x8");
     printf("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");	
 	
-    for (i=0 ; i<numtextures ; i++, directory++)
+    for (i=0 ; i<numtextures ; i++, directory += 4)
     {
 	if (!(i&63))
 	    printf (".");
@@ -506,34 +513,34 @@ void R_InitTextures (void)
 	    // Start looking in second texture file.
 	    maptex = maptex2;
 	    maxoff = maxoff2;
-	    directory = maptex+1;
+	    directory = maptex+4;
 	}
 		
-	offset = LONG(*directory);
+	offset = M_BytesToLong(directory);
 
 	if (offset > maxoff)
 	    I_Error ("R_InitTextures: bad texture directory");
 	
-	mtexture = (maptexture_t *) ( (byte *)maptex + offset);
+	mtexture = maptex + offset;
 
 	texture = textures[i] =
 	    Z_Malloc (sizeof(texture_t)
-		      + sizeof(texpatch_t)*(SHORT(mtexture->patchcount)-1),
+		      + sizeof(texpatch_t)*(M_BytesToShort(&mtexture[MAPTEXTURE_PATCH_COUNT])-1),
 		      PU_STATIC, 0);
 	
-	texture->width = SHORT(mtexture->width);
-	texture->height = SHORT(mtexture->height);
-	texture->patchcount = SHORT(mtexture->patchcount);
+	texture->width = M_BytesToShort(&mtexture[MAPTEXTURE_WIDTH]);
+	texture->height = M_BytesToShort(&mtexture[MAPTEXTURE_HEIGHT]);
+	texture->patchcount = M_BytesToShort(&mtexture[MAPTEXTURE_PATCH_COUNT]);
 
-	memcpy (texture->name, mtexture->name, sizeof(texture->name));
-	mpatch = &mtexture->patches[0];
+	memcpy (texture->name, &mtexture[MAPTEXTURE_NAME], sizeof(texture->name));
+	mpatch = &mtexture[MAPTEXTURE_PATCHES];
 	patch = &texture->patches[0];
 
-	for (j=0 ; j<texture->patchcount ; j++, mpatch++, patch++)
+	for (j=0 ; j<texture->patchcount ; j++, mpatch += MAPPATCH_SIZEOF, patch++)
 	{
-	    patch->originx = SHORT(mpatch->originx);
-	    patch->originy = SHORT(mpatch->originy);
-	    patch->patch = patchlookup[SHORT(mpatch->patch)];
+	    patch->originx = M_BytesToShort(&mpatch[MAPPATCH_ORIGIN_X]);
+	    patch->originy = M_BytesToShort(&mpatch[MAPPATCH_ORIGIN_Y]);
+	    patch->patch = patchlookup[M_BytesToShort(&mpatch[MAPPATCH_PATCH])];
 	    if (patch->patch == -1)
 	    {
 		I_Error ("R_InitTextures: Missing patch in texture %s",
@@ -556,7 +563,7 @@ void R_InitTextures (void)
     free(patchlookup);
 
     Z_Free (maptex1);
-    if (maptex2)
+    if (maptex2 != NULL)
 	Z_Free (maptex2);
     
     // Precalculate whatever possible.	
