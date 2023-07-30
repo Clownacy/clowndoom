@@ -397,7 +397,7 @@ d_bool I_SoundIsPlaying(int handle)
 		}
 	}
 
-	return 0; /* Sound doesn't exist */
+	return d_false; /* Sound doesn't exist */
 }
 
 
@@ -607,7 +607,7 @@ int I_RegisterSong(const void* data, size_t size)
 
 
 /* Is the song playing? (unused) */
-int I_QrySongPlaying(int handle)
+d_bool I_QrySongPlaying(int handle)
 {
 #ifdef WILDMIDI
 	d_bool playing;
@@ -617,7 +617,7 @@ int I_QrySongPlaying(int handle)
 	(void)handle;
 
 #ifndef WILDMIDI
-	return 0;
+	return d_false;
 #else
 	IB_LockSound();
 

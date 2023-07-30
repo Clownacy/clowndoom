@@ -105,7 +105,7 @@ static int              snd_SfxVolume;
 static d_bool          mus_paused;
 
 /* music currently being played */
-static musicinfo_t*     mus_playing=0;
+static musicinfo_t*     mus_playing;
 
 /* following is set */
 /*  by the defaults code in M_misc: */
@@ -456,7 +456,7 @@ void S_StopSound(const mobj_t *origin)
 /* Stop and resume music, during game PAUSE. */
 void S_PauseSound(void)
 {
-	if (mus_playing && !mus_paused)
+	if (mus_playing != NULL && !mus_paused)
 	{
 		I_PauseSong(mus_playing->handle);
 		mus_paused = d_true;
@@ -465,7 +465,7 @@ void S_PauseSound(void)
 
 void S_ResumeSound(void)
 {
-	if (mus_playing && mus_paused)
+	if (mus_playing != NULL && mus_paused)
 	{
 		I_ResumeSong(mus_playing->handle);
 		mus_paused = d_false;
@@ -557,7 +557,7 @@ void S_UpdateSounds(const mobj_t* listener)
 		}
 	}
 	/* kill music if it is a single-play && finished */
-	/* if (     mus_playing */
+	/* if (mus_playing != NULL */
 	/*      && !I_QrySongPlaying(mus_playing->handle) */
 	/*      && !mus_paused ) */
 	/* S_StopMusic(); */
@@ -634,7 +634,7 @@ S_ChangeMusic
 
 void S_StopMusic(void)
 {
-	if (mus_playing)
+	if (mus_playing != NULL)
 	{
 		if (mus_paused)
 			I_ResumeSong(mus_playing->handle);
@@ -643,8 +643,8 @@ void S_StopMusic(void)
 		I_UnRegisterSong(mus_playing->handle);
 		Z_ChangeTag(mus_playing->data, PU_CACHE);
 
-		mus_playing->data = 0;
-		mus_playing = 0;
+		mus_playing->data = NULL;
+		mus_playing = NULL;
 	}
 }
 
