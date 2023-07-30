@@ -705,6 +705,7 @@ void M_QuickLoad(void)
 void M_DrawReadThis1(void)
 {
 	inhelpscreens = d_true;
+	V_ClearScreen(0);
 	switch ( gamemode )
 	{
 	  case commercial:
@@ -727,6 +728,7 @@ void M_DrawReadThis1(void)
 void M_DrawReadThis2(void)
 {
 	inhelpscreens = d_true;
+	V_ClearScreen(0);
 	switch ( gamemode )
 	{
 	  case retail:

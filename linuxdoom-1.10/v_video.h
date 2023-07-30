@@ -23,6 +23,8 @@
 #ifndef __V_VIDEO__
 #define __V_VIDEO__
 
+#include <string.h>
+
 #include "doomtype.h"
 
 #include "doomdef.h"
@@ -93,6 +95,7 @@ V_FillScreenWithPattern
   const int screen,
   const int height );
 
+#define V_ClearScreen(scrn) if (SCREENWIDTH != ORIGINAL_SCREEN_WIDTH * SCREEN_MUL || SCREENHEIGHT != ORIGINAL_SCREEN_HEIGHT * SCREEN_MUL) memset(screens[scrn], 0, SCREENWIDTH*SCREENHEIGHT);
 
 /* Draw a linear block of pixels into the view buffer. */
 void

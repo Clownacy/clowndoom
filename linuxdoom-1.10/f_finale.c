@@ -655,6 +655,7 @@ void F_Drawer (void)
 		F_TextWrite ();
 	else
 	{
+		V_ClearScreen(0);
 		switch (gameepisode)
 		{
 		  case 1:

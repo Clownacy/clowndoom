@@ -436,7 +436,7 @@ void ST_refreshBackground(void)
 		if (netgame)
 			V_DrawPatch(ST_FX, 0, BG, faceback);
 
-		V_CopyRect(ST_X, 0, BG, ST_WIDTH, ST_HEIGHT, ST_X, ST_Y, FG);
+		V_CopyRect(0, 0, BG, SCREENWIDTH, ST_HEIGHT, 0, ST_Y, FG);
 	}
 
 }
