@@ -25,12 +25,12 @@
 
 /* D_Main.C */
 #define D_DEVSTR        "Development mode ON.\n"
-#define D_CDROM "CD-ROM Version: default.cfg from c:\\doomdata\n"
+#define D_CDROM         "CD-ROM Version: default.cfg from c:\\doomdata\n"
 
 /*      M_Menu.C */
 #define PRESSKEY        "press a key."
 #define PRESSYN         "press y or n."
-#define QUITMSG "are you sure you want to\nquit this great game?"
+#define QUITMSG         "are you sure you want to\nquit this great game?"
 #define LOADNET         "you can't do load while in a net game!\n\n"PRESSKEY
 #define QLOADNET        "you can't quickload during a netgame!\n\n"PRESSKEY
 #define QSAVESPOT       "you haven't picked a quicksave slot yet!\n\n"PRESSKEY
@@ -50,10 +50,10 @@
 "this is the shareware version of doom.\n\n"\
 "you need to order the entire trilogy.\n\n"PRESSKEY
 
-#define MSGOFF  "Messages OFF"
+#define MSGOFF          "Messages OFF"
 #define MSGON           "Messages ON"
-#define NETEND  "you can't end a netgame!\n\n"PRESSKEY
-#define ENDGAME "are you sure you want to end the game?\n\n"PRESSYN
+#define NETEND          "you can't end a netgame!\n\n"PRESSKEY
+#define ENDGAME         "are you sure you want to end the game?\n\n"PRESSYN
 
 #define DOSY            "(press y to quit)"
 
@@ -68,10 +68,10 @@
 
 /*      P_inter.C */
 #define GOTARMOR        "Picked up the armor."
-#define GOTMEGA "Picked up the MegaArmor!"
+#define GOTMEGA         "Picked up the MegaArmor!"
 #define GOTHTHBONUS     "Picked up a health bonus."
 #define GOTARMBONUS     "Picked up an armor bonus."
-#define GOTSTIM "Picked up a stimpack."
+#define GOTSTIM         "Picked up a stimpack."
 #define GOTMEDINEED     "Picked up a medikit that you REALLY need!"
 #define GOTMEDIKIT      "Picked up a medikit."
 #define GOTSUPER        "Supercharge!"
@@ -86,17 +86,17 @@
 #define GOTINVUL        "Invulnerability!"
 #define GOTBERSERK      "Berserk!"
 #define GOTINVIS        "Partial Invisibility"
-#define GOTSUIT "Radiation Shielding Suit"
-#define GOTMAP  "Computer Area Map"
+#define GOTSUIT         "Radiation Shielding Suit"
+#define GOTMAP          "Computer Area Map"
 #define GOTVISOR        "Light Amplification Visor"
 #define GOTMSPHERE      "MegaSphere!"
 
-#define GOTCLIP "Picked up a clip."
+#define GOTCLIP         "Picked up a clip."
 #define GOTCLIPBOX      "Picked up a box of bullets."
 #define GOTROCKET       "Picked up a rocket."
 #define GOT2ROCKETS     "Picked up two rockets."
 #define GOTROCKBOX      "Picked up a box of rockets."
-#define GOTCELL "Picked up an energy cell."
+#define GOTCELL         "Picked up an energy cell."
 #define GOTCELLBOX      "Picked up an energy cell pack."
 #define GOT4SHELLS      "Picked up 4 shotgun shells."
 #define GOT8SHELLS      "Picked up 8 shotgun shells."
@@ -113,14 +113,14 @@
 
 /* P_Doors.C */
 #define PD_BLUEO        "You need a blue key to activate this object"
-#define PD_REDO "You need a red key to activate this object"
+#define PD_REDO         "You need a red key to activate this object"
 #define PD_YELLOWO      "You need a yellow key to activate this object"
 #define PD_BLUEK        "You need a blue key to open this door"
-#define PD_REDK "You need a red key to open this door"
+#define PD_REDK         "You need a red key to open this door"
 #define PD_YELLOWK      "You need a yellow key to open this door"
 
 /*      G_game.C */
-#define GGSAVED "game saved."
+#define GGSAVED         "game saved."
 
 /*      HU_stuff.C */
 #define HUSTR_MSGU      "[Message unsent]"
@@ -165,15 +165,15 @@
 #define HUSTR_E4M8      "E4M8: Unto The Cruel"
 #define HUSTR_E4M9      "E4M9: Fear"
 
-#define HUSTR_1 "level 1: entryway"
-#define HUSTR_2 "level 2: underhalls"
-#define HUSTR_3 "level 3: the gantlet"
-#define HUSTR_4 "level 4: the focus"
-#define HUSTR_5 "level 5: the waste tunnels"
-#define HUSTR_6 "level 6: the crusher"
-#define HUSTR_7 "level 7: dead simple"
-#define HUSTR_8 "level 8: tricks and traps"
-#define HUSTR_9 "level 9: the pit"
+#define HUSTR_1         "level 1: entryway"
+#define HUSTR_2         "level 2: underhalls"
+#define HUSTR_3         "level 3: the gantlet"
+#define HUSTR_4         "level 4: the focus"
+#define HUSTR_5         "level 5: the waste tunnels"
+#define HUSTR_6         "level 6: the crusher"
+#define HUSTR_7         "level 7: dead simple"
+#define HUSTR_8         "level 8: tricks and traps"
+#define HUSTR_9         "level 9: the pit"
 #define HUSTR_10        "level 10: refueling base"
 #define HUSTR_11        "level 11: 'o' of destruction!"
 
@@ -295,23 +295,23 @@
 /* The following should NOT be changed unless it seems */
 /* just AWFULLY necessary */
 
-#define HUSTR_PLRGREEN  "Green: "
-#define HUSTR_PLRINDIGO "Indigo: "
-#define HUSTR_PLRBROWN  "Brown: "
+#define HUSTR_PLRGREEN          "Green: "
+#define HUSTR_PLRINDIGO         "Indigo: "
+#define HUSTR_PLRBROWN          "Brown: "
 #define HUSTR_PLRRED            "Red: "
 
-#define HUSTR_KEYGREEN  'g'
-#define HUSTR_KEYINDIGO 'i'
-#define HUSTR_KEYBROWN  'b'
-#define HUSTR_KEYRED    'r'
+#define HUSTR_KEYGREEN          'g'
+#define HUSTR_KEYINDIGO         'i'
+#define HUSTR_KEYBROWN          'b'
+#define HUSTR_KEYRED            'r'
 
 /*      AM_map.C */
 
-#define AMSTR_FOLLOWON  "Follow Mode ON"
-#define AMSTR_FOLLOWOFF "Follow Mode OFF"
+#define AMSTR_FOLLOWON          "Follow Mode ON"
+#define AMSTR_FOLLOWOFF         "Follow Mode OFF"
 
-#define AMSTR_GRIDON    "Grid ON"
-#define AMSTR_GRIDOFF   "Grid OFF"
+#define AMSTR_GRIDON            "Grid ON"
+#define AMSTR_GRIDOFF           "Grid OFF"
 
 #define AMSTR_MARKEDSPOT        "Marked Spot"
 #define AMSTR_MARKSCLEARED      "All Marks Cleared"
@@ -321,18 +321,18 @@
 #define STSTR_MUS               "Music Change"
 #define STSTR_NOMUS             "IMPOSSIBLE SELECTION"
 #define STSTR_DQDON             "Degreelessness Mode On"
-#define STSTR_DQDOFF    "Degreelessness Mode Off"
+#define STSTR_DQDOFF            "Degreelessness Mode Off"
 
-#define STSTR_KFAADDED  "Very Happy Ammo Added"
-#define STSTR_FAADDED   "Ammo (no keys) Added"
+#define STSTR_KFAADDED          "Very Happy Ammo Added"
+#define STSTR_FAADDED           "Ammo (no keys) Added"
 
 #define STSTR_NCON              "No Clipping Mode ON"
 #define STSTR_NCOFF             "No Clipping Mode OFF"
 
-#define STSTR_BEHOLD    "inVuln, Str, Inviso, Rad, Allmap, or Lite-amp"
-#define STSTR_BEHOLDX   "Power-up Toggled"
+#define STSTR_BEHOLD            "inVuln, Str, Inviso, Rad, Allmap, or Lite-amp"
+#define STSTR_BEHOLDX           "Power-up Toggled"
 
-#define STSTR_CHOPPERS  "... doesn't suck - GM"
+#define STSTR_CHOPPERS          "... doesn't suck - GM"
 #define STSTR_CLEV              "Changing Level..."
 
 /*      F_Finale.C */
@@ -657,20 +657,20 @@
 #define CC_ZOMBIE       "ZOMBIEMAN"
 #define CC_SHOTGUN      "SHOTGUN GUY"
 #define CC_HEAVY        "HEAVY WEAPON DUDE"
-#define CC_IMP  "IMP"
+#define CC_IMP          "IMP"
 #define CC_DEMON        "DEMON"
-#define CC_LOST "LOST SOUL"
-#define CC_CACO "CACODEMON"
-#define CC_HELL "HELL KNIGHT"
+#define CC_LOST         "LOST SOUL"
+#define CC_CACO         "CACODEMON"
+#define CC_HELL         "HELL KNIGHT"
 #define CC_BARON        "BARON OF HELL"
 #define CC_ARACH        "ARACHNOTRON"
-#define CC_PAIN "PAIN ELEMENTAL"
+#define CC_PAIN         "PAIN ELEMENTAL"
 #define CC_REVEN        "REVENANT"
 #define CC_MANCU        "MANCUBUS"
-#define CC_ARCH "ARCH-VILE"
+#define CC_ARCH         "ARCH-VILE"
 #define CC_SPIDER       "THE SPIDER MASTERMIND"
 #define CC_CYBER        "THE CYBERDEMON"
-#define CC_HERO "OUR HERO"
+#define CC_HERO         "OUR HERO"
 
 
 #endif
