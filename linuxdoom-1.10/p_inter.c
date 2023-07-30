@@ -450,7 +450,8 @@ P_TouchSpecialThing
 		if (!P_GiveBody (player, 25))
 			return;
 
-		if (player->health < 25)
+		/* https://doomwiki.org/wiki/Picked_up_a_medikit_that_you_REALLY_need! */
+		if (player->health < 25 + 25)
 			player->message = GOTMEDINEED;
 		else
 			player->message = GOTMEDIKIT;
