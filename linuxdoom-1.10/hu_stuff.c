@@ -514,22 +514,25 @@ void HU_Drawer(void)
 	HUlib_drawIText(&w_chat);
 	if (automapactive)
 	{
-		int i, kills, items, secrets;
-
 		HUlib_drawTextLine(&w_title, d_false);
 
-		kills = items = secrets = 0;
-
-		for (i = 0; i < MAXPLAYERS; ++i)
+		if (deathmatch == DM_OFF)
 		{
-			kills += players[i].killcount;
-			items += players[i].itemcount;
-			secrets += players[i].secretcount;
-		}
+			int i, kills, items, secrets;
 
-		DoTotal('K', HU_TOTALSY + HU_YSPACING * 0, kills, totalkills);
-		DoTotal('I', HU_TOTALSY + HU_YSPACING * 1, items, totalitems);
-		DoTotal('S', HU_TOTALSY + HU_YSPACING * 2, secrets, totalsecret);
+			kills = items = secrets = 0;
+
+			for (i = 0; i < MAXPLAYERS; ++i)
+			{
+				kills += players[i].killcount;
+				items += players[i].itemcount;
+				secrets += players[i].secretcount;
+			}
+
+			DoTotal('K', HU_TOTALSY + HU_YSPACING * 0, kills, totalkills);
+			DoTotal('I', HU_TOTALSY + HU_YSPACING * 1, items, totalitems);
+			DoTotal('S', HU_TOTALSY + HU_YSPACING * 2, secrets, totalsecret);
+		}
 	}
 
 }
