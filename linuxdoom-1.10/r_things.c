@@ -21,6 +21,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 #include "doomdef.h"
@@ -163,7 +164,6 @@ void R_InitSpriteDefs (const char* const *namelist)
 	const char* const * check;
 	int         i;
 	int         l;
-	int         intname;
 	int         frame;
 	int         rotation;
 	int         start;
@@ -194,13 +194,12 @@ void R_InitSpriteDefs (const char* const *namelist)
 		memset (sprtemp,-1, sizeof(sprtemp));
 
 		maxframe = -1;
-		intname = *(int *)namelist[i];
 
 		/* scan the lumps, */
 		/*  filling in the frames for whatever is found */
 		for (l=start+1 ; l<end ; l++)
 		{
-			if (*(int *)lumpinfo[l].name == intname)
+			if (!memcmp(lumpinfo[l].name, namelist[i], 4))
 			{
 				frame = lumpinfo[l].name[4] - 'A';
 				rotation = lumpinfo[l].name[5] - '0';
