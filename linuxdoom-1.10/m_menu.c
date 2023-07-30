@@ -371,7 +371,7 @@ menu_t  ReadDef1 =
 	&MainDef,
 	ReadMenu1,
 	M_DrawReadThis1,
-	X_CENTRE(280),Y_CENTRE(185),
+	X_CENTRE(330),Y_CENTRE(175),
 	0
 };
 
@@ -392,7 +392,7 @@ menu_t  ReadDef2 =
 	&ReadDef1,
 	ReadMenu2,
 	M_DrawReadThis2,
-	X_CENTRE(330),Y_CENTRE(175),
+	X_CENTRE(280),Y_CENTRE(185),
 	0
 };
 
