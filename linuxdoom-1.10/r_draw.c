@@ -844,23 +844,10 @@ void R_FillBackScreen (void)
 	int         y;
 	patch_t*    patch;
 
-	/* DOOM border patch. */
-	char        name1[] = "FLOOR7_2";
-
-	/* DOOM II border patch. */
-	char        name2[] = "GRNROCK";
-
-	char*       name;
-
 	if (scaledviewwidth == SCREENWIDTH)
 		return;
 
-	if ( gamemode == commercial)
-		name = name2;
-	else
-		name = name1;
-
-	V_FillScreenWithPattern(name, 1, SCREENHEIGHT-SBARHEIGHT);
+	V_FillScreenWithPattern(gamemode == commercial ? "GRNROCK" : "FLOOR7_2", 1, SCREENHEIGHT-SBARHEIGHT);
 
 	patch = (patch_t*)W_CacheLumpName ("brdr_t",PU_CACHE);
 
