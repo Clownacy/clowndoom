@@ -212,19 +212,6 @@ void*           statcopy;                               /* for statistics driver
 int             novert;
 
 
-
-int G_CmdChecksum (ticcmd_t* cmd)
-{
-	size_t      i;
-	int         sum = 0;
-
-	for (i=0 ; i< sizeof(*cmd)/4 - 1 ; i++)
-		sum += ((int *)cmd)[i];
-
-	return sum;
-}
-
-
 /* G_BuildTiccmd */
 /* Builds a ticcmd from all of the available inputs */
 /* or reads it from the demo buffer. */
