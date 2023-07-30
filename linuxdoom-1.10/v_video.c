@@ -175,7 +175,6 @@ static void
 V_DrawPatchColumnInternal
 ( unsigned char* desttop,
   const patch_t* patch,
-  int            scale,
   int            col )
 {
 	column_t*      column;
@@ -189,7 +188,7 @@ V_DrawPatchColumnInternal
 	while (column->topdelta != 0xff )
 	{
 		source = (unsigned char *)column + 3;
-		dest = desttop + column->topdelta*SCREENWIDTH*scale;
+		dest = desttop + column->topdelta*SCREENWIDTH*SCREEN_MUL;
 		count = column->length;
 
 		while (count--)
@@ -198,11 +197,11 @@ V_DrawPatchColumnInternal
 
 			const unsigned char pixel = *source++;
 
-			for (y = 0; y < scale; ++y)
+			for (y = 0; y < SCREEN_MUL; ++y)
 			{
 				int x;
 
-				for (x = 0; x < scale; ++x)
+				for (x = 0; x < SCREEN_MUL; ++x)
 					dest[x] = pixel;
 
 				dest += SCREENWIDTH;
@@ -219,7 +218,6 @@ V_DrawPatchInternal
   int            y,
   int            scrn,
   const patch_t* patch,
-  int            scale,
   d_bool         flip )
 {
 
@@ -228,12 +226,12 @@ V_DrawPatchInternal
 	int         w;
 
 #ifdef RANGECHECK
-	const int scaled_width = SHORT(patch->width) * scale;
-	const int scaled_height = SHORT(patch->height) * scale;
+	const int scaled_width = SHORT(patch->width) * SCREEN_MUL;
+	const int scaled_height = SHORT(patch->height) * SCREEN_MUL;
 #endif
 
-	y -= SHORT(patch->topoffset) * scale;
-	x -= SHORT(patch->leftoffset) * scale;
+	y -= SHORT(patch->topoffset) * SCREEN_MUL;
+	x -= SHORT(patch->leftoffset) * SCREEN_MUL;
 #ifdef RANGECHECK
 	if (x<0
 		||x+scaled_width >SCREENWIDTH
@@ -253,8 +251,8 @@ V_DrawPatchInternal
 
 	w = SHORT(patch->width);
 
-	for ( ; col<w ; col++, desttop += scale)
-		V_DrawPatchColumnInternal(desttop, patch, scale, flip ? w - 1 - col : col);
+	for ( ; col<w ; col++, desttop += SCREEN_MUL)
+		V_DrawPatchColumnInternal(desttop, patch, flip ? w - 1 - col : col);
 }
 
 
@@ -265,10 +263,9 @@ V_DrawPatchColumn
   int            y,
   int            scrn,
   const patch_t* patch,
-  int            scale,
   int            col )
 {
-	V_DrawPatchColumnInternal(screens[scrn]+y*SCREENWIDTH+x, patch, scale, col);
+	V_DrawPatchColumnInternal(screens[scrn]+y*SCREENWIDTH+x, patch, col);
 }
 
 

@@ -609,9 +609,9 @@ void F_BunnyScroll (void)
 	for ( x=0 ; x<320 ; x++)
 	{
 		if (x+scrolled < 320)
-			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p1, SCREEN_MUL, x+scrolled);
+			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p1, x+scrolled);
 		else
-			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p2, SCREEN_MUL, x+scrolled - 320);
+			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p2, x+scrolled - 320);
 	}
 
 	if (finalecount < 1130)
