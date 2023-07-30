@@ -502,8 +502,8 @@ DrawMonospaceText
 
 static void DoTotal(const char letter, const int y, const int current, const int max)
 {
-	char buffer[2 + 3 + 1 + 1];
-	sprintf(buffer, "%c %3d%%", letter, max == 0 ? 100 : 100 * current / max);
+	char buffer[3 + 3 + 1];
+	sprintf(buffer, "%3d%% %c", max == 0 ? 100 : 100 * current / max, letter);
 	DrawMonospaceText(HU_TOTALSX, y, buffer);
 }
 
