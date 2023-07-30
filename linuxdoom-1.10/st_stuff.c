@@ -786,15 +786,23 @@ void ST_updateFaceWidget(void)
 			&& plyr->attacker != plyr->mo)
 		{
 			/* being attacked */
-			priority = 7;
 
-			if (plyr->health - st_oldhealth > ST_MUCHPAIN)
+			/* This was previously incorrect. */
+			/* https://doomwiki.org/wiki/Ouch_face */
+			/* What the wiki doesn't tell you is that there's a second bug here,
+			   which prevents the ouch face for showing more than a single frame
+			   when hurt by an enemy. This bug is caused by `priority` always being
+			   set to 7, allowing this block of code to override itself, ending
+			   off the ouch face early. */
+			if (st_oldhealth - plyr->health > ST_MUCHPAIN)
 			{
+				priority = 8;
 				st_facecount = ST_TURNCOUNT;
 				st_faceindex = ST_calcPainOffset() + ST_OUCHOFFSET;
 			}
 			else
 			{
+				priority = 7;
 				badguyangle = R_PointToAngle2(plyr->mo->x,
 											  plyr->mo->y,
 											  plyr->attacker->x,
@@ -841,7 +849,9 @@ void ST_updateFaceWidget(void)
 		/* getting hurt because of your own damn stupidity */
 		if (plyr->damagecount)
 		{
-			if (plyr->health - st_oldhealth > ST_MUCHPAIN)
+			/* This was previously incorrect. */
+			/* https://doomwiki.org/wiki/Ouch_face */
+			if (st_oldhealth - plyr->health > ST_MUCHPAIN)
 			{
 				priority = 7;
 				st_facecount = ST_TURNCOUNT;
