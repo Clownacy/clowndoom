@@ -158,13 +158,13 @@ static void IB_GetEvent(void)
 		event.type = ev_keydown;
 		event.data1 = xlatekey();
 		D_PostEvent(&event);
-		/* fprintf(stderr, "k"); */
+		/* I_Info("k"); */
 		break;
 	  case KeyRelease:
 		event.type = ev_keyup;
 		event.data1 = xlatekey();
 		D_PostEvent(&event);
-		/* fprintf(stderr, "ku"); */
+		/* I_Info("ku"); */
 		break;
 	  case ButtonPress:
 		switch (X_event.xbutton.button)
@@ -183,7 +183,7 @@ static void IB_GetEvent(void)
 		event.data1 = button_state;
 		event.data2 = event.data3 = 0;
 		D_PostEvent(&event);
-		/* fprintf(stderr, "b"); */
+		/* I_Info("b"); */
 		break;
 	  case ButtonRelease:
 		switch (X_event.xbutton.button)
@@ -202,7 +202,7 @@ static void IB_GetEvent(void)
 		event.data1 = button_state;
 		event.data2 = event.data3 = 0;
 		D_PostEvent(&event);
-		/* fprintf(stderr, "bu"); */
+		/* I_Info("bu"); */
 		break;
 	  case MotionNotify:
 		event.type = ev_mouse;
@@ -218,7 +218,7 @@ static void IB_GetEvent(void)
 				X_event.xmotion.y != X_height/2)
 			{
 				D_PostEvent(&event);
-				/* fprintf(stderr, "m"); */
+				/* I_Info("m"); */
 			}
 		}
 		break;
@@ -371,8 +371,8 @@ static void grabsharedmemory(size_t size)
 	  {
 		if (shminfo.shm_nattch)
 		{
-		  fprintf(stderr, "User %d appears to be running "
-				  "DOOM.  Is that wise?\n", shminfo.shm_cpid);
+		  I_Info("User %d appears to be running "
+		         "DOOM.  Is that wise?\n", shminfo.shm_cpid);
 		  key++;
 		}
 		else
@@ -381,8 +381,7 @@ static void grabsharedmemory(size_t size)
 		  {
 			rc = shmctl(id, IPC_RMID, 0);
 			if (!rc)
-			  fprintf(stderr,
-					  "Was able to kill my old shared memory\n");
+			  I_Info("Was able to kill my old shared memory\n");
 			else
 			  I_Error("Was NOT able to kill my old shared memory");
 
@@ -397,18 +396,16 @@ static void grabsharedmemory(size_t size)
 		  }
 		  if (size >= shminfo.shm_segsz)
 		  {
-			fprintf(stderr,
-					"will use %d's stale shared memory\n",
-					shminfo.shm_cpid);
+			I_Info("will use %d's stale shared memory\n",
+			       shminfo.shm_cpid);
 			break;
 		  }
 		  else
 		  {
-			fprintf(stderr,
-					"warning: can't use stale "
-					"shared memory belonging to id %d, "
-					"key=0x%x\n",
-					shminfo.shm_cpid, key);
+			I_Info("warning: can't use stale "
+			       "shared memory belonging to id %d, "
+			       "key=0x%x\n",
+			       shminfo.shm_cpid, key);
 			key++;
 		  }
 		}
@@ -423,7 +420,7 @@ static void grabsharedmemory(size_t size)
 	  id = shmget((key_t)key, size, IPC_CREAT|0777);
 	  if (id==-1)
 	  {
-		fprintf(stderr, "errno=%d\n", errno);
+		I_Info("errno=%d\n", errno);
 		I_Error("Could not get any shared memory");
 	  }
 	  break;
@@ -441,7 +438,7 @@ static void grabsharedmemory(size_t size)
   /* attach to the shared memory segment */
   image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
 
-  fprintf(stderr, "shared memory id=%d, addr=0x%p\n", id,
+  I_Info("shared memory id=%d, addr=0x%p\n", id,
 		  (void*) (image->data));
 }
 
@@ -537,7 +534,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	}
 
 	if (doShm)
-		fprintf(stderr, "Using MITSHM extension\n");
+		I_Info("Using MITSHM extension\n");
 
 	/* setup attributes for main window */
 	attribmask = CWEventMask | CWBorderPixel;
@@ -613,7 +610,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 		/* perror(""); */
 		/* I_Error("shmget() failed in InitGraphics()"); */
 		/* } */
-		/* fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid); */
+		/* I_Info("shared memory id=%d\n", X_shminfo.shmid); */
 		/* attach to the shared memory segment */
 		/* image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0); */
 
