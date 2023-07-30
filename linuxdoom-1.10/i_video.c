@@ -31,7 +31,7 @@
 
 #include "i_video.h"
 
-#define MAX_PALETTES 32
+#define MAX_PALETTES (32*8)
 
 int aspect_ratio_correction;
 
