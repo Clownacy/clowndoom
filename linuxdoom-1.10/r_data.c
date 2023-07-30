@@ -146,7 +146,7 @@ fixed_t*        spritewidth;
 fixed_t*        spriteoffset;
 fixed_t*        spritetopoffset;
 
-lighttable_t    *colormaps;
+lighttable_t    (*colormaps)[0x100];
 
 
 /* MAPTEXTURE_T CACHING */
@@ -608,9 +608,8 @@ void R_InitColormaps (void)
 	/* Load in the light tables, */
 	/*  256 byte align tables. */
 	lump = W_GetNumForName("COLORMAP");
-	length = W_LumpLength (lump) + 255;
-	colormaps = (unsigned char *)Z_Malloc (length, PU_STATIC, NULL);
-	colormaps = (unsigned char *)( ((size_t)colormaps + 255)&~0xff);
+	length = W_LumpLength (lump);
+	colormaps = (unsigned char (*)[0x100])Z_Malloc (length, PU_STATIC, NULL);
 	W_ReadLump (lump,colormaps);
 }
 

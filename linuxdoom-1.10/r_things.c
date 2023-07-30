@@ -556,7 +556,7 @@ void R_ProjectSprite (mobj_t* thing)
 	else if (thing->frame & FF_FULLBRIGHT)
 	{
 		/* full bright */
-		vis->colormap = colormaps;
+		vis->colormap = colormaps[0];
 	}
 
 	else
@@ -691,7 +691,7 @@ void R_DrawPSprite (pspdef_t* psp)
 	else if (psp->state->frame & FF_FULLBRIGHT)
 	{
 		/* full bright */
-		vis->colormap = colormaps;
+		vis->colormap = colormaps[0];
 	}
 	else
 	{

@@ -1529,7 +1529,7 @@ void WI_loadData(void)
 	/* darken the background image */
 	/* while (pic != screens[SCREEN_BACK] + SCREENHEIGHT*SCREENWIDTH) */
 	/* { */
-	/*   *pic = colormaps[256*25 + *pic]; */
+	/*   *pic = colormaps[25][*pic]; */
 	/*   pic++; */
 	/* } */
    /* } */
