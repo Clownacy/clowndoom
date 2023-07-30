@@ -396,10 +396,10 @@ WritePCXfile
   unsigned int  height,
   unsigned char*         palette )
 {
-	size_t      bytes_remaining;
-	size_t      length;
-	unsigned char*       pcx;
-	unsigned char*       pack;
+	size_t         bytes_remaining;
+	size_t         length;
+	unsigned char* pcx;
+	unsigned char* pack;
 
 	length = 0x80 + 1 + (1 << 8) * 3;
 
@@ -484,11 +484,11 @@ WritePCXfile
 /* WriteBMPfile */
 void
 WriteBMPfile
-( char*         filename,
-  unsigned char*         data,
-  unsigned int  width,
-  unsigned int  height,
-  unsigned char*         palette )
+( char*          filename,
+  unsigned char* data,
+  unsigned int   width,
+  unsigned int   height,
+  unsigned char* palette )
 {
 	unsigned int i;
 	unsigned char *bmp, *bmp_pointer;
