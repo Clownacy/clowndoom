@@ -369,7 +369,7 @@ void R_DrawPlanes (void)
 		/* sky flat */
 		if (pl->picnum == skyflatnum)
 		{
-			dc_iscale = pspriteiscale>>detailshift;
+			dc_iscale = (pspriteiscale>>detailshift)/(SCREENHEIGHT/(ORIGINAL_SCREEN_HEIGHT*SCREEN_MUL));
 
 			/* Sky is allways drawn full bright, */
 			/*  i.e. colormaps[0] is used. */
