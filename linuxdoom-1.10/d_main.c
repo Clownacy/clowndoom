@@ -404,7 +404,7 @@ void D_PageTicker (void)
 /* D_PageDrawer */
 void D_PageDrawer (void)
 {
-	V_DrawPatch (0,0, 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
+	V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0), 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
 }
 
 
