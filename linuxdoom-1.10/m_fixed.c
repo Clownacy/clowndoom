@@ -26,83 +26,7 @@
 
 #include "m_fixed.h"
 
-typedef struct SplitInteger
-{
-	unsigned long splits[3];
-} SplitInteger;
 
-static void Subtract(SplitInteger * const minuend, const SplitInteger * const subtrahend)
-{
-	unsigned long carry;
-	unsigned int i;
-
-	carry = 0;
-
-	for (i = 3; i-- != 0; )
-	{
-		const unsigned long difference = minuend->splits[i] - subtrahend->splits[i] + carry;
-
-		/* Isolate and sign-extend the overflow to obtain the new carry. */
-		carry = difference >> 16;
-		carry = (carry & 0x7FFF) - (carry & 0x8000);
-
-		/* Store result. */
-		minuend->splits[i] = difference & 0xFFFF;
-	}
-}
-
-static d_bool GreaterThan(const SplitInteger * const a, const SplitInteger * const b)
-{
-	unsigned int i;
-
-	for (i = 0; i < 3; ++i)
-	{
-		if (a->splits[i] > b->splits[i])
-			return d_true;
-		else if (a->splits[i] < b->splits[i])
-			return d_false;
-	}
-
-	return d_false;
-}
-
-static void LeftShift(SplitInteger * const value)
-{
-	unsigned long carry;
-	unsigned int i;
-
-	carry = 0;
-
-	for (i = 3; i-- != 0; )
-	{
-		const unsigned long new_carry = value->splits[i] >> 15;
-		value->splits[i] <<= 1;
-		value->splits[i] |= carry;
-		carry = new_carry;
-		value->splits[i] &= 0xFFFF;
-	}
-}
-
-static void RightShift(SplitInteger * const value)
-{
-	unsigned long carry;
-	unsigned int i;
-
-	carry = 0;
-
-	for (i = 0; i < 3; ++i)
-	{
-		const unsigned long new_carry = value->splits[i] << 15;
-		value->splits[i] >>= 1;
-		value->splits[i] |= carry;
-		carry = new_carry;
-		value->splits[i] &= 0xFFFF;
-	}
-}
-
-
-
-/* Fixme. __USE_C_FIXED__ or something. */
 
 fixed_t
 FixedMul
@@ -140,54 +64,36 @@ FixedDiv
   fixed_t       b )
 {
 	/* Horrific fixed point division using only 32-bit integers. */
-	SplitInteger dividend, divisor;
-	unsigned int shift_amount;
-	unsigned long result;
+	/* This particular algorithm is taken from the Atari Jaguar port. */
+	const d_bool result_is_negative = (a < 0) != (b < 0);
 
-	const unsigned long a_absolute = labs(a);
-	const unsigned long b_absolute = labs(b);
+	unsigned long bit = FRACUNIT;
+	unsigned long result = 0;
+	unsigned long dividend_absolute = labs(a);
+	unsigned long divisor_absolute = labs(b);
 
-	if ((a_absolute >> 14) >= b_absolute)
-		return (a ^ b) < 0 ? LONG_MIN : LONG_MAX;
+	if ((dividend_absolute >> 14) >= divisor_absolute)
+		return result_is_negative ? LONG_MIN : LONG_MAX;
 
-	/* Note that this sneakily multiplies by FRACUNIT. */
-	dividend.splits[0] = (a_absolute >> 16) & 0xFFFF;
-	dividend.splits[1] = a_absolute & 0xFFFF;
-	dividend.splits[2] = 0;
-
-	divisor.splits[0] = 0;
-	divisor.splits[1] = (b_absolute >> 16) & 0xFFFF;
-	divisor.splits[2] = b_absolute & 0xFFFF;
-
-	shift_amount = 0;
-
-	while (GreaterThan(&dividend, &divisor))
+	while (dividend_absolute > divisor_absolute)
 	{
-		LeftShift(&divisor);
-		++shift_amount;
+		divisor_absolute <<= 1;
+		bit <<= 1;
 	}
 
-	result = 0;
-
-	for (;;)
+	do
 	{
-		do
+		if (dividend_absolute >= divisor_absolute)
 		{
-			if (shift_amount == 0)
-				return (a < 0) != (b < 0) ? -(long)result : (long)result;
+			dividend_absolute -= divisor_absolute;
+			result |= bit;
+		}
 
-			RightShift(&divisor);
-			--shift_amount;
+		dividend_absolute <<= 1;
+		bit >>= 1;
+	} while (bit != 0 && dividend_absolute != 0);
 
-			result <<= 1;
-		} while (GreaterThan(&divisor, &dividend));
-
-		do
-		{
-			Subtract(&dividend, &divisor);
-			++result;
-		} while (!GreaterThan(&divisor, &dividend));
-	}
+	return result_is_negative ? -(long)result : (long)result;
 }
 
 
