@@ -59,7 +59,7 @@ extern int              loopcount;
 #define LIGHTSEGSHIFT            4
 
 #define MAXLIGHTSCALE           48
-#define LIGHTSCALESHIFT         12
+#define LIGHTSCALESHIFT         ((1<<12)*(SCREENWIDTH/ORIGINAL_SCREEN_WIDTH)) /* TODO: This will break when I eventually allow adjustable FOV. */
 #define MAXLIGHTZ              128
 #define LIGHTZSHIFT             20
 

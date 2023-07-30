@@ -599,7 +599,7 @@ void R_InitLightTables (void)
 		for (j=0 ; j<MAXLIGHTZ ; j++)
 		{
 			scale = FixedDiv ((SCREENWIDTH/2*FRACUNIT), (j+1)<<LIGHTZSHIFT);
-			scale >>= LIGHTSCALESHIFT;
+			scale /= LIGHTSCALESHIFT;
 			level = startmap - scale/DISTMAP;
 
 			if (level < 0)
