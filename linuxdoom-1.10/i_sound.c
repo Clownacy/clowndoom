@@ -49,8 +49,8 @@ static unsigned long    channelstep[NUM_CHANNELS];
 static unsigned long    channelstepremainder[NUM_CHANNELS];
 
 /* The channel data pointers, start and end. */
-static unsigned char*   channels[NUM_CHANNELS];
-static unsigned char*   channelsend[NUM_CHANNELS];
+static const unsigned char*   channels[NUM_CHANNELS];
+static const unsigned char*   channelsend[NUM_CHANNELS];
 
 /* Time/gametic that the channel started playing, */
 /*  used to determine oldest, which automatically */
