@@ -298,8 +298,6 @@ void R_GenerateLookup (int texnum)
 	patchcount = (byte *)calloc (1, texture->width);
 	patch = texture->patches;
 
-	printf ("Trying\n");
-
 	for (i=0 , patch = texture->patches;
 		 i<texture->patchcount;
 		 i++, patch++)
@@ -308,9 +306,6 @@ void R_GenerateLookup (int texnum)
 		x1 = patch->originx;
 		x2 = x1 + SHORT(realpatch->width);
 
-		printf ("R_GenerateLookup: x1 %X\n", x1);
-		printf ("R_GenerateLookup: x2 %X\n", x2);
-
 		if (x1 < 0)
 			x = 0;
 		else
@@ -318,7 +313,7 @@ void R_GenerateLookup (int texnum)
 
 		if (x2 > texture->width)
 			x2 = texture->width;
-		printf ("R_GenerateLookup: width %X\n", texture->width);
+
 		for ( ; x<x2 ; x++)
 		{
 			patchcount[x]++;
