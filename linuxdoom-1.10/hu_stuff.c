@@ -442,6 +442,11 @@ void HU_Start(void)
 		case pack_tnt:
 			s = HU_TITLET;
 			break;
+
+		default:
+		case none:
+			s = "???";
+			break;
 	}
 
 	while (*s)
