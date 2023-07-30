@@ -425,23 +425,23 @@ typedef struct
 /* Now what is a visplane, anyway? */
 typedef struct
 {
-  fixed_t               height;
-  int                   picnum;
-  int                   lightlevel;
-  int                   minx;
-  int                   maxx;
+  fixed_t height;
+  int     picnum;
+  int     lightlevel;
+  int     minx;
+  int     maxx;
 
   /* leave pads for [minx-1]/[maxx+1] */
 
-  unsigned char          pad1;
+  int     pad1;
   /* Here lies the rub for all */
   /*  dynamic resize/change of resolution. */
-  unsigned char          top[SCREENWIDTH];
-  unsigned char          pad2;
-  unsigned char          pad3;
+  int     top[SCREENWIDTH];
+  int     pad2;
+  int     pad3;
   /* See above. */
-  unsigned char          bottom[SCREENWIDTH];
-  unsigned char          pad4;
+  int     bottom[SCREENWIDTH];
+  int     pad4;
 
 } visplane_t;
 

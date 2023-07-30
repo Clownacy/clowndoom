@@ -20,6 +20,7 @@
 ******************************************************************************/
 
 
+#include <limits.h>
 #include <stdlib.h>
 
 #include "i_system.h"
@@ -196,6 +197,7 @@ R_FindPlane
   int           lightlevel )
 {
 	visplane_t* check;
+	size_t i;
 
 	if (picnum == skyflatnum)
 	{
@@ -228,7 +230,8 @@ R_FindPlane
 	check->minx = SCREENWIDTH;
 	check->maxx = -1;
 
-	memset (check->top,0xff,sizeof(check->top));
+	for (i = 0; i < D_COUNT_OF(check->top); ++i)
+		check->top[i] = INT_MAX;
 
 	return check;
 }
@@ -246,6 +249,7 @@ R_CheckPlane
 	int         unionl;
 	int         unionh;
 	int         x;
+	size_t      i;
 
 	if (start < pl->minx)
 	{
@@ -270,7 +274,7 @@ R_CheckPlane
 	}
 
 	for (x=intrl ; x<= intrh ; x++)
-		if (pl->top[x] != 0xff)
+		if (pl->top[x] != INT_MAX)
 			break;
 
 	if (x > intrh)
@@ -291,7 +295,8 @@ R_CheckPlane
 	pl->minx = start;
 	pl->maxx = stop;
 
-	memset (pl->top,0xff,sizeof(pl->top));
+	for (i = 0; i < D_COUNT_OF(pl->top); ++i)
+		pl->top[i] = INT_MAX;
 
 	return pl;
 }
@@ -404,8 +409,8 @@ void R_DrawPlanes (void)
 
 		planezlight = zlight[light];
 
-		pl->top[pl->maxx+1] = 0xff;
-		pl->top[pl->minx-1] = 0xff;
+		pl->top[pl->maxx+1] = INT_MAX;
+		pl->top[pl->minx-1] = INT_MAX;
 
 		stop = pl->maxx + 1;
 

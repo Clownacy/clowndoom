@@ -438,7 +438,7 @@ void HU_Start(void)
 		s = HU_TITLE;
 		break;
 
-/* FIXME
+/* FIXME TODO
 	  case pack_plut:
 		s = HU_TITLEP;
 		break;

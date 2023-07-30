@@ -34,11 +34,11 @@
 
 #include "p_pspr.h"
 
-#define LOWERSPEED              FRACUNIT*6
-#define RAISESPEED              FRACUNIT*6
+#define LOWERSPEED      (FRACUNIT*6)
+#define RAISESPEED      (FRACUNIT*6)
 
-#define WEAPONBOTTOM    128*FRACUNIT
-#define WEAPONTOP               32*FRACUNIT
+#define WEAPONBOTTOM    ((((SCREENHEIGHT-200)/2)+128)*FRACUNIT)
+#define WEAPONTOP       ((((SCREENHEIGHT-200)/2)+32)*FRACUNIT)
 
 
 /* plasma cells for a bfg attack */
