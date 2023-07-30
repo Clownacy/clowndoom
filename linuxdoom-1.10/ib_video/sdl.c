@@ -202,10 +202,10 @@ void IB_StartTic (void)
 					case SDL_BUTTON_LEFT:
 						button_state |= 1;
 						break;
-					case SDL_BUTTON_MIDDLE:
+					case SDL_BUTTON_RIGHT:
 						button_state |= 2;
 						break;
-					case SDL_BUTTON_RIGHT:
+					case SDL_BUTTON_MIDDLE:
 						button_state |= 4;
 						break;
 				}
@@ -221,10 +221,10 @@ void IB_StartTic (void)
 					case SDL_BUTTON_LEFT:
 						button_state &= ~1;
 						break;
-					case SDL_BUTTON_MIDDLE:
+					case SDL_BUTTON_RIGHT:
 						button_state &= ~2;
 						break;
-					case SDL_BUTTON_RIGHT:
+					case SDL_BUTTON_MIDDLE:
 						button_state &= ~4;
 						break;
 				}
