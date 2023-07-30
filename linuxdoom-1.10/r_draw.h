@@ -23,7 +23,7 @@
 
 #include "doomdef.h"
 
-#define BEVEL_SIZE (8*SCREEN_MUL)
+#define BEVEL_SIZE (8*HUD_SCALE)
 
 
 extern lighttable_t*    dc_colormap;

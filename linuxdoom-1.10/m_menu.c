@@ -119,8 +119,8 @@ char                    saveOldString[SAVESTRINGSIZE];
 d_bool                 inhelpscreens;
 d_bool                 menuactive;
 
-#define SKULLXOFF               (-32*SCREEN_MUL)
-#define LINEHEIGHT              (16*SCREEN_MUL)
+#define SKULLXOFF               (-32*HUD_SCALE)
+#define LINEHEIGHT              (16*HUD_SCALE)
 
 extern d_bool          sendpause;
 char                    savegamestrings[10][SAVESTRINGSIZE];
@@ -527,15 +527,15 @@ void M_DrawSaveLoadBorder(int x,int y)
 {
 	int             i;
 
-	V_DrawPatch (x-8*SCREEN_MUL,y+7*SCREEN_MUL,0,(patch_t*)W_CacheLumpName("M_LSLEFT",PU_CACHE));
+	V_DrawPatch (x-8*HUD_SCALE,y+7*HUD_SCALE,0,(patch_t*)W_CacheLumpName("M_LSLEFT",PU_CACHE));
 
 	for (i = 0;i < 24;i++)
 	{
-		V_DrawPatch (x,y+7*SCREEN_MUL,0,(patch_t*)W_CacheLumpName("M_LSCNTR",PU_CACHE));
-		x += 8*SCREEN_MUL;
+		V_DrawPatch (x,y+7*HUD_SCALE,0,(patch_t*)W_CacheLumpName("M_LSCNTR",PU_CACHE));
+		x += 8*HUD_SCALE;
 	}
 
-	V_DrawPatch (x,y+7*SCREEN_MUL,0,(patch_t*)W_CacheLumpName("M_LSRGHT",PU_CACHE));
+	V_DrawPatch (x,y+7*HUD_SCALE,0,(patch_t*)W_CacheLumpName("M_LSRGHT",PU_CACHE));
 }
 
 
@@ -899,10 +899,10 @@ void M_DrawOptions(void)
 {
 	V_DrawPatch (X_CENTRE(108),Y_CENTRE(15),0,(patch_t*)W_CacheLumpName("M_OPTTTL",PU_CACHE));
 
-	V_DrawPatch (OptionsDef.x + 175*SCREEN_MUL,OptionsDef.y+LINEHEIGHT*detail,0,
+	V_DrawPatch (OptionsDef.x + 175*HUD_SCALE,OptionsDef.y+LINEHEIGHT*detail,0,
 					   (patch_t*)W_CacheLumpName(detailNames[detailLevel],PU_CACHE));
 
-	V_DrawPatch (OptionsDef.x + 120 * SCREEN_MUL,OptionsDef.y+LINEHEIGHT*messages,0,
+	V_DrawPatch (OptionsDef.x + 120 * HUD_SCALE,OptionsDef.y+LINEHEIGHT*messages,0,
 					   (patch_t*)W_CacheLumpName(msgNames[showMessages],PU_CACHE));
 
 	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(mousesens+1),
@@ -1157,15 +1157,15 @@ M_DrawThermo
 
 	xx = x;
 	V_DrawPatch (xx,y,0,(patch_t*)W_CacheLumpName("M_THERML",PU_CACHE));
-	xx += 8*SCREEN_MUL;
+	xx += 8*HUD_SCALE;
 	for (i=0;i<thermWidth;i++)
 	{
 		V_DrawPatch (xx,y,0,(patch_t*)W_CacheLumpName("M_THERMM",PU_CACHE));
-		xx += 8*SCREEN_MUL;
+		xx += 8*HUD_SCALE;
 	}
 	V_DrawPatch (xx,y,0,(patch_t*)W_CacheLumpName("M_THERMR",PU_CACHE));
 
-	V_DrawPatch ((x+8*SCREEN_MUL) + thermDot*8*SCREEN_MUL,y,
+	V_DrawPatch ((x+8*HUD_SCALE) + thermDot*8*HUD_SCALE,y,
 					   0,(patch_t*)W_CacheLumpName("M_THERMO",PU_CACHE));
 }
 
@@ -1176,7 +1176,7 @@ M_DrawEmptyCell
 ( menu_t*       menu,
   int           item )
 {
-	V_DrawPatch (menu->x - 10*SCREEN_MUL,        menu->y+item*LINEHEIGHT - 1*SCREEN_MUL, 0,
+	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, 0,
 					   (patch_t*)W_CacheLumpName("M_CELL1",PU_CACHE));
 }
 
@@ -1185,7 +1185,7 @@ M_DrawSelCell
 ( menu_t*       menu,
   int           item )
 {
-	V_DrawPatch (menu->x - 10*SCREEN_MUL,        menu->y+item*LINEHEIGHT - 1*SCREEN_MUL, 0,
+	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, 0,
 					   (patch_t*)W_CacheLumpName("M_CELL2",PU_CACHE));
 }
 
@@ -1226,9 +1226,9 @@ int M_StringWidth(const char* string)
 	{
 		c = toupper(string[i]) - HU_FONTSTART;
 		if (c < 0 || c >= HU_FONTSIZE)
-			w += 4*SCREEN_MUL;
+			w += 4*HUD_SCALE;
 		else
-			w += SHORT (hu_font[c]->width)*SCREEN_MUL;
+			w += SHORT (hu_font[c]->width)*HUD_SCALE;
 	}
 
 	return w;
@@ -1241,7 +1241,7 @@ int M_StringHeight(const char* string)
 {
 	size_t          i;
 	int             h;
-	int             height = SHORT(hu_font[0]->height)*SCREEN_MUL;
+	int             height = SHORT(hu_font[0]->height)*HUD_SCALE;
 
 	h = height;
 	for (i = 0;i < strlen(string);i++)
@@ -1278,18 +1278,18 @@ M_WriteText
 		if (c == '\n')
 		{
 			cx = x;
-			cy += 12*SCREEN_MUL;
+			cy += 12*HUD_SCALE;
 			continue;
 		}
 
 		c = toupper(c) - HU_FONTSTART;
 		if (c < 0 || c>= HU_FONTSIZE)
 		{
-			cx += 4*SCREEN_MUL;
+			cx += 4*HUD_SCALE;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
+		w = SHORT (hu_font[c]->width)*HUD_SCALE;
 		if (cx+w > SCREENWIDTH)
 			break;
 		V_DrawPatch(cx, cy, 0, hu_font[c]);
@@ -1723,7 +1723,7 @@ void M_Drawer (void)
 
 			x = X_CENTRE(ORIGINAL_SCREEN_WIDTH/2) - M_StringWidth(string) / 2;
 			M_WriteText(x, y, string);
-			y += SHORT(hu_font[0]->height)*SCREEN_MUL;
+			y += SHORT(hu_font[0]->height)*HUD_SCALE;
 
 			if (messageString[start + length] == '\0')
 				break;
@@ -1753,7 +1753,7 @@ void M_Drawer (void)
 
 
 	/* DRAW SKULL */
-	V_DrawPatch(x + SKULLXOFF,currentMenu->y - 5*SCREEN_MUL + itemOn*LINEHEIGHT, 0,
+	V_DrawPatch(x + SKULLXOFF,currentMenu->y - 5*HUD_SCALE + itemOn*LINEHEIGHT, 0,
 					  (patch_t*)W_CacheLumpName(skullName[whichSkull],PU_CACHE));
 
 }
@@ -1817,7 +1817,7 @@ void M_Init (void)
 		/*  kept this hack for educational purposes. */
 		MainMenu[readthis] = MainMenu[quitdoom];
 		MainDef.numitems--;
-		MainDef.y += 8*SCREEN_MUL;
+		MainDef.y += 8*HUD_SCALE;
 		NewDef.prevMenu = &MainDef;
 		ReadDef1.routine = M_DrawReadThis1;
 		ReadDef1.x = X_CENTRE(330);

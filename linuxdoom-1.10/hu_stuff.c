@@ -45,11 +45,11 @@
 #define HU_TITLET       (mapnamest[gamemap-1])
 #define HU_TITLEHEIGHT  1
 #define HU_TITLEX       0
-#define HU_TITLEY       (SCREENHEIGHT - ST_HEIGHT - (1 + SHORT(hu_font[0]->height)) * SCREEN_MUL)
+#define HU_TITLEY       (SCREENHEIGHT - ST_HEIGHT - (1 + SHORT(hu_font[0]->height)) * HUD_SCALE)
 
 #define HU_INPUTTOGGLE  't'
 #define HU_INPUTX       HU_MSGX
-#define HU_INPUTY       (HU_MSGY + (HU_MSGHEIGHT*(SHORT(hu_font[0]->height) +1)) * SCREEN_MUL)
+#define HU_INPUTY       (HU_MSGY + (HU_MSGHEIGHT*(SHORT(hu_font[0]->height) +1)) * HUD_SCALE)
 #define HU_INPUTWIDTH   64
 #define HU_INPUTHEIGHT  1
 

@@ -80,8 +80,8 @@ STlib_drawNum
 	int         numdigits = n->width;
 	int         num = *n->num;
 
-	int         w = SHORT(n->p[0]->width) * SCREEN_MUL;
-	int         h = SHORT(n->p[0]->height) * SCREEN_MUL;
+	int         w = SHORT(n->p[0]->width) * HUD_SCALE;
+	int         h = SHORT(n->p[0]->height) * HUD_SCALE;
 	int         x = n->x;
 
 	int         neg;
@@ -208,10 +208,10 @@ STlib_updateMultIcon
 	{
 		if (mi->oldinum != -1)
 		{
-			x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset) * SCREEN_MUL;
-			y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset) * SCREEN_MUL;
-			w = SHORT(mi->p[mi->oldinum]->width) * SCREEN_MUL;
-			h = SHORT(mi->p[mi->oldinum]->height) * SCREEN_MUL;
+			x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset) * HUD_SCALE;
+			y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset) * HUD_SCALE;
+			w = SHORT(mi->p[mi->oldinum]->width) * HUD_SCALE;
+			h = SHORT(mi->p[mi->oldinum]->height) * HUD_SCALE;
 
 			if (y - ST_Y < 0)
 				I_Error("updateMultIcon: y - ST_Y < 0");
@@ -257,10 +257,10 @@ STlib_updateBinIcon
 	if (*bi->on
 		&& (bi->oldval != *bi->val || refresh))
 	{
-		x = bi->x - SHORT(bi->p->leftoffset) * SCREEN_MUL;
-		y = bi->y - SHORT(bi->p->topoffset) * SCREEN_MUL;
-		w = SHORT(bi->p->width) * SCREEN_MUL;
-		h = SHORT(bi->p->height) * SCREEN_MUL;
+		x = bi->x - SHORT(bi->p->leftoffset) * HUD_SCALE;
+		y = bi->y - SHORT(bi->p->topoffset) * HUD_SCALE;
+		w = SHORT(bi->p->width) * HUD_SCALE;
+		h = SHORT(bi->p->height) * HUD_SCALE;
 
 		if (y - ST_Y < 0)
 			I_Error("updateBinIcon: y - ST_Y < 0");

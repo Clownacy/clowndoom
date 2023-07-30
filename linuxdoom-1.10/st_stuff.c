@@ -134,8 +134,8 @@
 #define ST_ARMSY                        Y_BOTTOM(172)
 #define ST_ARMSBGX                      X_CENTRE(104)
 #define ST_ARMSBGY                      Y_BOTTOM(168)
-#define ST_ARMSXSPACE           (12*SCREEN_MUL)
-#define ST_ARMSYSPACE           (10*SCREEN_MUL)
+#define ST_ARMSXSPACE           (12*HUD_SCALE)
+#define ST_ARMSYSPACE           (10*HUD_SCALE)
 
 /* Frags pos. */
 #define ST_FRAGSX                       X_CENTRE(138)

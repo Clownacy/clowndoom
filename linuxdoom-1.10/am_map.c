@@ -1233,8 +1233,8 @@ void AM_drawMarks(void)
 		{
 			/*      w = SHORT(marknums[i]->width); */
 			/*      h = SHORT(marknums[i]->height); */
-			w = 5*SCREEN_MUL; /* because something's wrong with the wad, i guess */
-			h = 6*SCREEN_MUL; /* because something's wrong with the wad, i guess */
+			w = 5*HUD_SCALE; /* because something's wrong with the wad, i guess */
+			h = 6*HUD_SCALE; /* because something's wrong with the wad, i guess */
 			fx = CXMTOF(markpoints[i].x);
 			fy = CYMTOF(markpoints[i].y);
 			if (fx >= f_x && fx <= f_w - w && fy >= f_y && fy <= f_h - h)

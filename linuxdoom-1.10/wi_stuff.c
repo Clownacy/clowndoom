@@ -68,7 +68,7 @@
 
 /* GLOBAL LOCATIONS */
 #define WI_TITLEY               Y_CENTRE(2)
-#define WI_SPACINGY             (33*SCREEN_MUL)
+#define WI_SPACINGY             (33*HUD_SCALE)
 
 /* SINGLE-PLAYER STUFF */
 #define SP_STATSX               X_CENTRE(50)
@@ -82,14 +82,14 @@
 #define NG_STATSY               Y_CENTRE(50)
 #define NG_STATSX               X_CENTRE(32 + SHORT(star->width)/2 + 32*!dofrags)
 
-#define NG_SPACINGX             (64*SCREEN_MUL)
+#define NG_SPACINGX             (64*HUD_SCALE)
 
 
 /* DEATHMATCH STUFF */
 #define DM_MATRIXX              X_CENTRE(42)
 #define DM_MATRIXY              Y_CENTRE(68)
 
-#define DM_SPACINGX             (40*SCREEN_MUL)
+#define DM_SPACINGX             (40*HUD_SCALE)
 
 #define DM_TOTALSX              X_CENTRE(269)
 
@@ -404,13 +404,13 @@ void WI_drawLF(void)
 	int y = WI_TITLEY;
 
 	/* draw <LevelName> */
-	V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->last]->width)*SCREEN_MUL)/2,
+	V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->last]->width)*HUD_SCALE)/2,
 				y, FB, lnames[wbs->last]);
 
 	/* draw "Finished!" */
-	y += (5*SHORT(lnames[wbs->last]->height)*SCREEN_MUL)/4;
+	y += (5*SHORT(lnames[wbs->last]->height)*HUD_SCALE)/4;
 
-	V_DrawPatch((SCREENWIDTH - SHORT(finished->width)*SCREEN_MUL)/2,
+	V_DrawPatch((SCREENWIDTH - SHORT(finished->width)*HUD_SCALE)/2,
 				y, FB, finished);
 }
 
@@ -422,13 +422,13 @@ void WI_drawEL(void)
 	int y = WI_TITLEY;
 
 	/* draw "Entering" */
-	V_DrawPatch((SCREENWIDTH - SHORT(entering->width)*SCREEN_MUL)/2,
+	V_DrawPatch((SCREENWIDTH - SHORT(entering->width)*HUD_SCALE)/2,
 				y, FB, entering);
 
 	/* draw level */
-	y += (5*SHORT(lnames[wbs->next]->height)*SCREEN_MUL)/4;
+	y += (5*SHORT(lnames[wbs->next]->height)*HUD_SCALE)/4;
 
-	V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->next]->width)*SCREEN_MUL)/2,
+	V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->next]->width)*HUD_SCALE)/2,
 				y, FB, lnames[wbs->next]);
 
 }
@@ -449,10 +449,10 @@ WI_drawOnLnode
 	i = 0;
 	do
 	{
-		left = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset)*SCREEN_MUL;
-		top = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset)*SCREEN_MUL;
-		right = left + SHORT(c[i]->width)*SCREEN_MUL;
-		bottom = top + SHORT(c[i]->height)*SCREEN_MUL;
+		left = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset)*HUD_SCALE;
+		top = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset)*HUD_SCALE;
+		right = left + SHORT(c[i]->width)*HUD_SCALE;
+		bottom = top + SHORT(c[i]->height)*HUD_SCALE;
 
 		if (left >= 0
 			&& right < SCREENWIDTH
@@ -595,7 +595,7 @@ WI_drawNum
   int           digits )
 {
 
-	int         fontwidth = SHORT(num[0]->width)*SCREEN_MUL;
+	int         fontwidth = SHORT(num[0]->width)*HUD_SCALE;
 	int         neg;
 	int         temp;
 
@@ -638,7 +638,7 @@ WI_drawNum
 
 	/* draw a minus sign if necessary */
 	if (neg)
-		V_DrawPatch(x-=8*SCREEN_MUL, y, FB, wiminus);
+		V_DrawPatch(x-=8*HUD_SCALE, y, FB, wiminus);
 
 	return x;
 
@@ -681,7 +681,7 @@ WI_drawTime
 		do
 		{
 			n = (t / div) % 60;
-			x = WI_drawNum(x, y, n, 2) - SHORT(colon->width)*SCREEN_MUL;
+			x = WI_drawNum(x, y, n, 2) - SHORT(colon->width)*HUD_SCALE;
 			div *= 60;
 
 			/* draw */
@@ -693,7 +693,7 @@ WI_drawTime
 	else
 	{
 		/* "sucks" */
-		V_DrawPatch(x - SHORT(sucks->width)*SCREEN_MUL, y, FB, sucks);
+		V_DrawPatch(x - SHORT(sucks->width)*HUD_SCALE, y, FB, sucks);
 	}
 }
 
@@ -971,8 +971,8 @@ void WI_drawDeathmatchStats(void)
 	WI_drawLF();
 
 	/* draw stat titles (top line) */
-	V_DrawPatch(DM_TOTALSX-SHORT(total->width)*SCREEN_MUL/2,
-	                  DM_MATRIXY-WI_SPACINGY+10*SCREEN_MUL,
+	V_DrawPatch(DM_TOTALSX-SHORT(total->width)*HUD_SCALE/2,
+	                  DM_MATRIXY-WI_SPACINGY+10*HUD_SCALE,
 	                  FB,
 	                  total);
 
@@ -987,24 +987,24 @@ void WI_drawDeathmatchStats(void)
 	{
 		if (playeringame[i])
 		{
-			V_DrawPatch(x-SHORT(p[i]->width)*SCREEN_MUL/2,
+			V_DrawPatch(x-SHORT(p[i]->width)*HUD_SCALE/2,
 			                  DM_MATRIXY - WI_SPACINGY,
 			                  FB,
 			                  p[i]);
 
-			V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)*SCREEN_MUL/2,
+			V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)*HUD_SCALE/2,
 			                  y,
 			                  FB,
 			                  p[i]);
 
 			if (i == me)
 			{
-				V_DrawPatch(x-SHORT(p[i]->width)*SCREEN_MUL/2,
+				V_DrawPatch(x-SHORT(p[i]->width)*HUD_SCALE/2,
 				                  DM_MATRIXY - WI_SPACINGY,
 				                  FB,
 				                  bstar);
 
-				V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)*SCREEN_MUL/2,
+				V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)*HUD_SCALE/2,
 				                  y,
 				                  FB,
 				                  star);
@@ -1022,8 +1022,8 @@ void WI_drawDeathmatchStats(void)
 	}
 
 	/* draw stats */
-	y = DM_MATRIXY+10*SCREEN_MUL;
-	w = SHORT(num[0]->width)*SCREEN_MUL;
+	y = DM_MATRIXY+10*HUD_SCALE;
+	w = SHORT(num[0]->width)*HUD_SCALE;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -1236,7 +1236,7 @@ void WI_drawNetgameStats(void)
 	int         i;
 	int         x;
 	int         y;
-	int         pwidth = SHORT(percent->width)*SCREEN_MUL;
+	int         pwidth = SHORT(percent->width)*HUD_SCALE;
 
 	WI_slamBackground();
 
@@ -1246,21 +1246,21 @@ void WI_drawNetgameStats(void)
 	WI_drawLF();
 
 	/* draw stat titles (top line) */
-	V_DrawPatch(NG_STATSX+NG_SPACINGX-SHORT(kills->width)*SCREEN_MUL,
+	V_DrawPatch(NG_STATSX+NG_SPACINGX-SHORT(kills->width)*HUD_SCALE,
 				NG_STATSY, FB, kills);
 
-	V_DrawPatch(NG_STATSX+2*NG_SPACINGX-SHORT(items->width)*SCREEN_MUL,
+	V_DrawPatch(NG_STATSX+2*NG_SPACINGX-SHORT(items->width)*HUD_SCALE,
 				NG_STATSY, FB, items);
 
-	V_DrawPatch(NG_STATSX+3*NG_SPACINGX-SHORT(secret->width)*SCREEN_MUL,
+	V_DrawPatch(NG_STATSX+3*NG_SPACINGX-SHORT(secret->width)*HUD_SCALE,
 				NG_STATSY, FB, secret);
 
 	if (dofrags)
-		V_DrawPatch(NG_STATSX+4*NG_SPACINGX-SHORT(frags->width)*SCREEN_MUL,
+		V_DrawPatch(NG_STATSX+4*NG_SPACINGX-SHORT(frags->width)*HUD_SCALE,
 					NG_STATSY, FB, frags);
 
 	/* draw stats */
-	y = NG_STATSY + SHORT(kills->height)*SCREEN_MUL;
+	y = NG_STATSY + SHORT(kills->height)*HUD_SCALE;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -1268,18 +1268,18 @@ void WI_drawNetgameStats(void)
 			continue;
 
 		x = NG_STATSX;
-		V_DrawPatch(x-SHORT(p[i]->width)*SCREEN_MUL, y, FB, p[i]);
+		V_DrawPatch(x-SHORT(p[i]->width)*HUD_SCALE, y, FB, p[i]);
 
 		if (i == me)
-			V_DrawPatch(x-SHORT(p[i]->width)*SCREEN_MUL, y, FB, star);
+			V_DrawPatch(x-SHORT(p[i]->width)*HUD_SCALE, y, FB, star);
 
 		x += NG_SPACINGX;
-		WI_drawPercent(x-pwidth, y+10*SCREEN_MUL, cnt_kills[i]);   x += NG_SPACINGX;
-		WI_drawPercent(x-pwidth, y+10*SCREEN_MUL, cnt_items[i]);   x += NG_SPACINGX;
-		WI_drawPercent(x-pwidth, y+10*SCREEN_MUL, cnt_secret[i]);  x += NG_SPACINGX;
+		WI_drawPercent(x-pwidth, y+10*HUD_SCALE, cnt_kills[i]);   x += NG_SPACINGX;
+		WI_drawPercent(x-pwidth, y+10*HUD_SCALE, cnt_items[i]);   x += NG_SPACINGX;
+		WI_drawPercent(x-pwidth, y+10*HUD_SCALE, cnt_secret[i]);  x += NG_SPACINGX;
 
 		if (dofrags)
-			WI_drawNum(x, y+10*SCREEN_MUL, cnt_frags[i], -1);
+			WI_drawNum(x, y+10*HUD_SCALE, cnt_frags[i], -1);
 
 		y += WI_SPACINGY;
 	}
@@ -1411,7 +1411,7 @@ void WI_drawStats(void)
 	/* line height */
 	int lh;
 
-	lh = (3*SHORT(num[0]->height)*SCREEN_MUL)/2;
+	lh = (3*SHORT(num[0]->height)*HUD_SCALE)/2;
 
 	WI_slamBackground();
 
@@ -1430,11 +1430,11 @@ void WI_drawStats(void)
 	WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+2*lh, cnt_secret[0]);
 
 	V_DrawPatch(SP_TIMEX, SP_TIMEY, FB, time);
-	WI_drawTime(SCREENWIDTH - SP_TIMEX - ORIGINAL_SCREEN_WIDTH*SCREEN_MUL/2, SP_TIMEY, cnt_time);
+	WI_drawTime(SCREENWIDTH - SP_TIMEX - ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, cnt_time);
 
 	if (wbs->epsd < 3)
 	{
-		V_DrawPatch(SP_TIMEX + ORIGINAL_SCREEN_WIDTH*SCREEN_MUL/2, SP_TIMEY, FB, par);
+		V_DrawPatch(SP_TIMEX + ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, FB, par);
 		WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
 	}
 
@@ -1528,7 +1528,7 @@ void WI_loadData(void)
 
 	/* background */
 	bg = (patch_t*)W_CacheLumpName(name, PU_CACHE);
-	V_DrawPatch(SCREENWIDTH/2-160*SCREEN_MUL, SCREENHEIGHT/2-100*SCREEN_MUL, 1, bg);
+	V_DrawPatch(SCREENWIDTH/2-160*HUD_SCALE, SCREENHEIGHT/2-100*HUD_SCALE, 1, bg);
 
 
 	/* UNUSED unsigned char *pic = screens[1]; */

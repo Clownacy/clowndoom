@@ -299,18 +299,18 @@ void F_TextWrite (void)
 		if (c == '\n')
 		{
 			cx = X_CENTRE(10);
-			cy += 11*SCREEN_MUL;
+			cy += 11*HUD_SCALE;
 			continue;
 		}
 
 		c = toupper(c) - HU_FONTSTART;
 		if (c < 0 || c> HU_FONTSIZE)
 		{
-			cx += 4*SCREEN_MUL;
+			cx += 4*HUD_SCALE;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
+		w = SHORT (hu_font[c]->width)*HUD_SCALE;
 		if (cx+w > SCREENWIDTH)
 			break;
 		V_DrawPatch(cx, cy, 0, hu_font[c]);
@@ -525,11 +525,11 @@ void F_CastPrint (const char* text)
 		c = toupper(c) - HU_FONTSTART;
 		if (c < 0 || c> HU_FONTSIZE)
 		{
-			width += 4*SCREEN_MUL;
+			width += 4*HUD_SCALE;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
+		w = SHORT (hu_font[c]->width)*HUD_SCALE;
 		width += w;
 	}
 
@@ -544,11 +544,11 @@ void F_CastPrint (const char* text)
 		c = toupper(c) - HU_FONTSTART;
 		if (c < 0 || c> HU_FONTSIZE)
 		{
-			cx += 4*SCREEN_MUL;
+			cx += 4*HUD_SCALE;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
+		w = SHORT (hu_font[c]->width)*HUD_SCALE;
 		V_DrawPatch(cx, Y_CENTRE(180), 0, hu_font[c]);
 		cx+=w;
 	}

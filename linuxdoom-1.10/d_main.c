@@ -292,10 +292,10 @@ void D_Display (void)
 	if (paused)
 	{
 		if (automapactive)
-			y = 4*SCREEN_MUL;
+			y = 4*HUD_SCALE;
 		else
-			y = viewwindowy+4*SCREEN_MUL;
-		V_DrawPatch(viewwindowx+(scaledviewwidth-68*SCREEN_MUL)/2,
+			y = viewwindowy+4*HUD_SCALE;
+		V_DrawPatch(viewwindowx+(scaledviewwidth-68*HUD_SCALE)/2,
 						  y,0,(patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
 	}
 

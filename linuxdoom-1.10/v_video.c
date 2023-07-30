@@ -188,7 +188,7 @@ V_DrawPatchColumnInternal
 	while (column->topdelta != 0xff )
 	{
 		source = (unsigned char *)column + 3;
-		dest = desttop + column->topdelta*SCREENWIDTH*SCREEN_MUL;
+		dest = desttop + column->topdelta*SCREENWIDTH*HUD_SCALE;
 		count = column->length;
 
 		while (count--)
@@ -197,11 +197,11 @@ V_DrawPatchColumnInternal
 
 			const unsigned char pixel = *source++;
 
-			for (y = 0; y < SCREEN_MUL; ++y)
+			for (y = 0; y < HUD_SCALE; ++y)
 			{
 				int x;
 
-				for (x = 0; x < SCREEN_MUL; ++x)
+				for (x = 0; x < HUD_SCALE; ++x)
 					dest[x] = pixel;
 
 				dest += SCREENWIDTH;
@@ -226,12 +226,12 @@ V_DrawPatchInternal
 	int         w;
 
 #ifdef RANGECHECK
-	const int scaled_width = SHORT(patch->width) * SCREEN_MUL;
-	const int scaled_height = SHORT(patch->height) * SCREEN_MUL;
+	const int scaled_width = SHORT(patch->width) * HUD_SCALE;
+	const int scaled_height = SHORT(patch->height) * HUD_SCALE;
 #endif
 
-	y -= SHORT(patch->topoffset) * SCREEN_MUL;
-	x -= SHORT(patch->leftoffset) * SCREEN_MUL;
+	y -= SHORT(patch->topoffset) * HUD_SCALE;
+	x -= SHORT(patch->leftoffset) * HUD_SCALE;
 #ifdef RANGECHECK
 	if (x<0
 		||x+scaled_width >SCREENWIDTH
@@ -251,7 +251,7 @@ V_DrawPatchInternal
 
 	w = SHORT(patch->width);
 
-	for ( ; col<w ; col++, desttop += SCREEN_MUL)
+	for ( ; col<w ; col++, desttop += HUD_SCALE)
 		V_DrawPatchColumnInternal(desttop, patch, flip ? w - 1 - col : col);
 }
 
@@ -341,7 +341,7 @@ V_GetBlock
 }
 
 #define BG_TILE_SRC_SIZE 64
-#define BG_TILE_DST_SIZE (BG_TILE_SRC_SIZE*SCREEN_MUL)
+#define BG_TILE_DST_SIZE (BG_TILE_SRC_SIZE*HUD_SCALE)
 
 void
 V_FillScreenWithPattern
@@ -354,17 +354,17 @@ V_FillScreenWithPattern
 	const unsigned char* const src = (unsigned char*)W_CacheLumpName ( lump_name , PU_CACHE);
 	unsigned char *dest = screens[screen];
 
-	for (y=0 ; y<(height+(SCREEN_MUL-1))/SCREEN_MUL ; y++)
+	for (y=0 ; y<(height+(HUD_SCALE-1))/HUD_SCALE ; y++)
 	{
 		static unsigned char line_buffer[BG_TILE_DST_SIZE];
 
 		/* Upscale a row of pixels. */
 		for (x=0 ; x<BG_TILE_SRC_SIZE ; x++)
-			for (w=0 ; w<SCREEN_MUL; w++)
-				line_buffer[x*SCREEN_MUL+w] = src[((y%BG_TILE_SRC_SIZE)*BG_TILE_SRC_SIZE)+x];
+			for (w=0 ; w<HUD_SCALE; w++)
+				line_buffer[x*HUD_SCALE+w] = src[((y%BG_TILE_SRC_SIZE)*BG_TILE_SRC_SIZE)+x];
 
 		/* Repeatedly copy the upscaled row to the screen. */
-		for (w=0 ; w<D_MIN(SCREEN_MUL,height-y*SCREEN_MUL); w++)
+		for (w=0 ; w<D_MIN(HUD_SCALE,height-y*HUD_SCALE); w++)
 		{
 			for (x=0 ; x<SCREENWIDTH ; x+=BG_TILE_DST_SIZE)
 			{
