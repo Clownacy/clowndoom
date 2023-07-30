@@ -1232,7 +1232,7 @@ void G_DoSaveGame (void)
 		sprintf (name,SAVEGAMENAME"%d.dsg",savegameslot);
 	description = savedescription;
 
-	save_p = savebuffer = screens[1]+0x4000;
+	save_p = savebuffer = screens[1]+0x4000; /* TODO: Kill this magic number */
 
 	memcpy (save_p, description, SAVESTRINGSIZE);
 	save_p += SAVESTRINGSIZE;

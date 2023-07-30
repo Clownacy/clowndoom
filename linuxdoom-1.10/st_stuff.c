@@ -1463,5 +1463,9 @@ void ST_Init (void)
 {
 	veryfirsttime = 0;
 	ST_loadData();
-	screens[4] = (unsigned char *) Z_Malloc(ST_WIDTH*ST_HEIGHT, PU_STATIC, 0);
+	/* Technically, this should only be `ST_WIDTH * ST_HEIGHT`, but every screen needs to be `SCREENWIDTH` wide due to hardcoded assumptions. */
+	/* TODO: Fix this. */
+	/* Also, this used to be a `Z_Malloc` call, but at higher resolutions this exhausts the memory pool.
+	   This is inconsistent with the other screens anyway, which use `I_AllocLow`. */
+	screens[4] = (unsigned char *) I_AllocLow(SCREENWIDTH*ST_HEIGHT);
 }
