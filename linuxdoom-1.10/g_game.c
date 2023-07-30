@@ -1069,9 +1069,9 @@ void G_DoCompleted (void)
 	wminfo.maxsecret = totalsecret;
 	wminfo.maxfrags = 0;
 	if ( gamemode == commercial )
-		wminfo.partime = 35*cpars[gamemap-1];
+		wminfo.partime = TICRATE*cpars[gamemap-1];
 	else
-		wminfo.partime = 35*pars[gameepisode][gamemap];
+		wminfo.partime = TICRATE*pars[gameepisode][gamemap];
 	wminfo.pnum = consoleplayer;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
