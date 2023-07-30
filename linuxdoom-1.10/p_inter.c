@@ -527,7 +527,7 @@ P_TouchSpecialThing
 	  case SPR_ROCK:
 		if (!P_GiveAmmo (player, am_misl,1))
 			return;
-		player->message = GOTROCKET;
+		player->message = gameskill == sk_baby || gameskill == sk_nightmare ? GOT2ROCKETS : GOTROCKET;
 		break;
 
 	  case SPR_BROK:
@@ -551,7 +551,7 @@ P_TouchSpecialThing
 	  case SPR_SHEL:
 		if (!P_GiveAmmo (player, am_shell,1))
 			return;
-		player->message = GOTSHELLS;
+		player->message = gameskill == sk_baby || gameskill == sk_nightmare ? GOT8SHELLS : GOT4SHELLS;
 		break;
 
 	  case SPR_SBOX:

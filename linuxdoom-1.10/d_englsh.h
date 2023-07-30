@@ -94,10 +94,12 @@
 #define GOTCLIP "Picked up a clip."
 #define GOTCLIPBOX      "Picked up a box of bullets."
 #define GOTROCKET       "Picked up a rocket."
+#define GOT2ROCKETS     "Picked up two rockets."
 #define GOTROCKBOX      "Picked up a box of rockets."
 #define GOTCELL "Picked up an energy cell."
 #define GOTCELLBOX      "Picked up an energy cell pack."
-#define GOTSHELLS       "Picked up 4 shotgun shells."
+#define GOT4SHELLS      "Picked up 4 shotgun shells."
+#define GOT8SHELLS      "Picked up 8 shotgun shells."
 #define GOTSHELLBOX     "Picked up a box of shotgun shells."
 #define GOTBACKPACK     "Picked up a backpack full of ammo!"
 
