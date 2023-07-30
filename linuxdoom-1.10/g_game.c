@@ -463,7 +463,7 @@ void G_DoLoadLevel (void)
 	levelstarttic = gametic;        /* for time calculation */
 
 	if (wipegamestate == GS_LEVEL)
-		wipegamestate = (gamestate_t)-1;             /* force a wipe */
+		wipegamestate = GS_FORCEWIPE;             /* force a wipe */
 
 	gamestate = GS_LEVEL;
 
@@ -732,6 +732,9 @@ void G_Ticker (void)
 
 	  case GS_DEMOSCREEN:
 		D_PageTicker ();
+		break;
+
+	  case GS_FORCEWIPE:
 		break;
 	}
 }

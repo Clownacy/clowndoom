@@ -181,7 +181,7 @@ void D_Display (void)
 	static  bool32             menuactivestate = b_false;
 	static  bool32             inhelpscreensstate = b_false;
 	static  bool32             fullscreen = b_false;
-	static  gamestate_t         oldgamestate = (gamestate_t)-1;
+	static  gamestate_t         oldgamestate = GS_FORCEWIPE;
 	static  int                 borderdrawcount;
 	int                         nowtime;
 	int                         tics;
@@ -200,7 +200,7 @@ void D_Display (void)
 	if (setsizeneeded)
 	{
 		R_ExecuteSetViewSize ();
-		oldgamestate = (gamestate_t)-1;                      /* force background redraw */
+		oldgamestate = GS_FORCEWIPE;                      /* force background redraw */
 		borderdrawcount = 3;
 	}
 
@@ -242,6 +242,9 @@ void D_Display (void)
 
 	  case GS_DEMOSCREEN:
 		D_PageDrawer ();
+		break;
+
+	  case GS_FORCEWIPE:
 		break;
 	}
 
