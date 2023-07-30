@@ -69,17 +69,17 @@ M_DrawText
 		string++;
 		if (c < 0 || c> HU_FONTSIZE)
 		{
-			x += 4;
+			x += 4*SCREEN_MUL;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width);
+		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
 		if (x+w > SCREENWIDTH)
 			break;
 		if (direct)
-			V_DrawPatchDirect(x, y, 0, hu_font[c]);
+			V_DrawPatchDirectScaled(x, y, 0, hu_font[c]);
 		else
-			V_DrawPatch(x, y, 0, hu_font[c]);
+			V_DrawPatchScaled(x, y, 0, hu_font[c]);
 		x+=w;
 	}
 
