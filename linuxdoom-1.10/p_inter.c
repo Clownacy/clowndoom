@@ -655,13 +655,13 @@ P_KillMobj
 	if (source && source->player)
 	{
 		/* count for intermission */
-		if (target->flags & MF_COUNTKILL)
+		if (target->flags & MF_COUNTKILL || (gamemission == doom && target - mobjinfo == MT_SKULL))
 			source->player->killcount++;
 
 		if (target->player)
 			source->player->frags[target->player-players]++;
 	}
-	else if (!netgame && (target->flags & MF_COUNTKILL) )
+	else if (!netgame && (target->flags & MF_COUNTKILL || (gamemission == doom && target - mobjinfo == MT_SKULL)) )
 	{
 		/* count all monster deaths, */
 		/* even those caused by other monsters */
