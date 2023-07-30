@@ -6,7 +6,6 @@ set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, or SDL2")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 
 add_executable(clowndoom WIN32
-	"clowndoom.rc"
 	"linuxdoom-1.10/am_map.c"
 	"linuxdoom-1.10/am_map.h"
 	"linuxdoom-1.10/d_englsh.h"
@@ -134,6 +133,14 @@ add_executable(clowndoom WIN32
 	"linuxdoom-1.10/z_zone.c"
 	"linuxdoom-1.10/z_zone.h"
 )
+
+if(WIN32)
+	if (MSVC)
+		target_sources(clowndoom PRIVATE "clowndoom.manifest")
+	elseif (MINGW)
+		target_sources(clowndoom PRIVATE "clowndoom.rc")
+	endif()
+endif()
 
 set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
 
