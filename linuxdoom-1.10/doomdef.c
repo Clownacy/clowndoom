@@ -21,8 +21,8 @@
 
 #include "doomdef.h"
 
-// Location for any defines turned variables.
+/* Location for any defines turned variables. */
 
-// None.
+/* None. */
 
 

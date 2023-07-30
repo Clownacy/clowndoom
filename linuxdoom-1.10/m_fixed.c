@@ -101,7 +101,7 @@ static void RightShift(SplitInteger * const value)
 
 
 
-// Fixme. __USE_C_FIXED__ or something.
+/* Fixme. __USE_C_FIXED__ or something. */
 
 fixed_t
 FixedMul
@@ -128,7 +128,7 @@ FixedMul
 
 
 
-// FixedDiv, C version.
+/* FixedDiv, C version. */
 
 fixed_t
 FixedDiv

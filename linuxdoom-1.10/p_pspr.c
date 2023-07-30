@@ -26,10 +26,10 @@
 #include "p_local.h"
 #include "s_sound.h"
 
-// State.
+/* State. */
 #include "doomstat.h"
 
-// Data.
+/* Data. */
 #include "sounds.h"
 
 #include "p_pspr.h"
@@ -41,11 +41,11 @@
 #define WEAPONTOP		32*FRACUNIT
 
 
-// plasma cells for a bfg attack
+/* plasma cells for a bfg attack */
 #define BFGCELLS		40		
 
 
-// P_SetPsprite
+/* P_SetPsprite */
 void
 P_SetPsprite
 ( player_t*	player,
@@ -61,24 +61,24 @@ P_SetPsprite
     {
 	if (!stnum)
 	{
-	    // object removed itself
+	    /* object removed itself */
 	    psp->state = NULL;
 	    break;	
 	}
 	
 	state = &states[stnum];
 	psp->state = state;
-	psp->tics = state->tics;	// could be 0
+	psp->tics = state->tics;	/* could be 0 */
 
 	if (state->misc1)
 	{
-	    // coordinate set
+	    /* coordinate set */
 	    psp->sx = state->misc1 << FRACBITS;
 	    psp->sy = state->misc2 << FRACBITS;
 	}
 	
-	// Call action routine.
-	// Modified handling.
+	/* Call action routine. */
+	/* Modified handling. */
 	if (state->action.acp2)
 	{
 	    state->action.acp2(player, psp);
@@ -89,12 +89,12 @@ P_SetPsprite
 	stnum = psp->state->nextstate;
 	
     } while (!psp->tics);
-    // an initial state of 0 could cycle through
+    /* an initial state of 0 could cycle through */
 }
 
 
 
-// P_CalcSwing
+/* P_CalcSwing */
 fixed_t		swingx;
 fixed_t		swingy;
 
@@ -103,9 +103,9 @@ void P_CalcSwing (player_t*	player)
     fixed_t	swing;
     int		angle;
 	
-    // OPTIMIZE: tablify this.
-    // A LUT would allow for different modes,
-    //  and add flexibility.
+    /* OPTIMIZE: tablify this. */
+    /* A LUT would allow for different modes, */
+    /*  and add flexibility. */
 
     swing = player->bob;
 
@@ -118,10 +118,10 @@ void P_CalcSwing (player_t*	player)
 
 
 
-// P_BringUpWeapon
-// Starts bringing the pending weapon up
-// from the bottom of the screen.
-// Uses player
+/* P_BringUpWeapon */
+/* Starts bringing the pending weapon up */
+/* from the bottom of the screen. */
+/* Uses player */
 void P_BringUpWeapon (player_t* player)
 {
     statenum_t	newstate;
@@ -140,9 +140,9 @@ void P_BringUpWeapon (player_t* player)
     P_SetPsprite (player, ps_weapon, newstate);
 }
 
-// P_CheckAmmo
-// Returns true if there is enough ammo to shoot.
-// If not, selects the next weapon to use.
+/* P_CheckAmmo */
+/* Returns true if there is enough ammo to shoot. */
+/* If not, selects the next weapon to use. */
 boolean P_CheckAmmo (player_t* player)
 {
     ammotype_t		ammo;
@@ -150,21 +150,21 @@ boolean P_CheckAmmo (player_t* player)
 
     ammo = weaponinfo[player->readyweapon].ammo;
 
-    // Minimal amount for one shot varies.
+    /* Minimal amount for one shot varies. */
     if (player->readyweapon == wp_bfg)
 	count = BFGCELLS;
     else if (player->readyweapon == wp_supershotgun)
-	count = 2;	// Double barrel.
+	count = 2;	/* Double barrel. */
     else
-	count = 1;	// Regular.
+	count = 1;	/* Regular. */
 
-    // Some do not need ammunition anyway.
-    // Return if current ammunition sufficient.
+    /* Some do not need ammunition anyway. */
+    /* Return if current ammunition sufficient. */
     if (ammo == am_noammo || player->ammo[ammo] >= count)
 	return true;
 		
-    // Out of ammo, pick a weapon to change to.
-    // Preferences are set here.
+    /* Out of ammo, pick a weapon to change to. */
+    /* Preferences are set here. */
     do
     {
 	if (player->weaponowned[wp_plasma]
@@ -210,13 +210,13 @@ boolean P_CheckAmmo (player_t* player)
 	}
 	else
 	{
-	    // If everything fails.
+	    /* If everything fails. */
 	    player->pendingweapon = wp_fist;
 	}
 	
     } while (player->pendingweapon == wp_nochange);
 
-    // Now set appropriate weapon overlay.
+    /* Now set appropriate weapon overlay. */
     P_SetPsprite (player,
 		  ps_weapon,
 		  weaponinfo[player->readyweapon].downstate);
@@ -225,7 +225,7 @@ boolean P_CheckAmmo (player_t* player)
 }
 
 
-// P_FireWeapon.
+/* P_FireWeapon. */
 void P_FireWeapon (player_t* player)
 {
     statenum_t	newstate;
@@ -241,8 +241,8 @@ void P_FireWeapon (player_t* player)
 
 
 
-// P_DropWeapon
-// Player died, so put the weapon away.
+/* P_DropWeapon */
+/* Player died, so put the weapon away. */
 void P_DropWeapon (player_t* player)
 {
     P_SetPsprite (player,
@@ -252,11 +252,11 @@ void P_DropWeapon (player_t* player)
 
 
 
-// A_WeaponReady
-// The player can fire the weapon
-// or change to another weapon at this time.
-// Follows after getting weapon up,
-// or after previous attack/fire sequence.
+/* A_WeaponReady */
+/* The player can fire the weapon */
+/* or change to another weapon at this time. */
+/* Follows after getting weapon up, */
+/* or after previous attack/fire sequence. */
 void
 A_WeaponReady
 ( player_t*	player,
@@ -265,7 +265,7 @@ A_WeaponReady
     statenum_t	newstate;
     int		angle;
     
-    // get out of attack state
+    /* get out of attack state */
     if (player->mo->state == &states[S_PLAY_ATK1]
 	|| player->mo->state == &states[S_PLAY_ATK2] )
     {
@@ -278,19 +278,19 @@ A_WeaponReady
 	S_StartSound (player->mo, sfx_sawidl);
     }
     
-    // check for change
-    //  if player is dead, put the weapon away
+    /* check for change */
+    /*  if player is dead, put the weapon away */
     if (player->pendingweapon != wp_nochange || !player->health)
     {
-	// change weapon
-	//  (pending weapon should allready be validated)
+	/* change weapon */
+	/*  (pending weapon should allready be validated) */
 	newstate = weaponinfo[player->readyweapon].downstate;
 	P_SetPsprite (player, ps_weapon, newstate);
 	return;	
     }
     
-    // check for fire
-    //  the missile launcher and bfg do not auto fire
+    /* check for fire */
+    /*  the missile launcher and bfg do not auto fire */
     if (player->cmd.buttons & BT_ATTACK)
     {
 	if ( !player->attackdown
@@ -305,7 +305,7 @@ A_WeaponReady
     else
 	player->attackdown = false;
     
-    // bob the weapon based on movement speed
+    /* bob the weapon based on movement speed */
     angle = (128*leveltime)&FINEMASK;
     psp->sx = FRACUNIT + FixedMul (player->bob, finecosine[angle]);
     angle &= FINEANGLES/2-1;
@@ -314,17 +314,17 @@ A_WeaponReady
 
 
 
-// A_ReFire
-// The player can re-fire the weapon
-// without lowering it entirely.
+/* A_ReFire */
+/* The player can re-fire the weapon */
+/* without lowering it entirely. */
 void A_ReFire
 ( player_t*	player,
   pspdef_t*	psp )
 {
     (void)psp;
 
-    // check for fire
-    //  (if a weaponchange is pending, let it go through instead)
+    /* check for fire */
+    /*  (if a weaponchange is pending, let it go through instead) */
     if ( (player->cmd.buttons & BT_ATTACK) 
 	 && player->pendingweapon == wp_nochange
 	 && player->health)
@@ -356,9 +356,9 @@ A_CheckReload
 
 
 
-// A_Lower
-// Lowers current weapon,
-//  and changes weapon at bottom.
+/* A_Lower */
+/* Lowers current weapon, */
+/*  and changes weapon at bottom. */
 void
 A_Lower
 ( player_t*	player,
@@ -366,24 +366,24 @@ A_Lower
 {	
     psp->sy += LOWERSPEED;
 
-    // Is already down.
+    /* Is already down. */
     if (psp->sy < WEAPONBOTTOM )
 	return;
 
-    // Player is dead.
+    /* Player is dead. */
     if (player->playerstate == PST_DEAD)
     {
 	psp->sy = WEAPONBOTTOM;
 
-	// don't bring weapon back up
+	/* don't bring weapon back up */
 	return;		
     }
     
-    // The old weapon has been lowered off the screen,
-    // so change the weapon and start raising it
+    /* The old weapon has been lowered off the screen, */
+    /* so change the weapon and start raising it */
     if (!player->health)
     {
-	// Player is dead, so keep the weapon off screen.
+	/* Player is dead, so keep the weapon off screen. */
 	P_SetPsprite (player,  ps_weapon, S_NULL);
 	return;	
     }
@@ -394,7 +394,7 @@ A_Lower
 }
 
 
-// A_Raise
+/* A_Raise */
 void
 A_Raise
 ( player_t*	player,
@@ -409,8 +409,8 @@ A_Raise
     
     psp->sy = WEAPONTOP;
     
-    // The weapon has been raised all the way,
-    //  so change to the ready state.
+    /* The weapon has been raised all the way, */
+    /*  so change to the ready state. */
     newstate = weaponinfo[player->readyweapon].readystate;
 
     P_SetPsprite (player, ps_weapon, newstate);
@@ -418,7 +418,7 @@ A_Raise
 
 
 
-// A_GunFlash
+/* A_GunFlash */
 void
 A_GunFlash
 ( player_t*	player,
@@ -432,10 +432,10 @@ A_GunFlash
 
 
 
-// WEAPON ATTACKS
+/* WEAPON ATTACKS */
 
 
-// A_Punch
+/* A_Punch */
 void
 A_Punch
 ( player_t*	player,
@@ -457,7 +457,7 @@ A_Punch
     slope = P_AimLineAttack (player->mo, angle, MELEERANGE);
     P_LineAttack (player->mo, angle, MELEERANGE, slope, damage);
 
-    // turn to face target
+    /* turn to face target */
     if (linetarget)
     {
 	S_StartSound (player->mo, sfx_punch);
@@ -469,7 +469,7 @@ A_Punch
 }
 
 
-// A_Saw
+/* A_Saw */
 void
 A_Saw
 ( player_t*	player,
@@ -485,7 +485,7 @@ A_Saw
     angle = player->mo->angle;
     angle += (P_Random()-P_Random())<<18;
     
-    // use meleerange + 1 se the puff doesn't skip the flash
+    /* use meleerange + 1 se the puff doesn't skip the flash */
     slope = P_AimLineAttack (player->mo, angle, MELEERANGE+1);
     P_LineAttack (player->mo, angle, MELEERANGE+1, slope, damage);
 
@@ -496,7 +496,7 @@ A_Saw
     }
     S_StartSound (player->mo, sfx_sawhit);
 	
-    // turn to face target
+    /* turn to face target */
     angle = R_PointToAngle2 (player->mo->x, player->mo->y,
 			     linetarget->x, linetarget->y);
     if (angle - player->mo->angle > ANG180)
@@ -518,7 +518,7 @@ A_Saw
 
 
 
-// A_FireMissile
+/* A_FireMissile */
 void
 A_FireMissile
 ( player_t*	player,
@@ -531,7 +531,7 @@ A_FireMissile
 }
 
 
-// A_FireBFG
+/* A_FireBFG */
 void
 A_FireBFG
 ( player_t*	player,
@@ -545,7 +545,7 @@ A_FireBFG
 
 
 
-// A_FirePlasma
+/* A_FirePlasma */
 void
 A_FirePlasma
 ( player_t*	player,
@@ -564,9 +564,9 @@ A_FirePlasma
 
 
 
-// P_BulletSlope
-// Sets a slope so a near miss is at aproximately
-// the height of the intended target
+/* P_BulletSlope */
+/* Sets a slope so a near miss is at aproximately */
+/* the height of the intended target */
 fixed_t		bulletslope;
 
 
@@ -574,7 +574,7 @@ void P_BulletSlope (mobj_t*	mo)
 {
     angle_t	an;
     
-    // see which target is to be aimed at
+    /* see which target is to be aimed at */
     an = mo->angle;
     bulletslope = P_AimLineAttack (mo, an, 16*64*FRACUNIT);
 
@@ -591,7 +591,7 @@ void P_BulletSlope (mobj_t*	mo)
 }
 
 
-// P_GunShot
+/* P_GunShot */
 void
 P_GunShot
 ( mobj_t*	mo,
@@ -610,7 +610,7 @@ P_GunShot
 }
 
 
-// A_FirePistol
+/* A_FirePistol */
 void
 A_FirePistol
 ( player_t*	player,
@@ -632,7 +632,7 @@ A_FirePistol
 }
 
 
-// A_FireShotgun
+/* A_FireShotgun */
 void
 A_FireShotgun
 ( player_t*	player,
@@ -659,7 +659,7 @@ A_FireShotgun
 
 
 
-// A_FireShotgun2
+/* A_FireShotgun2 */
 void
 A_FireShotgun2
 ( player_t*	player,
@@ -695,7 +695,7 @@ A_FireShotgun2
 }
 
 
-// A_FireCGun
+/* A_FireCGun */
 void
 A_FireCGun
 ( player_t*	player,
@@ -722,7 +722,7 @@ A_FireCGun
 
 
 
-// ?
+/* ? */
 void A_Light0 (player_t *player, pspdef_t *psp)
 {
     (void)psp;
@@ -745,8 +745,8 @@ void A_Light2 (player_t *player, pspdef_t *psp)
 }
 
 
-// A_BFGSpray
-// Spawn a BFG explosion on every monster in view
+/* A_BFGSpray */
+/* Spawn a BFG explosion on every monster in view */
 void A_BFGSpray (mobj_t* mo) 
 {
     int			i;
@@ -754,13 +754,13 @@ void A_BFGSpray (mobj_t* mo)
     int			damage;
     angle_t		an;
 	
-    // offset angles from its attack angle
+    /* offset angles from its attack angle */
     for (i=0 ; i<40 ; i++)
     {
 	an = mo->angle - ANG90/2 + ANG90/40*i;
 
-	// mo->target is the originator (player)
-	//  of the missile
+	/* mo->target is the originator (player) */
+	/*  of the missile */
 	P_AimLineAttack (mo->target, an, 16*64*FRACUNIT);
 
 	if (!linetarget)
@@ -780,7 +780,7 @@ void A_BFGSpray (mobj_t* mo)
 }
 
 
-// A_BFGsound
+/* A_BFGsound */
 void
 A_BFGsound
 ( player_t*	player,
@@ -793,17 +793,17 @@ A_BFGsound
 
 
 
-// P_SetupPsprites
-// Called at start of level for each player.
+/* P_SetupPsprites */
+/* Called at start of level for each player. */
 void P_SetupPsprites (player_t* player) 
 {
     int	i;
 	
-    // remove all psprites
+    /* remove all psprites */
     for (i=0 ; i<NUMPSPRITES ; i++)
 	player->psprites[i].state = NULL;
 		
-    // spawn the gun
+    /* spawn the gun */
     player->pendingweapon = player->readyweapon;
     P_BringUpWeapon (player);
 }
@@ -811,8 +811,8 @@ void P_SetupPsprites (player_t* player)
 
 
 
-// P_MovePsprites
-// Called every tic by player thinking routine.
+/* P_MovePsprites */
+/* Called every tic by player thinking routine. */
 void P_MovePsprites (player_t* player) 
 {
     int		i;
@@ -822,12 +822,12 @@ void P_MovePsprites (player_t* player)
     psp = &player->psprites[0];
     for (i=0 ; i<NUMPSPRITES ; i++, psp++)
     {
-	// a null state means not active
+	/* a null state means not active */
 	if ( (state = psp->state) )	
 	{
-	    // drop tic count and possibly change state
+	    /* drop tic count and possibly change state */
 
-	    // a -1 tic count never changes
+	    /* a -1 tic count never changes */
 	    if (psp->tics != -1)	
 	    {
 		psp->tics--;

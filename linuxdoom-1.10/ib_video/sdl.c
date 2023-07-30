@@ -117,7 +117,7 @@ static int xlatekey(SDLKey keysym)
 }
 
 
-// IB_StartTic
+/* IB_StartTic */
 void IB_StartTic (void)
 {
     event_t event;
@@ -136,13 +136,13 @@ void IB_StartTic (void)
 		event.type = ev_keydown;
 		event.data1 = xlatekey(sdl_event.key.keysym.sym);
 		D_PostEvent(&event);
-		// fprintf(stderr, "k");
+		/* fprintf(stderr, "k"); */
 		break;
 	    case SDL_KEYUP:
 		event.type = ev_keyup;
 		event.data1 = xlatekey(sdl_event.key.keysym.sym);
 		D_PostEvent(&event);
-		// fprintf(stderr, "ku");
+		/* fprintf(stderr, "ku"); */
 		break;
 	    case SDL_MOUSEBUTTONDOWN:
 		switch (sdl_event.button.button)
@@ -161,7 +161,7 @@ void IB_StartTic (void)
 		event.data1 = button_state;
 		event.data2 = event.data3 = 0;
 		D_PostEvent(&event);
-		// fprintf(stderr, "b");
+		/* fprintf(stderr, "b"); */
 		break;
 	    case SDL_MOUSEBUTTONUP:
 		switch (sdl_event.button.button)
@@ -180,7 +180,7 @@ void IB_StartTic (void)
 		event.data1 = button_state;
 		event.data2 = event.data3 = 0;
 		D_PostEvent(&event);
-		// fprintf(stderr, "bu");
+		/* fprintf(stderr, "bu"); */
 		break;
 	    case SDL_MOUSEMOTION:
 		event.type = ev_mouse;
@@ -191,7 +191,7 @@ void IB_StartTic (void)
 		if (event.data2 || event.data3)
 		{
 		    D_PostEvent(&event);
-		    // fprintf(stderr, "m");
+		    /* fprintf(stderr, "m"); */
 		}
 		break;
 	}
@@ -208,7 +208,7 @@ void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 }
 
 
-// IB_FinishUpdate
+/* IB_FinishUpdate */
 void IB_FinishUpdate (void)
 {
     SDL_UnlockSurface(surface);

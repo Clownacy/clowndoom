@@ -46,28 +46,28 @@ static size_t output_width;
 static size_t output_height;
 
 
-// I_StartFrame
+/* I_StartFrame */
 void I_StartFrame (void)
 {
-    // er?
+    /* er? */
 }
 
 
-// I_StartTic
+/* I_StartTic */
 void I_StartTic (void)
 {
     IB_StartTic();
 }
 
 
-// I_UpdateNoBlit
+/* I_UpdateNoBlit */
 void I_UpdateNoBlit (void)
 {
-    // what is this?
+    /* what is this? */
 }
 
 
-// I_FinishUpdate
+/* I_FinishUpdate */
 void I_FinishUpdate (void)
 {
     static int lasttic;
@@ -79,7 +79,7 @@ void I_FinishUpdate (void)
     size_t pitch;
     const unsigned char *src_pointer;
 
-    // draws little dots on the bottom of the screen
+    /* draws little dots on the bottom of the screen */
     if (devparm)
     {
 	int i;
@@ -95,7 +95,7 @@ void I_FinishUpdate (void)
 	    screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0x0;
     }
 
-    // Step 1. Color the screen
+    /* Step 1. Color the screen */
     indexed_pixels = screens[0];
     colored_screen_pointer = colored_screen;
 
@@ -109,7 +109,7 @@ void I_FinishUpdate (void)
 	    *colored_screen_pointer++ = color[j];
     }
 
-    // Step 2. Scale the screen
+    /* Step 2. Scale the screen */
     IB_GetFramebuffer(&pixels, &pitch);
 
     src_pointer = colored_screen;
@@ -136,19 +136,19 @@ void I_FinishUpdate (void)
 	}
     }
 
-    // Step 3. Display the screen
+    /* Step 3. Display the screen */
     IB_FinishUpdate();
 }
 
 
-// I_ReadScreen
+/* I_ReadScreen */
 void I_ReadScreen (byte* scr)
 {
     memcpy(scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
 }
 
 
-// I_SetPalette
+/* I_SetPalette */
 void I_SetPalette (const byte* palette)
 {
     register int	i;
@@ -167,7 +167,7 @@ void I_InitGraphics(void)
     int multiply;
     size_t last, i;
 
-    // TODO - get rid of this junk
+    /* TODO - get rid of this junk */
     static int		firsttime=1;
 
     if (!firsttime)
@@ -196,11 +196,11 @@ void I_InitGraphics(void)
 
     I_GrabMouse(true);
 
-    // TODO - handle failed allocations
+    /* TODO - handle failed allocations */
     colors = malloc(256 * bytes_per_pixel);
     colored_screen = malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 
-    // Create LUTs for the upscaler
+    /* Create LUTs for the upscaler */
     upscale_x_deltas = malloc(output_width);
     upscale_y_deltas = malloc(output_height);
 
@@ -213,11 +213,11 @@ void I_InitGraphics(void)
 	last = current;
     }
 
-    upscale_y_deltas[0] = 1;	// Force a redraw on the first line
+    upscale_y_deltas[0] = 1;	/* Force a redraw on the first line */
 
     for (last = 0, i = 0; i < output_width; ++i)
     {
-	const size_t current = (i + 1) * SCREENWIDTH / output_width;	// The +1 here is deliberate, to avoid distortion at 320x240
+	const size_t current = (i + 1) * SCREENWIDTH / output_width;	/* The +1 here is deliberate, to avoid distortion at 320x240 */
 
 	upscale_x_deltas[i] = last != current;
 

@@ -33,11 +33,11 @@
 
 #include "doomstat.h"
 
-// Data.
+/* Data. */
 #include "dstrings.h"
 #include "sounds.h"
 
-// Locally used constants, shortcuts.
+/* Locally used constants, shortcuts. */
 #define HU_TITLE	(mapnames[(gameepisode-1)*9+gamemap-1])
 #define HU_TITLE2	(mapnames2[gamemap-1])
 #define HU_TITLEP	(mapnamesp[gamemap-1])
@@ -77,7 +77,7 @@ const char* const	player_names[] =
 };
 
 
-char			chat_char; // remove later.
+char			chat_char; /* remove later. */
 static player_t*	plr;
 patch_t*		hu_font[HU_FONTSIZE];
 static hu_textline_t	w_title;
@@ -98,10 +98,10 @@ extern int		showMessages;
 
 static boolean		headsupactive = false;
 
-// Builtin map names.
-// The actual names can be found in DStrings.h.
+/* Builtin map names. */
+/* The actual names can be found in DStrings.h. */
 
-const char* const	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
+const char* const	mapnames[] =	/* DOOM shareware/registered/retail (Ultimate) names. */
 {
 
     HUSTR_E1M1,
@@ -155,7 +155,7 @@ const char* const	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) na
     "NEWLEVEL"
 };
 
-const char* const	mapnames2[] =	// DOOM 2 map names.
+const char* const	mapnames2[] =	/* DOOM 2 map names. */
 {
     HUSTR_1,
     HUSTR_2,
@@ -194,7 +194,7 @@ const char* const	mapnames2[] =	// DOOM 2 map names.
 };
 
 
-const char* const	mapnamesp[] =	// Plutonia WAD map names.
+const char* const	mapnamesp[] =	/* Plutonia WAD map names. */
 {
     PHUSTR_1,
     PHUSTR_2,
@@ -233,7 +233,7 @@ const char* const	mapnamesp[] =	// Plutonia WAD map names.
 };
 
 
-const char* const mapnamest[] =	// TNT WAD map names.
+const char* const mapnamest[] =	/* TNT WAD map names. */
 {
     THUSTR_1,
     THUSTR_2,
@@ -282,34 +282,34 @@ const char french_shiftxform[] =
     21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
     31,
     ' ', '!', '"', '#', '$', '%', '&',
-    '"', // shift-'
+    '"', /* shift-' */
     '(', ')', '*', '+',
-    '?', // shift-,
-    '_', // shift--
-    '>', // shift-.
-    '?', // shift-/
-    '0', // shift-0
-    '1', // shift-1
-    '2', // shift-2
-    '3', // shift-3
-    '4', // shift-4
-    '5', // shift-5
-    '6', // shift-6
-    '7', // shift-7
-    '8', // shift-8
-    '9', // shift-9
+    '?', /* shift-, */
+    '_', /* shift-- */
+    '>', /* shift-. */
+    '?', /* shift-/ */
+    '0', /* shift-0 */
+    '1', /* shift-1 */
+    '2', /* shift-2 */
+    '3', /* shift-3 */
+    '4', /* shift-4 */
+    '5', /* shift-5 */
+    '6', /* shift-6 */
+    '7', /* shift-7 */
+    '8', /* shift-8 */
+    '9', /* shift-9 */
     '/',
-    '.', // shift-;
+    '.', /* shift-; */
     '<',
-    '+', // shift-=
+    '+', /* shift-= */
     '>', '?', '@',
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    '[', // shift-[
-    '!', // shift-backslash - OH MY GOD DOES WATCOM SUCK
-    ']', // shift-]
+    '[', /* shift-[ */
+    '!', /* shift-backslash - OH MY GOD DOES WATCOM SUCK */
+    ']', /* shift-] */
     '"', '_',
-    '\'', // shift-`
+    '\'', /* shift-` */
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     '{', '|', '}', '~', 127
@@ -325,34 +325,34 @@ const char english_shiftxform[] =
     21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
     31,
     ' ', '!', '"', '#', '$', '%', '&',
-    '"', // shift-'
+    '"', /* shift-' */
     '(', ')', '*', '+',
-    '<', // shift-,
-    '_', // shift--
-    '>', // shift-.
-    '?', // shift-/
-    ')', // shift-0
-    '!', // shift-1
-    '@', // shift-2
-    '#', // shift-3
-    '$', // shift-4
-    '%', // shift-5
-    '^', // shift-6
-    '&', // shift-7
-    '*', // shift-8
-    '(', // shift-9
+    '<', /* shift-, */
+    '_', /* shift-- */
+    '>', /* shift-. */
+    '?', /* shift-/ */
+    ')', /* shift-0 */
+    '!', /* shift-1 */
+    '@', /* shift-2 */
+    '#', /* shift-3 */
+    '$', /* shift-4 */
+    '%', /* shift-5 */
+    '^', /* shift-6 */
+    '&', /* shift-7 */
+    '*', /* shift-8 */
+    '(', /* shift-9 */
     ':',
-    ':', // shift-;
+    ':', /* shift-; */
     '<',
-    '+', // shift-=
+    '+', /* shift-= */
     '>', '?', '@',
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    '[', // shift-[
-    '!', // shift-backslash - OH MY GOD DOES WATCOM SUCK
-    ']', // shift-]
+    '[', /* shift-[ */
+    '!', /* shift-backslash - OH MY GOD DOES WATCOM SUCK */
+    ']', /* shift-] */
     '"', '_',
-    '\'', // shift-`
+    '\'', /* shift-` */
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
     'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     '{', '|', '}', '~', 127
@@ -389,7 +389,7 @@ void HU_Init(void)
     else
 	shiftxform = english_shiftxform;
 
-    // load the heads-up font
+    /* load the heads-up font */
     for (i=0;i<HU_FONTSIZE;i++)
     {
 	sprintf(buffer, "STCFN%.3d", HU_FONTSTART + i);
@@ -418,13 +418,13 @@ void HU_Start(void)
     message_nottobefuckedwith = false;
     chat_on = false;
 
-    // create the message widget
+    /* create the message widget */
     HUlib_initSText(&w_message,
 		    HU_MSGX, HU_MSGY, HU_MSGHEIGHT,
 		    hu_font,
 		    HU_FONTSTART, &message_on);
 
-    // create the map title widget
+    /* create the map title widget */
     HUlib_initTextLine(&w_title,
 		       HU_TITLEX, HU_TITLEY,
 		       hu_font,
@@ -456,13 +456,13 @@ void HU_Start(void)
     while (*s)
 	HUlib_addCharToTextLine(&w_title, *(s++));
 
-    // create the chat widget
+    /* create the chat widget */
     HUlib_initIText(&w_chat,
 		    HU_INPUTX, HU_INPUTY,
 		    hu_font,
 		    HU_FONTSTART, &chat_on);
 
-    // create the inputbuffer widgets
+    /* create the inputbuffer widgets */
     for (i=0 ; i<MAXPLAYERS ; i++)
 	HUlib_initIText(&w_inputbuffer[i], 0, 0, 0, 0, &always_off);
 
@@ -495,7 +495,7 @@ void HU_Ticker(void)
     int i, rc;
     char c;
 
-    // tick down message counter if message is up
+    /* tick down message counter if message is up */
     if (message_counter && !--message_counter)
     {
 	message_on = false;
@@ -505,7 +505,7 @@ void HU_Ticker(void)
     if (showMessages || message_dontfuckwithme)
     {
 
-	// display message if necessary
+	/* display message if necessary */
 	if ((plr->message && !message_nottobefuckedwith)
 	    || (plr->message && message_dontfuckwithme))
 	{
@@ -517,9 +517,9 @@ void HU_Ticker(void)
 	    message_dontfuckwithme = 0;
 	}
 
-    } // else message_on = false;
+    } /* else message_on = false; */
 
-    // check for incoming chat characters
+    /* check for incoming chat characters */
     if (netgame)
     {
 	for (i=0 ; i<MAXPLAYERS; i++)
@@ -689,24 +689,24 @@ boolean HU_Responder(const event_t *ev)
     else
     {
 	c = ev->data1;
-	// send a macro
+	/* send a macro */
 	if (altdown)
 	{
 	    c = c - '0';
 	    if (c > 9)
 		return false;
-	    // fprintf(stderr, "got here\n");
+	    /* fprintf(stderr, "got here\n"); */
 	    macromessage = chat_macros[c];
 	    
-	    // kill last message with a '\n'
-	    HU_queueChatChar(KEY_ENTER); // DEBUG!!!
+	    /* kill last message with a '\n' */
+	    HU_queueChatChar(KEY_ENTER); /* DEBUG!!! */
 	    
-	    // send the macro message
+	    /* send the macro message */
 	    while (*macromessage)
 		HU_queueChatChar(*macromessage++);
 	    HU_queueChatChar(KEY_ENTER);
 	    
-	    // leave chat mode and notify that it was sent
+	    /* leave chat mode and notify that it was sent */
 	    chat_on = false;
 	    strcpy(lastmessage, chat_macros[c]);
 	    plr->message = lastmessage;
@@ -721,11 +721,11 @@ boolean HU_Responder(const event_t *ev)
 	    eatkey = HUlib_keyInIText(&w_chat, c);
 	    if (eatkey)
 	    {
-		// static unsigned char buf[20]; // DEBUG
+		/*static unsigned char buf[20];*/ /* DEBUG */
 		HU_queueChatChar(c);
 		
-		// sprintf(buf, "KEY: %d => %d", ev->data1, c);
-		//      plr->message = buf;
+		/* sprintf(buf, "KEY: %d => %d", ev->data1, c); */
+		/*      plr->message = buf; */
 	    }
 	    if (c == KEY_ENTER)
 	    {

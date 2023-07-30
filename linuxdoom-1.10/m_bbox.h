@@ -25,16 +25,16 @@
 #include "m_fixed.h"
 
 
-// Bounding box coordinate storage.
+/* Bounding box coordinate storage. */
 enum
 {
     BOXTOP,
     BOXBOTTOM,
     BOXLEFT,
     BOXRIGHT
-};	// bbox coordinates
+};	/* bbox coordinates */
 
-// Bounding box functions.
+/* Bounding box functions. */
 void M_ClearBox (fixed_t*	box);
 
 void

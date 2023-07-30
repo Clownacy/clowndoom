@@ -22,13 +22,13 @@
 #define __P_SETUP__
 
 
-// NOT called by W_Ticker. Fixme.
+/* NOT called by W_Ticker. Fixme. */
 void
 P_SetupLevel
 ( int		episode,
   int		map);
 
-// Called by startup code.
+/* Called by startup code. */
 void P_Init (void);
 
 #endif

@@ -24,7 +24,7 @@
 #include "doomdef.h"
 
 
-// Weapon info: sprite frames, ammunition use.
+/* Weapon info: sprite frames, ammunition use. */
 typedef struct
 {
     ammotype_t	ammo;

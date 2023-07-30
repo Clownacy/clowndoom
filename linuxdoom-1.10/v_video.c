@@ -32,14 +32,14 @@
 #include "v_video.h"
 
 
-// Each screen is [SCREENWIDTH*SCREENHEIGHT]; 
+/* Each screen is [SCREENWIDTH*SCREENHEIGHT]; */
 byte*				screens[5];	
  
 fixed_t				dirtybox[4];
 
 
 
-// Now where did these came from?
+/* Now where did these came from? */
 const byte gammatable[5][256] =
 {
     {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
@@ -128,7 +128,7 @@ const byte gammatable[5][256] =
 
 int	usegamma;
 			 
-// V_MarkRect 
+/* V_MarkRect */
 void
 V_MarkRect
 ( int		x,
@@ -141,7 +141,7 @@ V_MarkRect
 } 
  
 
-// V_CopyRect 
+/* V_CopyRect */
 void
 V_CopyRect
 ( int		srcx,
@@ -184,8 +184,8 @@ V_CopyRect
 } 
  
 
-// V_DrawPatch
-// Masks a column based masked pic to the screen. 
+/* V_DrawPatch */
+/* Masks a column based masked pic to the screen. */
 void
 V_DrawPatch
 ( int		x,
@@ -212,7 +212,7 @@ V_DrawPatch
 	|| (unsigned)scrn>4)
     {
       fprintf( stderr, "Patch at %d,%d exceeds LFB\n", x,y );
-      // No I_Error abort - what is up with TNT.WAD?
+      /* No I_Error abort - what is up with TNT.WAD? */
       fprintf( stderr, "V_DrawPatch: bad patch (ignored)\n");
       return;
     }
@@ -230,7 +230,7 @@ V_DrawPatch
     { 
 	column = (column_t *)((byte *)patch + LONG(patch->columnofs[col])); 
  
-	// step through the posts in a column 
+	/* step through the posts in a column */
 	while (column->topdelta != 0xff ) 
 	{ 
 	    source = (byte *)column + 3; 
@@ -248,9 +248,9 @@ V_DrawPatch
     }			 
 } 
  
-// V_DrawPatchFlipped 
-// Masks a column based masked pic to the screen.
-// Flips horizontally, e.g. to mirror face.
+/* V_DrawPatchFlipped */
+/* Masks a column based masked pic to the screen. */
+/* Flips horizontally, e.g. to mirror face. */
 void
 V_DrawPatchFlipped
 ( int		x,
@@ -293,7 +293,7 @@ V_DrawPatchFlipped
     { 
 	column = (column_t *)((byte *)patch + LONG(patch->columnofs[w-1-col])); 
  
-	// step through the posts in a column 
+	/* step through the posts in a column */
 	while (column->topdelta != 0xff ) 
 	{ 
 	    source = (byte *)column + 3; 
@@ -313,8 +313,8 @@ V_DrawPatchFlipped
  
 
 
-// V_DrawPatchDirect
-// Draws directly to the screen on the pc. 
+/* V_DrawPatchDirect */
+/* Draws directly to the screen on the pc. */
 void
 V_DrawPatchDirect
 ( int		x,
@@ -324,7 +324,7 @@ V_DrawPatchDirect
 {
     V_DrawPatch (x,y,scrn, patch); 
 
-    /*
+#if 0
     int		count;
     int		col; 
     column_t*	column; 
@@ -347,7 +347,7 @@ V_DrawPatchDirect
     }
 #endif 
  
-    //	V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height)); 
+    /*	V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height)); */
     desttop = destscreen + y*SCREENWIDTH/4 + (x>>2); 
 	 
     w = SHORT(patch->width); 
@@ -356,7 +356,7 @@ V_DrawPatchDirect
 	outp (SC_INDEX+1,1<<(x&3)); 
 	column = (column_t *)((byte *)patch + LONG(patch->columnofs[col])); 
  
-	// step through the posts in a column 
+	/* step through the posts in a column */
 	 
 	while (column->topdelta != 0xff ) 
 	{ 
@@ -373,14 +373,15 @@ V_DrawPatchDirect
 				    + 4 ); 
 	} 
 	if ( ((++x)&3) == 0 ) 
-	    desttop++;	// go to next byte, not next plane 
-    }*/ 
+	    desttop++;	/* go to next byte, not next plane */
+    }
+#endif
 } 
  
 
 
-// V_DrawBlock
-// Draw a linear block of pixels into the view buffer.
+/* V_DrawBlock */
+/* Draw a linear block of pixels into the view buffer. */
 void
 V_DrawBlock
 ( int		x,
@@ -417,8 +418,8 @@ V_DrawBlock
  
 
 
-// V_GetBlock
-// Gets a linear block of pixels from the view buffer.
+/* V_GetBlock */
+/* Gets a linear block of pixels from the view buffer. */
 void
 V_GetBlock
 ( int		x,
@@ -454,15 +455,15 @@ V_GetBlock
 
 
 
-// V_Init
+/* V_Init */
 void V_Init (void) 
 { 
     int		i;
     byte*	base;
 		
-    // stick these in low dos memory on PCs
+    /* stick these in low dos memory on PCs */
 
-    base = I_AllocLow (SCREENWIDTH*SCREENHEIGHT*4*2); // *2 to fit the savedata in TNT's MAP09: Stronghold
+    base = I_AllocLow (SCREENWIDTH*SCREENHEIGHT*4*2); /* *2 to fit the savedata in TNT's MAP09: Stronghold */
 
     for (i=0 ; i<4 ; i++)
 	screens[i] = base + i*SCREENWIDTH*SCREENHEIGHT;

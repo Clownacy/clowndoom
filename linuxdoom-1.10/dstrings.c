@@ -23,7 +23,7 @@
 
 const char* endmsg[NUM_QUITMESSAGES]=
 {
-  // DOOM1
+  /* DOOM1 */
   QUITMSG,
   "please don't leave, there's more\ndemons to toast!",
   "let's beat it -- this is turning\ninto a bloodbath!",
@@ -33,7 +33,7 @@ const char* endmsg[NUM_QUITMESSAGES]=
   "ya know, next time you come in here\ni'm gonna toast ya.",
   "go ahead and leave. see if i care.",
 
-  // QuitDOOM II messages
+  /* QuitDOOM II messages */
   "you want to quit?\nthen, thou hast lost an eighth!",
   "don't go now, there's a \ndimensional shambler waiting\nat the dos prompt!",
   "get outta here and go back\nto your boring programs.",
@@ -42,7 +42,7 @@ const char* endmsg[NUM_QUITMESSAGES]=
   "just leave. when you come\nback, i'll be waiting with a bat.",
   "you're lucky i don't smack\nyou for thinking about leaving.",
 
-  // FinalDOOM?
+  /* FinalDOOM? */
   "fuck you, pussy!\nget the fuck out!",
   "you quit and i'll jizz\nin your cystholes!",
   "if you leave, i'll make\nthe lord drink my jizz.",
@@ -51,7 +51,7 @@ const char* endmsg[NUM_QUITMESSAGES]=
   "suck it down, asshole!\nyou're a fucking wimp!",
   "don't quit now! we're \nstill spending your money!",
 
-  // Internal debug. Different style, too.
+  /* Internal debug. Different style, too. */
   "THIS IS NO MESSAGE!\nPage intentionally left blank."
 };
 

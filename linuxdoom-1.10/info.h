@@ -22,7 +22,7 @@
 #ifndef __INFO__
 #define __INFO__
 
-// Needed for action function pointer handling.
+/* Needed for action function pointer handling. */
 #include "d_think.h"
 
 typedef enum
@@ -1147,7 +1147,7 @@ typedef struct
   spritenum_t	sprite;
   long			frame;
   long			tics;
-  // void		(*action) ();
+  /* void		(*action) (); */
   actionf_t			action;
   statenum_t			nextstate;
   long			misc1, misc2;

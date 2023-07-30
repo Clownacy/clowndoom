@@ -8,16 +8,16 @@
 #define MA_NO_GENERATION
 #include "miniaudio.h"
 
-// The function that actually produces the output audio
+/* The function that actually produces the output audio */
 static void (*audio_callback)(short* output_buffer, size_t frames_to_do, void *user_data);
 
-// miniaudio context
+/* miniaudio context */
 static ma_context       context;
 
-// miniaudio context
+/* miniaudio context */
 static ma_mutex         mutex;
 
-// The actual output device.
+/* The actual output device. */
 static ma_device        audio_device;
 
 static void Callback(ma_device* device, void* output_buffer, const void* input_buffer, ma_uint32 frames_to_do)
@@ -43,7 +43,7 @@ int IB_StartupSound(void (*initial_callback)(unsigned int output_sample_rate, vo
     config.playback.pDeviceID = NULL;
     config.playback.format = ma_format_s16;
     config.playback.channels = 2;
-    config.sampleRate = 0; // Let miniaudio decide what sample rate to use
+    config.sampleRate = 0; /* Let miniaudio decide what sample rate to use */
     config.dataCallback = Callback;
     config.pUserData = user_data;
     config.noPreZeroedOutputBuffer = ma_true;

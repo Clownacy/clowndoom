@@ -22,20 +22,20 @@
 
 #include "s_sound.h"
 
-// State.
+/* State. */
 #include "doomstat.h"
 #include "r_state.h"
 
-// Data.
+/* Data. */
 #include "sounds.h"
 
-// CEILINGS
+/* CEILINGS */
 
 
 ceiling_t*	activeceilings[MAXCEILINGS];
 
 
-// T_MoveCeiling
+/* T_MoveCeiling */
 
 void T_MoveCeiling (ceiling_t* ceiling)
 {
@@ -44,10 +44,10 @@ void T_MoveCeiling (ceiling_t* ceiling)
     switch(ceiling->direction)
     {
       case 0:
-	// IN STASIS
+	/* IN STASIS */
 	break;
       case 1:
-	// UP
+	/* UP */
 	res = T_MovePlane(ceiling->sector,
 			  ceiling->speed,
 			  ceiling->topheight,
@@ -62,7 +62,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	      default:
 		S_StartSound((mobj_t *)&ceiling->sector->soundorg,
 			     sfx_stnmov);
-		// ?
+		/* ? */
 		break;
 	    }
 	}
@@ -78,7 +78,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	      case silentCrushAndRaise:
 		S_StartSound((mobj_t *)&ceiling->sector->soundorg,
 			     sfx_pstop);
-		// Fallthrough
+		/* Fallthrough */
 	      case fastCrushAndRaise:
 	      case crushAndRaise:
 		ceiling->direction = -1;
@@ -92,7 +92,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	break;
 	
       case -1:
-	// DOWN
+	/* DOWN */
 	res = T_MovePlane(ceiling->sector,
 			  ceiling->speed,
 			  ceiling->bottomheight,
@@ -116,10 +116,10 @@ void T_MoveCeiling (ceiling_t* ceiling)
 	      case silentCrushAndRaise:
 		S_StartSound((mobj_t *)&ceiling->sector->soundorg,
 			     sfx_pstop);
-		// Fallthrough
+		/* Fallthrough */
 	      case crushAndRaise:
 		ceiling->speed = CEILSPEED;
-		// Fallthrough
+		/* Fallthrough */
 	      case fastCrushAndRaise:
 		ceiling->direction = 1;
 		break;
@@ -133,7 +133,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 		break;
 	    }
 	}
-	else // ( res != pastdest )
+	else /* ( res != pastdest ) */
 	{
 	    if (res == crushed)
 	    {
@@ -155,8 +155,8 @@ void T_MoveCeiling (ceiling_t* ceiling)
 }
 
 
-// EV_DoCeiling
-// Move a ceiling up/down and all around!
+/* EV_DoCeiling */
+/* Move a ceiling up/down and all around! */
 int
 EV_DoCeiling
 ( line_t*	line,
@@ -170,7 +170,7 @@ EV_DoCeiling
     secnum = -1;
     rtn = 0;
     
-    //	Reactivate in-stasis ceilings...for certain types.
+    /*	Reactivate in-stasis ceilings...for certain types. */
     switch(type)
     {
       case fastCrushAndRaise:
@@ -187,7 +187,7 @@ EV_DoCeiling
 	if (sec->specialdata)
 	    continue;
 	
-	// new door thinker
+	/* new door thinker */
 	rtn = 1;
 	ceiling = Z_Malloc (sizeof(*ceiling), PU_LEVSPEC, 0);
 	P_AddThinker (&ceiling->thinker);
@@ -210,7 +210,7 @@ EV_DoCeiling
 	  case crushAndRaise:
 	    ceiling->crush = true;
 	    ceiling->topheight = sec->ceilingheight;
-	    // Fallthrough
+	    /* Fallthrough */
 	  case lowerAndCrush:
 	  case lowerToFloor:
 	    ceiling->bottomheight = sec->floorheight;
@@ -235,7 +235,7 @@ EV_DoCeiling
 }
 
 
-// Add an active ceiling
+/* Add an active ceiling */
 void P_AddActiveCeiling(ceiling_t* c)
 {
     int		i;
@@ -252,7 +252,7 @@ void P_AddActiveCeiling(ceiling_t* c)
 
 
 
-// Remove a ceiling's thinker
+/* Remove a ceiling's thinker */
 void P_RemoveActiveCeiling(ceiling_t* c)
 {
     int		i;
@@ -271,7 +271,7 @@ void P_RemoveActiveCeiling(ceiling_t* c)
 
 
 
-// Restart a ceiling that's in-stasis
+/* Restart a ceiling that's in-stasis */
 void P_ActivateInStasisCeiling(line_t* line)
 {
     int		i;
@@ -291,8 +291,8 @@ void P_ActivateInStasisCeiling(line_t* line)
 
 
 
-// EV_CeilingCrushStop
-// Stop a ceiling from crushing!
+/* EV_CeilingCrushStop */
+/* Stop a ceiling from crushing! */
 int	EV_CeilingCrushStop(line_t	*line)
 {
     int		i;
@@ -307,7 +307,7 @@ int	EV_CeilingCrushStop(line_t	*line)
 	{
 	    activeceilings[i]->olddirection = activeceilings[i]->direction;
 	    activeceilings[i]->thinker.function.acv = (actionf_v)NULL;
-	    activeceilings[i]->direction = 0;		// in-stasis
+	    activeceilings[i]->direction = 0;		/* in-stasis */
 	    rtn = 1;
 	}
     }

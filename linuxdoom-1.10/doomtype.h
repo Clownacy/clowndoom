@@ -38,13 +38,13 @@ typedef unsigned char byte;
 #define MAXCHAR		SCHAR_MAX
 #define MAXSHORT	SHRT_MAX
 
-// Max pos 32-bit int.
+/* Max pos 32-bit int. */
 #define MAXINT		INT_MAX
 #define MAXLONG		LONG_MAX
 #define MINCHAR		SCHAR_MIN
 #define MINSHORT	SHRT_MIN
 
-// Max negative 32-bit integer.
+/* Max negative 32-bit integer. */
 #define MININT		INT_MIN
 #define MINLONG		LONG_MIN
 

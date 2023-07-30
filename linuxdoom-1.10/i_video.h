@@ -25,38 +25,38 @@
 #include "doomtype.h"
 
 
-// Called by D_DoomMain,
-// determines the hardware configuration
-// and sets up the video mode
+/* Called by D_DoomMain, */
+/* determines the hardware configuration */
+/* and sets up the video mode */
 void I_InitGraphics (void);
 
 
 void I_ShutdownGraphics(void);
 
-// Takes full 8 bit values.
+/* Takes full 8 bit values. */
 void I_SetPalette (const byte* palette);
 
 void I_UpdateNoBlit (void);
 void I_FinishUpdate (void);
 
-// Wait for vertical retrace or pause a bit.
+/* Wait for vertical retrace or pause a bit. */
 void I_WaitVBL(int count);
 
 void I_ReadScreen (byte* scr);
 
-// Called by D_DoomLoop,
-// called before processing any tics in a frame
-// (just after displaying a frame).
-// Time consuming syncronous operations
-// are performed here (joystick reading).
-// Can call D_PostEvent.
+/* Called by D_DoomLoop, */
+/* called before processing any tics in a frame */
+/* (just after displaying a frame). */
+/* Time consuming syncronous operations */
+/* are performed here (joystick reading). */
+/* Can call D_PostEvent. */
 void I_StartFrame (void);
 
 
-// Called by D_DoomLoop,
-// called before processing each tic in a frame.
-// Quick syncronous operations are performed here.
-// Can call D_PostEvent.
+/* Called by D_DoomLoop, */
+/* called before processing each tic in a frame. */
+/* Quick syncronous operations are performed here. */
+/* Can call D_PostEvent. */
 void I_StartTic (void);
 
 void I_GrabMouse(boolean grab);

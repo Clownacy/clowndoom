@@ -23,60 +23,60 @@
 
 #include "doomtype.h"
 
-// SoundFX struct.
+/* SoundFX struct. */
 typedef struct sfxinfo_struct	sfxinfo_t;
 
 struct sfxinfo_struct
 {
-    // up to 6-character name
+    /* up to 6-character name */
     const char*	name;
 
-    // Sfx singularity (only one at a time)
+    /* Sfx singularity (only one at a time) */
     boolean		singularity;
 
-    // Sfx priority
+    /* Sfx priority */
     int		priority;
 
-    // referenced sound if a link
+    /* referenced sound if a link */
     sfxinfo_t*	link;
 
-    // pitch if a link
+    /* pitch if a link */
     int		pitch;
 
-    // volume if a link
+    /* volume if a link */
     int		volume;
 
-    // sound data
+    /* sound data */
     void*	data;
 
-    // this is checked every second to see if sound
-    // can be thrown out (if 0, then decrement, if -1,
-    // then throw out, if > 0, then it is in use)
+    /* this is checked every second to see if sound */
+    /* can be thrown out (if 0, then decrement, if -1, */
+    /* then throw out, if > 0, then it is in use) */
     int		usefulness;
 
-    // lump number of sfx
+    /* lump number of sfx */
     int		lumpnum;		
 
-    // use your imagination
+    /* use your imagination */
     unsigned short sample_rate;
 };
 
 
 
 
-// MusicInfo struct.
+/* MusicInfo struct. */
 typedef struct
 {
-    // up to 6-character name
+    /* up to 6-character name */
     const char*	name;
 
-    // lump number of music
+    /* lump number of music */
     int		lumpnum;
     
-    // music data
+    /* music data */
     void*	data;
 
-    // music handle once registered
+    /* music handle once registered */
     int handle;
     
 } musicinfo_t;
@@ -84,13 +84,13 @@ typedef struct
 
 
 
-// the complete set of sound effects
+/* the complete set of sound effects */
 extern sfxinfo_t	S_sfx[];
 
-// the complete set of music
+/* the complete set of music */
 extern musicinfo_t	S_music[];
 
-// Identifiers for all music in game.
+/* Identifiers for all music in game. */
 
 typedef enum
 {
@@ -166,7 +166,7 @@ typedef enum
 } musicenum_t;
 
 
-// Identifiers for all sfx in game.
+/* Identifiers for all sfx in game. */
 
 typedef enum
 {

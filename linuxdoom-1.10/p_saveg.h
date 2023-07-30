@@ -22,8 +22,8 @@
 #define __P_SAVEG__
 
 
-// Persistent storage/archiving.
-// These are the load / save game routines.
+/* Persistent storage/archiving. */
+/* These are the load / save game routines. */
 void P_ArchivePlayers (void);
 void P_UnArchivePlayers (void);
 void P_ArchiveWorld (void);

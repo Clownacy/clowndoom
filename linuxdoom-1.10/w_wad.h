@@ -2,14 +2,15 @@
   
    Copyright (C) 1993-1996 by id Software, Inc.
   
-   This source is available for distribution and/or modification
-   only under the terms of the DOOM Source Code License as
-   published by id Software. All rights reserved.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
   
-   The source is distributed in the hope that it will be useful,
+   This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   FITNESS FOR A PARTICULAR PURPOSE. See the DOOM Source Code License
-   for more details.
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
   
    DESCRIPTION:
   	WAD I/O functions.
@@ -24,10 +25,10 @@
 #include <stddef.h>
 #include <stdio.h>
 
-// TYPES
+/* TYPES */
 typedef struct
 {
-    // Should be "IWAD" or "PWAD".
+    /* Should be "IWAD" or "PWAD". */
     char		identification[4];		
     size_t		numlumps;
     size_t		infotableofs;
@@ -35,7 +36,7 @@ typedef struct
 } wadinfo_t;
 
 
-// WADFILE I/O related stuff.
+/* WADFILE I/O related stuff. */
 typedef struct
 {
     char	name[8];

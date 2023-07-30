@@ -25,36 +25,36 @@
 
 #include "d_event.h"
 
-// MENUS
+/* MENUS */
 
-//  Sound FX volume has default, 0 - 15
-//  Music volume has default, 0 - 15
-// These are multiplied by 8.
-extern int sfxVolume;      // maximum volume for sound
-extern int musicVolume;    // maximum volume for music
+/*  Sound FX volume has default, 0 - 15 */
+/*  Music volume has default, 0 - 15 */
+/* These are multiplied by 8. */
+extern int sfxVolume;      /* maximum volume for sound */
+extern int musicVolume;    /* maximum volume for music */
 
-// Called by main loop,
-// saves config file and calls I_Quit when user exits.
-// Even when the menu is not displayed,
-// this can resize the view and change game parameters.
-// Does all the real work of the menu interaction.
+/* Called by main loop, */
+/* saves config file and calls I_Quit when user exits. */
+/* Even when the menu is not displayed, */
+/* this can resize the view and change game parameters. */
+/* Does all the real work of the menu interaction. */
 boolean M_Responder (event_t *ev);
 
 
-// Called by main loop,
-// only used for menu (skull cursor) animation.
+/* Called by main loop, */
+/* only used for menu (skull cursor) animation. */
 void M_Ticker (void);
 
-// Called by main loop,
-// draws the menus directly into the screen buffer.
+/* Called by main loop, */
+/* draws the menus directly into the screen buffer. */
 void M_Drawer (void);
 
-// Called by D_DoomMain,
-// loads the config file.
+/* Called by D_DoomMain, */
+/* loads the config file. */
 void M_Init (void);
 
-// Called by intro code to force menu up upon a keypress,
-// does nothing if menu is already up.
+/* Called by intro code to force menu up upon a keypress, */
+/* does nothing if menu is already up. */
 void M_StartControlPanel (void);
 
 

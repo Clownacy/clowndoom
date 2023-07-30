@@ -40,17 +40,17 @@
 
 #include "hu_stuff.h"
 
-// State.
+/* State. */
 #include "doomstat.h"
 
-// Data.
+/* Data. */
 #include "dstrings.h"
 
 #include "m_misc.h"
 
-// M_DrawText
-// Returns the final X coordinate
-// HU_Init must have been called to init the font
+/* M_DrawText */
+/* Returns the final X coordinate */
+/* HU_Init must have been called to init the font */
 extern patch_t*		hu_font[HU_FONTSIZE];
 
 int
@@ -89,7 +89,7 @@ M_DrawText
 
 
 
-// M_WriteFile
+/* M_WriteFile */
 boolean
 M_WriteFile
 ( char const*	name,
@@ -114,7 +114,7 @@ M_WriteFile
 }
 
 
-// M_ReadFile
+/* M_ReadFile */
 int
 M_ReadFile
 ( char const*	name,
@@ -149,7 +149,7 @@ M_ReadFile
 }
 
 
-// DEFAULTS
+/* DEFAULTS */
 int		usemouse;
 int		usejoystick;
 int		bmp_screenshots;
@@ -193,7 +193,7 @@ extern int	aspect_ratio_correction;
 
 extern int	showMessages;
 
-// machine-independent sound params
+/* machine-independent sound params */
 extern	int	numChannels;
 
 extern const char*	wildmidi_config_path;
@@ -208,8 +208,8 @@ typedef struct
     int*	location;
     size_t	defaultvalue;
     boolean	is_string;
-//    int		scantranslate;		// PC scan code hack
-//    int		untranslated;		// lousy hack
+    /*int		scantranslate;*/	/* PC scan code hack */
+    /*int		untranslated;*/		/* lousy hack */
 } default_t;
 
 default_t	defaults[] =
@@ -277,7 +277,7 @@ int	numdefaults;
 char*	defaultfile;
 
 
-// M_SaveDefaults
+/* M_SaveDefaults */
 void M_SaveDefaults (void)
 {
     int		i;
@@ -286,7 +286,7 @@ void M_SaveDefaults (void)
 	
     f = fopen (defaultfile, "w");
     if (!f)
-	return; // can't write the file, but don't complain
+	return; /* can't write the file, but don't complain */
 		
     for (i=0 ; i<numdefaults ; i++)
     {
@@ -304,7 +304,7 @@ void M_SaveDefaults (void)
 }
 
 
-// M_LoadDefaults
+/* M_LoadDefaults */
 extern byte	scantokey[128];
 
 void M_LoadDefaults (void)
@@ -318,7 +318,7 @@ void M_LoadDefaults (void)
     int		parm;
     boolean	isstring;
     
-    // set everything to base values
+    /* set everything to base values */
     numdefaults = sizeof(defaults)/sizeof(defaults[0]);
     for (i=0 ; i<numdefaults ; i++)
     {
@@ -328,7 +328,7 @@ void M_LoadDefaults (void)
 	    *defaults[i].location = defaults[i].defaultvalue;
     }
     
-    // check for a custom default file
+    /* check for a custom default file */
     i = M_CheckParm ("-config");
     if (i && i<myargc-1)
     {
@@ -338,7 +338,7 @@ void M_LoadDefaults (void)
     else
 	defaultfile = basedefault;
     
-    // read the file in, overriding any set defaults
+    /* read the file in, overriding any set defaults */
     f = fopen (defaultfile, "r");
     if (f)
     {
@@ -349,7 +349,7 @@ void M_LoadDefaults (void)
 	    {
 		if (strparm[0] == '"')
 		{
-		    // get a string default
+		    /* get a string default */
 		    isstring = true;
 		    len = strlen(strparm);
 		    newstring = (char *) malloc(len);
@@ -376,7 +376,7 @@ void M_LoadDefaults (void)
 }
 
 
-// SCREEN SHOTS
+/* SCREEN SHOTS */
 
 
 static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int total_bytes)
@@ -391,7 +391,7 @@ static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int to
 #define WriteU32LE(pointer, value) WriteLE(pointer, value, 4)
 
 
-// WritePCXfile
+/* WritePCXfile */
 void
 WritePCXfile
 ( char*		filename,
@@ -485,7 +485,7 @@ WritePCXfile
 }
 
 
-// WriteBMPfile
+/* WriteBMPfile */
 void
 WriteBMPfile
 ( char*		filename,
@@ -570,18 +570,18 @@ WriteBMPfile
 }
 
 
-// M_ScreenShot
+/* M_ScreenShot */
 void M_ScreenShot (void)
 {
     int		i;
     byte*	linear;
     char	lbmname[12];
     
-    // munge planar buffer to linear
+    /* munge planar buffer to linear */
     linear = screens[2];
     I_ReadScreen (linear);
     
-    // find a file name to save it to
+    /* find a file name to save it to */
     strcpy(lbmname,"DOOM00.pcx");
     if (bmp_screenshots)
         strcpy(&lbmname[7],"bmp");
@@ -591,12 +591,12 @@ void M_ScreenShot (void)
 	lbmname[4] = i/10 + '0';
 	lbmname[5] = i%10 + '0';
 	if (!M_FileExists(lbmname))
-	    break;	// file doesn't exist
+	    break;	/* file doesn't exist */
     }
     if (i==100)
 	I_Error ("M_ScreenShot: Couldn't create a screenshot");
     
-    // save the screenshot file
+    /* save the screenshot file */
     (bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
 		  W_CacheLumpName ("PLAYPAL",PU_CACHE));

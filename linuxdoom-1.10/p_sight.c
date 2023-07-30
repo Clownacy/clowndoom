@@ -22,23 +22,23 @@
 #include "i_system.h"
 #include "p_local.h"
 
-// State.
+/* State. */
 #include "r_state.h"
 
-// P_CheckSight
-fixed_t		sightzstart;		// eye z of looker
+/* P_CheckSight */
+fixed_t		sightzstart;		/* eye z of looker */
 fixed_t		topslope;
-fixed_t		bottomslope;		// slopes to top and bottom of target
+fixed_t		bottomslope;		/* slopes to top and bottom of target */
 
-divline_t	strace;			// from t1 to t2
+divline_t	strace;			/* from t1 to t2 */
 fixed_t		t2x;
 fixed_t		t2y;
 
 int		sightcounts[2];
 
 
-// P_DivlineSide
-// Returns side 0 (front), 1 (back), or 2 (on).
+/* P_DivlineSide */
+/* Returns side 0 (front), 1 (back), or 2 (on). */
 int
 P_DivlineSide
 ( fixed_t	x,
@@ -79,18 +79,18 @@ P_DivlineSide
     right = (dy>>FRACBITS) * (node->dx>>FRACBITS);
 	
     if (right < left)
-	return 0;	// front side
+	return 0;	/* front side */
     
     if (left == right)
 	return 2;
-    return 1;		// back side
+    return 1;		/* back side */
 }
 
 
-// P_InterceptVector2
-// Returns the fractional intercept point
-// along the first divline.
-// This is only called by the addthings and addlines traversers.
+/* P_InterceptVector2 */
+/* Returns the fractional intercept point */
+/* along the first divline. */
+/* This is only called by the addthings and addlines traversers. */
 fixed_t
 P_InterceptVector2
 ( divline_t*	v2,
@@ -104,7 +104,7 @@ P_InterceptVector2
 
     if (den == 0)
 	return 0;
-    //	I_Error ("P_InterceptVector: parallel");
+    /*	I_Error ("P_InterceptVector: parallel"); */
     
     num = FixedMul ( (v1->x - v2->x)>>8 ,v1->dy) + 
 	FixedMul ( (v2->y - v1->y)>>8 , v1->dx);
@@ -113,9 +113,9 @@ P_InterceptVector2
     return frac;
 }
 
-// P_CrossSubsector
-// Returns true
-//  if strace crosses the given subsector successfully.
+/* P_CrossSubsector */
+/* Returns true */
+/*  if strace crosses the given subsector successfully. */
 boolean P_CrossSubsector (int num)
 {
     seg_t*		seg;
@@ -143,7 +143,7 @@ boolean P_CrossSubsector (int num)
 
     sub = &subsectors[num];
     
-    // check lines
+    /* check lines */
     count = sub->numlines;
     seg = &segs[sub->firstline];
 
@@ -151,7 +151,7 @@ boolean P_CrossSubsector (int num)
     {
 	line = seg->linedef;
 
-	// allready checked other side?
+	/* allready checked other side? */
 	if (line->validcount == validcount)
 	    continue;
 	
@@ -162,7 +162,7 @@ boolean P_CrossSubsector (int num)
 	s1 = P_DivlineSide (v1->x,v1->y, &strace);
 	s2 = P_DivlineSide (v2->x, v2->y, &strace);
 
-	// line isn't crossed?
+	/* line isn't crossed? */
 	if (s1 == s2)
 	    continue;
 	
@@ -173,40 +173,40 @@ boolean P_CrossSubsector (int num)
 	s1 = P_DivlineSide (strace.x, strace.y, &divl);
 	s2 = P_DivlineSide (t2x, t2y, &divl);
 
-	// line isn't crossed?
+	/* line isn't crossed? */
 	if (s1 == s2)
 	    continue;	
 
-	// stop because it is not two sided anyway
-	// might do this after updating validcount?
+	/* stop because it is not two sided anyway */
+	/* might do this after updating validcount? */
 	if ( !(line->flags & ML_TWOSIDED) )
 	    return false;
 	
-	// crosses a two sided line
+	/* crosses a two sided line */
 	front = seg->frontsector;
 	back = seg->backsector;
 
-	// no wall to block sight with?
+	/* no wall to block sight with? */
 	if (front->floorheight == back->floorheight
 	    && front->ceilingheight == back->ceilingheight)
 	    continue;	
 
-	// possible occluder
-	// because of ceiling height differences
+	/* possible occluder */
+	/* because of ceiling height differences */
 	if (front->ceilingheight < back->ceilingheight)
 	    opentop = front->ceilingheight;
 	else
 	    opentop = back->ceilingheight;
 
-	// because of ceiling height differences
+	/* because of ceiling height differences */
 	if (front->floorheight > back->floorheight)
 	    openbottom = front->floorheight;
 	else
 	    openbottom = back->floorheight;
 		
-	// quick test for totally closed doors
+	/* quick test for totally closed doors */
 	if (openbottom >= opentop)	
-	    return false;		// stop
+	    return false;		/* stop */
 	
 	frac = P_InterceptVector2 (&strace, &divl);
 		
@@ -225,17 +225,17 @@ boolean P_CrossSubsector (int num)
 	}
 		
 	if (topslope <= bottomslope)
-	    return false;		// stop				
+	    return false;		/* stop */
     }
-    // passed the subsector ok
+    /* passed the subsector ok */
     return true;		
 }
 
 
 
-// P_CrossBSPNode
-// Returns true
-//  if strace crosses the given node successfully.
+/* P_CrossBSPNode */
+/* Returns true */
+/*  if strace crosses the given node successfully. */
 boolean P_CrossBSPNode (int bspnum)
 {
     node_t*	bsp;
@@ -251,31 +251,31 @@ boolean P_CrossBSPNode (int bspnum)
 		
     bsp = &nodes[bspnum];
     
-    // decide which side the start point is on
+    /* decide which side the start point is on */
     side = P_DivlineSide (strace.x, strace.y, (divline_t *)bsp);
     if (side == 2)
-	side = 0;	// an "on" should cross both sides
+	side = 0;	/* an "on" should cross both sides */
 
-    // cross the starting side
+    /* cross the starting side */
     if (!P_CrossBSPNode (bsp->children[side]) )
 	return false;
 	
-    // the partition plane is crossed here
+    /* the partition plane is crossed here */
     if (side == P_DivlineSide (t2x, t2y,(divline_t *)bsp))
     {
-	// the line doesn't touch the other side
+	/* the line doesn't touch the other side */
 	return true;
     }
     
-    // cross the ending side		
+    /* cross the ending side */
     return P_CrossBSPNode (bsp->children[side^1]);
 }
 
 
-// P_CheckSight
-// Returns true
-//  if a straight line between t1 and t2 is unobstructed.
-// Uses REJECT.
+/* P_CheckSight */
+/* Returns true */
+/*  if a straight line between t1 and t2 is unobstructed. */
+/* Uses REJECT. */
 boolean
 P_CheckSight
 ( mobj_t*	t1,
@@ -287,26 +287,26 @@ P_CheckSight
     int		bytenum;
     int		bitnum;
     
-    // First check for trivial rejection.
+    /* First check for trivial rejection. */
 
-    // Determine subsector entries in REJECT table.
+    /* Determine subsector entries in REJECT table. */
     s1 = (t1->subsector->sector - sectors);
     s2 = (t2->subsector->sector - sectors);
     pnum = s1*numsectors + s2;
     bytenum = pnum>>3;
     bitnum = 1 << (pnum&7);
 
-    // Check in REJECT table.
+    /* Check in REJECT table. */
     if (rejectmatrix[bytenum]&bitnum)
     {
 	sightcounts[0]++;
 
-	// can't possibly be connected
+	/* can't possibly be connected */
 	return false;	
     }
 
-    // An unobstructed LOS is possible.
-    // Now look from eyes of t1 to any part of t2.
+    /* An unobstructed LOS is possible. */
+    /* Now look from eyes of t1 to any part of t2. */
     sightcounts[1]++;
 
     validcount++;
@@ -322,7 +322,7 @@ P_CheckSight
     strace.dx = t2->x - t1->x;
     strace.dy = t2->y - t1->y;
 
-    // the head node is the last node output
+    /* the head node is the last node output */
     return P_CrossBSPNode (numnodes-1);	
 }
 

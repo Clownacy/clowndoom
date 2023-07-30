@@ -49,22 +49,22 @@
 #define FINEMASK		(FINEANGLES-1)
 
 
-// 0x100000000 to 0x2000
+/* 0x100000000 to 0x2000 */
 #define ANGLETOFINESHIFT	19		
 
-// Effective size is 10240.
+/* Effective size is 10240. */
 extern  fixed_t		finesine[5*FINEANGLES/4];
 
-// Re-use data, is just PI/2 pahse shift.
+/* Re-use data, is just PI/2 pahse shift. */
 extern  fixed_t*	finecosine;
 
 
-// Effective size is 4096.
+/* Effective size is 4096. */
 extern fixed_t		finetangent[FINEANGLES/2];
 
 typedef unsigned angle_t;
 
-// Binary Angle Measument, BAM.
+/* Binary Angle Measument, BAM. */
 #define ANG45			((angle_t)0x20000000)
 #define ANG90			((angle_t)0x40000000)
 #define ANG180		((angle_t)0x80000000)
@@ -76,14 +76,14 @@ typedef unsigned angle_t;
 #define DBITS			(FRACBITS-SLOPEBITS)
 
 
-// Effective size is 2049;
-// The +1 size is to handle the case when x==y
-//  without additional checking.
+/* Effective size is 2049; */
+/* The +1 size is to handle the case when x==y */
+/*  without additional checking. */
 extern angle_t		tantoangle[SLOPERANGE+1];
 
 
-// Utility function,
-//  called by R_PointToAngle.
+/* Utility function, */
+/*  called by R_PointToAngle. */
 int
 SlopeDiv
 ( unsigned	num,

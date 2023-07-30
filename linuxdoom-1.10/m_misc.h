@@ -23,7 +23,7 @@
 
 
 #include "doomtype.h"
-// MISC
+/* MISC */
 
 
 

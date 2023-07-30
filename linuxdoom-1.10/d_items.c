@@ -16,25 +16,25 @@
   
 ******************************************************************************/
 
-// We are referring to sprite numbers.
+/* We are referring to sprite numbers. */
 #include "info.h"
 
 #include "d_items.h"
 
 
-// PSPRITE ACTIONS for waepons.
-// This struct controls the weapon animations.
-// Each entry is:
-//   ammo/amunition type
-//  upstate
-//  downstate
-// readystate
-// atkstate, i.e. attack/fire/hit frame
-// flashstate, muzzle flash
+/* PSPRITE ACTIONS for waepons. */
+/* This struct controls the weapon animations. */
+/* Each entry is: */
+/*   ammo/amunition type */
+/*  upstate */
+/*  downstate */
+/* readystate */
+/* atkstate, i.e. attack/fire/hit frame */
+/* flashstate, muzzle flash */
 weaponinfo_t	weaponinfo[NUMWEAPONS] =
 {
     {
-	// fist
+	/* fist */
 	am_noammo,
 	S_PUNCHUP,
 	S_PUNCHDOWN,
@@ -43,7 +43,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_NULL
     },	
     {
-	// pistol
+	/* pistol */
 	am_clip,
 	S_PISTOLUP,
 	S_PISTOLDOWN,
@@ -52,7 +52,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_PISTOLFLASH
     },	
     {
-	// shotgun
+	/* shotgun */
 	am_shell,
 	S_SGUNUP,
 	S_SGUNDOWN,
@@ -61,7 +61,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_SGUNFLASH1
     },
     {
-	// chaingun
+	/* chaingun */
 	am_clip,
 	S_CHAINUP,
 	S_CHAINDOWN,
@@ -70,7 +70,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_CHAINFLASH1
     },
     {
-	// missile launcher
+	/* missile launcher */
 	am_misl,
 	S_MISSILEUP,
 	S_MISSILEDOWN,
@@ -79,7 +79,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_MISSILEFLASH1
     },
     {
-	// plasma rifle
+	/* plasma rifle */
 	am_cell,
 	S_PLASMAUP,
 	S_PLASMADOWN,
@@ -88,7 +88,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_PLASMAFLASH1
     },
     {
-	// bfg 9000
+	/* bfg 9000 */
 	am_cell,
 	S_BFGUP,
 	S_BFGDOWN,
@@ -97,7 +97,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_BFGFLASH1
     },
     {
-	// chainsaw
+	/* chainsaw */
 	am_noammo,
 	S_SAWUP,
 	S_SAWDOWN,
@@ -106,7 +106,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_NULL
     },
     {
-	// super shotgun
+	/* super shotgun */
 	am_shell,
 	S_DSGUNUP,
 	S_DSGUNDOWN,

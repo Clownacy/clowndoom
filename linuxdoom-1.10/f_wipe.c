@@ -27,9 +27,9 @@
 
 #include "f_wipe.h"
 
-//                       SCREEN WIPE PACKAGE
+/*                       SCREEN WIPE PACKAGE */
 
-// when zero, stop the wipe
+/* when zero, stop the wipe */
 static boolean	go = 0;
 
 static byte*	wipe_scr_start;
@@ -143,16 +143,16 @@ wipe_initMelt
     
     (void)ticks;
 
-    // copy start screen to main screen
+    /* copy start screen to main screen */
     memcpy(wipe_scr, wipe_scr_start, width*height);
     
-    // makes this wipe faster (in theory)
-    // to have stuff in column-major format
+    /* makes this wipe faster (in theory) */
+    /* to have stuff in column-major format */
     wipe_shittyColMajorXform((short*)wipe_scr_start, width/2, height);
     wipe_shittyColMajorXform((short*)wipe_scr_end, width/2, height);
     
-    // setup initial column positions
-    // (y<0 => not ready to scroll yet)
+    /* setup initial column positions */
+    /* (y<0 => not ready to scroll yet) */
     y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
     y[0] = -(M_Random()%16);
     for (i=1;i<width;i++)
@@ -261,7 +261,7 @@ wipe_EndScreen
 {
     wipe_scr_end = screens[3];
     I_ReadScreen(wipe_scr_end);
-    V_DrawBlock(x, y, 0, width, height, wipe_scr_start); // restore start scr.
+    V_DrawBlock(x, y, 0, width, height, wipe_scr_start); /* restore start scr. */
     return 0;
 }
 
@@ -286,21 +286,21 @@ wipe_ScreenWipe
     (void)x;
     (void)y;
 
-    // initial stuff
+    /* initial stuff */
     if (!go)
     {
 	go = 1;
-	// wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
+	/*wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0);*/ /* DEBUG */
 	wipe_scr = screens[0];
 	(*wipes[wipeno*3])(width, height, ticks);
     }
 
-    // do a piece of wipe-in
+    /* do a piece of wipe-in */
     V_MarkRect(0, 0, width, height);
     rc = (*wipes[wipeno*3+1])(width, height, ticks);
-    //  V_DrawBlock(x, y, 0, width, height, wipe_scr); // DEBUG
+    /*V_DrawBlock(x, y, 0, width, height, wipe_scr);*/ /* DEBUG */
 
-    // final stuff
+    /* final stuff */
     if (rc)
     {
 	go = 0;

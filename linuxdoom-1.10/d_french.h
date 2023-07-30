@@ -21,11 +21,11 @@
 #ifndef __D_FRENCH__
 #define __D_FRENCH__
 
-// D_Main.C
+/* D_Main.C */
 #define D_DEVSTR	"MODE DEVELOPPEMENT ON.\n"
 #define D_CDROM		"VERSION CD-ROM: DEFAULT.CFG DANS C:\\DOOMDATA\n"
 
-//	M_Menu.C
+/*	M_Menu.C */
 #define PRESSKEY 	"APPUYEZ SUR UNE TOUCHE."
 #define PRESSYN 	"APPUYEZ SUR Y OU N"
 #define QUITMSG		"VOUS VOULEZ VRAIMENT\nQUITTER CE SUPER JEU?"
@@ -60,7 +60,7 @@
 #define GAMMALVL4	"CORRECTION GAMMA NIVEAU 4"
 #define EMPTYSTRING	"EMPLACEMENT VIDE"
 
-//	P_inter.C
+/*	P_inter.C */
 #define GOTARMOR	"ARMURE RECUPEREE."
 #define GOTMEGA		"MEGA-ARMURE RECUPEREE!"
 #define GOTHTHBONUS	"BONUS DE SANTE RECUPERE."
@@ -103,7 +103,7 @@
 #define GOTSHOTGUN	"VOUS AVEZ UN FUSIL!"
 #define GOTSHOTGUN2	"VOUS AVEZ UN SUPER FUSIL!"
 
-// P_Doors.C
+/* P_Doors.C */
 #define PD_BLUEO	"IL VOUS FAUT UNE CLEF BLEUE"
 #define PD_REDO		"IL VOUS FAUT UNE CLEF ROUGE"
 #define PD_YELLOWO	"IL VOUS FAUT UNE CLEF JAUNE"
@@ -111,10 +111,10 @@
 #define PD_REDK		PD_REDO
 #define PD_YELLOWK	PD_YELLOWO
 
-//	G_game.C
+/*	G_game.C */
 #define GGSAVED		"JEU SAUVEGARDE."
 
-//	HU_stuff.C
+/*	HU_stuff.C */
 #define HUSTR_MSGU	"[MESSAGE NON ENVOYE]"
 
 #define HUSTR_E1M1	"E1M1: HANGAR"
@@ -203,20 +203,20 @@
 
 #define HUSTR_MESSAGESENT	"[MESSAGE ENVOYE]"
 
-// The following should NOT be changed unless it seems
-// just AWFULLY necessary
+/* The following should NOT be changed unless it seems */
+/* just AWFULLY necessary */
 
 #define HUSTR_PLRGREEN	"VERT: "
 #define HUSTR_PLRINDIGO	"INDIGO: "
 #define HUSTR_PLRBROWN	"BRUN: "
 #define HUSTR_PLRRED		"ROUGE: "
 
-#define HUSTR_KEYGREEN	'g'	// french key should be "V"
+#define HUSTR_KEYGREEN	'g'	/* french key should be "V" */
 #define HUSTR_KEYINDIGO	'i'	
 #define HUSTR_KEYBROWN	'b'	
 #define HUSTR_KEYRED		'r'
 
-//	AM_map.C
+/*	AM_map.C */
 
 #define AMSTR_FOLLOWON		"MODE POURSUITE ON"
 #define AMSTR_FOLLOWOFF		"MODE POURSUITE OFF"
@@ -227,7 +227,7 @@
 #define AMSTR_MARKEDSPOT	"REPERE MARQUE "
 #define AMSTR_MARKSCLEARED	"REPERES EFFACES "
 
-//	ST_stuff.C
+/*	ST_stuff.C */
 
 #define STSTR_MUS		"CHANGEMENT DE MUSIQUE "
 #define STSTR_NOMUS		"IMPOSSIBLE SELECTION"
@@ -246,7 +246,7 @@
 #define STSTR_CHOPPERS		"... DOESN'T SUCK - GM"
 #define STSTR_CLEV		"CHANGEMENT DE NIVEAU..."
 
-//	F_Finale.C
+/*	F_Finale.C */
 #define E1TEXT	"APRES AVOIR VAINCU LES GROS MECHANTS\n"\
 "ET NETTOYE LA BASE LUNAIRE, VOUS AVEZ\n"\
 "GAGNE, NON? PAS VRAI? OU EST DONC VOTRE\n"\
@@ -301,7 +301,7 @@
 
 
 
-// after level 6, put this:
+/* after level 6, put this: */
 
 #define C1TEXT	"VOUS ETES AU PLUS PROFOND DE L'ASTROPORT\n" \
 "INFESTE DE MONSTRES, MAIS QUELQUE CHOSE\n" \
@@ -316,7 +316,7 @@
 "L'INTERRUPTEUR DE CONTROLE QUI GARDE LA \n" \
 "POPULATION DE LA TERRE EN OTAGE."
 
-// After level 11, put this:
+/* After level 11, put this: */
 
 #define C2TEXT	"VOUS AVEZ GAGNE! VOTRE VICTOIRE A PERMIS\n" \
 "A L'HUMANITE D'EVACUER LA TERRE ET \n"\
@@ -336,7 +336,7 @@
 "VOUS VOUS RELEVEZ LENTEMENT ET PENIBLEMENT\n"\
 "ET VOUS REPARTEZ POUR LE FRONT."
 
-// After level 20, put this:
+/* After level 20, put this: */
 
 #define C3TEXT	"VOUS ETES AU COEUR DE LA CITE CORROMPUE,\n"\
 "ENTOURE PAR LES CADAVRES DE VOS ENNEMIS.\n"\
@@ -348,7 +348,7 @@
 "DE L'AUTRE COTE. VOUS ACCEPTEZ DE\n"\
 "TRAVERSER L'ENFER POUR LE FAIRE?"
 
-// After level 29, put this:
+/* After level 29, put this: */
 
 #define C4TEXT	"LE VISAGE HORRIBLE D'UN DEMON D'UNE\n"\
 "TAILLE INCROYABLE S'EFFONDRE DEVANT\n"\
@@ -366,7 +366,7 @@
 "VERS LA TERRE. SA RECONSTRUCTION SERA\n"\
 "BEAUCOUP PLUS DROLE QUE SA DESTRUCTION.\n"
 
-// Before level 31, put this:
+/* Before level 31, put this: */
 
 #define C5TEXT	"FELICITATIONS! VOUS AVEZ TROUVE LE\n"\
 "NIVEAU SECRET! IL SEMBLE AVOIR ETE\n"\
@@ -374,13 +374,13 @@
 "DEMANDEZ QUELS PEUVENT ETRE LES\n"\
 "HABITANTS DE CE COIN PERDU DE L'ENFER."
 
-// Before level 32, put this:
+/* Before level 32, put this: */
 
 #define C6TEXT	"FELICITATIONS! VOUS AVEZ DECOUVERT\n"\
 "LE NIVEAU SUPER SECRET! VOUS FERIEZ\n"\
 "MIEUX DE FONCER DANS CELUI-LA!\n"
 
-// Character cast strings F_FINALE.C
+/* Character cast strings F_FINALE.C */
 #define CC_ZOMBIE	"ZOMBIE"
 #define CC_SHOTGUN	"TYPE AU FUSIL"
 #define CC_HEAVY	"MEC SUPER-ARME"

@@ -33,7 +33,7 @@ extern int		rw_stopx;
 
 extern boolean		segtextured;
 
-// false if the back side is the same plane
+/* false if the back side is the same plane */
 extern boolean		markfloor;		
 extern boolean		markceiling;
 
@@ -50,7 +50,7 @@ extern lighttable_t**	dscalelight;
 typedef void (*drawfunc_t) (int start, int stop);
 
 
-// BSP?
+/* BSP? */
 void R_ClearClipSegs (void);
 void R_ClearDrawSegs (void);
 

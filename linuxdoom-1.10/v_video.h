@@ -27,16 +27,16 @@
 
 #include "doomdef.h"
 
-// Needed because we are refering to patches.
+/* Needed because we are refering to patches. */
 #include "r_data.h"
 
-// VIDEO
+/* VIDEO */
 
 #define CENTERY			(SCREENHEIGHT/2)
 
 
-// Screen 0 is the screen updated by I_Update screen.
-// Screen 1 is an extra buffer.
+/* Screen 0 is the screen updated by I_Update screen. */
+/* Screen 1 is an extra buffer. */
 
 
 
@@ -49,7 +49,7 @@ extern	int	usegamma;
 
 
 
-// Allocates buffer screens, call before R_Init.
+/* Allocates buffer screens, call before R_Init. */
 void V_Init (void);
 
 
@@ -79,7 +79,7 @@ V_DrawPatchDirect
   const patch_t*	patch );
 
 
-// Draw a linear block of pixels into the view buffer.
+/* Draw a linear block of pixels into the view buffer. */
 void
 V_DrawBlock
 ( int		x,
@@ -89,7 +89,7 @@ V_DrawBlock
   int		height,
   const byte*		src );
 
-// Reads a linear block of pixels into the view buffer.
+/* Reads a linear block of pixels into the view buffer. */
 void
 V_GetBlock
 ( int		x,

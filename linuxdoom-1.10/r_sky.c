@@ -21,27 +21,27 @@
   
 ******************************************************************************/
 
-// Needed for FRACUNIT.
+/* Needed for FRACUNIT. */
 #include "m_fixed.h"
 
-// Needed for Flat retrieval.
+/* Needed for Flat retrieval. */
 #include "r_data.h"
 
 
 #include "r_sky.h"
 
-// sky mapping
+/* sky mapping */
 int			skyflatnum;
 int			skytexture;
 int			skytexturemid;
 
 
 
-// R_InitSkyMap
-// Called whenever the view size changes.
+/* R_InitSkyMap */
+/* Called whenever the view size changes. */
 void R_InitSkyMap (void)
 {
-  // skyflatnum = R_FlatNumForName ( SKYFLATNAME );
+  /* skyflatnum = R_FlatNumForName ( SKYFLATNAME ); */
     skytexturemid = 100*FRACUNIT;
 }
 

@@ -27,8 +27,8 @@
 
 
 
-// Flats?
-// a pic is an unmasked block of pixels
+/* Flats? */
+/* a pic is an unmasked block of pixels */
 typedef struct
 {
     byte		width;

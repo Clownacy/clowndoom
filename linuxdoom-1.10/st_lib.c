@@ -37,8 +37,8 @@
 #include "r_local.h"
 
 
-// Hack display negative frags.
-//  Loads and store the stminus lump.
+/* Hack display negative frags. */
+/*  Loads and store the stminus lump. */
 patch_t*		sttminus;
 
 void STlib_init(void)
@@ -47,7 +47,7 @@ void STlib_init(void)
 }
 
 
-// ?
+/* ? */
 void
 STlib_initNum
 ( st_number_t*		n,
@@ -68,9 +68,9 @@ STlib_initNum
 }
 
 
-// A fairly efficient way to draw a number
-//  based on differences from the old number.
-// Note: worth the trouble?
+/* A fairly efficient way to draw a number */
+/*  based on differences from the old number. */
+/* Note: worth the trouble? */
 void
 STlib_drawNum
 ( st_number_t*	n,
@@ -102,7 +102,7 @@ STlib_drawNum
 	num = -num;
     }
 
-    // clear the area
+    /* clear the area */
     x = n->x - numdigits*w;
 
     if (n->y - ST_Y < 0)
@@ -110,17 +110,17 @@ STlib_drawNum
 
     V_CopyRect(x, n->y - ST_Y, BG, w*numdigits, h, x, n->y, FG);
 
-    // if non-number, do not draw it
+    /* if non-number, do not draw it */
     if (num == 1994)
 	return;
 
     x = n->x;
 
-    // in the special case of 0, you draw 0
+    /* in the special case of 0, you draw 0 */
     if (!num)
 	V_DrawPatch(x - w, n->y, FG, n->p[ 0 ]);
 
-    // draw the new number
+    /* draw the new number */
     while (num && numdigits--)
     {
 	x -= w;
@@ -128,7 +128,7 @@ STlib_drawNum
 	num /= 10;
     }
 
-    // draw a minus sign if necessary
+    /* draw a minus sign if necessary */
     if (neg)
 	V_DrawPatch(x - 8, n->y, FG, sttminus);
 }

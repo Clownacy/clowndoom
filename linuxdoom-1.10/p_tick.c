@@ -26,19 +26,19 @@
 
 int	leveltime;
 
-// THINKERS
-// All thinkers should be allocated by Z_Malloc
-// so they can be operated on uniformly.
-// The actual structures will vary in size,
-// but the first element must be thinker_t.
+/* THINKERS */
+/* All thinkers should be allocated by Z_Malloc */
+/* so they can be operated on uniformly. */
+/* The actual structures will vary in size, */
+/* but the first element must be thinker_t. */
 
 
 
-// Both the head and tail of the thinker list.
+/* Both the head and tail of the thinker list. */
 thinker_t	thinkercap;
 
 
-// P_InitThinkers
+/* P_InitThinkers */
 void P_InitThinkers (void)
 {
     thinkercap.prev = thinkercap.next  = &thinkercap;
@@ -47,8 +47,8 @@ void P_InitThinkers (void)
 
 
 
-// P_AddThinker
-// Adds a new thinker at the end of the list.
+/* P_AddThinker */
+/* Adds a new thinker at the end of the list. */
 void P_AddThinker (thinker_t* thinker)
 {
     thinkercap.prev->next = thinker;
@@ -59,19 +59,19 @@ void P_AddThinker (thinker_t* thinker)
 
 
 
-// P_RemoveThinker
-// Deallocation is lazy -- it will not actually be freed
-// until its thinking turn comes up.
+/* P_RemoveThinker */
+/* Deallocation is lazy -- it will not actually be freed */
+/* until its thinking turn comes up. */
 void P_RemoveThinker (thinker_t* thinker)
 {
-  // FIXME: NOP.
+  /* FIXME: NOP. */
   thinker->function.acv = (actionf_v)(-1);
 }
 
 
 
-// P_AllocateThinker
-// Allocates memory and adds a new thinker at the end of the list.
+/* P_AllocateThinker */
+/* Allocates memory and adds a new thinker at the end of the list. */
 void P_AllocateThinker (thinker_t*	thinker)
 {
     (void)thinker;
@@ -79,7 +79,7 @@ void P_AllocateThinker (thinker_t*	thinker)
 
 
 
-// P_RunThinkers
+/* P_RunThinkers */
 void P_RunThinkers (void)
 {
     thinker_t*	currentthinker;
@@ -89,7 +89,7 @@ void P_RunThinkers (void)
     {
 	if ( currentthinker->function.acv == (actionf_v)(-1) )
 	{
-	    // time to remove it
+	    /* time to remove it */
 	    currentthinker->next->prev = currentthinker->prev;
 	    currentthinker->prev->next = currentthinker->next;
 	    Z_Free (currentthinker);
@@ -105,17 +105,17 @@ void P_RunThinkers (void)
 
 
 
-// P_Ticker
+/* P_Ticker */
 
 void P_Ticker (void)
 {
     int		i;
     
-    // run the tic
+    /* run the tic */
     if (paused)
 	return;
 		
-    // pause if in menu and at least one tic has been run
+    /* pause if in menu and at least one tic has been run */
     if ( !netgame
 	 && menuactive
 	 && !demoplayback
@@ -133,6 +133,6 @@ void P_Ticker (void)
     P_UpdateSpecials ();
     P_RespawnSpecials ();
 
-    // for par times
+    /* for par times */
     leveltime++;	
 }

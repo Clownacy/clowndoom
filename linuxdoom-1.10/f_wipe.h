@@ -21,14 +21,14 @@
 #ifndef __F_WIPE_H__
 #define __F_WIPE_H__
 
-//                       SCREEN WIPE PACKAGE
+/*                       SCREEN WIPE PACKAGE */
 
 enum
 {
-    // simple gradual pixel change for 8-bit only
+    /* simple gradual pixel change for 8-bit only */
     wipe_ColorXForm,
     
-    // weird screen melt
+    /* weird screen melt */
     wipe_Melt,	
 
     wipe_NUMWIPES

@@ -20,14 +20,14 @@
 
 #include "m_cheat.h"
 
-// CHEAT SEQUENCE PACKAGE
+/* CHEAT SEQUENCE PACKAGE */
 
 static int		firsttime = 1;
 static unsigned char	cheat_xlate_table[256];
 
 
-// Called in st_stuff module, which handles the input.
-// Returns a 1 if the cheat was successful, 0 if failed.
+/* Called in st_stuff module, which handles the input. */
+/* Returns a 1 if the cheat was successful, 0 if failed. */
 int
 cht_CheckCheat
 ( cheatseq_t*	cht,
@@ -43,7 +43,7 @@ cht_CheckCheat
     }
 
     if (!cht->p)
-	cht->p = cht->sequence; // initialize if first time
+	cht->p = cht->sequence; /* initialize if first time */
 
     if (*cht->p == 0)
 	*(cht->p++) = key;
@@ -54,7 +54,7 @@ cht_CheckCheat
 
     if (*cht->p == 1)
 	cht->p++;
-    else if (*cht->p == 0xff) // end of sequence character
+    else if (*cht->p == 0xff) /* end of sequence character */
     {
 	cht->p = cht->sequence;
 	rc = 1;

@@ -21,19 +21,19 @@
 #ifndef __R_STATE__
 #define __R_STATE__
 
-// Need data structure definitions.
+/* Need data structure definitions. */
 #include "d_player.h"
 #include "r_data.h"
 
 
 
-// Refresh internal data structures,
-//  for rendering.
+/* Refresh internal data structures, */
+/*  for rendering. */
 
-// needed for texture pegging
+/* needed for texture pegging */
 extern fixed_t*		textureheight;
 
-// needed for pre rendering (fracs)
+/* needed for pre rendering (fracs) */
 extern fixed_t*		spritewidth;
 
 extern fixed_t*		spriteoffset;
@@ -47,19 +47,19 @@ extern int		viewheight;
 
 extern int		firstflat;
 
-// for global animation
+/* for global animation */
 extern int*		flattranslation;	
 extern int*		texturetranslation;	
 
 
-// Sprite....
+/* Sprite.... */
 extern int		firstspritelump;
 extern int		lastspritelump;
 extern int		numspritelumps;
 
 
 
-// Lookup tables for map data.
+/* Lookup tables for map data. */
 extern int		numsprites;
 extern spritedef_t*	sprites;
 
@@ -85,7 +85,7 @@ extern int		numsides;
 extern side_t*		sides;
 
 
-// POV data.
+/* POV data. */
 extern fixed_t		viewx;
 extern fixed_t		viewy;
 extern fixed_t		viewz;
@@ -94,22 +94,22 @@ extern angle_t		viewangle;
 extern player_t*	viewplayer;
 
 
-// ?
+/* ? */
 extern angle_t		clipangle;
 
 extern int		viewangletox[FINEANGLES/2];
 extern angle_t		xtoviewangle[SCREENWIDTH+1];
-//extern fixed_t		finetangent[FINEANGLES/2];
+/* extern fixed_t		finetangent[FINEANGLES/2]; */
 
 extern fixed_t		rw_distance;
 extern angle_t		rw_normalangle;
 
 
 
-// angle to line origin
+/* angle to line origin */
 extern angle_t		rw_angle1;
 
-// Segs count?
+/* Segs count? */
 extern int		sscount;
 
 extern visplane_t*	floorplane;

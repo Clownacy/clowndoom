@@ -21,20 +21,20 @@
 #include "z_zone.h"
 #include "p_local.h"
 
-// State.
+/* State. */
 #include "doomstat.h"
 #include "r_state.h"
 
 byte*		save_p;
 
 
-// Pads save_p to a 4-byte boundary
-//  so that the load/save works on SGI&Gecko.
+/* Pads save_p to a 4-byte boundary */
+/*  so that the load/save works on SGI&Gecko. */
 #define PADSAVEP()	save_p += (4 - ((size_t) save_p & 3)) & 3
 
 
 
-// P_ArchivePlayers
+/* P_ArchivePlayers */
 void P_ArchivePlayers (void)
 {
     int		i;
@@ -64,7 +64,7 @@ void P_ArchivePlayers (void)
 
 
 
-// P_UnArchivePlayers
+/* P_UnArchivePlayers */
 void P_UnArchivePlayers (void)
 {
     int		i;
@@ -80,7 +80,7 @@ void P_UnArchivePlayers (void)
 	memcpy (&players[i],save_p, sizeof(player_t));
 	save_p += sizeof(player_t);
 	
-	// will be set when unarc thinker
+	/* will be set when unarc thinker */
 	players[i].mo = NULL;	
 	players[i].message = NULL;
 	players[i].attacker = NULL;
@@ -97,7 +97,7 @@ void P_UnArchivePlayers (void)
 }
 
 
-// P_ArchiveWorld
+/* P_ArchiveWorld */
 void P_ArchiveWorld (void)
 {
     int			i;
@@ -109,7 +109,7 @@ void P_ArchiveWorld (void)
 	
     put = (short *)save_p;
     
-    // do sectors
+    /* do sectors */
     for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
     {
 	*put++ = sec->floorheight >> FRACBITS;
@@ -117,12 +117,12 @@ void P_ArchiveWorld (void)
 	*put++ = sec->floorpic;
 	*put++ = sec->ceilingpic;
 	*put++ = sec->lightlevel;
-	*put++ = sec->special;		// needed?
-	*put++ = sec->tag;		// needed?
+	*put++ = sec->special;		/* needed? */
+	*put++ = sec->tag;		/* needed? */
     }
 
     
-    // do lines
+    /* do lines */
     for (i=0, li = lines ; i<numlines ; i++,li++)
     {
 	*put++ = li->flags;
@@ -148,7 +148,7 @@ void P_ArchiveWorld (void)
 
 
 
-// P_UnArchiveWorld
+/* P_UnArchiveWorld */
 void P_UnArchiveWorld (void)
 {
     int			i;
@@ -160,7 +160,7 @@ void P_UnArchiveWorld (void)
 	
     get = (short *)save_p;
     
-    // do sectors
+    /* do sectors */
     for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
     {
 	sec->floorheight = *get++ << FRACBITS;
@@ -168,13 +168,13 @@ void P_UnArchiveWorld (void)
 	sec->floorpic = *get++;
 	sec->ceilingpic = *get++;
 	sec->lightlevel = *get++;
-	sec->special = *get++;		// needed?
-	sec->tag = *get++;		// needed?
+	sec->special = *get++;		/* needed? */
+	sec->tag = *get++;		/* needed? */
 	sec->specialdata = 0;
 	sec->soundtarget = 0;
     }
     
-    // do lines
+    /* do lines */
     for (i=0, li = lines ; i<numlines ; i++,li++)
     {
 	li->flags = *get++;
@@ -199,7 +199,7 @@ void P_UnArchiveWorld (void)
 
 
 
-// Thinkers
+/* Thinkers */
 typedef enum
 {
     tc_end,
@@ -209,13 +209,13 @@ typedef enum
 
 
 
-// P_ArchiveThinkers
+/* P_ArchiveThinkers */
 void P_ArchiveThinkers (void)
 {
     thinker_t*		th;
     mobj_t*		mobj;
 	
-    // save off the current thinkers
+    /* save off the current thinkers */
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
 	if (th->function.acp1 == (actionf_p1)P_MobjThinker)
@@ -232,16 +232,16 @@ void P_ArchiveThinkers (void)
 	    continue;
 	}
 		
-	// I_Error ("P_ArchiveThinkers: Unknown thinker function");
+	/* I_Error ("P_ArchiveThinkers: Unknown thinker function"); */
     }
 
-    // add a terminating marker
+    /* add a terminating marker */
     *save_p++ = tc_end;	
 }
 
 
 
-// P_UnArchiveThinkers
+/* P_UnArchiveThinkers */
 void P_UnArchiveThinkers (void)
 {
     thinkerclass_t	tclass;
@@ -249,7 +249,7 @@ void P_UnArchiveThinkers (void)
     thinker_t*		next;
     mobj_t*		mobj;
     
-    // remove all the current thinkers
+    /* remove all the current thinkers */
     currentthinker = thinkercap.next;
     while (currentthinker != &thinkercap)
     {
@@ -264,14 +264,14 @@ void P_UnArchiveThinkers (void)
     }
     P_InitThinkers ();
 	
-    // read in saved thinkers
+    /* read in saved thinkers */
     while (1)
     {
 	tclass = *save_p++;
 	switch (tclass)
 	{
 	  case tc_end:
-	    return; 	// end of list
+	    return; 	/* end of list */
 			
 	  case tc_mobj:
 	    PADSAVEP();
@@ -302,7 +302,7 @@ void P_UnArchiveThinkers (void)
 }
 
 
-// P_ArchiveSpecials
+/* P_ArchiveSpecials */
 typedef enum
 {
     tc_ceiling,
@@ -318,14 +318,14 @@ typedef enum
 
 
 
-// Things to handle:
-// T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list
-// T_VerticalDoor, (vldoor_t: sector_t * swizzle),
-// T_MoveFloor, (floormove_t: sector_t * swizzle),
-// T_LightFlash, (lightflash_t: sector_t * swizzle),
-// T_StrobeFlash, (strobe_t: sector_t *),
-// T_Glow, (glow_t: sector_t *),
-// T_PlatRaise, (plat_t: sector_t *), - active list
+/* Things to handle: */
+/* T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list */
+/* T_VerticalDoor, (vldoor_t: sector_t * swizzle), */
+/* T_MoveFloor, (floormove_t: sector_t * swizzle), */
+/* T_LightFlash, (lightflash_t: sector_t * swizzle), */
+/* T_StrobeFlash, (strobe_t: sector_t *), */
+/* T_Glow, (glow_t: sector_t *), */
+/* T_PlatRaise, (plat_t: sector_t *), - active list */
 void P_ArchiveSpecials (void)
 {
     thinker_t*		th;
@@ -338,7 +338,7 @@ void P_ArchiveSpecials (void)
     glow_t*		glow;
     int			i;
 	
-    // save off the current thinkers
+    /* save off the current thinkers */
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
 	if (th->function.acv == (actionf_v)NULL)
@@ -437,13 +437,13 @@ void P_ArchiveSpecials (void)
 	}
     }
 	
-    // add a terminating marker
+    /* add a terminating marker */
     *save_p++ = tc_endspecials;	
 
 }
 
 
-// P_UnArchiveSpecials
+/* P_UnArchiveSpecials */
 void P_UnArchiveSpecials (void)
 {
     specials_e		tclass;
@@ -456,14 +456,14 @@ void P_UnArchiveSpecials (void)
     glow_t*		glow;
 	
 	
-    // read in saved thinkers
+    /* read in saved thinkers */
     while (1)
     {
 	tclass = *save_p++;
 	switch (tclass)
 	{
 	  case tc_endspecials:
-	    return;	// end of list
+	    return;	/* end of list */
 			
 	  case tc_ceiling:
 	    PADSAVEP();

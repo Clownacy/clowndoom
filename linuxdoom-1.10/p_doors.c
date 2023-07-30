@@ -23,29 +23,29 @@
 #include "s_sound.h"
 
 
-// State.
+/* State. */
 #include "doomstat.h"
 #include "r_state.h"
 
-// Data.
+/* Data. */
 #include "dstrings.h"
 #include "sounds.h"
 
 #if 0
-// Sliding door frame information
+/* Sliding door frame information */
 slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 {
-    {"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
-     "GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	// back
+    {"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	/* front */
+     "GDOORB1","GDOORB2","GDOORB3","GDOORB4"},	/* back */
 	 
     {"\0","\0","\0","\0"}
 };
 #endif
 
 
-// VERTICAL DOORS
+/* VERTICAL DOORS */
 
-// T_VerticalDoor
+/* T_VerticalDoor */
 void T_VerticalDoor (vldoor_t* door)
 {
     result_e	res;
@@ -53,19 +53,19 @@ void T_VerticalDoor (vldoor_t* door)
     switch(door->direction)
     {
       case 0:
-	// WAITING
+	/* WAITING */
 	if (!--door->topcountdown)
 	{
 	    switch(door->type)
 	    {
 	      case blazeRaise:
-		door->direction = -1; // time to go back down
+		door->direction = -1; /* time to go back down */
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_bdcls);
 		break;
 		
 	      case normal:
-		door->direction = -1; // time to go back down
+		door->direction = -1; /* time to go back down */
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_dorcls);
 		break;
@@ -83,7 +83,7 @@ void T_VerticalDoor (vldoor_t* door)
 	break;
 	
       case 2:
-	//  INITIAL WAIT
+	/*  INITIAL WAIT */
 	if (!--door->topcountdown)
 	{
 	    switch(door->type)
@@ -102,7 +102,7 @@ void T_VerticalDoor (vldoor_t* door)
 	break;
 	
       case -1:
-	// DOWN
+	/* DOWN */
 	res = T_MovePlane(door->sector,
 			  door->speed,
 			  door->sector->floorheight,
@@ -114,7 +114,7 @@ void T_VerticalDoor (vldoor_t* door)
 	      case blazeRaise:
 	      case blazeClose:
 		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
+		P_RemoveThinker (&door->thinker);  /* unlink and free */
 		S_StartSound((mobj_t *)&door->sector->soundorg,
 			     sfx_bdcls);
 		break;
@@ -122,7 +122,7 @@ void T_VerticalDoor (vldoor_t* door)
 	      case normal:
 	      case close:
 		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
+		P_RemoveThinker (&door->thinker);  /* unlink and free */
 		break;
 		
 	      case close30ThenOpen:
@@ -139,7 +139,7 @@ void T_VerticalDoor (vldoor_t* door)
 	    switch(door->type)
 	    {
 	      case blazeClose:
-	      case close:		// DO NOT GO BACK UP!
+	      case close:		/* DO NOT GO BACK UP! */
 		break;
 		
 	      default:
@@ -152,7 +152,7 @@ void T_VerticalDoor (vldoor_t* door)
 	break;
 	
       case 1:
-	// UP
+	/* UP */
 	res = T_MovePlane(door->sector,
 			  door->speed,
 			  door->topheight,
@@ -164,7 +164,7 @@ void T_VerticalDoor (vldoor_t* door)
 	    {
 	      case blazeRaise:
 	      case normal:
-		door->direction = 0; // wait at top
+		door->direction = 0; /* wait at top */
 		door->topcountdown = door->topwait;
 		break;
 		
@@ -172,7 +172,7 @@ void T_VerticalDoor (vldoor_t* door)
 	      case blazeOpen:
 	      case open:
 		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
+		P_RemoveThinker (&door->thinker);  /* unlink and free */
 		break;
 		
 	      default:
@@ -184,8 +184,8 @@ void T_VerticalDoor (vldoor_t* door)
 }
 
 
-// EV_DoLockedDoor
-// Move a locked door up/down
+/* EV_DoLockedDoor */
+/* Move a locked door up/down */
 
 int
 EV_DoLockedDoor
@@ -202,7 +202,7 @@ EV_DoLockedDoor
 		
     switch(line->special)
     {
-      case 99:	// Blue Lock
+      case 99:	/* Blue Lock */
       case 133:
 	if ( !p )
 	    return 0;
@@ -214,7 +214,7 @@ EV_DoLockedDoor
 	}
 	break;
 	
-      case 134: // Red Lock
+      case 134: /* Red Lock */
       case 135:
 	if ( !p )
 	    return 0;
@@ -226,7 +226,7 @@ EV_DoLockedDoor
 	}
 	break;
 	
-      case 136:	// Yellow Lock
+      case 136:	/* Yellow Lock */
       case 137:
 	if ( !p )
 	    return 0;
@@ -263,7 +263,7 @@ EV_DoDoor
 	    continue;
 		
 	
-	// new door thinker
+	/* new door thinker */
 	rtn = 1;
 	door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
 	P_AddThinker (&door->thinker);
@@ -331,7 +331,7 @@ EV_DoDoor
 }
 
 
-// EV_VerticalDoor : open a door manually, no tag value
+/* EV_VerticalDoor : open a door manually, no tag value */
 void
 EV_VerticalDoor
 ( line_t*	line,
@@ -342,14 +342,14 @@ EV_VerticalDoor
     vldoor_t*	door;
     int		side;
 	
-    side = 0;	// only front sides can be used
+    side = 0;	/* only front sides can be used */
 
-    //	Check for locks
+    /*	Check for locks */
     player = thing->player;
 		
     switch(line->special)
     {
-      case 26: // Blue Lock
+      case 26: /* Blue Lock */
       case 32:
 	if ( !player )
 	    return;
@@ -362,7 +362,7 @@ EV_VerticalDoor
 	}
 	break;
 	
-      case 27: // Yellow Lock
+      case 27: /* Yellow Lock */
       case 34:
 	if ( !player )
 	    return;
@@ -376,7 +376,7 @@ EV_VerticalDoor
 	}
 	break;
 	
-      case 28: // Red Lock
+      case 28: /* Red Lock */
       case 33:
 	if ( !player )
 	    return;
@@ -390,7 +390,7 @@ EV_VerticalDoor
 	break;
     }
 	
-    // if the sector has an active thinker, use it
+    /* if the sector has an active thinker, use it */
     sec = sides[ line->sidenum[side^1]] .sector;
 
     if (sec->specialdata)
@@ -398,44 +398,44 @@ EV_VerticalDoor
 	door = sec->specialdata;
 	switch(line->special)
 	{
-	  case	1: // ONLY FOR "RAISE" DOORS, NOT "OPEN"s
+	  case	1: /* ONLY FOR "RAISE" DOORS, NOT "OPEN"s */
 	  case	26:
 	  case	27:
 	  case	28:
 	  case	117:
 	    if (door->direction == -1)
-		door->direction = 1;	// go back up
+		door->direction = 1;	/* go back up */
 	    else
 	    {
 		if (!thing->player)
-		    return;		// JDC: bad guys never close doors
+		    return;		/* JDC: bad guys never close doors */
 		
-		door->direction = -1;	// start going down immediately
+		door->direction = -1;	/* start going down immediately */
 	    }
 	    return;
 	}
     }
 	
-    // for proper sound
+    /* for proper sound */
     switch(line->special)
     {
-      case 117:	// BLAZING DOOR RAISE
-      case 118:	// BLAZING DOOR OPEN
+      case 117:	/* BLAZING DOOR RAISE */
+      case 118:	/* BLAZING DOOR OPEN */
 	S_StartSound((mobj_t *)&sec->soundorg,sfx_bdopn);
 	break;
 	
-      case 1:	// NORMAL DOOR SOUND
+      case 1:	/* NORMAL DOOR SOUND */
       case 31:
 	S_StartSound((mobj_t *)&sec->soundorg,sfx_doropn);
 	break;
 	
-      default:	// LOCKED DOOR SOUND
+      default:	/* LOCKED DOOR SOUND */
 	S_StartSound((mobj_t *)&sec->soundorg,sfx_doropn);
 	break;
     }
 	
     
-    // new door thinker
+    /* new door thinker */
     door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker (&door->thinker);
     sec->specialdata = door;
@@ -462,24 +462,24 @@ EV_VerticalDoor
 	line->special = 0;
 	break;
 	
-      case 117:	// blazing door raise
+      case 117:	/* blazing door raise */
 	door->type = blazeRaise;
 	door->speed = VDOORSPEED*4;
 	break;
-      case 118:	// blazing door open
+      case 118:	/* blazing door open */
 	door->type = blazeOpen;
 	line->special = 0;
 	door->speed = VDOORSPEED*4;
 	break;
     }
     
-    // find the top and bottom of the movement range
+    /* find the top and bottom of the movement range */
     door->topheight = P_FindLowestCeilingSurrounding(sec);
     door->topheight -= 4*FRACUNIT;
 }
 
 
-// Spawn a door that closes after 30 seconds
+/* Spawn a door that closes after 30 seconds */
 void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
     vldoor_t*	door;
@@ -499,7 +499,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
     door->topcountdown = 30 * 35;
 }
 
-// Spawn a door that opens after 5 minutes
+/* Spawn a door that opens after 5 minutes */
 void
 P_SpawnDoorRaiseIn5Mins
 ( sector_t*	sec )
@@ -526,12 +526,12 @@ P_SpawnDoorRaiseIn5Mins
 
 
 
-// UNUSED
-// Separate into p_slidoor.c?
+/* UNUSED */
+/* Separate into p_slidoor.c? */
 
-#if 0		// ABANDONED TO THE MISTS OF TIME!!!
-// EV_SlidingDoor : slide a door horizontally
-// (animate midtexture, then set noblocking line)
+#if 0		/* ABANDONED TO THE MISTS OF TIME!!! */
+/* EV_SlidingDoor : slide a door horizontally */
+/* (animate midtexture, then set noblocking line) */
 
 
 slideframe_t slideFrames[MAXSLIDEDOORS];
@@ -544,7 +544,7 @@ void P_InitSlidingDoorFrames(void)
     int		f3;
     int		f4;
 	
-    // DOOM II ONLY...
+    /* DOOM II ONLY... */
     if ( gamemode != commercial)
 	return;
 	
@@ -576,8 +576,8 @@ void P_InitSlidingDoorFrames(void)
 }
 
 
-// Return index into "slideFrames" array
-// for which door type to use
+/* Return index into "slideFrames" array */
+/* for which door type to use */
 int P_FindSlidingDoorType(line_t*	line)
 {
     int		i;
@@ -602,7 +602,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 	{
 	    if (++door->frame == SNUMFRAMES)
 	    {
-		// IF DOOR IS DONE OPENING...
+		/* IF DOOR IS DONE OPENING... */
 		sides[door->line->sidenum[0]].midtexture = 0;
 		sides[door->line->sidenum[1]].midtexture = 0;
 		door->line->flags &= ML_BLOCKING^0xff;
@@ -619,7 +619,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 	    }
 	    else
 	    {
-		// IF DOOR NEEDS TO ANIMATE TO NEXT FRAME...
+		/* IF DOOR NEEDS TO ANIMATE TO NEXT FRAME... */
 		door->timer = SWAITTICS;
 					
 		sides[door->line->sidenum[0]].midtexture =
@@ -633,10 +633,10 @@ void T_SlidingDoor (slidedoor_t*	door)
 	break;
 			
       case sd_waiting:
-	// IF DOOR IS DONE WAITING...
+	/* IF DOOR IS DONE WAITING... */
 	if (!door->timer--)
 	{
-	    // CAN DOOR CLOSE?
+	    /* CAN DOOR CLOSE? */
 	    if (door->frontsector->thinglist != NULL ||
 		door->backsector->thinglist != NULL)
 	    {
@@ -644,7 +644,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 		break;
 	    }
 
-	    //door->frame = SNUMFRAMES-1;
+	   /* door->frame = SNUMFRAMES-1; */
 	    door->status = sd_closing;
 	    door->timer = SWAITTICS;
 	}
@@ -655,7 +655,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 	{
 	    if (--door->frame < 0)
 	    {
-		// IF DOOR IS DONE CLOSING...
+		/* IF DOOR IS DONE CLOSING... */
 		door->line->flags |= ML_BLOCKING;
 		door->frontsector->specialdata = NULL;
 		P_RemoveThinker (&door->thinker);
@@ -663,7 +663,7 @@ void T_SlidingDoor (slidedoor_t*	door)
 	    }
 	    else
 	    {
-		// IF DOOR NEEDS TO ANIMATE TO NEXT FRAME...
+		/* IF DOOR NEEDS TO ANIMATE TO NEXT FRAME... */
 		door->timer = SWAITTICS;
 					
 		sides[door->line->sidenum[0]].midtexture =
@@ -688,11 +688,11 @@ EV_SlidingDoor
     sector_t*		sec;
     slidedoor_t*	door;
 	
-    // DOOM II ONLY...
+    /* DOOM II ONLY... */
     if (gamemode != commercial)
 	return;
     
-    // Make sure door isn't already being animated
+    /* Make sure door isn't already being animated */
     sec = line->frontsector;
     door = NULL;
     if (sec->specialdata)
@@ -710,7 +710,7 @@ EV_SlidingDoor
 	    return;
     }
     
-    // Init sliding door vars
+    /* Init sliding door vars */
     if (!door)
     {
 	door = Z_Malloc (sizeof(*door), PU_LEVSPEC, 0);

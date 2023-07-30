@@ -24,8 +24,8 @@
 #include "../ib_system.h"
 
 
-// IB_GetTime
-// returns time in 1/70th second tics
+/* IB_GetTime */
+/* returns time in 1/70th second tics */
 int  IB_GetTime (void)
 {
     struct timeval	tp;
@@ -41,13 +41,13 @@ int  IB_GetTime (void)
 }
 
 
-// IB_Init
+/* IB_Init */
 void IB_Init (void)
 {
 }
 
 
-// IB_Quit
+/* IB_Quit */
 void IB_Quit (void)
 {
 }

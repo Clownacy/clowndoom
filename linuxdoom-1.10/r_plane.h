@@ -25,7 +25,7 @@
 #include "r_data.h"
 
 
-// Visplane related.
+/* Visplane related. */
 extern  short*		lastopening;
 
 

@@ -23,16 +23,16 @@
 
 #include "s_sound.h"
 
-// State.
+/* State. */
 #include "doomstat.h"
 #include "r_state.h"
-// Data.
+/* Data. */
 #include "sounds.h"
 
 
-// FLOORS
+/* FLOORS */
 
-// Move a plane (floor or ceiling) and check for crushing
+/* Move a plane (floor or ceiling) and check for crushing */
 result_e
 T_MovePlane
 ( sector_t*	sector,
@@ -48,11 +48,11 @@ T_MovePlane
     switch(floorOrCeiling)
     {
       case 0:
-	// FLOOR
+	/* FLOOR */
 	switch(direction)
 	{
 	  case -1:
-	    // DOWN
+	    /* DOWN */
 	    if (sector->floorheight - speed < dest)
 	    {
 		lastpos = sector->floorheight;
@@ -62,7 +62,7 @@ T_MovePlane
 		{
 		    sector->floorheight =lastpos;
 		    P_ChangeSector(sector,crush);
-		    //return crushed;
+		   /* return crushed; */
 		}
 		return pastdest;
 	    }
@@ -81,7 +81,7 @@ T_MovePlane
 	    break;
 						
 	  case 1:
-	    // UP
+	    /* UP */
 	    if (sector->floorheight + speed > dest)
 	    {
 		lastpos = sector->floorheight;
@@ -91,13 +91,13 @@ T_MovePlane
 		{
 		    sector->floorheight = lastpos;
 		    P_ChangeSector(sector,crush);
-		    //return crushed;
+		   /* return crushed; */
 		}
 		return pastdest;
 	    }
 	    else
 	    {
-		// COULD GET CRUSHED
+		/* COULD GET CRUSHED */
 		lastpos = sector->floorheight;
 		sector->floorheight += speed;
 		flag = P_ChangeSector(sector,crush);
@@ -115,11 +115,11 @@ T_MovePlane
 	break;
 									
       case 1:
-	// CEILING
+	/* CEILING */
 	switch(direction)
 	{
 	  case -1:
-	    // DOWN
+	    /* DOWN */
 	    if (sector->ceilingheight - speed < dest)
 	    {
 		lastpos = sector->ceilingheight;
@@ -130,13 +130,13 @@ T_MovePlane
 		{
 		    sector->ceilingheight = lastpos;
 		    P_ChangeSector(sector,crush);
-		    //return crushed;
+		   /* return crushed; */
 		}
 		return pastdest;
 	    }
 	    else
 	    {
-		// COULD GET CRUSHED
+		/* COULD GET CRUSHED */
 		lastpos = sector->ceilingheight;
 		sector->ceilingheight -= speed;
 		flag = P_ChangeSector(sector,crush);
@@ -153,7 +153,7 @@ T_MovePlane
 	    break;
 						
 	  case 1:
-	    // UP
+	    /* UP */
 	    if (sector->ceilingheight + speed > dest)
 	    {
 		lastpos = sector->ceilingheight;
@@ -163,7 +163,7 @@ T_MovePlane
 		{
 		    sector->ceilingheight = lastpos;
 		    P_ChangeSector(sector,crush);
-		    //return crushed;
+		   /* return crushed; */
 		}
 		return pastdest;
 	    }
@@ -172,7 +172,7 @@ T_MovePlane
 		lastpos = sector->ceilingheight;
 		sector->ceilingheight += speed;
 		flag = P_ChangeSector(sector,crush);
-// UNUSED
+/* UNUSED */
 #if 0
 		if (flag == true)
 		{
@@ -191,7 +191,7 @@ T_MovePlane
 }
 
 
-// MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
+/* MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN) */
 void T_MoveFloor(floormove_t* floor)
 {
     result_e	res;
@@ -239,7 +239,7 @@ void T_MoveFloor(floormove_t* floor)
 
 }
 
-// HANDLE FLOOR TYPES
+/* HANDLE FLOOR TYPES */
 int
 EV_DoFloor
 ( line_t*	line,
@@ -257,11 +257,11 @@ EV_DoFloor
     {
 	sec = &sectors[secnum];
 		
-	// ALREADY MOVING?  IF SO, KEEP GOING...
+	/* ALREADY MOVING?  IF SO, KEEP GOING... */
 	if (sec->specialdata)
 	    continue;
 	
-	// new floor thinker
+	/* new floor thinker */
 	rtn = 1;
 	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
 	P_AddThinker (&floor->thinker);
@@ -300,7 +300,7 @@ EV_DoFloor
 
 	  case raiseFloorCrush:
 	    floor->crush = true;
-	    // Fallthrough
+	    /* Fallthrough */
 	  case raiseFloor:
 	    floor->direction = 1;
 	    floor->sector = sec;
@@ -431,7 +431,7 @@ EV_DoFloor
 
 
 
-// BUILD A STAIRCASE!
+/* BUILD A STAIRCASE! */
 int
 EV_BuildStairs
 ( line_t*	line,
@@ -459,11 +459,11 @@ EV_BuildStairs
     {
 	sec = &sectors[secnum];
 		
-	// ALREADY MOVING?  IF SO, KEEP GOING...
+	/* ALREADY MOVING?  IF SO, KEEP GOING... */
 	if (sec->specialdata)
 	    continue;
 	
-	// new floor thinker
+	/* new floor thinker */
 	rtn = 1;
 	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
 	P_AddThinker (&floor->thinker);
@@ -489,9 +489,9 @@ EV_BuildStairs
 		
 	texture = sec->floorpic;
 	
-	// Find next sector to raise
-	// 1.	Find 2-sided line with same sector side[0]
-	// 2.	Other side is the next sector to raise
+	/* Find next sector to raise */
+	/* 1.	Find 2-sided line with same sector side[0] */
+	/* 2.	Other side is the next sector to raise */
 	do
 	{
 	    ok = 0;

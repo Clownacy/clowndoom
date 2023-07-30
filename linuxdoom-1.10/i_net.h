@@ -23,7 +23,7 @@
 
 
 
-// Called by D_DoomMain.
+/* Called by D_DoomMain. */
 
 
 void I_InitNetwork (void);

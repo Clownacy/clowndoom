@@ -21,13 +21,13 @@
 #ifndef __D_ENGLSH__
 #define __D_ENGLSH__
 
-//	Printed strings for translation
+/*	Printed strings for translation */
 
-// D_Main.C
+/* D_Main.C */
 #define D_DEVSTR	"Development mode ON.\n"
 #define D_CDROM	"CD-ROM Version: default.cfg from c:\\doomdata\n"
 
-//	M_Menu.C
+/*	M_Menu.C */
 #define PRESSKEY 	"press a key."
 #define PRESSYN 	"press y or n."
 #define QUITMSG	"are you sure you want to\nquit this great game?"
@@ -66,7 +66,7 @@
 #define GAMMALVL4	"Gamma correction level 4"
 #define EMPTYSTRING	"empty slot"
 
-//	P_inter.C
+/*	P_inter.C */
 #define GOTARMOR	"Picked up the armor."
 #define GOTMEGA	"Picked up the MegaArmor!"
 #define GOTHTHBONUS	"Picked up a health bonus."
@@ -109,7 +109,7 @@
 #define GOTSHOTGUN	"You got the shotgun!"
 #define GOTSHOTGUN2	"You got the super shotgun!"
 
-// P_Doors.C
+/* P_Doors.C */
 #define PD_BLUEO	"You need a blue key to activate this object"
 #define PD_REDO	"You need a red key to activate this object"
 #define PD_YELLOWO	"You need a yellow key to activate this object"
@@ -117,10 +117,10 @@
 #define PD_REDK	"You need a red key to open this door"
 #define PD_YELLOWK	"You need a yellow key to open this door"
 
-//	G_game.C
+/*	G_game.C */
 #define GGSAVED	"game saved."
 
-//	HU_stuff.C
+/*	HU_stuff.C */
 #define HUSTR_MSGU	"[Message unsent]"
 
 #define HUSTR_E1M1	"E1M1: Hangar"
@@ -290,8 +290,8 @@
 
 #define HUSTR_MESSAGESENT	"[Message Sent]"
 
-// The following should NOT be changed unless it seems
-// just AWFULLY necessary
+/* The following should NOT be changed unless it seems */
+/* just AWFULLY necessary */
 
 #define HUSTR_PLRGREEN	"Green: "
 #define HUSTR_PLRINDIGO	"Indigo: "
@@ -303,7 +303,7 @@
 #define HUSTR_KEYBROWN	'b'
 #define HUSTR_KEYRED	'r'
 
-//	AM_map.C
+/*	AM_map.C */
 
 #define AMSTR_FOLLOWON	"Follow Mode ON"
 #define AMSTR_FOLLOWOFF	"Follow Mode OFF"
@@ -314,7 +314,7 @@
 #define AMSTR_MARKEDSPOT	"Marked Spot"
 #define AMSTR_MARKSCLEARED	"All Marks Cleared"
 
-//	ST_stuff.C
+/*	ST_stuff.C */
 
 #define STSTR_MUS		"Music Change"
 #define STSTR_NOMUS		"IMPOSSIBLE SELECTION"
@@ -333,7 +333,7 @@
 #define STSTR_CHOPPERS	"... doesn't suck - GM"
 #define STSTR_CLEV		"Changing Level..."
 
-//	F_Finale.C
+/*	F_Finale.C */
 #define E1TEXT \
 "Once you beat the big badasses and\n"\
 "clean out the moon base you're supposed\n"\
@@ -411,7 +411,7 @@
 "next stop, hell on earth!"
 
 
-// after level 6, put this:
+/* after level 6, put this: */
 
 #define C1TEXT \
 "YOU HAVE ENTERED DEEPLY INTO THE INFESTED\n" \
@@ -427,7 +427,7 @@
 "SWITCH WHICH HOLDS EARTH'S POPULATION\n" \
 "HOSTAGE."
 
-// After level 11, put this:
+/* After level 11, put this: */
 
 #define C2TEXT \
 "YOU HAVE WON! YOUR VICTORY HAS ENABLED\n" \
@@ -449,7 +449,7 @@
 "UP AND RETURN TO THE FRAY."
 
 
-// After level 20, put this:
+/* After level 20, put this: */
 
 #define C3TEXT \
 "YOU ARE AT THE CORRUPT HEART OF THE CITY,\n"\
@@ -463,7 +463,7 @@
 "GOT TO GO THROUGH HELL TO GET TO IT?"
 
 
-// After level 29, put this:
+/* After level 29, put this: */
 
 #define C4TEXT \
 "THE HORRENDOUS VISAGE OF THE BIGGEST\n"\
@@ -484,7 +484,7 @@
 
 
 
-// Before level 31, put this:
+/* Before level 31, put this: */
 
 #define C5TEXT \
 "CONGRATULATIONS, YOU'VE FOUND THE SECRET\n"\
@@ -494,7 +494,7 @@
 "WILL BE."
 
 
-// Before level 32, put this:
+/* Before level 32, put this: */
 
 #define C6TEXT \
 "CONGRATULATIONS, YOU'VE FOUND THE\n"\
@@ -502,7 +502,7 @@
 "BLAZE THROUGH THIS ONE!\n"
 
 
-// after map 06	
+/* after map 06 */
 
 #define P1TEXT  \
 "You gloat over the steaming carcass of the\n"\
@@ -519,7 +519,7 @@
 "Oh yes, keep living, too."
 
 
-// after map 11
+/* after map 11 */
 
 #define P2TEXT \
 "Even the deadly Arch-Vile labyrinth could\n"\
@@ -530,7 +530,7 @@
 "You're good at that kind of thing."
 
 
-// after map 20
+/* after map 20 */
 
 #define P3TEXT \
 "You've bashed and battered your way into\n"\
@@ -544,7 +544,7 @@
 "get ready to give the bastard a little Hell\n"\
 "of your own making!"
 
-// after map 30
+/* after map 30 */
 
 #define P4TEXT \
 "The Gatekeeper's evil face is splattered\n"\
@@ -560,7 +560,7 @@
 "when you die, you'll need it for some\n"\
 "final cleaning-up ..."
 
-// before map 31
+/* before map 31 */
 
 #define P5TEXT \
 "You've found the second-hardest level we\n"\
@@ -568,7 +568,7 @@
 "two previous.  If not, be prepared to die\n"\
 "aplenty. For master marines only."
 
-// before map 32
+/* before map 32 */
 
 #define P6TEXT \
 "Betcha wondered just what WAS the hardest\n"\
@@ -649,7 +649,7 @@
 
 
 
-// Character cast strings F_FINALE.C
+/* Character cast strings F_FINALE.C */
 #define CC_ZOMBIE	"ZOMBIEMAN"
 #define CC_SHOTGUN	"SHOTGUN GUY"
 #define CC_HEAVY	"HEAVY WEAPON DUDE"

@@ -20,7 +20,7 @@
 
 #include <ctype.h>
 
-// Functions.
+/* Functions. */
 #include "i_system.h"
 #include "m_swap.h"
 #include "z_zone.h"
@@ -28,20 +28,20 @@
 #include "w_wad.h"
 #include "s_sound.h"
 
-// Data.
+/* Data. */
 #include "dstrings.h"
 #include "sounds.h"
 
 #include "doomstat.h"
 #include "r_state.h"
 
-// ?
-//#include "doomstat.h"
-//#include "r_local.h"
-//#include "f_finale.h"
+/* ? */
+/* #include "doomstat.h" */
+/* #include "r_local.h" */
+/* #include "f_finale.h" */
 
-// Stage of animation:
-//  0 = text, 1 = art screen, 2 = character cast
+/* Stage of animation: */
+/*  0 = text, 1 = art screen, 2 = character cast */
 int		finalestage;
 
 int		finalecount;
@@ -89,7 +89,7 @@ void	F_CastTicker (void);
 boolean F_CastResponder (const event_t *ev);
 void	F_CastDrawer (void);
 
-// F_StartFinale
+/* F_StartFinale */
 void F_StartFinale (void)
 {
     unsigned int finaletextindex = 0;
@@ -99,13 +99,13 @@ void F_StartFinale (void)
     viewactive = false;
     automapactive = false;
 
-    // Okay - IWAD dependend stuff.
-    // This has been changed severly, and
-    //  some stuff might have changed in the process.
+    /* Okay - IWAD dependend stuff. */
+    /* This has been changed severly, and */
+    /*  some stuff might have changed in the process. */
     switch ( gamemode )
     {
 
-      // DOOM 1 - E1, E3 or E4, but each nine missions
+      /* DOOM 1 - E1, E3 or E4, but each nine missions */
       case shareware:
       case registered:
       case retail:
@@ -131,13 +131,13 @@ void F_StartFinale (void)
 	    finaletext = e4text;
 	    break;
 	  default:
-	    // Ouch.
+	    /* Ouch. */
 	    break;
 	}
 	break;
       }
       
-      // DOOM II and missions packs with E1, M34
+      /* DOOM II and missions packs with E1, M34 */
       case commercial:
       {
 	  S_ChangeMusic(mus_read_m, true);
@@ -169,7 +169,7 @@ void F_StartFinale (void)
 	      finaletextindex = 5;
 	      break;
 	    default:
-	      // Ouch.
+	      /* Ouch. */
 	      break;
 	  }
 
@@ -185,7 +185,7 @@ void F_StartFinale (void)
 	      finaletext = ptext[finaletextindex];
 	      break;
 	    default:
-	      // Ouch.
+	      /* Ouch. */
 	      break;
 	  }
 
@@ -193,11 +193,11 @@ void F_StartFinale (void)
       }	
 
    
-      // Indeterminate.
+      /* Indeterminate. */
       default:
 	S_ChangeMusic(mus_read_m, true);
-	finaleflat = "F_SKY1"; // Not used anywhere else.
-	finaletext = ctext[0];  // FIXME - other text, music?
+	finaleflat = "F_SKY1"; /* Not used anywhere else. */
+	finaletext = ctext[0];  /* FIXME - other text, music? */
 	break;
     }
     
@@ -217,16 +217,16 @@ boolean F_Responder (const event_t *event)
 }
 
 
-// F_Ticker
+/* F_Ticker */
 void F_Ticker (void)
 {
     int		i;
     
-    // check for skipping
+    /* check for skipping */
     if ( (gamemode == commercial)
       && ( finalecount > 50) )
     {
-      // go on to the next level
+      /* go on to the next level */
       for (i=0 ; i<MAXPLAYERS ; i++)
 	if (players[i].cmd.buttons)
 	  break;
@@ -240,7 +240,7 @@ void F_Ticker (void)
       }
     }
     
-    // advance animation
+    /* advance animation */
     finalecount++;
 	
     if (finalestage == 2)
@@ -256,7 +256,7 @@ void F_Ticker (void)
     {
 	finalecount = 0;
 	finalestage = 1;
-	wipegamestate = -1;		// force a wipe
+	wipegamestate = -1;		/* force a wipe */
 	if (gameepisode == 3)
 	    S_StartMusic (mus_bunny);
     }
@@ -264,7 +264,7 @@ void F_Ticker (void)
 
 
 
-// F_TextWrite
+/* F_TextWrite */
 
 #include "hu_stuff.h"
 extern	patch_t *hu_font[HU_FONTSIZE];
@@ -282,7 +282,7 @@ void F_TextWrite (void)
     int		cx;
     int		cy;
     
-    // erase the entire screen to a tiled background
+    /* erase the entire screen to a tiled background */
     src = W_CacheLumpName ( finaleflat , PU_CACHE);
     dest = screens[0];
 	
@@ -302,7 +302,7 @@ void F_TextWrite (void)
 
     V_MarkRect (0, 0, SCREENWIDTH, SCREENHEIGHT);
     
-    // draw some of the text onto the screen
+    /* draw some of the text onto the screen */
     cx = 10;
     cy = 10;
     ch = finaletext;
@@ -338,9 +338,9 @@ void F_TextWrite (void)
 	
 }
 
-// Final DOOM 2 animation
-// Casting by id Software.
-//   in order of appearance
+/* Final DOOM 2 animation */
+/* Casting by id Software. */
+/*   in order of appearance */
 typedef struct
 {
     const char		*name;
@@ -378,13 +378,13 @@ int		castonmelee;
 boolean		castattacking;
 
 
-// F_StartCast
+/* F_StartCast */
 extern	gamestate_t     wipegamestate;
 
 
 void F_StartCast (void)
 {
-    wipegamestate = -1;		// force a screen wipe
+    wipegamestate = -1;		/* force a screen wipe */
     castnum = 0;
     caststate = &states[mobjinfo[castorder[castnum].type].seestate];
     casttics = caststate->tics;
@@ -397,18 +397,18 @@ void F_StartCast (void)
 }
 
 
-// F_CastTicker
+/* F_CastTicker */
 void F_CastTicker (void)
 {
     int		st;
     int		sfx;
 	
     if (--casttics > 0)
-	return;			// not time to change state yet
+	return;			/* not time to change state yet */
 		
     if (caststate->tics == -1 || caststate->nextstate == S_NULL)
     {
-	// switch from deathstate to next monster
+	/* switch from deathstate to next monster */
 	castnum++;
 	castdeath = false;
 	if (castorder[castnum].name == NULL)
@@ -420,14 +420,14 @@ void F_CastTicker (void)
     }
     else
     {
-	// just advance to next state in animation
+	/* just advance to next state in animation */
 	if (caststate == &states[S_PLAY_ATK1])
-	    goto stopattack;	// Oh, gross hack!
+	    goto stopattack;	/* Oh, gross hack! */
 	st = caststate->nextstate;
 	caststate = &states[st];
 	castframes++;
 	
-	// sound hacks....
+	/* sound hacks.... */
 	switch (st)
 	{
 	  case S_PLAY_ATK1:	sfx = sfx_dshtgn; break;
@@ -465,7 +465,7 @@ void F_CastTicker (void)
 	
     if (castframes == 12)
     {
-	// go into attack frame
+	/* go into attack frame */
 	castattacking = true;
 	if (castonmelee)
 	    caststate=&states[mobjinfo[castorder[castnum].type].meleestate];
@@ -501,7 +501,7 @@ void F_CastTicker (void)
 }
 
 
-// F_CastResponder
+/* F_CastResponder */
 
 boolean F_CastResponder (const event_t* ev)
 {
@@ -509,9 +509,9 @@ boolean F_CastResponder (const event_t* ev)
 	return false;
 		
     if (castdeath)
-	return true;			// already in dying frames
+	return true;			/* already in dying frames */
 		
-    // go into death frame
+    /* go into death frame */
     castdeath = true;
     caststate = &states[mobjinfo[castorder[castnum].type].deathstate];
     casttics = caststate->tics;
@@ -532,7 +532,7 @@ void F_CastPrint (const char* text)
     int		w;
     int		width;
     
-    // find width
+    /* find width */
     ch = text;
     width = 0;
 	
@@ -552,7 +552,7 @@ void F_CastPrint (const char* text)
 	width += w;
     }
     
-    // draw it
+    /* draw it */
     cx = 160-width/2;
     ch = text;
     while (ch)
@@ -575,7 +575,7 @@ void F_CastPrint (const char* text)
 }
 
 
-// F_CastDrawer
+/* F_CastDrawer */
 void V_DrawPatchFlipped (int x, int y, int scrn, patch_t *patch);
 
 void F_CastDrawer (void)
@@ -586,12 +586,12 @@ void F_CastDrawer (void)
     boolean		flip;
     patch_t*		patch;
     
-    // erase the entire screen to a background
+    /* erase the entire screen to a background */
     V_DrawPatch (0,0,0, W_CacheLumpName ("BOSSBACK", PU_CACHE));
 
     F_CastPrint (castorder[castnum].name);
     
-    // draw the current frame in the middle of the screen
+    /* draw the current frame in the middle of the screen */
     sprdef = &sprites[caststate->sprite];
     sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
     lump = sprframe->lump[0];
@@ -605,7 +605,7 @@ void F_CastDrawer (void)
 }
 
 
-// F_DrawPatchCol
+/* F_DrawPatchCol */
 void
 F_DrawPatchCol
 ( int		x,
@@ -621,7 +621,7 @@ F_DrawPatchCol
     column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
     desttop = screens[0]+x;
 
-    // step through the posts in a column
+    /* step through the posts in a column */
     while (column->topdelta != 0xff )
     {
 	source = (byte *)column + 3;
@@ -638,7 +638,7 @@ F_DrawPatchCol
 }
 
 
-// F_BunnyScroll
+/* F_BunnyScroll */
 void F_BunnyScroll (void)
 {
     int		scrolled;
@@ -696,7 +696,7 @@ void F_BunnyScroll (void)
 }
 
 
-// F_Drawer
+/* F_Drawer */
 void F_Drawer (void)
 {
     if (finalestage == 2)

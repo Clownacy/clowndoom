@@ -25,25 +25,25 @@
 #define __P_SPEC__
 
 
-// End-level timer (-TIMER option)
+/* End-level timer (-TIMER option) */
 extern	boolean levelTimer;
 extern	int	levelTimeCount;
 
 
-//      Define values for map objects
+/*      Define values for map objects */
 #define MO_TELEPORTMAN          14
 
 
-// at game start
+/* at game start */
 void    P_InitPicAnims (void);
 
-// at map load
+/* at map load */
 void    P_SpawnSpecials (void);
 
-// every tic
+/* every tic */
 void    P_UpdateSpecials (void);
 
-// when needed
+/* when needed */
 boolean
 P_UseSpecialLine
 ( mobj_t*	thing,
@@ -107,12 +107,12 @@ getNextSector
   sector_t*	sec );
 
 
-// SPECIAL
+/* SPECIAL */
 int EV_DoDonut(line_t* line);
 
 
 
-// P_LIGHTS
+/* P_LIGHTS */
 typedef struct
 {
     thinker_t	thinker;
@@ -195,7 +195,7 @@ void    P_SpawnGlowingLight(sector_t* sector);
 
 
 
-// P_SWITCH
+/* P_SWITCH */
 typedef struct
 {
     char	name1[9];
@@ -227,13 +227,13 @@ typedef struct
 
 
 
- // max # of wall switches in a level
+ /* max # of wall switches in a level */
 #define MAXSWITCHES		50
 
- // 4 players, 4 buttons each at once, max.
+ /* 4 players, 4 buttons each at once, max. */
 #define MAXBUTTONS		16
 
- // 1 second, in ticks. 
+ /* 1 second, in ticks. */
 #define BUTTONTIME      35             
 
 extern button_t	buttonlist[MAXBUTTONS]; 
@@ -246,7 +246,7 @@ P_ChangeSwitchTexture
 void P_InitSwitchList(void);
 
 
-// P_PLATS
+/* P_PLATS */
 typedef enum
 {
     up,
@@ -310,7 +310,7 @@ void    EV_StopPlat(line_t* line);
 void    P_ActivateInStasis(int tag);
 
 
-// P_DOORS
+/* P_DOORS */
 typedef enum
 {
     normal,
@@ -334,13 +334,13 @@ typedef struct
     fixed_t	topheight;
     fixed_t	speed;
 
-    // 1 = up, 0 = waiting at top, -1 = down
+    /* 1 = up, 0 = waiting at top, -1 = down */
     int             direction;
     
-    // tics to wait at the top
+    /* tics to wait at the top */
     int             topwait;
-    // (keep in case a door going down is reset)
-    // when it reaches 0, start going down
+    /* (keep in case a door going down is reset) */
+    /* when it reaches 0, start going down */
     int             topcountdown;
     
 } vldoor_t;
@@ -375,8 +375,8 @@ P_SpawnDoorRaiseIn5Mins
 
 
 
-#if 0 // UNUSED
-//      Sliding doors...
+#if 0 /* UNUSED */
+/*      Sliding doors... */
 typedef enum
 {
     sd_opening,
@@ -438,13 +438,13 @@ typedef struct
 
 
 
-// how many frames of animation
+/* how many frames of animation */
 #define SNUMFRAMES		4
 
 #define SDOORWAIT		35*3
 #define SWAITTICS		4
 
-// how many diff. types of anims
+/* how many diff. types of anims */
 #define MAXSLIDEDOORS	5                            
 
 void P_InitSlidingDoorFrames(void);
@@ -457,7 +457,7 @@ EV_SlidingDoor
 
 
 
-// P_CEILNG
+/* P_CEILNG */
 typedef enum
 {
     lowerToFloor,
@@ -481,10 +481,10 @@ typedef struct
     fixed_t	speed;
     boolean	crush;
 
-    // 1 = up, 0 = waiting, -1 = down
+    /* 1 = up, 0 = waiting, -1 = down */
     int		direction;
 
-    // ID
+    /* ID */
     int		tag;                   
     int		olddirection;
     
@@ -512,36 +512,36 @@ int	EV_CeilingCrushStop(line_t* line);
 void    P_ActivateInStasisCeiling(line_t* line);
 
 
-// P_FLOOR
+/* P_FLOOR */
 typedef enum
 {
-    // lower floor to highest surrounding floor
+    /* lower floor to highest surrounding floor */
     lowerFloor,
     
-    // lower floor to lowest surrounding floor
+    /* lower floor to lowest surrounding floor */
     lowerFloorToLowest,
     
-    // lower floor to highest surrounding floor VERY FAST
+    /* lower floor to highest surrounding floor VERY FAST */
     turboLower,
     
-    // raise floor to lowest surrounding CEILING
+    /* raise floor to lowest surrounding CEILING */
     raiseFloor,
     
-    // raise floor to next highest surrounding floor
+    /* raise floor to next highest surrounding floor */
     raiseFloorToNearest,
 
-    // raise floor to shortest height texture around it
+    /* raise floor to shortest height texture around it */
     raiseToTexture,
     
-    // lower floor to lowest surrounding floor
-    //  and change floorpic
+    /* lower floor to lowest surrounding floor */
+    /*  and change floorpic */
     lowerAndChange,
   
     raiseFloor24,
     raiseFloor24AndChange,
     raiseFloorCrush,
 
-     // raise to next highest floor, turbo-speed
+     /* raise to next highest floor, turbo-speed */
     raiseFloorTurbo,       
     donutRaise,
     raiseFloor512
@@ -553,8 +553,8 @@ typedef enum
 
 typedef enum
 {
-    build8,	// slowly build by 8
-    turbo16	// quickly build by 16
+    build8,	/* slowly build by 8 */
+    turbo16	/* quickly build by 16 */
     
 } stair_e;
 
@@ -607,7 +607,7 @@ EV_DoFloor
 
 void T_MoveFloor( floormove_t* floor);
 
-// P_TELEPT
+/* P_TELEPT */
 int
 EV_Teleport
 ( line_t*	line,

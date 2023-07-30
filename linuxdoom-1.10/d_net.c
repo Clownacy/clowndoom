@@ -30,29 +30,29 @@
 #define	NCMD_EXIT		0x80000000
 #define	NCMD_RETRANSMIT		0x40000000
 #define	NCMD_SETUP		0x20000000
-#define	NCMD_KILL		0x10000000	// kill game
+#define	NCMD_KILL		0x10000000	/* kill game */
 #define	NCMD_CHECKSUM	 	0x0fffffff
 
  
 doomcom_t*	doomcom;	
-doomdata_t*	netbuffer;		// points inside doomcom
+doomdata_t*	netbuffer;		/* points inside doomcom */
 
 
-// NETWORKING
-// gametic is the tic about to (or currently being) run
-// maketic is the tick that hasn't had control made for it yet
-// nettics[] has the maketics for all players 
-// a gametic cannot be run until nettics[] > gametic for all players
+/* NETWORKING */
+/* gametic is the tic about to (or currently being) run */
+/* maketic is the tick that hasn't had control made for it yet */
+/* nettics[] has the maketics for all players */
+/* a gametic cannot be run until nettics[] > gametic for all players */
 #define	RESENDCOUNT	10
-#define	PL_DRONE	0x80	// bit flag in doomdata->player
+#define	PL_DRONE	0x80	/* bit flag in doomdata->player */
 
 ticcmd_t	localcmds[BACKUPTICS];
 
 ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
 int         	nettics[MAXNETNODES];
-boolean		nodeingame[MAXNETNODES];		// set false as nodes leave game
-boolean		remoteresend[MAXNETNODES];		// set when local needs tics
-int		resendto[MAXNETNODES];			// set when remote needs tics
+boolean		nodeingame[MAXNETNODES];		/* set false as nodes leave game */
+boolean		remoteresend[MAXNETNODES];		/* set when local needs tics */
+int		resendto[MAXNETNODES];			/* set when remote needs tics */
 int		resendcount[MAXNETNODES];
 
 int		nodeforplayer[MAXPLAYERS];
@@ -61,7 +61,7 @@ int             maketic;
 int		lastnettic;
 int		skiptics;
 int		ticdup;		
-int		maxsend;	// BACKUPTICS/(2*ticdup)-1
+int		maxsend;	/* BACKUPTICS/(2*ticdup)-1 */
 
 
 void D_ProcessEvents (void); 
@@ -78,7 +78,7 @@ size_t NetbufferSize (void)
     return (size_t)&(((doomdata_t *)0)->cmds[netbuffer->numtics]); 
 }
 
-// Checksum 
+/* Checksum */
 unsigned NetbufferChecksum (void)
 {
     unsigned		c;
@@ -86,7 +86,7 @@ unsigned NetbufferChecksum (void)
 
     c = 0x1234567;
 
-    // FIXME -endianess?
+    /* FIXME -endianess? */
     l = (NetbufferSize () - (size_t)&(((doomdata_t *)0)->retransmitfrom))/4;
     for (i=0 ; i<l ; i++)
 	c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i+1);
@@ -113,7 +113,7 @@ int ExpandTics (int low)
 
 
 
-// HSendPacket
+/* HSendPacket */
 void
 HSendPacket
  (int	node,
@@ -160,8 +160,8 @@ HSendPacket
     I_NetCmd ();
 }
 
-// HGetPacket
-// Returns false if no packet is waiting
+/* HGetPacket */
+/* Returns false if no packet is waiting */
 boolean HGetPacket (void)
 {	
     if (reboundpacket)
@@ -226,7 +226,7 @@ boolean HGetPacket (void)
 }
 
 
-// GetPackets
+/* GetPackets */
 char    exitmsg[80];
 
 void GetPackets (void)
@@ -240,17 +240,17 @@ void GetPackets (void)
     while ( HGetPacket() )
     {
 	if (netbuffer->checksum & NCMD_SETUP)
-	    continue;		// extra setup packet
+	    continue;		/* extra setup packet */
 			
 	netconsole = netbuffer->player & ~PL_DRONE;
 	netnode = doomcom->remotenode;
 	
-	// to save bytes, only the low byte of tic numbers are sent
-	// Figure out what the rest of the bytes are
+	/* to save bytes, only the low byte of tic numbers are sent */
+	/* Figure out what the rest of the bytes are */
 	realstart = ExpandTics (netbuffer->starttic);		
 	realend = (realstart+netbuffer->numtics);
 	
-	// check for exiting the game
+	/* check for exiting the game */
 	if (netbuffer->checksum & NCMD_EXIT)
 	{
 	    if (!nodeingame[netnode])
@@ -265,13 +265,13 @@ void GetPackets (void)
 	    continue;
 	}
 	
-	// check for a remote game kill
+	/* check for a remote game kill */
 	if (netbuffer->checksum & NCMD_KILL)
 	    I_Error ("Killed by network driver");
 
 	nodeforplayer[netconsole] = netnode;
 	
-	// check for retransmit request
+	/* check for retransmit request */
 	if ( resendcount[netnode] <= 0 
 	     && (netbuffer->checksum & NCMD_RETRANSMIT) )
 	{
@@ -283,7 +283,7 @@ void GetPackets (void)
 	else
 	    resendcount[netnode]--;
 	
-	// check for out of order / duplicated packet		
+	/* check for out of order / duplicated packet */
 	if (realend == nettics[netnode])
 	    continue;
 			
@@ -296,10 +296,10 @@ void GetPackets (void)
 	    continue;
 	}
 	
-	// check for a missed packet
+	/* check for a missed packet */
 	if (realstart > nettics[netnode])
 	{
-	    // stop processing until the other system resends the missed tics
+	    /* stop processing until the other system resends the missed tics */
 	    if (debugfile)
 		fprintf (debugfile,
 			 "missed tics from %i (%i - %i)\n",
@@ -308,7 +308,7 @@ void GetPackets (void)
 	    continue;
 	}
 
-	// update command store from the packet
+	/* update command store from the packet */
         {
 	    int		start;
 
@@ -329,9 +329,9 @@ void GetPackets (void)
 }
 
 
-// NetUpdate
-// Builds ticcmds for console player,
-// sends out a packet
+/* NetUpdate */
+/* Builds ticcmds for console player, */
+/* sends out a packet */
 int      gametime;
 
 void NetUpdate (void)
@@ -342,12 +342,12 @@ void NetUpdate (void)
     int				realstart;
     int				gameticdiv;
     
-    // check time
+    /* check time */
     nowtime = I_GetTime ()/ticdup;
     newtics = nowtime - gametime;
     gametime = nowtime;
 	
-    if (newtics <= 0) 	// nothing new to update
+    if (newtics <= 0) 	/* nothing new to update */
 	goto listen; 
 
     if (skiptics <= newtics)
@@ -364,25 +364,25 @@ void NetUpdate (void)
 		
     netbuffer->player = consoleplayer;
     
-    // build new ticcmds for console player
+    /* build new ticcmds for console player */
     gameticdiv = gametic/ticdup;
     for (i=0 ; i<newtics ; i++)
     {
 	I_StartTic ();
 	D_ProcessEvents ();
 	if (maketic - gameticdiv >= BACKUPTICS/2-1)
-	    break;          // can't hold any more
+	    break;          /* can't hold any more */
 	
-	//printf ("mk:%i ",maketic);
+/* printf ("mk:%i ",maketic); */
 	G_BuildTiccmd (&localcmds[maketic%BACKUPTICS]);
 	maketic++;
     }
 
 
     if (singletics)
-	return;         // singletic update is syncronous
+	return;         /* singletic update is syncronous */
     
-    // send the packet to the other nodes
+    /* send the packet to the other nodes */
     for (i=0 ; i<doomcom->numnodes ; i++)
 	if (nodeingame[i])
 	{
@@ -409,14 +409,14 @@ void NetUpdate (void)
 	    }
 	}
     
-    // listen for other packets
+    /* listen for other packets */
   listen:
     GetPackets ();
 }
 
 
 
-// CheckAbort
+/* CheckAbort */
 void CheckAbort (void)
 {
     event_t *ev;
@@ -437,7 +437,7 @@ void CheckAbort (void)
 }
 
 
-// D_ArbitrateNetStart
+/* D_ArbitrateNetStart */
 void D_ArbitrateNetStart (void)
 {
     int		i;
@@ -448,7 +448,7 @@ void D_ArbitrateNetStart (void)
 	
     if (doomcom->consoleplayer)
     {
-	// listen for setup info from key player
+	/* listen for setup info from key player */
 	printf ("listening for network start info...\n");
 	while (1)
 	{
@@ -471,7 +471,7 @@ void D_ArbitrateNetStart (void)
     }
     else
     {
-	// key player, send the setup info
+	/* key player, send the setup info */
 	printf ("sending network start info...\n");
 	do
 	{
@@ -511,8 +511,8 @@ void D_ArbitrateNetStart (void)
     }
 }
 
-// D_CheckNetGame
-// Works out player numbers among the net participants
+/* D_CheckNetGame */
+/* Works out player numbers among the net participants */
 extern	int			viewangleoffset;
 
 void D_CheckNetGame (void)
@@ -523,11 +523,11 @@ void D_CheckNetGame (void)
     {
 	nodeingame[i] = false;
        	nettics[i] = 0;
-	remoteresend[i] = false;	// set when local needs tics
-	resendto[i] = 0;		// which tic to start sending
+	remoteresend[i] = false;	/* set when local needs tics */
+	resendto[i] = 0;		/* which tic to start sending */
     }
 	
-    // I_InitNetwork sets doomcom and netgame
+    /* I_InitNetwork sets doomcom and netgame */
     I_InitNetwork ();
     if (doomcom->id != DOOMCOM_ID)
 	I_Error ("Doomcom buffer invalid!");
@@ -540,7 +540,7 @@ void D_CheckNetGame (void)
     printf ("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",
 	    startskill, deathmatch, startmap, startepisode);
 	
-    // read values out of doomcom
+    /* read values out of doomcom */
     ticdup = doomcom->ticdup;
     maxsend = BACKUPTICS/(2*ticdup)-1;
     if (maxsend<1)
@@ -557,9 +557,9 @@ void D_CheckNetGame (void)
 }
 
 
-// D_QuitNetGame
-// Called before quitting to leave a net game
-// without hanging the other players
+/* D_QuitNetGame */
+/* Called before quitting to leave a net game */
+/* without hanging the other players */
 void D_QuitNetGame (void)
 {
     int             i, j;
@@ -570,7 +570,7 @@ void D_QuitNetGame (void)
     if (!netgame || !usergame || consoleplayer == -1 || demoplayback)
 	return;
 	
-    // send a bunch of packets for security
+    /* send a bunch of packets for security */
     netbuffer->player = consoleplayer;
     netbuffer->numtics = 0;
     for (i=0 ; i<4 ; i++)
@@ -584,7 +584,7 @@ void D_QuitNetGame (void)
 
 
 
-// TryRunTics
+/* TryRunTics */
 int	frametics[4];
 int	frameon;
 int	frameskip[4];
@@ -603,12 +603,12 @@ void TryRunTics (void)
     int		counts;
     int		numplaying;
     
-    // get real tics		
+    /* get real tics */
     entertic = I_GetTime ()/ticdup;
     realtics = entertic - oldentertics;
     oldentertics = entertic;
     
-    // get available tics
+    /* get available tics */
     NetUpdate ();
 	
     lowtic = MAXINT;
@@ -624,7 +624,7 @@ void TryRunTics (void)
     }
     availabletics = lowtic - gametic/ticdup;
     
-    // decide how many tics to run
+    /* decide how many tics to run */
     if (realtics < availabletics-1)
 	counts = realtics+1;
     else if (realtics < availabletics)
@@ -644,33 +644,33 @@ void TryRunTics (void)
 
     if (!demoplayback)
     {	
-	// ideally nettics[0] should be 1 - 3 tics above lowtic
-	// if we are consistantly slower, speed up time
+	/* ideally nettics[0] should be 1 - 3 tics above lowtic */
+	/* if we are consistantly slower, speed up time */
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	    if (playeringame[i])
 		break;
 	if (consoleplayer == i)
 	{
-	    // the key player does not adapt
+	    /* the key player does not adapt */
 	}
 	else
 	{
 	    if (nettics[0] <= nettics[nodeforplayer[i]])
 	    {
 		gametime--;
-		// printf ("-");
+		/* printf ("-"); */
 	    }
 	    frameskip[frameon&3] = (oldnettics > nettics[nodeforplayer[i]]);
 	    oldnettics = nettics[0];
 	    if (frameskip[0] && frameskip[1] && frameskip[2] && frameskip[3])
 	    {
 		skiptics = 1;
-		// printf ("+");
+		/* printf ("+"); */
 	    }
 	}
-    }// demoplayback
+    }/* demoplayback */
 	
-    // wait for new tics if needed
+    /* wait for new tics if needed */
     while (lowtic < gametic/ticdup + counts)	
     {
 	NetUpdate ();   
@@ -683,7 +683,7 @@ void TryRunTics (void)
 	if (lowtic < gametic/ticdup)
 	    I_Error ("TryRunTics: lowtic < gametic");
 				
-	// don't stay in here forever -- give the menu a chance to work
+	/* don't stay in here forever -- give the menu a chance to work */
 	if (I_GetTime ()/ticdup - entertic >= 20)
 	{
 	    M_Ticker ();
@@ -693,7 +693,7 @@ void TryRunTics (void)
 	I_Sleep();
     }
     
-    // run the count * ticdup dics
+    /* run the count * ticdup dics */
     while (counts--)
     {
 	for (i=0 ; i<ticdup ; i++)
@@ -706,7 +706,7 @@ void TryRunTics (void)
 	    G_Ticker ();
 	    gametic++;
 	    
-	    // modify command for duplicated tics
+	    /* modify command for duplicated tics */
 	    if (i != ticdup-1)
 	    {
 		ticcmd_t	*cmd;
@@ -723,6 +723,6 @@ void TryRunTics (void)
 		}
 	    }
 	}
-	NetUpdate ();	// check for new console commands
+	NetUpdate ();	/* check for new console commands */
     }
 }

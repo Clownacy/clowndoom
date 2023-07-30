@@ -45,7 +45,7 @@ I_Tactile
   int	off,
   int	total )
 {
-  // UNUSED.
+  /* UNUSED. */
   (void)on;
   (void)off;
   (void)total;
@@ -71,8 +71,8 @@ byte* I_ZoneBase (size_t*	size)
 
 
 
-// I_GetTime
-// returns time in 1/70th second tics
+/* I_GetTime */
+/* returns time in 1/70th second tics */
 int  I_GetTime (void)
 {
     return IB_GetTime();
@@ -80,16 +80,16 @@ int  I_GetTime (void)
 
 
 
-// I_Init
+/* I_Init */
 void I_Init (void)
 {
     IB_Init();
 
     I_StartupSound();
-    //  I_InitGraphics();
+    /*  I_InitGraphics(); */
 }
 
-// I_Quit
+/* I_Quit */
 void I_Quit (void)
 {
     D_QuitNetGame ();
@@ -109,7 +109,7 @@ void I_WaitVBL(int count)
 
 void I_BeginRead(void)
 {
-    // This used to be for drawing the disk icon - see the Hexen source code
+    /* This used to be for drawing the disk icon - see the Hexen source code */
 }
 
 void I_EndRead(void)
@@ -126,14 +126,14 @@ byte*	I_AllocLow(size_t length)
 }
 
 
-// I_Error
+/* I_Error */
 extern boolean demorecording;
 
 void I_Error (const char *error, ...)
 {
     va_list	argptr;
 
-    // Message first.
+    /* Message first. */
     va_start (argptr,error);
     fprintf (stderr, "Error: ");
     vfprintf (stderr,error,argptr);
@@ -142,7 +142,7 @@ void I_Error (const char *error, ...)
 
     fflush( stderr );
 
-    // Shutdown. Here might be other errors.
+    /* Shutdown. Here might be other errors. */
     if (demorecording)
 	G_CheckDemoStatus();
 

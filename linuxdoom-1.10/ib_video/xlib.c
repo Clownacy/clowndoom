@@ -57,20 +57,20 @@ static XImage*		image;
 static int		X_width;
 static int		X_height;
 
-// MIT SHared Memory extension.
+/* MIT SHared Memory extension. */
 static boolean		doShm;
 
 static XShmSegmentInfo	X_shminfo;
 static int		X_shmeventtype;
 
-// Fake mouse handling.
-// This cannot work properly w/o DGA.
-// Needs an invisible mouse cursor at least.
+/* Fake mouse handling. */
+/* This cannot work properly w/o DGA. */
+/* Needs an invisible mouse cursor at least. */
 static boolean		grabMouse;
 static Cursor		nullCursor;
 
 
-//  Translates the key currently in X_event
+/*  Translates the key currently in X_event */
 
 static int xlatekey(void)
 {
@@ -150,7 +150,7 @@ static void IB_GetEvent(void)
     event_t event;
     static int button_state;
 
-    // put event-grabbing stuff in here
+    /* put event-grabbing stuff in here */
     XNextEvent(X_display, &X_event);
     switch (X_event.type)
     {
@@ -158,13 +158,13 @@ static void IB_GetEvent(void)
 	event.type = ev_keydown;
 	event.data1 = xlatekey();
 	D_PostEvent(&event);
-	// fprintf(stderr, "k");
+	/* fprintf(stderr, "k"); */
 	break;
       case KeyRelease:
 	event.type = ev_keyup;
 	event.data1 = xlatekey();
 	D_PostEvent(&event);
-	// fprintf(stderr, "ku");
+	/* fprintf(stderr, "ku"); */
 	break;
       case ButtonPress:
         switch (X_event.xbutton.button)
@@ -183,7 +183,7 @@ static void IB_GetEvent(void)
 	event.data1 = button_state;
 	event.data2 = event.data3 = 0;
 	D_PostEvent(&event);
-	// fprintf(stderr, "b");
+	/* fprintf(stderr, "b"); */
 	break;
       case ButtonRelease:
         switch (X_event.xbutton.button)
@@ -202,7 +202,7 @@ static void IB_GetEvent(void)
 	event.data1 = button_state;
 	event.data2 = event.data3 = 0;
 	D_PostEvent(&event);
-	// fprintf(stderr, "bu");
+	/* fprintf(stderr, "bu"); */
 	break;
       case MotionNotify:
 	event.type = ev_mouse;
@@ -218,7 +218,7 @@ static void IB_GetEvent(void)
 		X_event.xmotion.y != X_height/2)
 	    {
 		D_PostEvent(&event);
-		// fprintf(stderr, "m");
+		/* fprintf(stderr, "m"); */
 	    }
 	}
 	break;
@@ -259,7 +259,7 @@ createnullcursor
     return cursor;
 }
 
-// IB_StartTic
+/* IB_StartTic */
 void IB_StartTic (void)
 {
 
@@ -269,9 +269,9 @@ void IB_StartTic (void)
     while (XPending(X_display))
 	IB_GetEvent();
 
-    // Warp the pointer back to the middle of the window
-    //  or it will wander off - that is, the game will
-    //  loose input focus within X11.
+    /* Warp the pointer back to the middle of the window */
+    /*  or it will wander off - that is, the game will */
+    /*  loose input focus within X11. */
     if (grabMouse)
     {
 	XWarpPointer( X_display,
@@ -292,7 +292,7 @@ void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 }
 
 
-// IB_FinishUpdate
+/* IB_FinishUpdate */
 void IB_FinishUpdate (void)
 {
     if (doShm)
@@ -308,7 +308,7 @@ void IB_FinishUpdate (void)
 				True ))
 	    I_Error("XShmPutImage() failed\n");
 
-	// wait for it to finish and processes all input events
+	/* wait for it to finish and processes all input events */
 	shmFinished = false;
 	do
 	{
@@ -319,7 +319,7 @@ void IB_FinishUpdate (void)
     else
     {
 
-	// draw the image
+	/* draw the image */
 	XPutImage(	X_display,
 			X_mainWindow,
 			X_gc,
@@ -328,7 +328,7 @@ void IB_FinishUpdate (void)
 			0, 0,
 			X_width, X_height );
 
-	// sync up with server
+	/* sync up with server */
 	XSync(X_display, False);
 
     }
@@ -344,11 +344,11 @@ void IB_GetColor (unsigned char* bytes, unsigned char red, unsigned char green, 
 }
 
 
-// This function is probably redundant,
-//  if XShmDetach works properly.
-// ddt never detached the XShm memory,
-//  thus there might have been stale
-//  handles accumulating.
+/* This function is probably redundant, */
+/*  if XShmDetach works properly. */
+/* ddt never detached the XShm memory, */
+/*  thus there might have been stale */
+/*  handles accumulating. */
 static void grabsharedmemory(size_t size)
 {
 
@@ -357,16 +357,16 @@ static void grabsharedmemory(size_t size)
   int			minsize = 320*200;
   int			id;
   int			rc;
-  // UNUSED int done=0;
+  /* UNUSED int done=0; */
   int			pollution=5;
   
-  // try to use what was here before
+  /* try to use what was here before */
   do
   {
-    id = shmget((key_t) key, minsize, 0777); // just get the id
+    id = shmget((key_t) key, minsize, 0777); /* just get the id */
     if (id != -1)
     {
-      rc=shmctl(id, IPC_STAT, &shminfo); // get stats on it
+      rc=shmctl(id, IPC_STAT, &shminfo); /* get stats on it */
       if (!rc) 
       {
 	if (shminfo.shm_nattch)
@@ -438,7 +438,7 @@ static void grabsharedmemory(size_t size)
   
   X_shminfo.shmid = id;
   
-  // attach to the shared memory segment
+  /* attach to the shared memory segment */
   image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
   
   fprintf(stderr, "shared memory id=%d, addr=0x%p\n", id,
@@ -462,7 +462,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
     int			x=0;
     int			y=0;
     
-    // warning: char format, different type arg
+    /* warning: char format, different type arg */
     char		xsign=' ';
     char		ysign=' ';
     
@@ -477,16 +477,16 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
     X_width = screen_width;
     X_height = screen_height;
 
-    // check for command-line display name
-    if ( (pnum=M_CheckParm("-disp")) ) // suggest parentheses around assignment
+    /* check for command-line display name */
+    if ( (pnum=M_CheckParm("-disp")) ) /* suggest parentheses around assignment */
 	displayname = myargv[pnum+1];
     else
 	displayname = 0;
 
-    // check for command-line geometry
-    if ( (pnum=M_CheckParm("-geom")) ) // suggest parentheses around assignment
+    /* check for command-line geometry */
+    if ( (pnum=M_CheckParm("-geom")) ) /* suggest parentheses around assignment */
     {
-	// warning: char format, different type arg 3,5
+	/* warning: char format, different type arg 3,5 */
 	n = sscanf(myargv[pnum+1], "%c%d%c%d", &xsign, &x, &ysign, &y);
 	
 	if (n==2)
@@ -502,7 +502,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	    I_Error("bad -geom parameter");
     }
 
-    // open the display
+    /* open the display */
     X_display = XOpenDisplay(displayname);
     if (!X_display)
     {
@@ -512,16 +512,16 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	    I_Error("Could not open display (DISPLAY=[%s])", getenv("DISPLAY"));
     }
 
-    // use the default visual 
+    /* use the default visual */
     X_screen = DefaultScreen(X_display);
     if (!XMatchVisualInfo(X_display, X_screen, 24, TrueColor, &X_visualinfo))
 	I_Error("xdoom currently only supports 24-bit TrueColor screens");
     X_visual = X_visualinfo.visual;
 
-    // check for the MITSHM extension
+    /* check for the MITSHM extension */
     doShm = XShmQueryExtension(X_display);
 
-    // even if it's available, make sure it's a local connection
+    /* even if it's available, make sure it's a local connection */
     if (doShm)
     {
 	if (!displayname) displayname = (char *) getenv("DISPLAY");
@@ -537,23 +537,23 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
     if (doShm)
 	fprintf(stderr, "Using MITSHM extension\n");
 
-    // setup attributes for main window
+    /* setup attributes for main window */
     attribmask = CWEventMask | CWBorderPixel;
     attribs.event_mask =
 	KeyPressMask
 	| KeyReleaseMask
-	// | PointerMotionMask | ButtonPressMask | ButtonReleaseMask
+	/* | PointerMotionMask | ButtonPressMask | ButtonReleaseMask */
 	| ExposureMask;
 
     attribs.border_pixel = 0;
 
-    // create the main window
+    /* create the main window */
     X_mainWindow = XCreateWindow(	X_display,
 					RootWindow(X_display, X_screen),
 					x, y,
 					X_width, X_height,
-					0, // borderwidth
-					24, // depth
+					0, /* borderwidth */
+					24, /* depth */
 					InputOutput,
 					X_visual,
 					attribmask,
@@ -561,7 +561,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 
     nullCursor = createnullcursor( X_display, X_mainWindow );
 
-    // create the GC
+    /* create the GC */
     valuemask = GCGraphicsExposures;
     xgcvalues.graphics_exposures = False;
     X_gc = XCreateGC(	X_display,
@@ -569,10 +569,10 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
   			valuemask,
   			&xgcvalues );
 
-    // map the window
+    /* map the window */
     XMapWindow(X_display, X_mainWindow);
 
-    // wait until it is OK to draw
+    /* wait until it is OK to draw */
     oktodraw = 0;
     while (!oktodraw)
     {
@@ -589,7 +589,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 
 	X_shmeventtype = XShmGetEventBase(X_display) + ShmCompletion;
 
-	// create the image
+	/* create the image */
 	image = XShmCreateImage(	X_display,
 					X_visual,
 					24,
@@ -602,18 +602,18 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	grabsharedmemory(image->bytes_per_line * image->height);
 
 
-	// UNUSED
-	// create the shared memory segment
-	// X_shminfo.shmid = shmget (IPC_PRIVATE,
-	// image->bytes_per_line * image->height, IPC_CREAT | 0777);
-	// if (X_shminfo.shmid < 0)
-	// {
-	// perror("");
-	// I_Error("shmget() failed in InitGraphics()");
-	// }
-	// fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid);
-	// attach to the shared memory segment
-	// image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0);
+	/* UNUSED */
+	/* create the shared memory segment */
+	/* X_shminfo.shmid = shmget (IPC_PRIVATE, */
+	/* image->bytes_per_line * image->height, IPC_CREAT | 0777); */
+	/* if (X_shminfo.shmid < 0) */
+	/* { */
+	/* perror(""); */
+	/* I_Error("shmget() failed in InitGraphics()"); */
+	/* } */
+	/* fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid); */
+	/* attach to the shared memory segment */
+	/* image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0); */
 	
 
 	if (!image->data)
@@ -622,7 +622,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	    I_Error("shmat() failed in InitGraphics()");
 	}
 
-	// get the X server to attach to it
+	/* get the X server to attach to it */
 	if (!XShmAttach(X_display, &X_shminfo))
 	    I_Error("XShmAttach() failed in InitGraphics()");
 
@@ -649,15 +649,15 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 
 void IB_ShutdownGraphics(void)
 {
-  // Detach from X server
+  /* Detach from X server */
   if (!XShmDetach(X_display, &X_shminfo))
 	    I_Error("XShmDetach() failed in I_ShutdownGraphics()");
 
-  // Release shared memory.
+  /* Release shared memory. */
   shmdt(X_shminfo.shmaddr);
   shmctl(X_shminfo.shmid, IPC_RMID, 0);
 
-  // Paranoia.
+  /* Paranoia. */
   image->data = NULL;
 }
 
