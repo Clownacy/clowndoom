@@ -174,7 +174,7 @@ V_CopyRect
 static void
 V_DrawPatchColumnInternal
 ( unsigned char* desttop,
-  patch_t*       patch,
+  const patch_t* patch,
   int            scale,
   int            col )
 {
@@ -223,12 +223,8 @@ V_DrawPatchInternal
   d_bool        flip )
 {
 
-	int         count;
 	int         col;
-	column_t*   column;
 	unsigned char*       desttop;
-	unsigned char*       dest;
-	unsigned char*       source;
 	int         w;
 
 #ifdef RANGECHECK
@@ -442,12 +438,12 @@ V_DrawPatchDirectScaled
 
 void
 V_DrawPatchColumn
-( int           x,
-  int           y,
-  int           scrn,
-  patch_t*      patch,
-  int           scale,
-  int           col )
+( int            x,
+  int            y,
+  int            scrn,
+  const patch_t* patch,
+  int            scale,
+  int            col )
 {
 	V_DrawPatchColumnInternal(screens[scrn]+y*SCREENWIDTH+x, patch, scale, col);
 }

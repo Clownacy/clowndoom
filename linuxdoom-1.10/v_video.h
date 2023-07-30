@@ -106,12 +106,12 @@ V_DrawPatchDirectScaled
 
 void
 V_DrawPatchColumn
-( int           x,
-  int           y,
-  int           scrn,
-  patch_t*      patch,
-  int           scale,
-  int           col );
+( int            x,
+  int            y,
+  int            scrn,
+  const patch_t* patch,
+  int            scale,
+  int            col );
 
 void
 V_FillScreenWithPattern
