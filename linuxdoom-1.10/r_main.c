@@ -582,7 +582,7 @@ void R_InitTextureMapping (void)
 /* R_InitLightTables */
 /* Only inits the zlight table, */
 /*  because the scalelight table changes with view size. */
-#define DISTMAP         (2*MAXLIGHTSCALE_MUL)
+#define DISTMAP         (2*LIGHTINGRESOLUTIONSCALE)
 
 void R_InitLightTables (void)
 {
@@ -599,7 +599,7 @@ void R_InitLightTables (void)
 		startmap = ((LIGHTLEVELS-1-i)*2)*NUMLIGHTCOLORMAPS/LIGHTLEVELS;
 		for (j=0 ; j<MAXLIGHTZ ; j++)
 		{
-			scale = FixedDiv ((SCREENWIDTH/2*FRACUNIT)*NUMLIGHTCOLORMAPS_MUL, (j+1)<<LIGHTZSHIFT);
+			scale = FixedDiv ((SCREENWIDTH/2*FRACUNIT)*NUMLIGHTCOLORMAPS_MUL, (j+1)*LIGHTZSHIFT);
 			scale /= LIGHTSCALESHIFT;
 			level = startmap - scale/DISTMAP;
 

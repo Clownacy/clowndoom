@@ -141,7 +141,7 @@ R_MapPlane
 		ds_colormap = fixedcolormap;
 	else
 	{
-		index = distance >> LIGHTZSHIFT;
+		index = distance / LIGHTZSHIFT;
 
 		if (index >= MAXLIGHTZ )
 			index = MAXLIGHTZ-1;
