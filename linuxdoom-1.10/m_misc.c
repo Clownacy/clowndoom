@@ -576,10 +576,6 @@ void M_ScreenShot (void)
 	unsigned char*       linear;
 	char        lbmname[12];
 
-	/* munge planar buffer to linear */
-	linear = screens[SCREEN_WIPE_START];
-	I_ReadScreen (linear);
-
 	/* find a file name to save it to */
 	strcpy(lbmname,"DOOM00.pcx");
 	if (bmp_screenshots)
@@ -595,9 +591,20 @@ void M_ScreenShot (void)
 	if (i==100)
 		I_Error ("M_ScreenShot: Couldn't create a screenshot");
 
+	/* rotate the framebuffer */
+	linear = screens[SCREEN_WIPE_START];
+
+	for (i = 0; i < SCREENWIDTH; ++i)
+	{
+		int j;
+
+		for (j = 0; j < SCREENHEIGHT; ++j)
+			linear[j * SCREENWIDTH + i] = screens[SCREEN_FRAMEBUFFER][i * SCREENHEIGHT + j];
+	}
+
 	/* save the screenshot file */
 	(bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
-				  SCREENHEIGHT, SCREENWIDTH,
+				  SCREENWIDTH, SCREENHEIGHT,
 				  (unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
 	players[consoleplayer].message = "screen shot";
