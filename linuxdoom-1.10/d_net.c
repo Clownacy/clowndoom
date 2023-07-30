@@ -580,6 +580,8 @@ void D_QuitNetGame (void)
 				HSendPacket (j, NCMD_EXIT);
 		I_WaitVBL (1);
 	}
+
+	I_DeinitNetwork();
 }
 
 

@@ -140,6 +140,10 @@ if(CMAKE_C_BYTE_ORDER STREQUAL "BIG_ENDIAN")
 	target_sources(clowndoom "linuxdoom-1.10/m_swap.c")
 endif()
 
+if(WIN32)
+	target_link_libraries(clowndoom PRIVATE ws2_32)
+endif()
+
 # Handling linking/building WildMIDI
 if(WILDMIDI)
 	target_compile_definitions(clowndoom PRIVATE WILDMIDI)

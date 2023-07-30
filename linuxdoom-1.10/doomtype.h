@@ -31,6 +31,7 @@ typedef unsigned char byte;
 
 #include <limits.h>
 
+#ifndef MAXCHAR
 #define MAXCHAR         SCHAR_MAX
 #define MAXSHORT        SHRT_MAX
 
@@ -43,6 +44,7 @@ typedef unsigned char byte;
 /* Max negative 32-bit integer. */
 #define MININT          INT_MIN
 #define MINLONG         LONG_MIN
+#endif
 
 
 

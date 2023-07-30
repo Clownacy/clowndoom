@@ -21,7 +21,7 @@
 #include <stdio.h>
 
 /* TODO: Abstract this away. */
-#ifdef __unix__
+#if defined(__unix__)
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -29,6 +29,9 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
+#elif defined(_WIN32)
+#include <winsock2.h>
+#include <ws2tcpip.h>
 #endif
 
 #include "i_system.h"
@@ -44,7 +47,6 @@
 
 
 
-#ifdef __unix__
 /* For some odd reason... */
 #ifndef ntohl
 #define ntohl(x) \
@@ -74,7 +76,7 @@ bool32 NetListen (void);
 
 /* NETWORKING */
 
-int     DOOMPORT =      (IPPORT_USERRESERVED +0x1d );
+int     DOOMPORT =      666;
 
 int                     sendsocket;
 int                     insocket;
@@ -92,8 +94,12 @@ int UDPsocket (void)
 
 	/* allocate a socket */
 	s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	if (s<0)
+	if (s == -1)
+#if defined(__unix__)
 		I_Error ("can't create socket: %s",strerror(errno));
+#elif defined(_WIN32)
+		I_Error ("can't create socket: error code %d",WSAGetLastError());
+#endif
 
 	return s;
 }
@@ -112,9 +118,13 @@ BindToLocalPort
 	address.sin_addr.s_addr = INADDR_ANY;
 	address.sin_port = port;
 
-	v = bind (s, (void *)&address, sizeof(address));
+	v = bind (s, (struct sockaddr *)&address, sizeof(address));
 	if (v == -1)
+#if defined(__unix__)
 		I_Error ("BindToPort: bind: %s", strerror(errno));
+#elif defined(_WIN32)
+		I_Error ("BindToPort: bind: error code %d", WSAGetLastError());
+#endif
 }
 
 
@@ -141,12 +151,16 @@ void PacketSend (void)
 	}
 
    /* printf ("sending %i\n",gametic); */
-	c = sendto (sendsocket , &sw, doomcom->datalength
-				,0,(void *)&sendaddress[doomcom->remotenode]
+	c = sendto (sendsocket , (const char*)&sw, doomcom->datalength
+				,0,(struct sockaddr *)&sendaddress[doomcom->remotenode]
 				,sizeof(sendaddress[doomcom->remotenode]));
 
 	/*  if (c == -1) */
+#if defined(__unix__)
 	/*          I_Error ("SendPacket error: %s",strerror(errno)); */
+#elif defined(_WIN32)
+	/*          I_Error ("SendPacket error: error code %d",WSAGetLastError()); */
+#endif
 }
 
 
@@ -160,12 +174,17 @@ void PacketGet (void)
 	doomdata_t          sw;
 
 	fromlen = sizeof(fromaddress);
-	c = recvfrom (insocket, &sw, sizeof(sw), 0
+	c = recvfrom (insocket, (char*)&sw, sizeof(sw), 0
 				  , (struct sockaddr *)&fromaddress, &fromlen );
 	if (c == -1 )
 	{
+	#if defined(__unix__)
 		if (errno != EWOULDBLOCK)
 			I_Error ("GetPacket: %s",strerror(errno));
+	#elif defined(_WIN32)
+		if (WSAGetLastError() != WSAEWOULDBLOCK)
+			I_Error ("GetPacket: error code %d",WSAGetLastError());
+	#endif
 		doomcom->remotenode = -1;               /* no packet */
 		return;
 	}
@@ -221,7 +240,11 @@ int GetLocalAddress (void)
 	/* get local address */
 	v = gethostname (hostname, sizeof(hostname));
 	if (v == -1)
-		I_Error ("GetLocalAddress : gethostname: errno %d",errno);
+#if defined(__unix__)
+		I_Error ("GetLocalAddress : gethostname: %s",strerror(errno));
+#elif defined(_WIN32)
+		I_Error ("GetLocalAddress : gethostname: error code %d",WSAGetLastError());
+#endif
 
 	hostentry = gethostbyname (hostname);
 	if (!hostentry)
@@ -229,20 +252,20 @@ int GetLocalAddress (void)
 
 	return *(int *)hostentry->h_addr_list[0];
 }
-#endif
 
 
 /* I_InitNetwork */
 void I_InitNetwork (void)
 {
-#ifdef __unix__
-	bool32             trueval = b_true;
+#if defined(__unix__)
+	int
+#elif defined(_WIN32)
+	u_long
 #endif
+	                    trueval = b_true;
 	int                 i;
-#ifdef __unix__
 	int                 p;
 	struct hostent*     hostentry;      /* host information entry */
-#endif
 
 	doomcom = (doomcom_t*)malloc (sizeof (*doomcom) );
 	memset (doomcom, 0, sizeof(*doomcom) );
@@ -265,7 +288,6 @@ void I_InitNetwork (void)
 	else
 		doomcom-> extratics = 0;
 
-#ifdef __unix__
 	p = M_CheckParm ("-port");
 	if (p && p<myargc-1)
 	{
@@ -278,16 +300,27 @@ void I_InitNetwork (void)
 	i = M_CheckParm ("-net");
 	if (!i)
 	{
-#endif
 		/* single player game */
 		netgame = b_false;
 		doomcom->id = DOOMCOM_ID;
 		doomcom->numplayers = doomcom->numnodes = 1;
 		doomcom->deathmatch = b_false;
 		doomcom->consoleplayer = 0;
-#ifdef __unix__
 		return;
 	}
+
+#ifdef _WIN32
+	/* initialise WSA */
+	{
+		int error_code;
+		WSADATA wsa_data;
+
+		error_code = WSAStartup(MAKEWORD(2, 2), &wsa_data);
+
+		if (error_code != 0)
+			I_Error("WSAStartup failed with error code %d", error_code);
+	}
+#endif
 
 	netsend = PacketSend;
 	netget = PacketGet;
@@ -325,16 +358,28 @@ void I_InitNetwork (void)
 	/* build message to receive */
 	insocket = UDPsocket ();
 	BindToLocalPort (insocket,htons(DOOMPORT));
-	ioctl (insocket, FIONBIO, &trueval);
+#if defined(__unix__)
+	ioctl
+#elif defined(_WIN32)
+	ioctlsocket
+#endif
+		(insocket, FIONBIO, &trueval);
 
 	sendsocket = UDPsocket ();
+}
+
+
+void I_DeinitNetwork(void)
+{
+#ifdef _WIN32
+	if (WSACleanup() == SOCKET_ERROR)
+		I_Error("WSACleanup failed with error code %d", WSAGetLastError());
 #endif
 }
 
 
 void I_NetCmd (void)
 {
-#ifdef __unix__
 	if (doomcom->command == CMD_SEND)
 	{
 		netsend ();
@@ -345,6 +390,5 @@ void I_NetCmd (void)
 	}
 	else
 		I_Error ("Bad net cmd: %i\n",doomcom->command);
-#endif
 }
 
