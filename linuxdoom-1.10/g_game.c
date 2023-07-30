@@ -1369,16 +1369,46 @@ G_InitNew
 
 	if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare) )
 	{
-		for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
-			states[i].tics >>= 1;
+		/*for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
+			states[i].tics >>= 1;*/
+		/* It is possible for the above code to be ran multiple times, causing a bug.
+		   To avoid the bug, the below code sets the tics manually instead. */
+		states[S_SARG_RUN1].tics = 2/2;
+		states[S_SARG_RUN2].tics = 2/2;
+		states[S_SARG_RUN3].tics = 2/2;
+		states[S_SARG_RUN4].tics = 2/2;
+		states[S_SARG_RUN5].tics = 2/2;
+		states[S_SARG_RUN6].tics = 2/2;
+		states[S_SARG_RUN7].tics = 2/2;
+		states[S_SARG_RUN8].tics = 2/2;
+		states[S_SARG_ATK1].tics = 8/2;
+		states[S_SARG_ATK2].tics = 8/2;
+		states[S_SARG_ATK3].tics = 8/2;
+		states[S_SARG_PAIN].tics = 2/2;
+		states[S_SARG_PAIN2].tics = 2/2;
 		mobjinfo[MT_BRUISERSHOT].speed = 20*FRACUNIT;
 		mobjinfo[MT_HEADSHOT].speed = 20*FRACUNIT;
 		mobjinfo[MT_TROOPSHOT].speed = 20*FRACUNIT;
 	}
 	else if (skill != sk_nightmare && gameskill == sk_nightmare)
 	{
-		for (i=S_SARG_RUN1 ; i<=S_SARG_PAIN2 ; i++)
-			states[i].tics <<= 1;
+		/*for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
+			states[i].tics <<= 1;*/
+		/* It is possible for the above code to be ran multiple times, causing a bug.
+		   To avoid the bug, the below code sets the tics manually instead. */
+		states[S_SARG_RUN1].tics = 2;
+		states[S_SARG_RUN2].tics = 2;
+		states[S_SARG_RUN3].tics = 2;
+		states[S_SARG_RUN4].tics = 2;
+		states[S_SARG_RUN5].tics = 2;
+		states[S_SARG_RUN6].tics = 2;
+		states[S_SARG_RUN7].tics = 2;
+		states[S_SARG_RUN8].tics = 2;
+		states[S_SARG_ATK1].tics = 8;
+		states[S_SARG_ATK2].tics = 8;
+		states[S_SARG_ATK3].tics = 8;
+		states[S_SARG_PAIN].tics = 2;
+		states[S_SARG_PAIN2].tics = 2;
 		mobjinfo[MT_BRUISERSHOT].speed = 15*FRACUNIT;
 		mobjinfo[MT_HEADSHOT].speed = 10*FRACUNIT;
 		mobjinfo[MT_TROOPSHOT].speed = 10*FRACUNIT;
