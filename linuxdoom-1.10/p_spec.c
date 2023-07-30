@@ -1006,7 +1006,7 @@ void P_PlayerInSpecialSector (player_t* player)
 		/* SECRET SECTOR */
 		player->secretcount++;
 		sector->special = 0;
-		if (secret_notify)
+		if (deathmatch == DM_OFF && secret_notify)
 		{
 			players[consoleplayer].message = SECRETFOUND;
 			S_StartSound(NULL, sfx_itmbk);
