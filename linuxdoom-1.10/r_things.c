@@ -337,12 +337,7 @@ void R_DrawMaskedColumn (column_t* column)
 		topscreen = sprtopscreen + spryscale*column->topdelta;
 		bottomscreen = topscreen + spryscale*column->length;
 
-		/*dc_yl = (topscreen+FRACUNIT-1)>>FRACBITS;*/
-		/* TODO: For some reason, the above code produces odd artifacting
-		   on the pistol sprite at 6x `HUD_SCALE`, so I've replaced it with
-		   something that doesn't produce the error. I don't understand why
-		   this is broken to begin with, though. */
-		dc_yl = (topscreen>>FRACBITS)+1;
+		dc_yl = (topscreen+FRACUNIT-1)>>FRACBITS;
 		dc_yh = (bottomscreen-1)>>FRACBITS;
 
 		if (dc_yh >= mfloorclip[dc_x])
