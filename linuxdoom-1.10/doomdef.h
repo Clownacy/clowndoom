@@ -113,12 +113,12 @@ typedef enum
 /* Difficulty/skill settings/filters. */
 
 /* Skill flags. */
-#define MTF_EASY                1
-#define MTF_NORMAL              2
-#define MTF_HARD                4
+#define MTF_EASY                (1<<0)
+#define MTF_NORMAL              (1<<1)
+#define MTF_HARD                (1<<2)
 
 /* Deaf monsters/do not react to sound. */
-#define MTF_AMBUSH              8
+#define MTF_AMBUSH              (1<<3)
 
 typedef enum
 {
