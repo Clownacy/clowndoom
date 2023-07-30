@@ -1282,13 +1282,13 @@ void G_DoSaveGame (void)
 
 	length = ArchiveToBuffer(NULL);
 
-	savebuffer = (unsigned char*)malloc(length);
+	savebuffer = (unsigned char*)Z_Malloc(length, PU_STATIC, 0);
 
 	if (savebuffer != NULL)
 	{
 		ArchiveToBuffer(savebuffer);
 		M_WriteFile(name, savebuffer, length);
-		free(savebuffer);
+		Z_Free(savebuffer);
 	}
 
 	gameaction = ga_nothing;

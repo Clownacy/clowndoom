@@ -422,7 +422,7 @@ void R_InitTextures (void)
 	names = (unsigned char*)W_CacheLumpName ("PNAMES", PU_STATIC);
 	nummappatches = M_BytesToLong(names);
 	name_p = (const char*)names+4;
-	patchlookup = (int*)malloc (nummappatches*sizeof(*patchlookup));
+	patchlookup = (int*)Z_Malloc (nummappatches*sizeof(*patchlookup), PU_STATIC, 0);
 
 	for (i=0 ; i<nummappatches ; i++)
 	{
@@ -532,7 +532,7 @@ void R_InitTextures (void)
 		totalwidth += texture->width;
 	}
 
-	free(patchlookup);
+	Z_Free(patchlookup);
 
 	Z_Free (maptex1);
 	if (maptex2 != NULL)
