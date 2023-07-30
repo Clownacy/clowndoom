@@ -580,8 +580,6 @@ WriteBMPfile
 
     for (i = 0; i < height; ++i)
     {
-        unsigned int j;
-
         bmp_pointer = &bmp[bitmap_offset + rounded_width * (height - i - 1)];
 
         memcpy(bmp_pointer, data, width);
