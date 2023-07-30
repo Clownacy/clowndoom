@@ -439,9 +439,11 @@ boolean I_SoundIsPlaying(int handle)
     {
         if (channelhandles[i] == handle)
 	{
+            boolean playing;
+
             IB_LockSound();
 
-            boolean playing = channels[i] != NULL;
+            playing = channels[i] != NULL;
 
             IB_UnlockSound();
 
@@ -687,6 +689,10 @@ int I_RegisterSong(const void* data, size_t size)
 // Is the song playing? (unused)
 int I_QrySongPlaying(int handle)
 {
+#ifdef WILDMIDI
+    boolean playing;
+#endif
+
     // UNUSED.
     (void)handle;
 
@@ -695,7 +701,7 @@ int I_QrySongPlaying(int handle)
 #else
     IB_LockSound();
 
-    boolean playing = music_playing;
+    playing = music_playing;
 
     IB_UnlockSound();
 

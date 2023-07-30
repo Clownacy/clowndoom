@@ -59,9 +59,11 @@ static void MakeStringUppercase (char* s)
 
 static int filelength (FILE* handle) 
 { 
-    long previous_position = ftell(handle);
+    long previous_position, length;
+
+    previous_position = ftell(handle);
     fseek(handle, 0, SEEK_END);
-    long length = ftell(handle);
+    length = ftell(handle);
     fseek(handle, previous_position, SEEK_SET);
 
     return length;

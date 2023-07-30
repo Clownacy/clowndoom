@@ -83,13 +83,19 @@ void I_UpdateNoBlit (void)
 //
 void I_FinishUpdate (void)
 {
-    static int	lasttic;
-    int		tics;
-    int		i;
+    static int lasttic;
+    int tics;
+    size_t i,y;
+    unsigned char *indexed_pixels;
+    unsigned char *colored_screen_pointer;
+    unsigned char *pixels;
+    size_t pitch;
+    const unsigned char *src_pointer;
 
     // draws little dots on the bottom of the screen
     if (devparm)
     {
+	int i;
 
 	i = I_GetTime();
 	tics = i - lasttic;
@@ -100,36 +106,37 @@ void I_FinishUpdate (void)
 	    screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0xff;
 	for ( ; i<20*2 ; i+=2)
 	    screens[0][ (SCREENHEIGHT-1)*SCREENWIDTH + i] = 0x0;
-    
     }
 
     // Step 1. Color the screen
-    unsigned char *indexed_pixels = screens[0];
-    unsigned char *colored_screen_pointer = colored_screen;
+    indexed_pixels = screens[0];
+    colored_screen_pointer = colored_screen;
 
-    for (size_t i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
+    for (i = 0; i < SCREENWIDTH * SCREENHEIGHT; ++i)
     {
-	unsigned char *color = &colors[*indexed_pixels++ * bytes_per_pixel];
+        size_t j;
 
-	for (size_t j = 0; j < bytes_per_pixel; ++j)
+	const unsigned char * const color = &colors[*indexed_pixels++ * bytes_per_pixel];
+
+	for (j = 0; j < bytes_per_pixel; ++j)
 	    *colored_screen_pointer++ = color[j];
     }
 
     // Step 2. Scale the screen
-    unsigned char *pixels;
-    size_t pitch;
     IB_GetFramebuffer(&pixels, &pitch);
 
-    const unsigned char *src_pointer = colored_screen;
-    for (size_t y = 0; y < output_height; ++y)
+    src_pointer = colored_screen;
+    for (y = 0; y < output_height; ++y)
     {
 	if (upscale_y_deltas[y])
 	{
+            size_t x;
+
 	    unsigned char *upscale_line_buffer_pointer = &pixels[y * pitch];
 
-	    for (size_t x = 0; x < output_width; ++x)
+	    for (x = 0; x < output_width; ++x)
 	    {
-		for (size_t i = 0; i < bytes_per_pixel; ++i)
+		for (i = 0; i < bytes_per_pixel; ++i)
 		    *upscale_line_buffer_pointer++ = src_pointer[i];
 
 		if (upscale_x_deltas[x])
@@ -174,6 +181,9 @@ void I_SetPalette (const byte* palette)
 
 void I_InitGraphics(void)
 {
+    int multiply;
+    size_t last, i;
+
     // TODO - get rid of this junk
     static int		firsttime=1;
 
@@ -181,7 +191,7 @@ void I_InitGraphics(void)
 	return;
     firsttime = 0;
 
-    int multiply = 1;
+    multiply = 1;
 
     if (M_CheckParm("-2"))
 	multiply = 2;
@@ -211,9 +221,9 @@ void I_InitGraphics(void)
     upscale_x_deltas = malloc(output_width);
     upscale_y_deltas = malloc(output_height);
 
-    for (size_t last = 0, i = 0; i < output_height; ++i)
+    for (last = 0, i = 0; i < output_height; ++i)
     {
-	size_t current = i * SCREENHEIGHT / output_height;
+	const size_t current = i * SCREENHEIGHT / output_height;
 
 	upscale_y_deltas[i] = last != current;
 
@@ -222,9 +232,9 @@ void I_InitGraphics(void)
 
     upscale_y_deltas[0] = 1;	// Force a redraw on the first line
 
-    for (size_t last = 0, i = 0; i < output_width; ++i)
+    for (last = 0, i = 0; i < output_width; ++i)
     {
-	size_t current = (i + 1) * SCREENWIDTH / output_width;	// The +1 here is deliberate, to avoid distortion at 320x240
+	const size_t current = (i + 1) * SCREENWIDTH / output_width;	// The +1 here is deliberate, to avoid distortion at 320x240
 
 	upscale_x_deltas[i] = last != current;
 

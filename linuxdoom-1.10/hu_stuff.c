@@ -391,7 +391,6 @@ void HU_Init(void)
 {
 
     int		i;
-    int		j;
     char	buffer[9];
 
     if (language == french)
@@ -400,10 +399,9 @@ void HU_Init(void)
 	shiftxform = english_shiftxform;
 
     // load the heads-up font
-    j = HU_FONTSTART;
     for (i=0;i<HU_FONTSIZE;i++)
     {
-	sprintf(buffer, "STCFN%.3d", j++);
+	sprintf(buffer, "STCFN%.3d", HU_FONTSTART + i);
 	hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
     }
 

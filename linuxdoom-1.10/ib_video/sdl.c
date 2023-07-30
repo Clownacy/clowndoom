@@ -232,9 +232,11 @@ void IB_FinishUpdate (void)
 
 void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, unsigned char blue)
 {
-    Uint32 color = SDL_MapRGB(surface->format, red, green, blue);
+    unsigned int i;
 
-    for (Uint8 i = 0; i < surface->format->BytesPerPixel; ++i)
+    const Uint32 color = SDL_MapRGB(surface->format, red, green, blue);
+
+    for (i = 0; i < surface->format->BytesPerPixel; ++i)
 	bytes[i] = (color >> (i * 8)) & 0xFF;
 }
 
