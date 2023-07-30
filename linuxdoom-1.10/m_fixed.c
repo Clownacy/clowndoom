@@ -109,6 +109,8 @@ FixedMul
 ( fixed_t       a,
   fixed_t       b )
 {
+	const d_bool result_is_negative = (a < 0) != (b < 0);
+
 	const unsigned long a_absolute = labs(a);
 	const unsigned long b_absolute = labs(b);
 
@@ -117,9 +119,10 @@ FixedMul
 	const unsigned long b_upper = b_absolute / FRACUNIT;
 	const unsigned long b_lower = b_absolute % FRACUNIT;
 
-	const long result = (long)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + (a_lower * b_lower / FRACUNIT));
+	/* This code is burdened by having to recreate a rounding error in the original code that was caused by right-shifting a signed integer. Stupid. */
+	const long result = (long)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + ((a_lower * b_lower + (result_is_negative ? FRACUNIT-1 : 0)) / FRACUNIT));
 
-	return (a < 0) != (b < 0) ? -result : result;
+	return result_is_negative ? -result : result;
 
 #if 0
 	/* Old legacy code. */
