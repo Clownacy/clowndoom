@@ -175,7 +175,7 @@ void R_DrawColumnLow (void)
 
 /* Spectre/Invisibility. */
 #define FUZZTABLE 50
-#define FUZZOFF 1
+#define FUZZOFF (1*SCREENWIDTH/ORIGINAL_SCREEN_WIDTH) /* TODO: This will break when alternate FOVs are added. */
 
 
 static const int fuzzoffset[FUZZTABLE] =
@@ -209,12 +209,12 @@ void R_DrawFuzzColumn (void)
 	fixed_t             fracstep;
 
 	/* Adjust borders. Low... */
-	if (dc_yl == 0)
-		dc_yl = 1;
+	if (dc_yl < FUZZOFF)
+		dc_yl = FUZZOFF;
 
 	/* .. and high. */
-	if (dc_yh == viewheight-1)
-		dc_yh = viewheight - 2;
+	if (dc_yh > viewheight - 1 - FUZZOFF)
+		dc_yh = viewheight - 1 - FUZZOFF;
 
 	count = dc_yh - dc_yl;
 
@@ -268,12 +268,12 @@ void R_DrawFuzzColumnLow (void)
 	fixed_t             fracstep;
 
 	/* Adjust borders. Low... */
-	if (dc_yl == 0)
-		dc_yl = 1;
+	if (dc_yl < FUZZOFF)
+		dc_yl = FUZZOFF;
 
 	/* .. and high. */
-	if (dc_yh == viewheight-1)
-		dc_yh = viewheight - 2;
+	if (dc_yh > viewheight - 1 - FUZZOFF)
+		dc_yh = viewheight - 1 - FUZZOFF;
 
 	count = dc_yh - dc_yl;
 
