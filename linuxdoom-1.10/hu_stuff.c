@@ -48,7 +48,7 @@
 #define HU_TITLEHEIGHT  1
 #define HU_TITLEX       0
 #define HU_TITLEY       (SCREENHEIGHT - ST_HEIGHT - HU_YSPACING)
-#define HU_TOTALSX      (SCREENWIDTH - (1 + 6 * 8) * HUD_SCALE)
+#define HU_TOTALSX      (SCREENWIDTH - 6 * 8 * HUD_SCALE)
 #define HU_TOTALSY      (SCREENHEIGHT - ST_HEIGHT - HU_YSPACING * 3)
 
 #define HU_INPUTTOGGLE  't'
