@@ -175,7 +175,8 @@ V_DrawPatchInternal
   int           y,
   int           scrn,
   const patch_t*        patch,
-  int           scale )
+  int           scale,
+  d_bool        flip )
 {
 
 	int         count;
@@ -212,7 +213,7 @@ V_DrawPatchInternal
 
 	for ( ; col<w ; col++, desttop += scale)
 	{
-		column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
+		column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[flip ? w-1-col : col]));
 
 		/* step through the posts in a column */
 		while (column->topdelta != 0xff )
@@ -225,17 +226,17 @@ V_DrawPatchInternal
 			{
 				int y;
 
+				const unsigned char pixel = *source++;
+
 				for (y = 0; y < scale; ++y)
 				{
 					int x;
 
 					for (x = 0; x < scale; ++x)
-						dest[x] = *source;
+						dest[x] = pixel;
 
 					dest += SCREENWIDTH;
 				}
-
-				++source;
 			}
 			column = (column_t *)(  (unsigned char *)column + column->length
 									+ 4 );
@@ -253,7 +254,7 @@ V_DrawPatch
   int           scrn,
   const patch_t*        patch)
 {
-	V_DrawPatchInternal(x, y, scrn, patch, 1);
+	V_DrawPatchInternal(x, y, scrn, patch, 1, d_false);
 }
 
 
@@ -264,7 +265,7 @@ V_DrawPatchScaled
   int           scrn,
   const patch_t*        patch)
 {
-	V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL);
+	V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_false);
 }
 
 
@@ -278,7 +279,9 @@ V_DrawPatchFlipped
   int           scrn,
   const patch_t*        patch )
 {
+	V_DrawPatchInternal(x, y, scrn, patch, 1, d_true);
 
+#if 0
 	int         count;
 	int         col;
 	column_t*   column;
@@ -326,6 +329,18 @@ V_DrawPatchFlipped
 									+ 4 );
 		}
 	}
+#endif
+}
+
+
+void
+V_DrawPatchFlippedScaled
+( int           x,
+  int           y,
+  int           scrn,
+  const patch_t*        patch )
+{
+	V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_true);
 }
 
 

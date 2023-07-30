@@ -77,6 +77,20 @@ V_DrawPatchScaled
   const patch_t*        patch);
 
 void
+V_DrawPatchFlipped
+( int           x,
+  int           y,
+  int           scrn,
+  const patch_t*        patch );
+
+void
+V_DrawPatchFlippedScaled
+( int           x,
+  int           y,
+  int           scrn,
+  const patch_t*        patch );
+
+void
 V_DrawPatchDirect
 ( int           x,
   int           y,

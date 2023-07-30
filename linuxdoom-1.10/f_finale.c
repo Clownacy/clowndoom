@@ -54,11 +54,9 @@ const char*     e2text = E2TEXT;
 const char*     e3text = E3TEXT;
 const char*     e4text = E4TEXT;
 
-static const char c2text[] = C2TEXT;
-
 const char* ctext[] = {
 	C1TEXT,
-	c2text,
+	C2TEXT,
 	C3TEXT,
 	C4TEXT,
 	C5TEXT,
@@ -271,6 +269,8 @@ void F_Ticker (void)
 #include "hu_stuff.h"
 extern  patch_t *hu_font[HU_FONTSIZE];
 
+#define BG_TILE_SRC_SIZE 64
+#define BG_TILE_DST_SIZE (BG_TILE_SRC_SIZE*SCREEN_MUL)
 
 void F_TextWrite (void)
 {
@@ -288,23 +288,30 @@ void F_TextWrite (void)
 	src = (unsigned char*)W_CacheLumpName ( finaleflat , PU_CACHE);
 	dest = screens[0];
 
-	for (y=0 ; y<SCREENHEIGHT ; y++)
+	for (y=0 ; y<(SCREENHEIGHT+(SCREEN_MUL-1))/SCREEN_MUL ; y++)
 	{
-		for (x=0 ; x<SCREENWIDTH/64 ; x++)
+		static unsigned char line_buffer[BG_TILE_DST_SIZE];
+
+		/* Upscale a row of pixels. */
+		for (x=0 ; x<BG_TILE_SRC_SIZE ; x++)
+			for (w=0 ; w<SCREEN_MUL; w++)
+				line_buffer[x*SCREEN_MUL+w] = src[((y%BG_TILE_SRC_SIZE)*BG_TILE_SRC_SIZE)+x];
+
+		/* Repeatedly copy the upscaled row to the screen. */
+		for (w=0 ; w<D_MIN(SCREEN_MUL,SCREENHEIGHT-y*SCREEN_MUL); w++)
 		{
-			memcpy (dest, src+((y&63)<<6), 64);
-			dest += 64;
-		}
-		if (SCREENWIDTH&63)
-		{
-			memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
-			dest += (SCREENWIDTH&63);
+			for (x=0 ; x<SCREENWIDTH ; x+=BG_TILE_DST_SIZE)
+			{
+				const int bytes_to_do = D_MIN(BG_TILE_DST_SIZE, SCREENWIDTH - x);
+				memcpy (dest, line_buffer, bytes_to_do);
+				dest += bytes_to_do;
+			}
 		}
 	}
 
 	/* draw some of the text onto the screen */
-	cx = 10;
-	cy = 10;
+	cx = X_CENTRE(10);
+	cy = Y_CENTRE(10);
 	ch = finaletext;
 
 	count = (finalecount - 10)/TEXTSPEED;
@@ -317,22 +324,22 @@ void F_TextWrite (void)
 			break;
 		if (c == '\n')
 		{
-			cx = 10;
-			cy += 11;
+			cx = X_CENTRE(10);
+			cy += 11*SCREEN_MUL;
 			continue;
 		}
 
 		c = toupper(c) - HU_FONTSTART;
 		if (c < 0 || c> HU_FONTSIZE)
 		{
-			cx += 4;
+			cx += 4*SCREEN_MUL;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width);
+		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
 		if (cx+w > SCREENWIDTH)
 			break;
-		V_DrawPatch(cx, cy, 0, hu_font[c]);
+		V_DrawPatchScaled(cx, cy, 0, hu_font[c]);
 		cx+=w;
 	}
 
@@ -544,16 +551,16 @@ void F_CastPrint (const char* text)
 		c = toupper(c) - HU_FONTSTART;
 		if (c < 0 || c> HU_FONTSIZE)
 		{
-			width += 4;
+			width += 4*SCREEN_MUL;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width);
+		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
 		width += w;
 	}
 
 	/* draw it */
-	cx = 160-width/2;
+	cx = SCREENWIDTH/2-width/2;
 	ch = text;
 	while (ch)
 	{
@@ -563,12 +570,12 @@ void F_CastPrint (const char* text)
 		c = toupper(c) - HU_FONTSTART;
 		if (c < 0 || c> HU_FONTSIZE)
 		{
-			cx += 4;
+			cx += 4*SCREEN_MUL;
 			continue;
 		}
 
-		w = SHORT (hu_font[c]->width);
-		V_DrawPatch(cx, 180, 0, hu_font[c]);
+		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
+		V_DrawPatchScaled(cx, Y_CENTRE(180), 0, hu_font[c]);
 		cx+=w;
 	}
 
@@ -576,8 +583,6 @@ void F_CastPrint (const char* text)
 
 
 /* F_CastDrawer */
-void V_DrawPatchFlipped (int x, int y, int scrn, patch_t *patch);
-
 void F_CastDrawer (void)
 {
 	spritedef_t*        sprdef;
@@ -587,7 +592,7 @@ void F_CastDrawer (void)
 	patch_t*            patch;
 
 	/* erase the entire screen to a background */
-	V_DrawPatch (0,0,0, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
+	V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0),0, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
 
 	F_CastPrint (castorder[castnum].name);
 
@@ -599,9 +604,9 @@ void F_CastDrawer (void)
 
 	patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
 	if (flip)
-		V_DrawPatchFlipped (160,170,0,patch);
+		V_DrawPatchFlippedScaled (X_CENTRE(160),Y_CENTRE(170),0,patch);
 	else
-		V_DrawPatch (160,170,0,patch);
+		V_DrawPatchScaled (X_CENTRE(160),Y_CENTRE(170),0,patch);
 }
 
 
@@ -711,21 +716,21 @@ void F_Drawer (void)
 		{
 		  case 1:
 			if ( gamemode == retail )
-			  V_DrawPatch (0,0,0,
+			  V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0),0,
 						 (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
 			else
-			  V_DrawPatch (0,0,0,
+			  V_DrawPatchScaled(X_CENTRE(0),Y_CENTRE(0),0,
 						 (patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
 			break;
 		  case 2:
-			V_DrawPatch(0,0,0,
+			V_DrawPatchScaled(X_CENTRE(0),Y_CENTRE(0),0,
 						(patch_t*)W_CacheLumpName("VICTORY2",PU_CACHE));
 			break;
 		  case 3:
 			F_BunnyScroll ();
 			break;
 		  case 4:
-			V_DrawPatch (0,0,0,
+			V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0),0,
 						 (patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
 			break;
 		}
