@@ -158,10 +158,10 @@ void S_Init
 
   /* Free all channels for use */
   for (i=0 ; i<numChannels ; i++)
-	channels[i].sfxinfo = 0;
+	channels[i].sfxinfo = NULL;
 
   /* no sounds are playing, and they are not mus_paused */
-  mus_paused = 0;
+  mus_paused = d_false;
 
   /* Note that sounds have not been cached (yet). */
   for (i=1 ; i<NUMSFX ; i++)
@@ -336,7 +336,7 @@ S_StartSoundAtVolume
   /* cache data if necessary */
   if (sfx->data == NULL)
   {
-    sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
+    sfx->data = (unsigned char*) W_CacheLumpNum(sfx->lumpnum, PU_STATIC);
 	/* I_Info(*/
 	/*       "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n", */
 	/*       sfx_id, sfx->lumpnum, (int)sfx->data ); */
@@ -622,7 +622,7 @@ S_ChangeMusic
 	}
 
 	/* load & register it */
-	music->data = W_CacheLumpNum(music->lumpnum, PU_MUSIC);
+	music->data = W_CacheLumpNum(music->lumpnum, PU_STATIC);
 	music->handle = I_RegisterSong(music->data, W_LumpLength(music->lumpnum));
 
 	/* play it */
@@ -653,10 +653,12 @@ void S_StopMusic(void)
 
 static void S_StopChannel(int cnum)
 {
+#if 0
 	int         i;
+#endif
 	channel_t*  c = &channels[cnum];
 
-	if (c->sfxinfo)
+	if (c->sfxinfo != NULL)
 	{
 		/* stop the sound playing */
 		if (I_SoundIsPlaying(c->handle))
@@ -668,6 +670,7 @@ static void S_StopChannel(int cnum)
 			I_StopSound(c->handle);
 		}
 
+	#if 0
 		/* check to see */
 		/*  if other channels are playing the sound */
 		for (i=0 ; i<numChannels ; i++)
@@ -678,11 +681,12 @@ static void S_StopChannel(int cnum)
 				break;
 			}
 		}
+	#endif
 
 		/* degrade usefulness of sound data */
 		c->sfxinfo->usefulness--;
 
-		c->sfxinfo = 0;
+		c->sfxinfo = NULL;
 	}
 }
 
