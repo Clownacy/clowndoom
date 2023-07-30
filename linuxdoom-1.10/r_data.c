@@ -603,14 +603,8 @@ void R_InitSpriteLumps (void)
 /* R_InitColormaps */
 void R_InitColormaps (void)
 {
-	int lump, length;
-
 	/* Load in the light tables, */
-	/*  256 byte align tables. */
-	lump = W_GetNumForName("COLORMAP");
-	length = W_LumpLength (lump);
-	colormaps = (unsigned char (*)[0x100])Z_Malloc (length, PU_STATIC, NULL);
-	W_ReadLump (lump,colormaps);
+	colormaps = (lighttable_t (*)[0x100])W_CacheLumpName("COLORMAP", PU_STATIC);
 }
 
 
