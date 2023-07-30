@@ -204,9 +204,6 @@ static player_t*        plyr;
 /* ST_Start() has just been called */
 static d_bool          st_firsttime;
 
-/* used to execute ST_Init() only once */
-static int              veryfirsttime = 1;
-
 /* lump number for PLAYPAL */
 static int              lu_palette;
 
@@ -1399,7 +1396,6 @@ void ST_Stop (void)
 
 void ST_Init (void)
 {
-	veryfirsttime = 0;
 	ST_loadData();
 	/* The status bar framebuffer used to be allocated here. */
 }
