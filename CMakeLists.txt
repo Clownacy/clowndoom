@@ -134,7 +134,7 @@ add_executable(clowndoom WIN32
 	"linuxdoom-1.10/z_zone.c"
 )
 
-set_target_properties(clowndoom PROPERTIES C_STANDARD 99)
+set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
 
 # Handling linking/building WildMIDI
 if(WILDMIDI)

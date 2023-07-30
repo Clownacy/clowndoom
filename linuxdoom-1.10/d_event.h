@@ -89,7 +89,7 @@ typedef enum
     /* Savegame slot numbers */
     /*  occupy the second byte of buttons. */
     BTS_SAVEMASK	= (4+8+16),
-    BTS_SAVESHIFT 	= 2,
+    BTS_SAVESHIFT 	= 2
   
 } buttoncode_t;
 

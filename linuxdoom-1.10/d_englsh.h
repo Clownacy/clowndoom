@@ -430,23 +430,25 @@
 /* After level 11, put this: */
 
 #define C2TEXT \
-"YOU HAVE WON! YOUR VICTORY HAS ENABLED\n" \
-"HUMANKIND TO EVACUATE EARTH AND ESCAPE\n"\
-"THE NIGHTMARE.  NOW YOU ARE THE ONLY\n"\
-"HUMAN LEFT ON THE FACE OF THE PLANET.\n"\
-"CANNIBAL MUTATIONS, CARNIVOROUS ALIENS,\n"\
-"AND EVIL SPIRITS ARE YOUR ONLY NEIGHBORS.\n"\
-"YOU SIT BACK AND WAIT FOR DEATH, CONTENT\n"\
-"THAT YOU HAVE SAVED YOUR SPECIES.\n"\
-"\n"\
-"BUT THEN, EARTH CONTROL BEAMS DOWN A\n"\
-"MESSAGE FROM SPACE: \"SENSORS HAVE LOCATED\n"\
-"THE SOURCE OF THE ALIEN INVASION. IF YOU\n"\
-"GO THERE, YOU MAY BE ABLE TO BLOCK THEIR\n"\
-"ENTRY.  THE ALIEN BASE IS IN THE HEART OF\n"\
-"YOUR OWN HOME CITY, NOT FAR FROM THE\n"\
-"STARPORT.\" SLOWLY AND PAINFULLY YOU GET\n"\
-"UP AND RETURN TO THE FRAY."
+{\
+'Y','O','U',' ','H','A','V','E',' ','W','O','N','!',' ','Y','O','U','R',' ','V','I','C','T','O','R','Y',' ','H','A','S',' ','E','N','A','B','L','E','D','\n',\
+'H','U','M','A','N','K','I','N','D',' ','T','O',' ','E','V','A','C','U','A','T','E',' ','E','A','R','T','H',' ','A','N','D',' ','E','S','C','A','P','E','\n',\
+'T','H','E',' ','N','I','G','H','T','M','A','R','E','.',' ',' ','N','O','W',' ','Y','O','U',' ','A','R','E',' ','T','H','E',' ','O','N','L','Y','\n',\
+'H','U','M','A','N',' ','L','E','F','T',' ','O','N',' ','T','H','E',' ','F','A','C','E',' ','O','F',' ','T','H','E',' ','P','L','A','N','E','T','.','\n',\
+'C','A','N','N','I','B','A','L',' ','M','U','T','A','T','I','O','N','S',',',' ','C','A','R','N','I','V','O','R','O','U','S',' ','A','L','I','E','N','S',',','\n',\
+'A','N','D',' ','E','V','I','L',' ','S','P','I','R','I','T','S',' ','A','R','E',' ','Y','O','U','R',' ','O','N','L','Y',' ','N','E','I','G','H','B','O','R','S','.','\n',\
+'Y','O','U',' ','S','I','T',' ','B','A','C','K',' ','A','N','D',' ','W','A','I','T',' ','F','O','R',' ','D','E','A','T','H',',',' ','C','O','N','T','E','N','T','\n',\
+'T','H','A','T',' ','Y','O','U',' ','H','A','V','E',' ','S','A','V','E','D',' ','Y','O','U','R',' ','S','P','E','C','I','E','S','.','\n',\
+'\n',\
+'B','U','T',' ','T','H','E','N',',',' ','E','A','R','T','H',' ','C','O','N','T','R','O','L',' ','B','E','A','M','S',' ','D','O','W','N',' ','A','\n',\
+'M','E','S','S','A','G','E',' ','F','R','O','M',' ','S','P','A','C','E',':',' ','\"','S','E','N','S','O','R','S',' ','H','A','V','E',' ','L','O','C','A','T','E','D','\n',\
+'T','H','E',' ','S','O','U','R','C','E',' ','O','F',' ','T','H','E',' ','A','L','I','E','N',' ','I','N','V','A','S','I','O','N','.',' ','I','F',' ','Y','O','U','\n',\
+'G','O',' ','T','H','E','R','E',',',' ','Y','O','U',' ','M','A','Y',' ','B','E',' ','A','B','L','E',' ','T','O',' ','B','L','O','C','K',' ','T','H','E','I','R','\n',\
+'E','N','T','R','Y','.',' ',' ','T','H','E',' ','A','L','I','E','N',' ','B','A','S','E',' ','I','S',' ','I','N',' ','T','H','E',' ','H','E','A','R','T',' ','O','F','\n',\
+'Y','O','U','R',' ','O','W','N',' ','H','O','M','E',' ','C','I','T','Y',',',' ','N','O','T',' ','F','A','R',' ','F','R','O','M',' ','T','H','E','\n',\
+'S','T','A','R','P','O','R','T','.','\"',' ','S','L','O','W','L','Y',' ','A','N','D',' ','P','A','I','N','F','U','L','L','Y',' ','Y','O','U',' ','G','E','T','\n',\
+'U','P',' ','A','N','D',' ','R','E','T','U','R','N',' ','T','O',' ','T','H','E',' ','F','R','A','Y','.'\
+}
 
 
 /* After level 20, put this: */
