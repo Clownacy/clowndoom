@@ -577,10 +577,7 @@ void F_CastDrawer (void)
 	flip = (d_bool)sprframe->flip[0];
 
 	patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
-	if (flip)
-		V_DrawPatchFlipped (X_CENTRE(160),Y_CENTRE(170),SCREEN_FRAMEBUFFER,patch);
-	else
-		V_DrawPatch (X_CENTRE(160),Y_CENTRE(170),SCREEN_FRAMEBUFFER,patch);
+	V_DrawPatchFlipped (X_CENTRE(160),Y_CENTRE(170),SCREEN_FRAMEBUFFER,patch,flip);
 }
 
 

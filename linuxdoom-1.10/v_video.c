@@ -213,7 +213,7 @@ V_DrawPatchColumnInternal
 
 
 void
-V_DrawPatchInternal
+V_DrawPatchFlipped
 ( int            x,
   int            y,
   screen_t       scrn,

@@ -72,7 +72,7 @@ V_CopyRect
   screen_t      destscrn );
 
 void
-V_DrawPatchInternal
+V_DrawPatchFlipped
 ( int            x,
   int            y,
   screen_t       scrn,
@@ -81,12 +81,7 @@ V_DrawPatchInternal
 
 /* V_DrawPatch */
 /* Masks a column based masked pic to the screen. */
-#define V_DrawPatch(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, d_false)
-
-/* V_DrawPatchFlipped */
-/* Masks a column based masked pic to the screen. */
-/* Flips horizontally, e.g. to mirror face. */
-#define V_DrawPatchFlipped(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, d_true)
+#define V_DrawPatch(x, y, scrn, patch) V_DrawPatchFlipped(x, y, scrn, patch, d_false)
 
 void
 V_DrawPatchColumn
