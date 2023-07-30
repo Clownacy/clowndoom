@@ -162,10 +162,44 @@ void I_SetPalette (const unsigned char* palette)
 }
 
 
+static void OutputSizeChanged(const size_t width, const size_t height)
+{
+	size_t last, i;
+
+	output_width = width;
+	output_height = height;
+
+	free(upscale_x_deltas);
+	free(upscale_y_deltas);
+
+	/* Create LUTs for the upscaler */
+	upscale_x_deltas = (unsigned char*)malloc(output_width);
+	upscale_y_deltas = (unsigned char*)malloc(output_height);
+
+	for (last = 0, i = 0; i < output_height; ++i)
+	{
+		const size_t current = i * SCREENHEIGHT / output_height;
+
+		upscale_y_deltas[i] = last != current;
+
+		last = current;
+	}
+
+	upscale_y_deltas[0] = 1;    /* Force a redraw on the first line */
+
+	for (last = 0, i = 0; i < output_width; ++i)
+	{
+		const size_t current = (i + 1) * SCREENWIDTH / output_width;    /* The +1 here is deliberate, to avoid distortion at 320x240 */
+
+		upscale_x_deltas[i] = last != current;
+
+		last = current;
+	}
+}
+
 void I_InitGraphics(void)
 {
 	int multiply;
-	size_t last, i;
 
 	/* TODO - get rid of this junk */
 	static int          firsttime=1;
@@ -192,7 +226,7 @@ void I_InitGraphics(void)
 	else
 		output_height = SCREENHEIGHT * multiply;
 
-	IB_InitGraphics("clowndoom", output_width, output_height, &bytes_per_pixel);
+	IB_InitGraphics("clowndoom", output_width, output_height, &bytes_per_pixel, OutputSizeChanged);
 
 	I_GrabMouse(d_true);
 
@@ -200,29 +234,7 @@ void I_InitGraphics(void)
 	colors = (unsigned char*)malloc(256 * bytes_per_pixel);
 	colored_screen = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 
-	/* Create LUTs for the upscaler */
-	upscale_x_deltas = (unsigned char*)malloc(output_width);
-	upscale_y_deltas = (unsigned char*)malloc(output_height);
-
-	for (last = 0, i = 0; i < output_height; ++i)
-	{
-		const size_t current = i * SCREENHEIGHT / output_height;
-
-		upscale_y_deltas[i] = last != current;
-
-		last = current;
-	}
-
-	upscale_y_deltas[0] = 1;    /* Force a redraw on the first line */
-
-	for (last = 0, i = 0; i < output_width; ++i)
-	{
-		const size_t current = (i + 1) * SCREENWIDTH / output_width;    /* The +1 here is deliberate, to avoid distortion at 320x240 */
-
-		upscale_x_deltas[i] = last != current;
-
-		last = current;
-	}
+	OutputSizeChanged(output_width, output_height);
 }
 
 

@@ -36,6 +36,7 @@
 
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
+static void (*output_size_changed_callback)(size_t width, size_t height);
 #endif
 static SDL_Surface *surface;
 
@@ -194,6 +195,17 @@ void IB_StartTic (void)
 					/* fprintf(stderr, "m"); */
 				}
 				break;
+			#if SDL_MAJOR_VERSION >= 2
+			case SDL_WINDOWEVENT:
+				switch (sdl_event.window.event)
+				{
+					case SDL_WINDOWEVENT_SIZE_CHANGED:
+						surface = SDL_GetWindowSurface(window);
+						output_size_changed_callback(sdl_event.window.data1, sdl_event.window.data2);
+						break;
+				}
+				break;
+			#endif
 		}
 	}
 }
@@ -232,16 +244,18 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 }
 
 
-void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel)
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback_p)(size_t width, size_t height))
 {
 #if SDL_MAJOR_VERSION >= 2
+	output_size_changed_callback = output_size_changed_callback_p;
+
 	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 #else
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 #endif
 
 #if SDL_MAJOR_VERSION >= 2
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, 0);
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_RESIZABLE);
 
 	if (window == NULL)
 		I_Error("Could not create SDL window");
