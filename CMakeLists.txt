@@ -155,7 +155,7 @@ if(WILDMIDI)
 		add_subdirectory("external/wildmidi" EXCLUDE_FROM_ALL)
 	#endif()
 
-	target_link_libraries(clowndoom PRIVATE libwildmidi_static)
+	target_link_libraries(clowndoom PRIVATE libwildmidi-static)
 endif()
 
 # Handle backends

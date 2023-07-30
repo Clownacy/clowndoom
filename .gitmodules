@@ -1,3 +1,6 @@
 [submodule "external/SDL"]
 	path = external/SDL
 	url = https://github.com/libsdl-org/SDL
+[submodule "external/wildmidi"]
+	path = external/wildmidi
+	url = https://github.com/Mindwerks/wildmidi
