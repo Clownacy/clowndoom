@@ -281,7 +281,7 @@ void F_TextWrite (void)
 	int         cy;
 
 	/* erase the entire screen to a tiled background */
-	V_FillScreenWithPattern(finaleflat, 0, SCREENHEIGHT);
+	V_FillScreenWithPattern(finaleflat, SCREEN_FRAMEBUFFER, SCREENHEIGHT);
 
 	/* draw some of the text onto the screen */
 	cx = X_CENTRE(10);
@@ -313,7 +313,7 @@ void F_TextWrite (void)
 		w = SHORT (hu_font[c]->width)*HUD_SCALE;
 		if (cx+w > SCREENWIDTH)
 			break;
-		V_DrawPatch(cx, cy, 0, hu_font[c]);
+		V_DrawPatch(cx, cy, SCREEN_FRAMEBUFFER, hu_font[c]);
 		cx+=w;
 	}
 
@@ -549,7 +549,7 @@ void F_CastPrint (const char* text)
 		}
 
 		w = SHORT (hu_font[c]->width)*HUD_SCALE;
-		V_DrawPatch(cx, Y_CENTRE(180), 0, hu_font[c]);
+		V_DrawPatch(cx, Y_CENTRE(180), SCREEN_FRAMEBUFFER, hu_font[c]);
 		cx+=w;
 	}
 
@@ -566,7 +566,7 @@ void F_CastDrawer (void)
 	patch_t*            patch;
 
 	/* erase the entire screen to a background */
-	V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
+	V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
 
 	F_CastPrint (castorder[castnum].name);
 
@@ -578,9 +578,9 @@ void F_CastDrawer (void)
 
 	patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
 	if (flip)
-		V_DrawPatchFlipped (X_CENTRE(160),Y_CENTRE(170),0,patch);
+		V_DrawPatchFlipped (X_CENTRE(160),Y_CENTRE(170),SCREEN_FRAMEBUFFER,patch);
 	else
-		V_DrawPatch (X_CENTRE(160),Y_CENTRE(170),0,patch);
+		V_DrawPatch (X_CENTRE(160),Y_CENTRE(170),SCREEN_FRAMEBUFFER,patch);
 }
 
 
@@ -609,9 +609,9 @@ void F_BunnyScroll (void)
 	for ( x=0 ; x<320 ; x++)
 	{
 		if (x+scrolled < 320)
-			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p1, x+scrolled);
+			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), SCREEN_FRAMEBUFFER, p1, x+scrolled);
 		else
-			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p2, x+scrolled - 320);
+			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), SCREEN_FRAMEBUFFER, p2, x+scrolled - 320);
 	}
 
 	if (finalecount < 1130)
@@ -619,7 +619,7 @@ void F_BunnyScroll (void)
 	if (finalecount < 1180)
 	{
 		V_DrawPatch (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2),
-					 Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2),0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
+					 Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2), SCREEN_FRAMEBUFFER, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
 		laststage = 0;
 		return;
 	}
@@ -638,7 +638,7 @@ void F_BunnyScroll (void)
 	name[2] = 'D';
 	name[3] = '0' + stage;
 	name[4] = '\0';
-	V_DrawPatch (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2), Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2),0, (patch_t*)W_CacheLumpName (name,PU_CACHE));
+	V_DrawPatch (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2), Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2), SCREEN_FRAMEBUFFER, (patch_t*)W_CacheLumpName (name,PU_CACHE));
 }
 
 
@@ -655,26 +655,26 @@ void F_Drawer (void)
 		F_TextWrite ();
 	else
 	{
-		V_ClearScreen(0);
+		V_ClearScreen(SCREEN_FRAMEBUFFER);
 		switch (gameepisode)
 		{
 		  case 1:
 			if ( gamemode == retail )
-			  V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,
+			  V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
 						 (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
 			else
-			  V_DrawPatch(X_CENTRE(0),Y_CENTRE(0),0,
+			  V_DrawPatch(X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
 						 (patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
 			break;
 		  case 2:
-			V_DrawPatch(X_CENTRE(0),Y_CENTRE(0),0,
+			V_DrawPatch(X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
 						(patch_t*)W_CacheLumpName("VICTORY2",PU_CACHE));
 			break;
 		  case 3:
 			F_BunnyScroll ();
 			break;
 		  case 4:
-			V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,
+			V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
 						 (patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
 			break;
 		}

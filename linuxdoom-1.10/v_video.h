@@ -40,7 +40,14 @@
 /* Screen 0 is the screen updated by I_Update screen. */
 /* Screen 1 is an extra buffer. */
 
-
+typedef enum screen_t
+{
+    SCREEN_FRAMEBUFFER,
+    SCREEN_BACK,
+    SCREEN_WIPE_START,
+    SCREEN_WIPE_END,
+    SCREEN_STATUS_BAR
+} screen_t;
 
 extern  unsigned char*           screens[5];
 
@@ -57,18 +64,18 @@ void
 V_CopyRect
 ( int           srcx,
   int           srcy,
-  int           srcscrn,
+  screen_t      srcscrn,
   int           width,
   int           height,
   int           destx,
   int           desty,
-  int           destscrn );
+  screen_t      destscrn );
 
 void
 V_DrawPatchInternal
 ( int            x,
   int            y,
-  int            scrn,
+  screen_t       scrn,
   const patch_t* patch,
   d_bool         flip );
 
@@ -85,15 +92,15 @@ void
 V_DrawPatchColumn
 ( int            x,
   int            y,
-  int            scrn,
+  screen_t       scrn,
   const patch_t* patch,
   int            col );
 
 void
 V_FillScreenWithPattern
-( const char* const lump_name,
-  const int screen,
-  const int height );
+( const char *lump_name,
+  screen_t    screen,
+  int         height );
 
 #define V_ClearScreen(scrn) if (SCREENWIDTH != ORIGINAL_SCREEN_WIDTH * HUD_SCALE || SCREENHEIGHT != ORIGINAL_SCREEN_HEIGHT * HUD_SCALE) memset(screens[scrn], 0, SCREENWIDTH*SCREENHEIGHT);
 
@@ -102,7 +109,7 @@ void
 V_DrawBlock
 ( int           x,
   int           y,
-  int           scrn,
+  screen_t      scrn,
   int           width,
   int           height,
   const unsigned char*           src );
@@ -112,7 +119,7 @@ void
 V_GetBlock
 ( int           x,
   int           y,
-  int           scrn,
+  screen_t      scrn,
   int           width,
   int           height,
   unsigned char*         dest );

@@ -512,7 +512,7 @@ void M_DrawLoad(void)
 {
 	int             i;
 
-	V_DrawPatch (X_CENTRE(72),Y_CENTRE(28),0,(patch_t*)W_CacheLumpName("M_LOADG",PU_CACHE));
+	V_DrawPatch (X_CENTRE(72),Y_CENTRE(28),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_LOADG",PU_CACHE));
 	for (i = 0;i < load_end; i++)
 	{
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -527,15 +527,15 @@ void M_DrawSaveLoadBorder(int x,int y)
 {
 	int             i;
 
-	V_DrawPatch (x-8*HUD_SCALE,y+7*HUD_SCALE,0,(patch_t*)W_CacheLumpName("M_LSLEFT",PU_CACHE));
+	V_DrawPatch (x-8*HUD_SCALE,y+7*HUD_SCALE,SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_LSLEFT",PU_CACHE));
 
 	for (i = 0;i < 24;i++)
 	{
-		V_DrawPatch (x,y+7*HUD_SCALE,0,(patch_t*)W_CacheLumpName("M_LSCNTR",PU_CACHE));
+		V_DrawPatch (x,y+7*HUD_SCALE,SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_LSCNTR",PU_CACHE));
 		x += 8*HUD_SCALE;
 	}
 
-	V_DrawPatch (x,y+7*HUD_SCALE,0,(patch_t*)W_CacheLumpName("M_LSRGHT",PU_CACHE));
+	V_DrawPatch (x,y+7*HUD_SCALE,SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_LSRGHT",PU_CACHE));
 }
 
 
@@ -574,7 +574,7 @@ void M_DrawSave(void)
 {
 	int             i;
 
-	V_DrawPatch (X_CENTRE(72),Y_CENTRE(28),0,(patch_t*)W_CacheLumpName("M_SAVEG",PU_CACHE));
+	V_DrawPatch (X_CENTRE(72),Y_CENTRE(28),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_SAVEG",PU_CACHE));
 	for (i = 0;i < load_end; i++)
 	{
 		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
@@ -705,16 +705,16 @@ void M_QuickLoad(void)
 void M_DrawReadThis1(void)
 {
 	inhelpscreens = d_true;
-	V_ClearScreen(0);
+	V_ClearScreen(SCREEN_FRAMEBUFFER);
 	switch ( gamemode )
 	{
 	  case commercial:
-		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,(patch_t*)W_CacheLumpName("HELP",PU_CACHE));
+		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("HELP",PU_CACHE));
 		break;
 	  case shareware:
 	  case registered:
 	  case retail:
-		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,(patch_t*)W_CacheLumpName("HELP1",PU_CACHE));
+		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("HELP1",PU_CACHE));
 		break;
 	  default:
 		break;
@@ -728,17 +728,17 @@ void M_DrawReadThis1(void)
 void M_DrawReadThis2(void)
 {
 	inhelpscreens = d_true;
-	V_ClearScreen(0);
+	V_ClearScreen(SCREEN_FRAMEBUFFER);
 	switch ( gamemode )
 	{
 	  case retail:
 	  case commercial:
 		/* This hack keeps us from having to change menus. */
-		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,(patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
+		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
 		break;
 	  case shareware:
 	  case registered:
-		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,(patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
+		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
 		break;
 	  default:
 		break;
@@ -750,7 +750,7 @@ void M_DrawReadThis2(void)
 /* Change Sfx & Music volumes */
 void M_DrawSound(void)
 {
-	V_DrawPatch (X_CENTRE(60),Y_CENTRE(38),0,(patch_t*)W_CacheLumpName("M_SVOL",PU_CACHE));
+	V_DrawPatch (X_CENTRE(60),Y_CENTRE(38),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_SVOL",PU_CACHE));
 
 	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
 				 16,sfxVolume);
@@ -806,7 +806,7 @@ void M_MusicVol(int choice)
 /* M_DrawMainMenu */
 void M_DrawMainMenu(void)
 {
-	V_DrawPatch (X_CENTRE(94),Y_CENTRE(2),0,(patch_t*)W_CacheLumpName("M_DOOM",PU_CACHE));
+	V_DrawPatch (X_CENTRE(94),Y_CENTRE(2),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_DOOM",PU_CACHE));
 }
 
 
@@ -815,8 +815,8 @@ void M_DrawMainMenu(void)
 /* M_NewGame */
 void M_DrawNewGame(void)
 {
-	V_DrawPatch (X_CENTRE(96),Y_CENTRE(14),0,(patch_t*)W_CacheLumpName("M_NEWG",PU_CACHE));
-	V_DrawPatch (X_CENTRE(54),Y_CENTRE(38),0,(patch_t*)W_CacheLumpName("M_SKILL",PU_CACHE));
+	V_DrawPatch (X_CENTRE(96),Y_CENTRE(14),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_NEWG",PU_CACHE));
+	V_DrawPatch (X_CENTRE(54),Y_CENTRE(38),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_SKILL",PU_CACHE));
 }
 
 void M_NewGame(int choice)
@@ -841,7 +841,7 @@ int     epi;
 
 void M_DrawEpisode(void)
 {
-	V_DrawPatch (X_CENTRE(54),Y_CENTRE(38),0,(patch_t*)W_CacheLumpName("M_EPISOD",PU_CACHE));
+	V_DrawPatch (X_CENTRE(54),Y_CENTRE(38),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_EPISOD",PU_CACHE));
 }
 
 void M_VerifyNightmare(int ch)
@@ -896,12 +896,12 @@ char    msgNames[2][9]          = {"M_MSGOFF","M_MSGON"};
 
 void M_DrawOptions(void)
 {
-	V_DrawPatch (X_CENTRE(108),Y_CENTRE(15),0,(patch_t*)W_CacheLumpName("M_OPTTTL",PU_CACHE));
+	V_DrawPatch (X_CENTRE(108),Y_CENTRE(15),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_OPTTTL",PU_CACHE));
 
-	V_DrawPatch (OptionsDef.x + 175*HUD_SCALE,OptionsDef.y+LINEHEIGHT*detail,0,
+	V_DrawPatch (OptionsDef.x + 175*HUD_SCALE,OptionsDef.y+LINEHEIGHT*detail,SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName(detailNames[detailLevel],PU_CACHE));
 
-	V_DrawPatch (OptionsDef.x + 120 * HUD_SCALE,OptionsDef.y+LINEHEIGHT*messages,0,
+	V_DrawPatch (OptionsDef.x + 120 * HUD_SCALE,OptionsDef.y+LINEHEIGHT*messages,SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName(msgNames[showMessages],PU_CACHE));
 
 	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(mousesens+1),
@@ -1152,17 +1152,17 @@ M_DrawThermo
 	int         i;
 
 	xx = x;
-	V_DrawPatch (xx,y,0,(patch_t*)W_CacheLumpName("M_THERML",PU_CACHE));
+	V_DrawPatch (xx,y,SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_THERML",PU_CACHE));
 	xx += 8*HUD_SCALE;
 	for (i=0;i<thermWidth;i++)
 	{
-		V_DrawPatch (xx,y,0,(patch_t*)W_CacheLumpName("M_THERMM",PU_CACHE));
+		V_DrawPatch (xx,y,SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_THERMM",PU_CACHE));
 		xx += 8*HUD_SCALE;
 	}
-	V_DrawPatch (xx,y,0,(patch_t*)W_CacheLumpName("M_THERMR",PU_CACHE));
+	V_DrawPatch (xx,y,SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_THERMR",PU_CACHE));
 
 	V_DrawPatch ((x+8*HUD_SCALE) + thermDot*8*HUD_SCALE,y,
-					   0,(patch_t*)W_CacheLumpName("M_THERMO",PU_CACHE));
+					   SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_THERMO",PU_CACHE));
 }
 
 
@@ -1172,7 +1172,7 @@ M_DrawEmptyCell
 ( menu_t*       menu,
   int           item )
 {
-	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, 0,
+	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName("M_CELL1",PU_CACHE));
 }
 
@@ -1181,7 +1181,7 @@ M_DrawSelCell
 ( menu_t*       menu,
   int           item )
 {
-	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, 0,
+	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName("M_CELL2",PU_CACHE));
 }
 
@@ -1288,7 +1288,7 @@ M_WriteText
 		w = SHORT (hu_font[c]->width)*HUD_SCALE;
 		if (cx+w > SCREENWIDTH)
 			break;
-		V_DrawPatch(cx, cy, 0, hu_font[c]);
+		V_DrawPatch(cx, cy, SCREEN_FRAMEBUFFER, hu_font[c]);
 		cx+=w;
 	}
 }
@@ -1735,14 +1735,14 @@ void M_Drawer (void)
 	for (i=0;i<max;i++)
 	{
 		if (currentMenu->menuitems[i].name[0])
-			V_DrawPatch (x,y,0,
+			V_DrawPatch (x,y,SCREEN_FRAMEBUFFER,
 							   (patch_t*)W_CacheLumpName(currentMenu->menuitems[i].name ,PU_CACHE));
 		y += LINEHEIGHT;
 	}
 
 
 	/* DRAW SKULL */
-	V_DrawPatch(x + SKULLXOFF,currentMenu->y - 5*HUD_SCALE + itemOn*LINEHEIGHT, 0,
+	V_DrawPatch(x + SKULLXOFF,currentMenu->y - 5*HUD_SCALE + itemOn*LINEHEIGHT, SCREEN_FRAMEBUFFER,
 					  (patch_t*)W_CacheLumpName(skullName[whichSkull],PU_CACHE));
 
 }

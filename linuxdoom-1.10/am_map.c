@@ -80,9 +80,6 @@
 #define GRIDRANGE       0
 #define XHAIRCOLORS     GRAYS
 
-/* drawing stuff */
-#define FB              0
-
 #define AM_PANDOWNKEY   KEY_DOWNARROW
 #define AM_PANUPKEY     KEY_UPARROW
 #define AM_PANRIGHTKEY  KEY_RIGHTARROW
@@ -427,7 +424,7 @@ void AM_initVariables(void)
 	static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
 
 	automapactive = d_true;
-	fb = screens[0];
+	fb = screens[SCREEN_FRAMEBUFFER];
 
 	f_oldloc.x = INT_MAX;
 	amclock = 0;
@@ -1242,7 +1239,7 @@ void AM_drawMarks(void)
 			fx = CXMTOF(markpoints[i].x);
 			fy = CYMTOF(markpoints[i].y);
 			if (fx >= f_x && fx <= f_w - w && fy >= f_y && fy <= f_h - h)
-				V_DrawPatch(fx, fy, FB, marknums[i]);
+				V_DrawPatch(fx, fy, SCREEN_FRAMEBUFFER, marknums[i]);
 		}
 	}
 

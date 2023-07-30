@@ -93,15 +93,15 @@ void I_FinishUpdate (void)
 		for (i=0 ; i<tics*2*HUD_SCALE ; i+=2*HUD_SCALE)
 			for (x=0 ; x<HUD_SCALE ; ++x)
 				for (y=0 ; y<HUD_SCALE ; ++y)
-					screens[0][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0xff;
+					screens[SCREEN_FRAMEBUFFER][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0xff;
 		for ( ; i<20*2*HUD_SCALE ; i+=2*HUD_SCALE)
 			for (x=0 ; x<HUD_SCALE ; ++x)
 				for (y=0 ; y<HUD_SCALE ; ++y)
-					screens[0][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0x0;
+					screens[SCREEN_FRAMEBUFFER][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0x0;
 	}
 
 	/* Step 1. Color the screen */
-	indexed_pixels = screens[0];
+	indexed_pixels = screens[SCREEN_FRAMEBUFFER];
 	colored_screen_pointer = colored_screen;
 
 	for (y = 0; y < SCREENHEIGHT; ++y)
@@ -155,7 +155,7 @@ void I_FinishUpdate (void)
 /* I_ReadScreen */
 void I_ReadScreen (unsigned char* scr)
 {
-	memcpy(scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
+	memcpy(scr, screens[SCREEN_FRAMEBUFFER], SCREENWIDTH*SCREENHEIGHT);
 }
 
 

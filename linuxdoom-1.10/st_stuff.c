@@ -429,12 +429,12 @@ void ST_refreshBackground(void)
 
 	if (st_statusbaron)
 	{
-		V_DrawPatch(ST_X, 0, BG, sbar);
+		V_DrawPatch(ST_X, 0, SCREEN_STATUS_BAR, sbar);
 
 		if (netgame)
-			V_DrawPatch(ST_FX, 0, BG, faceback);
+			V_DrawPatch(ST_FX, 0, SCREEN_STATUS_BAR, faceback);
 
-		V_CopyRect(0, 0, BG, SCREENWIDTH, ST_HEIGHT, 0, ST_Y, FG);
+		V_CopyRect(0, 0, SCREEN_STATUS_BAR, SCREENWIDTH, ST_HEIGHT, 0, ST_Y, SCREEN_FRAMEBUFFER);
 	}
 
 }
@@ -1406,5 +1406,5 @@ void ST_Init (void)
 	/* Also, this used to be a `Z_Malloc` call, but at higher resolutions this exhausts the memory pool.
 	   This is inconsistent with the other screens anyway, which use `I_AllocLow`. */
 	/* TODO: FIX ME NOW THAT I'VE BEEN CHANGED FOR COLUMN-MAJOR */
-	screens[4] = (unsigned char *) I_AllocLow(SCREENWIDTH*SCREENHEIGHT);
+	screens[SCREEN_STATUS_BAR] = (unsigned char *) I_AllocLow(SCREENWIDTH*SCREENHEIGHT);
 }

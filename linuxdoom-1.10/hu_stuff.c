@@ -493,7 +493,7 @@ DrawMonospaceText
 			&& c <= '_')
 		{
 			const patch_t* const patch = hu_font[c - HU_FONTSTART];
-			V_DrawPatch(x + (8 - patch->width) / 2 * HUD_SCALE, y, FG, patch);
+			V_DrawPatch(x + (8 - patch->width) / 2 * HUD_SCALE, y, SCREEN_FRAMEBUFFER, patch);
 		}
 
 		x += w;

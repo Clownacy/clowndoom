@@ -76,7 +76,7 @@ M_DrawText
 		w = SHORT (hu_font[c]->width)*HUD_SCALE;
 		if (x+w > SCREENWIDTH)
 			break;
-		V_DrawPatch(x, y, 0, hu_font[c]);
+		V_DrawPatch(x, y, SCREEN_FRAMEBUFFER, hu_font[c]);
 		x+=w;
 	}
 
@@ -577,7 +577,7 @@ void M_ScreenShot (void)
 	char        lbmname[12];
 
 	/* munge planar buffer to linear */
-	linear = screens[2];
+	linear = screens[SCREEN_WIPE_START];
 	I_ReadScreen (linear);
 
 	/* find a file name to save it to */

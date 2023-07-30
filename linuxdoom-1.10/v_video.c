@@ -134,12 +134,12 @@ void
 V_CopyRect
 ( int           srcx,
   int           srcy,
-  int           srcscrn,
+  screen_t      srcscrn,
   int           width,
   int           height,
   int           destx,
   int           desty,
-  int           destscrn )
+  screen_t      destscrn )
 {
 	const unsigned char* src;
 	unsigned char*       dest;
@@ -215,7 +215,7 @@ void
 V_DrawPatchInternal
 ( int            x,
   int            y,
-  int            scrn,
+  screen_t       scrn,
   const patch_t* patch,
   d_bool         flip )
 {
@@ -260,7 +260,7 @@ void
 V_DrawPatchColumn
 ( int            x,
   int            y,
-  int            scrn,
+  screen_t       scrn,
   const patch_t* patch,
   int            col )
 {
@@ -275,7 +275,7 @@ void
 V_DrawBlock
 ( int           x,
   int           y,
-  int           scrn,
+  screen_t      scrn,
   int           width,
   int           height,
   const unsigned char*           src )
@@ -311,7 +311,7 @@ void
 V_GetBlock
 ( int           x,
   int           y,
-  int           scrn,
+  screen_t      scrn,
   int           width,
   int           height,
   unsigned char*         dest )
@@ -345,7 +345,7 @@ V_GetBlock
 void
 V_FillScreenWithPattern
 ( const char* const lump_name,
-  const int screen,
+  const screen_t screen,
   const int height )
 {
 	int x,y,w;

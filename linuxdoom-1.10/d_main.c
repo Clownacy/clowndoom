@@ -297,7 +297,7 @@ void D_Display (void)
 		else
 			y = viewwindowy+4*HUD_SCALE;
 		V_DrawPatch(viewwindowx+(scaledviewwidth-68*HUD_SCALE)/2,
-						  y,0,(patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
+						  y,SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
 	}
 
 
@@ -403,8 +403,8 @@ void D_PageTicker (void)
 /* D_PageDrawer */
 void D_PageDrawer (void)
 {
-	V_ClearScreen(0);
-	V_DrawPatch (X_CENTRE(0),Y_CENTRE(0), 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
+	V_ClearScreen(SCREEN_FRAMEBUFFER);
+	V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
 }
 
 
