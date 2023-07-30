@@ -135,8 +135,8 @@ FixedDiv
 ( fixed_t       a,
   fixed_t       b )
 {
-	if ( (abs(a)>>14) >= abs(b))
-		return (a^b)<0 ? MININT : MAXINT;
+	if ( (labs(a)>>14) >= labs(b))
+		return (a^b)<0 ? MINLONG : MAXLONG;
 	return FixedDiv2 (a,b);
 }
 
