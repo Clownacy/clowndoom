@@ -36,7 +36,7 @@
 #define QSPROMPT        "SAUVEGARDE RAPIDE DANS LE FICHIER \n\n'%s'?\n\n"PRESSYN
 #define QLPROMPT        "VOULEZ-VOUS CHARGER LA SAUVEGARDE\n\n'%s'?\n\n"PRESSYN
 #define NEWGAME         "VOUS NE POUVEZ PAS LANCER\nUN NOUVEAU JEU SUR RESEAU.\n\n"PRESSKEY
-#define NIGHTMARE       "VOUS CONFIRMEZ? CE NIVEAU EST\nVRAIMENT IMPITOYABLE!n"PRESSYN
+#define NIGHTMARE       "VOUS CONFIRMEZ? CE NIVEAU EST\nVRAIMENT IMPITOYABLE!\n\n"PRESSYN
 #define SWSTRING        "CECI EST UNE VERSION SHAREWARE DE DOOM.\n\nVOUS DEVRIEZ COMMANDER LA TRILOGIE COMPLETE.\n\n"PRESSKEY
 #define MSGOFF          "MESSAGES OFF"
 #define MSGON           "MESSAGES ON"
@@ -143,6 +143,16 @@
 #define HUSTR_E3M8      "E3M8: DIS"
 #define HUSTR_E3M9      "E3M9: CLAPIERS"
 
+#define HUSTR_E4M1      "E4M1: Hell Beneath"
+#define HUSTR_E4M2      "E4M2: Perfect Hatred"
+#define HUSTR_E4M3      "E4M3: Sever The Wicked"
+#define HUSTR_E4M4      "E4M4: Unruly Evil"
+#define HUSTR_E4M5      "E4M5: They Will Repent"
+#define HUSTR_E4M6      "E4M6: Against Thee Wickedly"
+#define HUSTR_E4M7      "E4M7: And Hell Followed"
+#define HUSTR_E4M8      "E4M8: Unto The Cruel"
+#define HUSTR_E4M9      "E4M9: Fear"
+
 #define HUSTR_1         "NIVEAU 1: ENTREE "
 #define HUSTR_2         "NIVEAU 2: HALLS SOUTERRAINS "
 #define HUSTR_3         "NIVEAU 3: LE FEU NOURRI "
@@ -178,6 +188,78 @@
 
 #define HUSTR_31        "NIVEAU 31: WOLFENSTEIN"
 #define HUSTR_32        "NIVEAU 32: LE MASSACRE"
+
+#define PHUSTR_1        "level 1: congo"
+#define PHUSTR_2        "level 2: well of souls"
+#define PHUSTR_3        "level 3: aztec"
+#define PHUSTR_4        "level 4: caged"
+#define PHUSTR_5        "level 5: ghost town"
+#define PHUSTR_6        "level 6: baron's lair"
+#define PHUSTR_7        "level 7: caughtyard"
+#define PHUSTR_8        "level 8: realm"
+#define PHUSTR_9        "level 9: abattoire"
+#define PHUSTR_10       "level 10: onslaught"
+#define PHUSTR_11       "level 11: hunted"
+
+#define PHUSTR_12       "level 12: speed"
+#define PHUSTR_13       "level 13: the crypt"
+#define PHUSTR_14       "level 14: genesis"
+#define PHUSTR_15       "level 15: the twilight"
+#define PHUSTR_16       "level 16: the omen"
+#define PHUSTR_17       "level 17: compound"
+#define PHUSTR_18       "level 18: neurosphere"
+#define PHUSTR_19       "level 19: nme"
+#define PHUSTR_20       "level 20: the death domain"
+
+#define PHUSTR_21       "level 21: slayer"
+#define PHUSTR_22       "level 22: impossible mission"
+#define PHUSTR_23       "level 23: tombstone"
+#define PHUSTR_24       "level 24: the final frontier"
+#define PHUSTR_25       "level 25: the temple of darkness"
+#define PHUSTR_26       "level 26: bunker"
+#define PHUSTR_27       "level 27: anti-christ"
+#define PHUSTR_28       "level 28: the sewers"
+#define PHUSTR_29       "level 29: odyssey of noises"
+#define PHUSTR_30       "level 30: the gateway of hell"
+
+#define PHUSTR_31       "level 31: cyberden"
+#define PHUSTR_32       "level 32: go 2 it"
+
+#define THUSTR_1        "level 1: system control"
+#define THUSTR_2        "level 2: human bbq"
+#define THUSTR_3        "level 3: power control"
+#define THUSTR_4        "level 4: wormhole"
+#define THUSTR_5        "level 5: hanger"
+#define THUSTR_6        "level 6: open season"
+#define THUSTR_7        "level 7: prison"
+#define THUSTR_8        "level 8: metal"
+#define THUSTR_9        "level 9: stronghold"
+#define THUSTR_10       "level 10: redemption"
+#define THUSTR_11       "level 11: storage facility"
+
+#define THUSTR_12       "level 12: crater"
+#define THUSTR_13       "level 13: nukage processing"
+#define THUSTR_14       "level 14: steel works"
+#define THUSTR_15       "level 15: dead zone"
+#define THUSTR_16       "level 16: deepest reaches"
+#define THUSTR_17       "level 17: processing area"
+#define THUSTR_18       "level 18: mill"
+#define THUSTR_19       "level 19: shipping/respawning"
+#define THUSTR_20       "level 20: central processing"
+
+#define THUSTR_21       "level 21: administration center"
+#define THUSTR_22       "level 22: habitat"
+#define THUSTR_23       "level 23: lunar mining project"
+#define THUSTR_24       "level 24: quarry"
+#define THUSTR_25       "level 25: baron's den"
+#define THUSTR_26       "level 26: ballistyx"
+#define THUSTR_27       "level 27: mount pain"
+#define THUSTR_28       "level 28: heck"
+#define THUSTR_29       "level 29: river styx"
+#define THUSTR_30       "level 30: last call"
+
+#define THUSTR_31       "level 31: pharaoh"
+#define THUSTR_32       "level 32: caribbean"
 
 
 #define HUSTR_CHATMACRO1        "JE SUIS PRET A LEUR EN FAIRE BAVER!"
@@ -296,6 +378,25 @@
 "CETTE PORTE AVEC VOUS..."
 
 
+#define E4TEXT \
+"the spider mastermind must have sent forth\n"\
+"its legions of hellspawn before your\n"\
+"final confrontation with that terrible\n"\
+"beast from hell.  but you stepped forward\n"\
+"and brought forth eternal damnation and\n"\
+"suffering upon the horde as a true hero\n"\
+"would in the face of something so evil.\n"\
+"\n"\
+"besides, someone was gonna pay for what\n"\
+"happened to daisy, your pet rabbit.\n"\
+"\n"\
+"but now, you see spread before you more\n"\
+"potential pain and gibbitude as a nation\n"\
+"of demons run amok among our cities.\n"\
+"\n"\
+"next stop, hell on earth!"
+
+
 
 /* after level 6, put this: */
 
@@ -375,6 +476,152 @@
 #define C6TEXT  "FELICITATIONS! VOUS AVEZ DECOUVERT\n"\
 "LE NIVEAU SUPER SECRET! VOUS FERIEZ\n"\
 "MIEUX DE FONCER DANS CELUI-LA!\n"
+
+
+/* after map 06 */
+
+#define P1TEXT  \
+"You gloat over the steaming carcass of the\n"\
+"Guardian.  With its death, you've wrested\n"\
+"the Accelerator from the stinking claws\n"\
+"of Hell.  You relax and glance around the\n"\
+"room.  Damn!  There was supposed to be at\n"\
+"least one working prototype, but you can't\n"\
+"see it. The demons must have taken it.\n"\
+"\n"\
+"You must find the prototype, or all your\n"\
+"struggles will have been wasted. Keep\n"\
+"moving, keep fighting, keep killing.\n"\
+"Oh yes, keep living, too."
+
+
+/* after map 11 */
+
+#define P2TEXT \
+"Even the deadly Arch-Vile labyrinth could\n"\
+"not stop you, and you've gotten to the\n"\
+"prototype Accelerator which is soon\n"\
+"efficiently and permanently deactivated.\n"\
+"\n"\
+"You're good at that kind of thing."
+
+
+/* after map 20 */
+
+#define P3TEXT \
+"You've bashed and battered your way into\n"\
+"the heart of the devil-hive.  Time for a\n"\
+"Search-and-Destroy mission, aimed at the\n"\
+"Gatekeeper, whose foul offspring is\n"\
+"cascading to Earth.  Yeah, he's bad. But\n"\
+"you know who's worse!\n"\
+"\n"\
+"Grinning evilly, you check your gear, and\n"\
+"get ready to give the bastard a little Hell\n"\
+"of your own making!"
+
+/* after map 30 */
+
+#define P4TEXT \
+"The Gatekeeper's evil face is splattered\n"\
+"all over the place.  As its tattered corpse\n"\
+"collapses, an inverted Gate forms and\n"\
+"sucks down the shards of the last\n"\
+"prototype Accelerator, not to mention the\n"\
+"few remaining demons.  You're done. Hell\n"\
+"has gone back to pounding bad dead folks \n"\
+"instead of good live ones.  Remember to\n"\
+"tell your grandkids to put a rocket\n"\
+"launcher in your coffin. If you go to Hell\n"\
+"when you die, you'll need it for some\n"\
+"final cleaning-up ..."
+
+/* before map 31 */
+
+#define P5TEXT \
+"You've found the second-hardest level we\n"\
+"got. Hope you have a saved game a level or\n"\
+"two previous.  If not, be prepared to die\n"\
+"aplenty. For master marines only."
+
+/* before map 32 */
+
+#define P6TEXT \
+"Betcha wondered just what WAS the hardest\n"\
+"level we had ready for ya?  Now you know.\n"\
+"No one gets out alive."
+
+
+#define T1TEXT \
+"You've fought your way out of the infested\n"\
+"experimental labs.   It seems that UAC has\n"\
+"once again gulped it down.  With their\n"\
+"high turnover, it must be hard for poor\n"\
+"old UAC to buy corporate health insurance\n"\
+"nowadays..\n"\
+"\n"\
+"Ahead lies the military complex, now\n"\
+"swarming with diseased horrors hot to get\n"\
+"their teeth into you. With luck, the\n"\
+"complex still has some warlike ordnance\n"\
+"laying around."
+
+
+#define T2TEXT \
+"You hear the grinding of heavy machinery\n"\
+"ahead.  You sure hope they're not stamping\n"\
+"out new hellspawn, but you're ready to\n"\
+"ream out a whole herd if you have to.\n"\
+"They might be planning a blood feast, but\n"\
+"you feel about as mean as two thousand\n"\
+"maniacs packed into one mad killer.\n"\
+"\n"\
+"You don't plan to go down easy."
+
+
+#define T3TEXT \
+"The vista opening ahead looks real damn\n"\
+"familiar. Smells familiar, too -- like\n"\
+"fried excrement. You didn't like this\n"\
+"place before, and you sure as hell ain't\n"\
+"planning to like it now. The more you\n"\
+"brood on it, the madder you get.\n"\
+"Hefting your gun, an evil grin trickles\n"\
+"onto your face. Time to take some names."
+
+#define T4TEXT \
+"Suddenly, all is silent, from one horizon\n"\
+"to the other. The agonizing echo of Hell\n"\
+"fades away, the nightmare sky turns to\n"\
+"blue, the heaps of monster corpses start \n"\
+"to evaporate along with the evil stench \n"\
+"that filled the air. Jeeze, maybe you've\n"\
+"done it. Have you really won?\n"\
+"\n"\
+"Something rumbles in the distance.\n"\
+"A blue light begins to glow inside the\n"\
+"ruined skull of the demon-spitter."
+
+
+#define T5TEXT \
+"What now? Looks totally different. Kind\n"\
+"of like King Tut's condo. Well,\n"\
+"whatever's here can't be any worse\n"\
+"than usual. Can it?  Or maybe it's best\n"\
+"to let sleeping gods lie.."
+
+
+#define T6TEXT \
+"Time for a vacation. You've burst the\n"\
+"bowels of hell and by golly you're ready\n"\
+"for a break. You mutter to yourself,\n"\
+"Maybe someone else can kick Hell's ass\n"\
+"next time around. Ahead lies a quiet town,\n"\
+"with peaceful flowing water, quaint\n"\
+"buildings, and presumably no Hellspawn.\n"\
+"\n"\
+"As you step off the transport, you hear\n"\
+"the stomp of a cyberdemon's iron shoe."
 
 /* Character cast strings F_FINALE.C */
 #define CC_ZOMBIE       "ZOMBIE"

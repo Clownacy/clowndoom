@@ -4,6 +4,7 @@ project(clowndoom LANGUAGES C)
 
 set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, or SDL2")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
+option(FRENCH "Change the language of various strings to French" OFF)
 
 add_executable(clowndoom WIN32
 	"linuxdoom-1.10/am_map.c"
@@ -150,6 +151,10 @@ endif()
 
 if(WIN32)
 	target_link_libraries(clowndoom PRIVATE ws2_32)
+endif()
+
+if(FRENCH)
+	target_compile_definitions(clowndoom PRIVATE FRENCH)
 endif()
 
 # Handling linking/building WildMIDI
