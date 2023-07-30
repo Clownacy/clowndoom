@@ -21,9 +21,9 @@
 #ifndef __P_LOCAL__
 #define __P_LOCAL__
 
-#ifndef __R_LOCAL__
+#include <limits.h>
+
 #include "r_local.h"
-#endif
 
 #define FLOATSPEED              (FRACUNIT*4)
 
@@ -82,8 +82,8 @@ void    P_PlayerThink (player_t* player);
 
 
 /* P_MOBJ */
-#define ONFLOORZ                MININT
-#define ONCEILINGZ              MAXINT
+#define ONFLOORZ                INT_MIN
+#define ONCEILINGZ              INT_MAX
 
 /* Time interval for item respawning. */
 #define ITEMQUESIZE             128

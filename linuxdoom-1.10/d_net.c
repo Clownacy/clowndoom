@@ -19,6 +19,8 @@
 ******************************************************************************/
 
 
+#include <limits.h>
+
 #include "m_menu.h"
 #include "i_system.h"
 #include "i_video.h"
@@ -613,7 +615,7 @@ void TryRunTics (void)
 	/* get available tics */
 	NetUpdate ();
 
-	lowtic = MAXINT;
+	lowtic = INT_MAX;
 	numplaying = 0;
 	for (i=0 ; i<doomcom->numnodes ; i++)
 	{
@@ -676,7 +678,7 @@ void TryRunTics (void)
 	while (lowtic < gametic/ticdup + counts)
 	{
 		NetUpdate ();
-		lowtic = MAXINT;
+		lowtic = INT_MAX;
 
 		for (i=0 ; i<doomcom->numnodes ; i++)
 			if (nodeingame[i] && nettics[i] < lowtic)

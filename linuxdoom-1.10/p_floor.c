@@ -17,6 +17,8 @@
 
 ******************************************************************************/
 
+#include <limits.h>
+
 #include "z_zone.h"
 #include "doomdef.h"
 #include "p_local.h"
@@ -356,7 +358,7 @@ EV_DoFloor
 
 		  case raiseToTexture:
 		  {
-			  int       minsize = MAXINT;
+			  int       minsize = INT_MAX;
 			  side_t*   side;
 
 			  floor->direction = 1;

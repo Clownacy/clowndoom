@@ -18,6 +18,7 @@
 ******************************************************************************/
 
 
+#include <limits.h>
 #include <stdlib.h>
 
 #include "doomtype.h"
@@ -144,7 +145,7 @@ FixedDiv
 	const unsigned long b_absolute = labs(b);
 
 	if ((a_absolute >> 14) >= b_absolute)
-		return (a ^ b) < 0 ? MINLONG : MAXLONG;
+		return (a ^ b) < 0 ? LONG_MIN : LONG_MAX;
 
 	/* Note that this sneakily multiplies by FRACUNIT. */
 	dividend.splits[0] = (a_absolute >> 16) & 0xFFFF;
@@ -196,7 +197,7 @@ FixedDiv
   fixed_t       b )
 {
 	if ( (labs(a)>>14) >= labs(b))
-		return (a^b)<0 ? MINLONG : MAXLONG;
+		return (a^b)<0 ? LONG_MIN : LONG_MAX;
 	return FixedDiv2 (a,b);
 }
 

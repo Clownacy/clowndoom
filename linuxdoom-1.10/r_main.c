@@ -96,7 +96,7 @@ angle_t                 xtoviewangle[SCREENWIDTH+1];
 /* UNUSED. */
 /* The finetangentgent[angle+FINEANGLES/4] table */
 /* holds the fixed_t tangent values for view angles, */
-/* ranging from MININT to 0 to MAXINT. */
+/* ranging from INT_MIN to 0 to INT_MAX. */
 /* fixed_t              finetangent[FINEANGLES/2]; */
 
 /* fixed_t              finesine[5*FINEANGLES/4]; */
