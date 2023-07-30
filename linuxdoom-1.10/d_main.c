@@ -426,7 +426,7 @@ void D_AdvanceDemo (void)
 	gameaction = ga_nothing;
 
 	if ( gamemode == retail )
-	  demosequence = (demosequence+1)%7;
+	  demosequence = (demosequence+1)%8;
 	else
 	  demosequence = (demosequence+1)%6;
 
@@ -476,8 +476,13 @@ void D_AdvanceDemo (void)
 	  case 5:
 		G_DeferedPlayDemo ("demo3");
 		break;
-		/* THE DEFINITIVE DOOM Special Edition demo */
 	  case 6:
+		  pagetic = 200;
+		  gamestate = GS_DEMOSCREEN;
+		  pagename = "CREDIT";
+		  break;
+		/* THE DEFINITIVE DOOM Special Edition demo */
+	  case 7:
 		G_DeferedPlayDemo ("demo4");
 		break;
 	}
