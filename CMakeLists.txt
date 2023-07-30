@@ -131,6 +131,7 @@ add_executable(clowndoom WIN32
 	"linuxdoom-1.10/w_wad.c"
 	"linuxdoom-1.10/w_wad.h"
 	"linuxdoom-1.10/z_zone.c"
+	"linuxdoom-1.10/z_zone.h"
 )
 
 set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
