@@ -31,6 +31,8 @@
 
 /*                       SCREEN WIPE PACKAGE */
 
+#define PIXELS_PER_COLUMN (2 * SCREEN_MUL)
+
 /* when zero, stop the wipe */
 static d_bool  go = 0;
 
@@ -41,23 +43,22 @@ static unsigned char*    wipe_scr;
 
 void
 wipe_shittyColMajorXform
-( short*        array,
-  int           width,
-  int           height )
+( unsigned char* array,
+  int            width,
+  int            height )
 {
-	int         x;
-	int         y;
-	short*      dest;
+	int x,y,i;
+	unsigned char* dest;
 
 	/* This used to be a `Z_Malloc` call, but high resolutions would exhaust the memory pool. */
 	/* TODO: Create a `Z_Malloc`-esque function that calls `malloc` and errors on allocation failure. */
-	dest = (short*) malloc(width*height*sizeof(short));
+	dest = (unsigned char*) malloc(width*height*PIXELS_PER_COLUMN);
 
 	for(y=0;y<height;y++)
 		for(x=0;x<width;x++)
-			dest[x*height+y] = array[y*width+x];
+			memcpy(&dest[(x*height+y)*PIXELS_PER_COLUMN], &array[(y*width+x)*PIXELS_PER_COLUMN], PIXELS_PER_COLUMN);
 
-	memcpy(array, dest, width*height*sizeof(short));
+	memcpy(array, dest, width*height*PIXELS_PER_COLUMN);
 
 	free(dest);
 
@@ -152,20 +153,22 @@ wipe_initMelt
 
 	/* makes this wipe faster (in theory) */
 	/* to have stuff in column-major format */
-	wipe_shittyColMajorXform((short*)wipe_scr_start, width/2, height);
-	wipe_shittyColMajorXform((short*)wipe_scr_end, width/2, height);
+	wipe_shittyColMajorXform(wipe_scr_start, width/PIXELS_PER_COLUMN, height);
+	wipe_shittyColMajorXform(wipe_scr_end, width/PIXELS_PER_COLUMN, height);
 
 	/* setup initial column positions */
 	/* (y<0 => not ready to scroll yet) */
 	y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
-	y[0] = -((M_Random()%16)*SCREEN_MUL);
+	y[0] = -(M_Random()%16);
 	for (i=1;i<width;i++)
 	{
-		r = (M_Random()%3) - 1;
+		r = (M_Random()%3)-(3/2);
 		y[i] = y[i-1] + r;
 		if (y[i] > 0) y[i] = 0;
-		else if (y[i] == -16*SCREEN_MUL) y[i] = (-16*SCREEN_MUL)-1;
+		else if (y[i] == -16) y[i] = -(16-1);
 	}
+	for (i=0;i<width;i++)
+		y[i] *= SCREEN_MUL;
 
 	return 0;
 }
@@ -179,13 +182,11 @@ wipe_doMelt
 	int         i;
 	int         j;
 	int         dy;
-	int         idx;
 
-	short*      s;
-	short*      d;
+	unsigned char *s, *d;
 	d_bool     done = d_true;
 
-	width/=2;
+	width/=PIXELS_PER_COLUMN;
 
 	while (ticks--)
 	{
@@ -193,28 +194,28 @@ wipe_doMelt
 		{
 			if (y[i]<0)
 			{
-				y[i]++; done = d_false;
+				y[i] += 1*SCREEN_MUL; done = d_false;
 			}
 			else if (y[i] < height)
 			{
-				dy = (y[i] <= 15*SCREEN_MUL) ? y[i]+SCREEN_MUL : 8*SCREEN_MUL;
+				dy = (y[i] < 16*SCREEN_MUL) ? y[i]+1*SCREEN_MUL : 8*SCREEN_MUL;
 				if (y[i]+dy >= height) dy = height - y[i];
-				s = &((short *)wipe_scr_end)[i*height+y[i]];
-				d = &((short *)wipe_scr)[y[i]*width+i];
-				idx = 0;
+				s = &wipe_scr_end[(i*height+y[i])*PIXELS_PER_COLUMN];
+				d = &wipe_scr[(y[i]*width+i)*PIXELS_PER_COLUMN];
 				for (j=dy;j;j--)
 				{
-					d[idx] = *(s++);
-					idx += width;
+					memcpy(d, s, PIXELS_PER_COLUMN);
+					s += PIXELS_PER_COLUMN;
+					d += width*PIXELS_PER_COLUMN;
 				}
 				y[i] += dy;
-				s = &((short *)wipe_scr_start)[i*height];
-				d = &((short *)wipe_scr)[y[i]*width+i];
-				idx = 0;
+				s = &wipe_scr_start[(i*height)*PIXELS_PER_COLUMN];
+				d = &wipe_scr[(y[i]*width+i)*PIXELS_PER_COLUMN];
 				for (j=height-y[i];j;j--)
 				{
-					d[idx] = *(s++);
-					idx += width;
+					memcpy(d, s, PIXELS_PER_COLUMN);
+					s += PIXELS_PER_COLUMN;
+					d += width*PIXELS_PER_COLUMN;
 				}
 				done = d_false;
 			}
@@ -279,10 +280,10 @@ wipe_ScreenWipe
   int   ticks )
 {
 	int rc;
-	static int (*wipes[])(int, int, int) =
+	static const int (*wipes[][3])(int, int, int) =
 	{
-		wipe_initColorXForm, wipe_doColorXForm, wipe_exitColorXForm,
-		wipe_initMelt, wipe_doMelt, wipe_exitMelt
+		{wipe_initColorXForm, wipe_doColorXForm, wipe_exitColorXForm},
+		{wipe_initMelt, wipe_doMelt, wipe_exitMelt}
 	};
 
 	void V_MarkRect(int, int, int, int);
@@ -296,19 +297,19 @@ wipe_ScreenWipe
 		go = 1;
 		/*wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0);*/ /* DEBUG */
 		wipe_scr = screens[0];
-		(*wipes[wipeno*3])(width, height, ticks);
+		wipes[wipeno][0](width, height, ticks);
 	}
 
 	/* do a piece of wipe-in */
 	V_MarkRect(0, 0, width, height);
-	rc = (*wipes[wipeno*3+1])(width, height, ticks);
+	rc = wipes[wipeno][1](width, height, ticks);
 	/*V_DrawBlock(x, y, 0, width, height, wipe_scr);*/ /* DEBUG */
 
 	/* final stuff */
 	if (rc)
 	{
 		go = 0;
-		(*wipes[wipeno*3+2])(width, height, ticks);
+		wipes[wipeno][2](width, height, ticks);
 	}
 
 	return !go;
