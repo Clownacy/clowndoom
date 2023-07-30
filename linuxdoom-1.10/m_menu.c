@@ -1305,11 +1305,13 @@ d_bool M_Responder (event_t* ev)
 	int             ch;
 	int             i;
 	static  int     joywait = 0;
+#if 0 /* TODO: See below. */
 	static  int     mousewait = 0;
 	static  int     mousey = 0;
 	static  int     lasty = 0;
 	static  int     mousex = 0;
 	static  int     lastx = 0;
+#endif
 
 	ch = -1;
 
