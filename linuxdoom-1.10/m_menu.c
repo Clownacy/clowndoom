@@ -1350,6 +1350,7 @@ d_bool M_Responder (event_t* ev)
 	}
 	else
 	{
+	#if 0 /* TODO: Add a configuration option to put this back. */
 		if (ev->type == ev_mouse && mousewait < I_GetTime())
 		{
 			mousey += ev->data3;
@@ -1393,6 +1394,7 @@ d_bool M_Responder (event_t* ev)
 			}
 		}
 		else
+	#endif
 			if (ev->type == ev_keydown)
 			{
 				ch = ev->data1;
