@@ -373,8 +373,8 @@ void R_DrawPlanes (void)
 
 			/* Sky is allways drawn full bright, */
 			/*  i.e. colormaps[0] is used. */
-			/* BUGFIX: This now responds to the invulnerability filter. */
-			dc_colormap = colormaps[players[displayplayer].fixedcolormap == INVERSECOLORMAP ? INVERSECOLORMAP : 0];
+			/* BUGFIX: This now responds to non-lighting colour maps. */
+			dc_colormap = colormaps[players[displayplayer].fixedcolormap >= NUMLIGHTCOLORMAPS ? players[displayplayer].fixedcolormap : 0];
 			dc_texturemid = skytexturemid;
 			for (x=pl->minx ; x <= pl->maxx ; x++)
 			{
