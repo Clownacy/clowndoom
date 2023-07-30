@@ -29,4 +29,8 @@ typedef unsigned int bool32;
 typedef unsigned char byte;
 #endif
 
+#define D_MIN(a, b) ((a) < (b) ? (a) : (b))
+#define D_MAX(a, b) ((a) > (b) ? (a) : (b))
+#define D_COUNT_OF(x) (sizeof(x) / sizeof(*x))
+
 #endif

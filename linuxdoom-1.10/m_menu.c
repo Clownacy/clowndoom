@@ -1667,12 +1667,10 @@ void M_StartControlPanel (void)
 /* but before it has been blitted. */
 void M_Drawer (void)
 {
-	static short        x;
-	static short        y;
-	size_t              i;
-	size_t              max;
-	char                string[41];
-	size_t              start;
+	int          x;
+	int          y;
+	size_t       i;
+	size_t       max;
 
 	inhelpscreens = b_false;
 
@@ -1680,29 +1678,27 @@ void M_Drawer (void)
 	/* Horiz. & Vertically center string and print it. */
 	if (messageToPrint)
 	{
-		start = 0;
-		y = 100 - M_StringHeight(messageString)/2;
-		while(messageString[start] != '\0')
+		size_t start, length;
+
+		y = 100 - M_StringHeight(messageString) / 2;
+
+		for (start = 0; ; start += length + 1)
 		{
-			for (i = 0;i < strlen(messageString+start);i++)
-				if (messageString[start+i] == '\n')
-				{
-					memset(string,0,sizeof(string));
-					strncpy(string,messageString+start,i);
-					start += i+1;
-					break;
-				}
+			char string[40 + 1];
+			const size_t string_length = strcspn(&messageString[start], "\n");
 
-			if (i == strlen(messageString+start))
-			{
-				strcpy(string,messageString+start);
-				start += i;
-			}
+			length = D_MIN(string_length, sizeof(string) - 1);
+			memcpy(string, &messageString[start], length);
+			string[length] = '\0';
 
-			x = 160 - M_StringWidth(string)/2;
-			M_WriteText(x,y,string);
+			x = 160 - M_StringWidth(string) / 2;
+			M_WriteText(x, y, string);
 			y += SHORT(hu_font[0]->height);
+
+			if (messageString[start + length] == '\0')
+				break;
 		}
+
 		return;
 	}
 
