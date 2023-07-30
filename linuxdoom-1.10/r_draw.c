@@ -118,31 +118,6 @@ void R_DrawColumn (void)
 	fracstep = dc_iscale;
 	frac = dc_texturemid + (dc_yl-centery)*fracstep;
 
-	/*
-	Fix ugly artifacting on weapon and some walls.
-
-	At any resolution, the stairs in the monitor room of Doom's first
-	level has ugly garbage pixels occasionally appear at the top of some
-	pixels columns.A similar effect occurs on the weapon sprites at 6x
-	HUD scale when the player is stood completely still.
-
-	This artifacting is the result of fixed - point imprecision caused by
-	the column rendering logic frequently accumulating reciprocals.This
-	is done as a huge performance optimisation, but does result in
-	imprecise calculations.In this case, it causes the pixels to be
-	indexed with a negative index, resulting in garbage pixels being
-	rendered.
-
-	To work around this, the pixel index is clamped, preventing it from
-	going below 0. This doesn't fix the underlying imprecision issues,
-	but it does prevent them from creating ugly garbage pixels.
-
-	TODO: Maybe address the root issue, even if it makes the renderer much
-	slower.
-	*/
-	if (frac < 0)
-		frac = 0;
-
 	/* Inner loop that does the actual texture mapping, */
 	/*  e.g. a DDA-lile scaling. */
 	/* This is as fast as it gets. */
