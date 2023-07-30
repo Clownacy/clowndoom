@@ -269,9 +269,6 @@ void F_Ticker (void)
 #include "hu_stuff.h"
 extern  patch_t *hu_font[HU_FONTSIZE];
 
-#define BG_TILE_SRC_SIZE 64
-#define BG_TILE_DST_SIZE (BG_TILE_SRC_SIZE*SCREEN_MUL)
-
 void F_TextWrite (void)
 {
 	unsigned char*       src;
@@ -285,29 +282,7 @@ void F_TextWrite (void)
 	int         cy;
 
 	/* erase the entire screen to a tiled background */
-	src = (unsigned char*)W_CacheLumpName ( finaleflat , PU_CACHE);
-	dest = screens[0];
-
-	for (y=0 ; y<(SCREENHEIGHT+(SCREEN_MUL-1))/SCREEN_MUL ; y++)
-	{
-		static unsigned char line_buffer[BG_TILE_DST_SIZE];
-
-		/* Upscale a row of pixels. */
-		for (x=0 ; x<BG_TILE_SRC_SIZE ; x++)
-			for (w=0 ; w<SCREEN_MUL; w++)
-				line_buffer[x*SCREEN_MUL+w] = src[((y%BG_TILE_SRC_SIZE)*BG_TILE_SRC_SIZE)+x];
-
-		/* Repeatedly copy the upscaled row to the screen. */
-		for (w=0 ; w<D_MIN(SCREEN_MUL,SCREENHEIGHT-y*SCREEN_MUL); w++)
-		{
-			for (x=0 ; x<SCREENWIDTH ; x+=BG_TILE_DST_SIZE)
-			{
-				const int bytes_to_do = D_MIN(BG_TILE_DST_SIZE, SCREENWIDTH - x);
-				memcpy (dest, line_buffer, bytes_to_do);
-				dest += bytes_to_do;
-			}
-		}
-	}
+	V_FillScreenWithPattern(finaleflat, 0, SCREENHEIGHT);
 
 	/* draw some of the text onto the screen */
 	cx = X_CENTRE(10);

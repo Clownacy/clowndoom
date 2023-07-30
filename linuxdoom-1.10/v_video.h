@@ -104,6 +104,12 @@ V_DrawPatchDirectScaled
   int           scrn,
   const patch_t*        patch );
 
+void
+V_FillScreenWithPattern
+( const char* const lump_name,
+  const int screen,
+  const int height );
+
 
 /* Draw a linear block of pixels into the view buffer. */
 void

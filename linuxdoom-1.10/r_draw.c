@@ -869,24 +869,7 @@ void R_FillBackScreen (void)
 	else
 		name = name1;
 
-	src = (unsigned char*)W_CacheLumpName (name, PU_CACHE);
-	dest = screens[1];
-
-	/* TODO: Scale this. */
-	for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++)
-	{
-		for (x=0 ; x<SCREENWIDTH/64 ; x++)
-		{
-			memcpy (dest, src+((y&63)<<6), 64);
-			dest += 64;
-		}
-
-		if (SCREENWIDTH&63)
-		{
-			memcpy (dest, src+((y&63)<<6), SCREENWIDTH&63);
-			dest += (SCREENWIDTH&63);
-		}
-	}
+	V_FillScreenWithPattern(name, 1, SCREENHEIGHT-SBARHEIGHT);
 
 	patch = (patch_t*)W_CacheLumpName ("brdr_t",PU_CACHE);
 
