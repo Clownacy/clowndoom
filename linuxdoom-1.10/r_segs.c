@@ -628,6 +628,7 @@ R_StoreWallRange
 		{
 			lightnum = (frontsector->lightlevel >> LIGHTSEGSHIFT)+extralight;
 
+			/* fake contrast */
 			if (curline->v1->y == curline->v2->y)
 				lightnum--;
 			else if (curline->v1->x == curline->v2->x)
