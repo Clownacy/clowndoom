@@ -67,36 +67,36 @@
 
 
 /* GLOBAL LOCATIONS */
-#define WI_TITLEY               2
-#define WI_SPACINGY             33
+#define WI_TITLEY               Y_CENTRE(2)
+#define WI_SPACINGY             (33*SCREEN_MUL)
 
-/* SINGPLE-PLAYER STUFF */
-#define SP_STATSX               50
-#define SP_STATSY               50
+/* SINGLE-PLAYER STUFF */
+#define SP_STATSX               X_CENTRE(50)
+#define SP_STATSY               Y_CENTRE(50)
 
-#define SP_TIMEX                16
-#define SP_TIMEY                (SCREENHEIGHT-32)
+#define SP_TIMEX                X_CENTRE(16)
+#define SP_TIMEY                Y_CENTRE(ORIGINAL_SCREEN_HEIGHT-32)
 
 
 /* NET GAME STUFF */
-#define NG_STATSY               50
-#define NG_STATSX               (32 + SHORT(star->width)/2 + 32*!dofrags)
+#define NG_STATSY               Y_CENTRE(50)
+#define NG_STATSX               X_CENTRE(32 + SHORT(star->width)/2 + 32*!dofrags)
 
-#define NG_SPACINGX             64
+#define NG_SPACINGX             (64*SCREEN_MUL)
 
 
 /* DEATHMATCH STUFF */
-#define DM_MATRIXX              42
-#define DM_MATRIXY              68
+#define DM_MATRIXX              X_CENTRE(42)
+#define DM_MATRIXY              Y_CENTRE(68)
 
-#define DM_SPACINGX             40
+#define DM_SPACINGX             (40*SCREEN_MUL)
 
-#define DM_TOTALSX              269
+#define DM_TOTALSX              X_CENTRE(269)
 
-#define DM_KILLERSX             10
-#define DM_KILLERSY             100
-#define DM_VICTIMSX             5
-#define DM_VICTIMSY             50
+#define DM_KILLERSX             X_CENTRE(10)
+#define DM_KILLERSY             Y_CENTRE(100)
+#define DM_VICTIMSX             X_CENTRE(5)
+#define DM_VICTIMSY             Y_CENTRE(50)
 
 
 
@@ -166,41 +166,41 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 {
 	/* Episode 0 World Map */
 	{
-		{ SCREEN_X_OFFSET(185), SCREEN_Y_OFFSET(164) },   /* location of level 0 (CJ) */
-		{ SCREEN_X_OFFSET(148), SCREEN_Y_OFFSET(143) },   /* location of level 1 (CJ) */
-		{ SCREEN_X_OFFSET(69) , SCREEN_Y_OFFSET(122) },   /* location of level 2 (CJ) */
-		{ SCREEN_X_OFFSET(209), SCREEN_Y_OFFSET(102) },   /* location of level 3 (CJ) */
-		{ SCREEN_X_OFFSET(116), SCREEN_Y_OFFSET(89)  },   /* location of level 4 (CJ) */
-		{ SCREEN_X_OFFSET(166), SCREEN_Y_OFFSET(55)  },   /* location of level 5 (CJ) */
-		{ SCREEN_X_OFFSET(71) , SCREEN_Y_OFFSET(56)  },   /* location of level 6 (CJ) */
-		{ SCREEN_X_OFFSET(135), SCREEN_Y_OFFSET(29)  },   /* location of level 7 (CJ) */
-		{ SCREEN_X_OFFSET(71) , SCREEN_Y_OFFSET(24)  }    /* location of level 8 (CJ) */
+		{ X_CENTRE(185), Y_CENTRE(164) },   /* location of level 0 (CJ) */
+		{ X_CENTRE(148), Y_CENTRE(143) },   /* location of level 1 (CJ) */
+		{ X_CENTRE(69) , Y_CENTRE(122) },   /* location of level 2 (CJ) */
+		{ X_CENTRE(209), Y_CENTRE(102) },   /* location of level 3 (CJ) */
+		{ X_CENTRE(116), Y_CENTRE(89)  },   /* location of level 4 (CJ) */
+		{ X_CENTRE(166), Y_CENTRE(55)  },   /* location of level 5 (CJ) */
+		{ X_CENTRE(71) , Y_CENTRE(56)  },   /* location of level 6 (CJ) */
+		{ X_CENTRE(135), Y_CENTRE(29)  },   /* location of level 7 (CJ) */
+		{ X_CENTRE(71) , Y_CENTRE(24)  }    /* location of level 8 (CJ) */
 	},
 
 	/* Episode 1 World Map should go here */
 	{
-		{ SCREEN_X_OFFSET(254), SCREEN_Y_OFFSET(25)  },   /* location of level 0 (CJ) */
-		{ SCREEN_X_OFFSET(97) , SCREEN_Y_OFFSET(50)  },   /* location of level 1 (CJ) */
-		{ SCREEN_X_OFFSET(188), SCREEN_Y_OFFSET(64)  },   /* location of level 2 (CJ) */
-		{ SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(78)  },   /* location of level 3 (CJ) */
-		{ SCREEN_X_OFFSET(214), SCREEN_Y_OFFSET(92)  },   /* location of level 4 (CJ) */
-		{ SCREEN_X_OFFSET(133), SCREEN_Y_OFFSET(130) },   /* location of level 5 (CJ) */
-		{ SCREEN_X_OFFSET(208), SCREEN_Y_OFFSET(136) },   /* location of level 6 (CJ) */
-		{ SCREEN_X_OFFSET(148), SCREEN_Y_OFFSET(140) },   /* location of level 7 (CJ) */
-		{ SCREEN_X_OFFSET(235), SCREEN_Y_OFFSET(158) }    /* location of level 8 (CJ) */
+		{ X_CENTRE(254), Y_CENTRE(25)  },   /* location of level 0 (CJ) */
+		{ X_CENTRE(97) , Y_CENTRE(50)  },   /* location of level 1 (CJ) */
+		{ X_CENTRE(188), Y_CENTRE(64)  },   /* location of level 2 (CJ) */
+		{ X_CENTRE(128), Y_CENTRE(78)  },   /* location of level 3 (CJ) */
+		{ X_CENTRE(214), Y_CENTRE(92)  },   /* location of level 4 (CJ) */
+		{ X_CENTRE(133), Y_CENTRE(130) },   /* location of level 5 (CJ) */
+		{ X_CENTRE(208), Y_CENTRE(136) },   /* location of level 6 (CJ) */
+		{ X_CENTRE(148), Y_CENTRE(140) },   /* location of level 7 (CJ) */
+		{ X_CENTRE(235), Y_CENTRE(158) }    /* location of level 8 (CJ) */
 	},
 
 	/* Episode 2 World Map should go here */
 	{
-		{ SCREEN_X_OFFSET(156), SCREEN_Y_OFFSET(168) },   /* location of level 0 (CJ) */
-		{ SCREEN_X_OFFSET(48) , SCREEN_Y_OFFSET(154) },   /* location of level 1 (CJ) */
-		{ SCREEN_X_OFFSET(174), SCREEN_Y_OFFSET(95)  },   /* location of level 2 (CJ) */
-		{ SCREEN_X_OFFSET(265), SCREEN_Y_OFFSET(75)  },   /* location of level 3 (CJ) */
-		{ SCREEN_X_OFFSET(130), SCREEN_Y_OFFSET(48)  },   /* location of level 4 (CJ) */
-		{ SCREEN_X_OFFSET(279), SCREEN_Y_OFFSET(23)  },   /* location of level 5 (CJ) */
-		{ SCREEN_X_OFFSET(198), SCREEN_Y_OFFSET(48)  },   /* location of level 6 (CJ) */
-		{ SCREEN_X_OFFSET(140), SCREEN_Y_OFFSET(25)  },   /* location of level 7 (CJ) */
-		{ SCREEN_X_OFFSET(281), SCREEN_Y_OFFSET(136) }    /* location of level 8 (CJ) */
+		{ X_CENTRE(156), Y_CENTRE(168) },   /* location of level 0 (CJ) */
+		{ X_CENTRE(48) , Y_CENTRE(154) },   /* location of level 1 (CJ) */
+		{ X_CENTRE(174), Y_CENTRE(95)  },   /* location of level 2 (CJ) */
+		{ X_CENTRE(265), Y_CENTRE(75)  },   /* location of level 3 (CJ) */
+		{ X_CENTRE(130), Y_CENTRE(48)  },   /* location of level 4 (CJ) */
+		{ X_CENTRE(279), Y_CENTRE(23)  },   /* location of level 5 (CJ) */
+		{ X_CENTRE(198), Y_CENTRE(48)  },   /* location of level 6 (CJ) */
+		{ X_CENTRE(140), Y_CENTRE(25)  },   /* location of level 7 (CJ) */
+		{ X_CENTRE(281), Y_CENTRE(136) }    /* location of level 8 (CJ) */
 	}
 
 };
@@ -211,39 +211,39 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 /*  as they replace 320x200 full screen frames. */
 static anim_t epsd0animinfo[] =
 {
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(224), SCREEN_Y_OFFSET(104) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(184), SCREEN_Y_OFFSET(160) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(112), SCREEN_Y_OFFSET(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(72) , SCREEN_Y_OFFSET(112) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(88) , SCREEN_Y_OFFSET(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(64) , SCREEN_Y_OFFSET(48)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(192), SCREEN_Y_OFFSET(40)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(136), SCREEN_Y_OFFSET(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(80) , SCREEN_Y_OFFSET(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(64) , SCREEN_Y_OFFSET(24)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(224), Y_CENTRE(104) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(184), Y_CENTRE(160) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(112), Y_CENTRE(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(72) , Y_CENTRE(112) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(88) , Y_CENTRE(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(64) , Y_CENTRE(48)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(192), Y_CENTRE(40)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(136), Y_CENTRE(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(80) , Y_CENTRE(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(64) , Y_CENTRE(24)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static anim_t epsd1animinfo[] =
 {
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 1, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 2, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 3, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 4, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 5, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 6, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 7, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 3, { SCREEN_X_OFFSET(192), SCREEN_Y_OFFSET(144) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { SCREEN_X_OFFSET(128), SCREEN_Y_OFFSET(136) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 1, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 2, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 3, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 4, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 5, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 6, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 7, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 3, { X_CENTRE(192), Y_CENTRE(144) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static anim_t epsd2animinfo[] =
 {
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(104), SCREEN_Y_OFFSET(168) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(40) , SCREEN_Y_OFFSET(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(160), SCREEN_Y_OFFSET(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(104), SCREEN_Y_OFFSET(80)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { SCREEN_X_OFFSET(120), SCREEN_Y_OFFSET(32)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/4, 3, { SCREEN_X_OFFSET(40) , SCREEN_Y_OFFSET(0)   }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(104), Y_CENTRE(168) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(40) , Y_CENTRE(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(160), Y_CENTRE(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(104), Y_CENTRE(80)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(120), Y_CENTRE(32)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/4, 3, { X_CENTRE(40) , Y_CENTRE(0)   }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static int NUMANIMS[NUMEPISODES] =
@@ -403,13 +403,13 @@ void WI_drawLF(void)
 	int y = WI_TITLEY;
 
 	/* draw <LevelName> */
-	V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->last]->width))/2,
+	V_DrawPatchScaled((SCREENWIDTH - SHORT(lnames[wbs->last]->width)*SCREEN_MUL)/2,
 				y, FB, lnames[wbs->last]);
 
 	/* draw "Finished!" */
-	y += (5*SHORT(lnames[wbs->last]->height))/4;
+	y += (5*SHORT(lnames[wbs->last]->height)*SCREEN_MUL)/4;
 
-	V_DrawPatch((SCREENWIDTH - SHORT(finished->width))/2,
+	V_DrawPatchScaled((SCREENWIDTH - SHORT(finished->width)*SCREEN_MUL)/2,
 				y, FB, finished);
 }
 
@@ -421,13 +421,13 @@ void WI_drawEL(void)
 	int y = WI_TITLEY;
 
 	/* draw "Entering" */
-	V_DrawPatch((SCREENWIDTH - SHORT(entering->width))/2,
+	V_DrawPatchScaled((SCREENWIDTH - SHORT(entering->width)*SCREEN_MUL)/2,
 				y, FB, entering);
 
 	/* draw level */
-	y += (5*SHORT(lnames[wbs->next]->height))/4;
+	y += (5*SHORT(lnames[wbs->next]->height)*SCREEN_MUL)/4;
 
-	V_DrawPatch((SCREENWIDTH - SHORT(lnames[wbs->next]->width))/2,
+	V_DrawPatchScaled((SCREENWIDTH - SHORT(lnames[wbs->next]->width)*SCREEN_MUL)/2,
 				y, FB, lnames[wbs->next]);
 
 }
@@ -448,10 +448,10 @@ WI_drawOnLnode
 	i = 0;
 	do
 	{
-		left = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset);
-		top = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset);
-		right = left + SHORT(c[i]->width);
-		bottom = top + SHORT(c[i]->height);
+		left = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset)*SCREEN_MUL;
+		top = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset)*SCREEN_MUL;
+		right = left + SHORT(c[i]->width)*SCREEN_MUL;
+		bottom = top + SHORT(c[i]->height)*SCREEN_MUL;
 
 		if (left >= 0
 			&& right < SCREENWIDTH
@@ -468,7 +468,7 @@ WI_drawOnLnode
 
 	if (fits && i<2)
 	{
-		V_DrawPatch(lnodes[wbs->epsd][n].x, lnodes[wbs->epsd][n].y,
+		V_DrawPatchScaled(lnodes[wbs->epsd][n].x, lnodes[wbs->epsd][n].y,
 					FB, c[i]);
 	}
 	else
@@ -576,7 +576,7 @@ void WI_drawAnimatedBack(void)
 		a = &anims[wbs->epsd][i];
 
 		if (a->ctr >= 0)
-			V_DrawPatch(a->loc.x, a->loc.y, FB, a->p[a->ctr]);
+			V_DrawPatchScaled(a->loc.x, a->loc.y, FB, a->p[a->ctr]);
 	}
 
 }
@@ -594,7 +594,7 @@ WI_drawNum
   int           digits )
 {
 
-	int         fontwidth = SHORT(num[0]->width);
+	int         fontwidth = SHORT(num[0]->width)*SCREEN_MUL;
 	int         neg;
 	int         temp;
 
@@ -631,13 +631,13 @@ WI_drawNum
 	while (digits--)
 	{
 		x -= fontwidth;
-		V_DrawPatch(x, y, FB, num[ n % 10 ]);
+		V_DrawPatchScaled(x, y, FB, num[ n % 10 ]);
 		n /= 10;
 	}
 
 	/* draw a minus sign if necessary */
 	if (neg)
-		V_DrawPatch(x-=8, y, FB, wiminus);
+		V_DrawPatchScaled(x-=8*SCREEN_MUL, y, FB, wiminus);
 
 	return x;
 
@@ -652,7 +652,7 @@ WI_drawPercent
 	if (p < 0)
 		return;
 
-	V_DrawPatch(x, y, FB, percent);
+	V_DrawPatchScaled(x, y, FB, percent);
 	WI_drawNum(x, y, p, -1);
 }
 
@@ -680,19 +680,19 @@ WI_drawTime
 		do
 		{
 			n = (t / div) % 60;
-			x = WI_drawNum(x, y, n, 2) - SHORT(colon->width);
+			x = WI_drawNum(x, y, n, 2) - SHORT(colon->width)*SCREEN_MUL;
 			div *= 60;
 
 			/* draw */
 			if (div==60 || t / div)
-				V_DrawPatch(x, y, FB, colon);
+				V_DrawPatchScaled(x, y, FB, colon);
 
 		} while (t / div);
 	}
 	else
 	{
 		/* "sucks" */
-		V_DrawPatch(x - SHORT(sucks->width), y, FB, sucks);
+		V_DrawPatchScaled(x - SHORT(sucks->width)*SCREEN_MUL, y, FB, sucks);
 	}
 }
 
@@ -970,13 +970,13 @@ void WI_drawDeathmatchStats(void)
 	WI_drawLF();
 
 	/* draw stat titles (top line) */
-	V_DrawPatch(DM_TOTALSX-SHORT(total->width)/2,
-				DM_MATRIXY-WI_SPACINGY+10,
-				FB,
-				total);
+	V_DrawPatchScaled(DM_TOTALSX-SHORT(total->width)*SCREEN_MUL/2,
+	                  DM_MATRIXY-WI_SPACINGY+10*SCREEN_MUL,
+	                  FB,
+	                  total);
 
-	V_DrawPatch(DM_KILLERSX, DM_KILLERSY, FB, killers);
-	V_DrawPatch(DM_VICTIMSX, DM_VICTIMSY, FB, victims);
+	V_DrawPatchScaled(DM_KILLERSX, DM_KILLERSY, FB, killers);
+	V_DrawPatchScaled(DM_VICTIMSX, DM_VICTIMSY, FB, victims);
 
 	/* draw P? */
 	x = DM_MATRIXX + DM_SPACINGX;
@@ -986,34 +986,34 @@ void WI_drawDeathmatchStats(void)
 	{
 		if (playeringame[i])
 		{
-			V_DrawPatch(x-SHORT(p[i]->width)/2,
-						DM_MATRIXY - WI_SPACINGY,
-						FB,
-						p[i]);
+			V_DrawPatchScaled(x-SHORT(p[i]->width)*SCREEN_MUL/2,
+			                  DM_MATRIXY - WI_SPACINGY,
+			                  FB,
+			                  p[i]);
 
-			V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)/2,
-						y,
-						FB,
-						p[i]);
+			V_DrawPatchScaled(DM_MATRIXX-SHORT(p[i]->width)*SCREEN_MUL/2,
+			                  y,
+			                  FB,
+			                  p[i]);
 
 			if (i == me)
 			{
-				V_DrawPatch(x-SHORT(p[i]->width)/2,
-							DM_MATRIXY - WI_SPACINGY,
-							FB,
-							bstar);
+				V_DrawPatchScaled(x-SHORT(p[i]->width)*SCREEN_MUL/2,
+				                  DM_MATRIXY - WI_SPACINGY,
+				                  FB,
+				                  bstar);
 
-				V_DrawPatch(DM_MATRIXX-SHORT(p[i]->width)/2,
-							y,
-							FB,
-							star);
+				V_DrawPatchScaled(DM_MATRIXX-SHORT(p[i]->width)*SCREEN_MUL/2,
+				                  y,
+				                  FB,
+				                  star);
 			}
 		}
 		else
 		{
-			/* V_DrawPatch(x-SHORT(bp[i]->width)/2, */
+			/* V_DrawPatchScaled(x-SHORT(bp[i]->width)*SCREEN_MUL/2, */
 			/*   DM_MATRIXY - WI_SPACINGY, FB, bp[i]); */
-			/* V_DrawPatch(DM_MATRIXX-SHORT(bp[i]->width)/2, */
+			/* V_DrawPatchScaled(DM_MATRIXX-SHORT(bp[i]->width)*SCREEN_MUL/2, */
 			/*   y, FB, bp[i]); */
 		}
 		x += DM_SPACINGX;
@@ -1021,8 +1021,8 @@ void WI_drawDeathmatchStats(void)
 	}
 
 	/* draw stats */
-	y = DM_MATRIXY+10;
-	w = SHORT(num[0]->width);
+	y = DM_MATRIXY+10*SCREEN_MUL;
+	w = SHORT(num[0]->width)*SCREEN_MUL;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -1235,7 +1235,7 @@ void WI_drawNetgameStats(void)
 	int         i;
 	int         x;
 	int         y;
-	int         pwidth = SHORT(percent->width);
+	int         pwidth = SHORT(percent->width)*SCREEN_MUL;
 
 	WI_slamBackground();
 
@@ -1245,21 +1245,21 @@ void WI_drawNetgameStats(void)
 	WI_drawLF();
 
 	/* draw stat titles (top line) */
-	V_DrawPatch(NG_STATSX+NG_SPACINGX-SHORT(kills->width),
+	V_DrawPatchScaled(NG_STATSX+NG_SPACINGX-SHORT(kills->width)*SCREEN_MUL,
 				NG_STATSY, FB, kills);
 
-	V_DrawPatch(NG_STATSX+2*NG_SPACINGX-SHORT(items->width),
+	V_DrawPatchScaled(NG_STATSX+2*NG_SPACINGX-SHORT(items->width)*SCREEN_MUL,
 				NG_STATSY, FB, items);
 
-	V_DrawPatch(NG_STATSX+3*NG_SPACINGX-SHORT(secret->width),
+	V_DrawPatchScaled(NG_STATSX+3*NG_SPACINGX-SHORT(secret->width)*SCREEN_MUL,
 				NG_STATSY, FB, secret);
 
 	if (dofrags)
-		V_DrawPatch(NG_STATSX+4*NG_SPACINGX-SHORT(frags->width),
+		V_DrawPatchScaled(NG_STATSX+4*NG_SPACINGX-SHORT(frags->width)*SCREEN_MUL,
 					NG_STATSY, FB, frags);
 
 	/* draw stats */
-	y = NG_STATSY + SHORT(kills->height);
+	y = NG_STATSY + SHORT(kills->height)*SCREEN_MUL;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -1267,18 +1267,18 @@ void WI_drawNetgameStats(void)
 			continue;
 
 		x = NG_STATSX;
-		V_DrawPatch(x-SHORT(p[i]->width), y, FB, p[i]);
+		V_DrawPatchScaled(x-SHORT(p[i]->width)*SCREEN_MUL, y, FB, p[i]);
 
 		if (i == me)
-			V_DrawPatch(x-SHORT(p[i]->width), y, FB, star);
+			V_DrawPatchScaled(x-SHORT(p[i]->width)*SCREEN_MUL, y, FB, star);
 
 		x += NG_SPACINGX;
-		WI_drawPercent(x-pwidth, y+10, cnt_kills[i]);   x += NG_SPACINGX;
-		WI_drawPercent(x-pwidth, y+10, cnt_items[i]);   x += NG_SPACINGX;
-		WI_drawPercent(x-pwidth, y+10, cnt_secret[i]);  x += NG_SPACINGX;
+		WI_drawPercent(x-pwidth, y+10*SCREEN_MUL, cnt_kills[i]);   x += NG_SPACINGX;
+		WI_drawPercent(x-pwidth, y+10*SCREEN_MUL, cnt_items[i]);   x += NG_SPACINGX;
+		WI_drawPercent(x-pwidth, y+10*SCREEN_MUL, cnt_secret[i]);  x += NG_SPACINGX;
 
 		if (dofrags)
-			WI_drawNum(x, y+10, cnt_frags[i], -1);
+			WI_drawNum(x, y+10*SCREEN_MUL, cnt_frags[i], -1);
 
 		y += WI_SPACINGY;
 	}
@@ -1410,7 +1410,7 @@ void WI_drawStats(void)
 	/* line height */
 	int lh;
 
-	lh = (3*SHORT(num[0]->height))/2;
+	lh = (3*SHORT(num[0]->height)*SCREEN_MUL)/2;
 
 	WI_slamBackground();
 
@@ -1419,21 +1419,21 @@ void WI_drawStats(void)
 
 	WI_drawLF();
 
-	V_DrawPatch(SP_STATSX, SP_STATSY, FB, kills);
+	V_DrawPatchScaled(SP_STATSX, SP_STATSY, FB, kills);
 	WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY, cnt_kills[0]);
 
-	V_DrawPatch(SP_STATSX, SP_STATSY+lh, FB, items);
+	V_DrawPatchScaled(SP_STATSX, SP_STATSY+lh, FB, items);
 	WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+lh, cnt_items[0]);
 
-	V_DrawPatch(SP_STATSX, SP_STATSY+2*lh, FB, sp_secret);
+	V_DrawPatchScaled(SP_STATSX, SP_STATSY+2*lh, FB, sp_secret);
 	WI_drawPercent(SCREENWIDTH - SP_STATSX, SP_STATSY+2*lh, cnt_secret[0]);
 
-	V_DrawPatch(SP_TIMEX, SP_TIMEY, FB, time);
-	WI_drawTime(SCREENWIDTH/2 - SP_TIMEX, SP_TIMEY, cnt_time);
+	V_DrawPatchScaled(SP_TIMEX, SP_TIMEY, FB, time);
+	WI_drawTime(SCREENWIDTH - SP_TIMEX - ORIGINAL_SCREEN_WIDTH*SCREEN_MUL/2, SP_TIMEY, cnt_time);
 
 	if (wbs->epsd < 3)
 	{
-		V_DrawPatch(SCREENWIDTH/2 + SP_TIMEX, SP_TIMEY, FB, par);
+		V_DrawPatchScaled(SP_TIMEX + ORIGINAL_SCREEN_WIDTH*SCREEN_MUL/2, SP_TIMEY, FB, par);
 		WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
 	}
 
@@ -1527,7 +1527,7 @@ void WI_loadData(void)
 
 	/* background */
 	bg = (patch_t*)W_CacheLumpName(name, PU_CACHE);
-	V_DrawPatch(SCREEN_X_OFFSET(0), SCREEN_Y_OFFSET(0), 1, bg);
+	V_DrawPatchScaled(SCREENWIDTH/2-160*SCREEN_MUL, SCREENHEIGHT/2-100*SCREEN_MUL, 1, bg);
 
 
 	/* UNUSED unsigned char *pic = screens[1]; */
