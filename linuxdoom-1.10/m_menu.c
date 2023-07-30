@@ -1307,13 +1307,11 @@ d_bool M_Responder (event_t* ev)
 	int             ch;
 	int             i;
 	static  int     joywait = 0;
-#if 0 /* TODO: See below. */
 	static  int     mousewait = 0;
 	static  int     mousey = 0;
 	static  int     lasty = 0;
 	static  int     mousex = 0;
 	static  int     lastx = 0;
-#endif
 
 	ch = -1;
 
@@ -1354,7 +1352,6 @@ d_bool M_Responder (event_t* ev)
 	}
 	else
 	{
-	#if 0 /* TODO: Add a configuration option to put this back. */
 		if (ev->type == ev_mouse && mousewait < I_GetTime())
 		{
 			mousey += ev->data3;
@@ -1397,12 +1394,10 @@ d_bool M_Responder (event_t* ev)
 				mousewait = I_GetTime() + 15;
 			}
 		}
-		else
-	#endif
-			if (ev->type == ev_keydown)
-			{
-				ch = ev->data1;
-			}
+		else if (ev->type == ev_keydown)
+		{
+			ch = ev->data1;
+		}
 	}
 
 	if (ch == -1)
@@ -1684,8 +1679,6 @@ void M_StartControlPanel (void)
 	if (menuactive)
 		return;
 
-	I_GrabMouse(d_false);
-
 	menuactive = 1;
 	currentMenu = &MainDef;         /* JDC */
 	itemOn = currentMenu->lastOn;   /* JDC */
@@ -1762,8 +1755,6 @@ void M_Drawer (void)
 /* M_ClearMenus */
 void M_ClearMenus (void)
 {
-	I_GrabMouse(d_true);
-
 	menuactive = 0;
 	/* if (!netgame && usergame && paused) */
 	/*       sendpause = true; */
