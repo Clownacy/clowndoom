@@ -385,20 +385,20 @@ R_GetColumn
 /*  with the textures from the world map. */
 void R_InitTextures (void)
 {
-	unsigned char*               mtexture;
+	unsigned char*      mtexture;
 	texture_t*          texture;
-	unsigned char*               mpatch;
+	unsigned char*      mpatch;
 	texpatch_t*         patch;
 
 	int                 i;
 	int                 j;
 
-	unsigned char*               maptex;
-	unsigned char*               maptex2;
-	unsigned char*               maptex1;
+	unsigned char*      maptex;
+	unsigned char*      maptex2;
+	unsigned char*      maptex1;
 
 	char                name[9];
-	unsigned char*               names;
+	unsigned char*      names;
 	const char*         name_p;
 
 	int*                patchlookup;
@@ -411,7 +411,7 @@ void R_InitTextures (void)
 	int                 numtextures1;
 	int                 numtextures2;
 
-	unsigned char*               directory;
+	unsigned char*      directory;
 
 	int                 temp1;
 	int                 temp2;
