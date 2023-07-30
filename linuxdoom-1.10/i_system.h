@@ -57,10 +57,6 @@ ticcmd_t* I_BaseTiccmd (void);
 void I_Quit (void);
 
 
-/* Allocates from low memory under dos, */
-/* just mallocs under unix */
-unsigned char* I_AllocLow (size_t length);
-
 void I_Tactile (int on, int off, int total);
 
 

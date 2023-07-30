@@ -116,15 +116,6 @@ void I_EndRead(void)
 {
 }
 
-unsigned char*   I_AllocLow(size_t length)
-{
-	unsigned char*       mem;
-
-	mem = (unsigned char *)malloc (length);
-	memset (mem,0,length);
-	return mem;
-}
-
 
 /* I_Error */
 extern d_bool demorecording;
