@@ -37,8 +37,8 @@
 #define LOWERSPEED      (FRACUNIT*6)
 #define RAISESPEED      (FRACUNIT*6)
 
-#define WEAPONBOTTOM    (SCREEN_Y_OFFSET(128)*FRACUNIT)
-#define WEAPONTOP       (SCREEN_Y_OFFSET(32)*FRACUNIT)
+#define WEAPONBOTTOM    (((SCREENHEIGHT-200*SCREEN_MUL)/2+128)*FRACUNIT)
+#define WEAPONTOP       (((SCREENHEIGHT-200*SCREEN_MUL)/2+32)*FRACUNIT)
 
 
 /* plasma cells for a bfg attack */
@@ -90,30 +90,6 @@ P_SetPsprite
 
 	} while (!psp->tics);
 	/* an initial state of 0 could cycle through */
-}
-
-
-
-/* P_CalcSwing */
-fixed_t         swingx;
-fixed_t         swingy;
-
-void P_CalcSwing (player_t*     player)
-{
-	fixed_t     swing;
-	int         angle;
-
-	/* OPTIMIZE: tablify this. */
-	/* A LUT would allow for different modes, */
-	/*  and add flexibility. */
-
-	swing = player->bob;
-
-	angle = (FINEANGLES/70*leveltime)&FINEMASK;
-	swingx = FixedMul ( swing, finesine[angle]);
-
-	angle = (FINEANGLES/70*leveltime+FINEANGLES/2)&FINEMASK;
-	swingy = -FixedMul ( swingx, finesine[angle]);
 }
 
 
@@ -283,7 +259,7 @@ A_WeaponReady
 	if (player->pendingweapon != wp_nochange || !player->health)
 	{
 		/* change weapon */
-		/*  (pending weapon should allready be validated) */
+		/*  (pending weapon should already be validated) */
 		newstate = weaponinfo[player->readyweapon].downstate;
 		P_SetPsprite (player, ps_weapon, newstate);
 		return;

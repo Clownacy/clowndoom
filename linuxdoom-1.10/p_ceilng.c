@@ -12,7 +12,7 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-   DESCRIPTION:  Ceiling aninmation (lowering, crushing, raising)
+   DESCRIPTION:  Ceiling animation (lowering, crushing, raising)
 
 ******************************************************************************/
 
