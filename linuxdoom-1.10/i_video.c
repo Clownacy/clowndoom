@@ -44,6 +44,7 @@ static unsigned char *upscale_y_deltas;
 
 static size_t output_width;
 static size_t output_height;
+static size_t offset_x, offset_y;
 
 
 /* I_StartFrame */
@@ -112,6 +113,9 @@ void I_FinishUpdate (void)
 	/* Step 2. Scale the screen */
 	IB_GetFramebuffer(&pixels, &pitch);
 
+	pixels += offset_x * bytes_per_pixel;
+	pixels += offset_y * pitch;
+
 	src_pointer = colored_screen;
 	for (y = 0; y < output_height; ++y)
 	{
@@ -166,8 +170,24 @@ static void OutputSizeChanged(const size_t width, const size_t height)
 {
 	size_t last, i;
 
-	output_width = width;
-	output_height = height;
+	const size_t aspect_ratio_w = aspect_ratio_correction ? 4 : 8;
+	const size_t aspect_ratio_h = aspect_ratio_correction ? 3 : 5;
+	const size_t alternate_width = height * aspect_ratio_w / aspect_ratio_h;
+	const size_t alternate_height = width * aspect_ratio_h / aspect_ratio_w;
+
+	if (width >= alternate_width)
+	{
+		output_width = alternate_width;
+		output_height = height;
+	}
+	else
+	{
+		output_width = width;
+		output_height = alternate_height;
+	}
+
+	offset_x = (width - output_width) / 2;
+	offset_y = (height - output_height) / 2;
 
 	free(upscale_x_deltas);
 	free(upscale_y_deltas);
@@ -196,6 +216,7 @@ static void OutputSizeChanged(const size_t width, const size_t height)
 		last = current;
 	}
 }
+
 
 void I_InitGraphics(void)
 {

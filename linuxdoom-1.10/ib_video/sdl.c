@@ -248,9 +248,9 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 {
 #if SDL_MAJOR_VERSION >= 2
 	output_size_changed_callback = output_size_changed_callback_p;
-
 	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 #else
+	(void)output_size_changed_callback_p;
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 #endif
 
