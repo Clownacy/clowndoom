@@ -618,6 +618,14 @@ int M_strncasecmp(const char *s1, const char *s2, size_t n)
 	return delta;
 }
 
+char* M_strupr(char* const string)
+{
+	char *s;
+	for (s = string; *s != '\0'; ++s)
+		*s = toupper(*s);
+	return string;
+}
+
 d_bool M_FileExists(const char* const filename)
 {
 	FILE* const file = fopen(filename, "rb");

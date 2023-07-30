@@ -54,6 +54,8 @@ M_DrawText
 int M_strncasecmp(const char *s1, const char *s2, size_t n);
 #define M_strcasecmp(s1, s2) M_strncasecmp(s1, s2, (size_t)-1)
 
+char* M_strupr(char *string);
+
 d_bool M_FileExists(const char* const filename);
 
 int M_BytesToShort(const unsigned char * const data);

@@ -45,13 +45,7 @@ size_t                  numlumps;
 void**                  lumpcache;
 
 
-/* This was originally called 'strupr', but it conflicted with the standard library so I renamed it. */
-static void MakeStringUppercase (char* s)
-{
-	while (*s) { *s = toupper(*s); s++; }
-}
-
-static int filelength (FILE* handle)
+static long filelength (FILE* handle)
 {
 	long previous_position, length;
 
@@ -83,15 +77,15 @@ ExtractFileBase
 	}
 
 	/* copy up to eight characters */
-	memset (dest,0,8);
+	memset (dest,'\0',8);
 	length = 0;
 
-	while (*src && *src != '.')
+	while (*src != '\0' && *src != '.')
 	{
 		if (++length == 9)
 			I_Error ("Filename base of %s >8 chars",path);
 
-		*dest++ = toupper((int)*src++);
+		*dest++ = toupper(*src++);
 	}
 }
 
@@ -346,7 +340,7 @@ int W_CheckNumForName (const char* name)
 	name_upper[8] = '\0';
 
 	/* case insensitive */
-	MakeStringUppercase(name_upper);
+	M_strupr(name_upper);
 
 	/* scan backwards so patch lump files take precedence */
 	lump_p = lumpinfo + numlumps;

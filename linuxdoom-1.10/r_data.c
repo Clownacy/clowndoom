@@ -35,7 +35,7 @@
 #include "r_sky.h"
 #include "m_misc.h"
 
-#include <stdlib.h>
+#include <string.h>
 
 
 #include "r_data.h"
@@ -295,7 +295,8 @@ void R_GenerateLookup (int texnum)
 	/*  that are covered by more than one patch. */
 	/* Fill in the lump / offset, so columns */
 	/*  with only a single patch are all done. */
-	patchcount = (unsigned char *)calloc (1, texture->width);
+	patchcount = (unsigned char *)Z_Malloc (texture->width, PU_STATIC, 0);
+	memset(patchcount, 0, texture->width);
 	patch = texture->patches;
 
 	for (i=0 , patch = texture->patches;
@@ -348,7 +349,7 @@ void R_GenerateLookup (int texnum)
 		}
 	}
 
-	free(patchcount);
+	Z_Free(patchcount);
 }
 
 
@@ -719,12 +720,13 @@ void R_PrecacheLevel (void)
 		return;
 
 	/* Precache flats. */
-	flatpresent = (char*)calloc(1, numflats);
+	flatpresent = (char*)Z_Malloc(numflats, PU_STATIC, 0);
+	memset(flatpresent, d_false, numflats);
 
 	for (i=0 ; i<numsectors ; i++)
 	{
-		flatpresent[sectors[i].floorpic] = 1;
-		flatpresent[sectors[i].ceilingpic] = 1;
+		flatpresent[sectors[i].floorpic] = d_true;
+		flatpresent[sectors[i].ceilingpic] = d_true;
 	}
 
 	flatmemory = 0;
@@ -739,16 +741,17 @@ void R_PrecacheLevel (void)
 		}
 	}
 
-	free(flatpresent);
+	Z_Free(flatpresent);
 
 	/* Precache textures. */
-	texturepresent = (char*)calloc(1, numtextures);
+	texturepresent = (char*)Z_Malloc(numtextures, PU_STATIC, 0);
+	memset(texturepresent, d_false, numtextures);
 
 	for (i=0 ; i<numsides ; i++)
 	{
-		texturepresent[sides[i].toptexture] = 1;
-		texturepresent[sides[i].midtexture] = 1;
-		texturepresent[sides[i].bottomtexture] = 1;
+		texturepresent[sides[i].toptexture] = d_true;
+		texturepresent[sides[i].midtexture] = d_true;
+		texturepresent[sides[i].bottomtexture] = d_true;
 	}
 
 	/* Sky texture is always present. */
@@ -757,7 +760,7 @@ void R_PrecacheLevel (void)
 	/*  while the sky texture is stored like */
 	/*  a wall texture, with an episode dependend */
 	/*  name. */
-	texturepresent[skytexture] = 1;
+	texturepresent[skytexture] = d_true;
 
 	texturememory = 0;
 	for (i=0 ; i<numtextures ; i++)
@@ -775,15 +778,16 @@ void R_PrecacheLevel (void)
 		}
 	}
 
-	free(texturepresent);
+	Z_Free(texturepresent);
 
 	/* Precache sprites. */
-	spritepresent = (char*)calloc(1, numsprites);
+	spritepresent = (char*)Z_Malloc(numsprites, PU_STATIC, 0);
+	memset(spritepresent, d_false, numsprites);
 
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
 	{
 		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
-			spritepresent[((mobj_t *)th)->sprite] = 1;
+			spritepresent[((mobj_t *)th)->sprite] = d_true;
 	}
 
 	spritememory = 0;
@@ -804,7 +808,7 @@ void R_PrecacheLevel (void)
 		}
 	}
 
-	free(spritepresent);
+	Z_Free(spritepresent);
 }
 
 
