@@ -42,23 +42,19 @@ static unsigned char*    wipe_scr_end;
 static unsigned char*    wipe_scr;
 
 
-int
+static int
 wipe_initColorXForm
-( int   width,
-  int   height,
-  int   ticks )
+( int   ticks )
 {
 	(void)ticks;
 
-	memcpy(wipe_scr, wipe_scr_start, width*height);
+	memcpy(wipe_scr, wipe_scr_start, SCREENWIDTH*SCREENHEIGHT);
 	return 0;
 }
 
-int
+static int
 wipe_doColorXForm
-( int   width,
-  int   height,
-  int   ticks )
+( int   ticks )
 {
 	d_bool     changed;
 	unsigned char*       w;
@@ -69,7 +65,7 @@ wipe_doColorXForm
 	w = wipe_scr;
 	e = wipe_scr_end;
 
-	while (w!=wipe_scr+width*height)
+	while (w!=wipe_scr+SCREENWIDTH*SCREENHEIGHT)
 	{
 		if (*w != *e)
 		{
@@ -103,71 +99,65 @@ wipe_doColorXForm
 
 static int     y[SCREENWIDTH];
 
-int
+static int
 wipe_initMelt
-( int   width,
-  int   height,
-  int   ticks )
+( int   ticks )
 {
 	int i, r;
 
 	(void)ticks;
 
 	/* copy start screen to main screen */
-	memcpy(wipe_scr, wipe_scr_start, width*height);
+	memcpy(wipe_scr, wipe_scr_start, SCREENWIDTH*SCREENHEIGHT);
 
 	/* setup initial column positions */
 	/* (y<0 => not ready to scroll yet) */
 	y[0] = -(M_Random()%16);
-	for (i=1;i<width;i++)
+	for (i=1;i<SCREENWIDTH;i++)
 	{
 		r = (M_Random()%3)-(3/2);
 		y[i] = y[i-1] + r;
 		if (y[i] > 0) y[i] = 0;
 		else if (y[i] == -16) y[i] = -(16-1);
 	}
-	for (i=0;i<width;i++)
+	for (i=0;i<SCREENWIDTH;i++)
 		y[i] *= MELT_SCALE;
 
 	return 0;
 }
 
-int
+static int
 wipe_doMelt
-( int   width,
-  int   height,
-  int   ticks )
+( int   ticks )
 {
 	int         i;
 	int         j;
 
 	d_bool     done = d_true;
 
-	width/=PIXELS_PER_COLUMN; /* TODO: Maybe the caller should handle this, to prevent out-of-bounds errors. */
-
 	while (ticks--)
 	{
-		for (i=0;i<width;i++)
+		for (i=0;i<SCREENWIDTH/PIXELS_PER_COLUMN;i++)
 		{
 			if (y[i]<0)
 			{
 				y[i] += 1*MELT_SCALE; done = d_false;
 			}
-			else if (y[i] < height)
+			else if (y[i] < SCREENHEIGHT)
 			{
 				int dy, y_offset_incremented;
 				const int y_offset = y[i];
 
 				dy = (y_offset < 16 * MELT_SCALE) ? y_offset + 1 * MELT_SCALE : 8 * MELT_SCALE;
-				if (y_offset + dy >= height) dy = height - y[i];
+				if (y_offset + dy >= SCREENHEIGHT) dy = SCREENHEIGHT - y[i];
 				y_offset_incremented = y_offset + dy;
 
 				for (j=0;j<PIXELS_PER_COLUMN;++j)
 				{
-					const int x_offset = (i * PIXELS_PER_COLUMN + j) * height;
+					const int x_offset = (i * PIXELS_PER_COLUMN + j) * SCREENHEIGHT;
 
 					memcpy(&wipe_scr[x_offset + y_offset], &wipe_scr_end[x_offset + y_offset], dy);
-					memcpy(&wipe_scr[x_offset + y_offset_incremented], &wipe_scr_start[x_offset], height - y_offset_incremented);
+					memcpy(&wipe_scr[x_offset + y_offset_incremented], &wipe_scr_start[x_offset], SCREENHEIGHT - y_offset_incremented);
 				}
 
 				y[i] += dy;
@@ -180,72 +170,47 @@ wipe_doMelt
 
 }
 
-int
-wipe_StartScreen
-( int   x,
-  int   y,
-  int   width,
-  int   height )
+void wipe_StartScreen(void)
 {
-	(void)x;
-	(void)y;
-	(void)width;
-	(void)height;
-
 	wipe_scr_start = screens[SCREEN_WIPE_START];
 	I_ReadScreen(wipe_scr_start);
-	return 0;
 }
 
-int
-wipe_EndScreen
-( int   x,
-  int   y,
-  int   width,
-  int   height )
+void wipe_EndScreen(void)
 {
 	wipe_scr_end = screens[SCREEN_WIPE_END];
 	I_ReadScreen(wipe_scr_end);
-	V_DrawBlock(x, y, SCREEN_FRAMEBUFFER, width, height, wipe_scr_start); /* restore start scr. */
-	return 0;
+	memcpy(screens[SCREEN_FRAMEBUFFER], wipe_scr_start, SCREENWIDTH*SCREENHEIGHT); /* restore start scr. */
 }
 
 int
 wipe_ScreenWipe
 ( int   wipeno,
-  int   x,
-  int   y,
-  int   width,
-  int   height,
   int   ticks )
 {
 	int rc;
-	static int (* const wipes[][2])(int, int, int) =
+	static int (* const wipes[][2])(int) =
 	{
 		{wipe_initColorXForm, wipe_doColorXForm},
 		{wipe_initMelt, wipe_doMelt}
 	};
 
-	(void)x;
-	(void)y;
-
 	/* initial stuff */
 	if (!go)
 	{
 		go = 1;
-		/*wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, NULL);*/ /* DEBUG */
+		/*wipe_scr = (byte *) Z_Malloc(SCREENWIDTH*SCREENHEIGHT, PU_STATIC, NULL);*/ /* DEBUG */
 		wipe_scr = screens[SCREEN_FRAMEBUFFER];
-		wipes[wipeno][0](width, height, ticks);
+		wipes[wipeno][0](ticks);
 	}
 
 	/* do a piece of wipe-in */
-	rc = wipes[wipeno][1](width, height, ticks);
-	/*V_DrawBlock(x, y, SCREEN_FRAMEBUFFER, width, height, wipe_scr);*/ /* DEBUG */
+	rc = wipes[wipeno][1](ticks);
+	/*V_DrawBlock(0, 0, SCREEN_FRAMEBUFFER, SCREENWIDTH, SCREENHEIGHT, wipe_scr);*/ /* DEBUG */
 
 	/* final stuff */
 	if (rc)
 		go = 0;
 
 	return !go;
-
 }
