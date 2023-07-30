@@ -555,7 +555,7 @@ WriteBMPfile
 	{
 		bmp_pointer = &bmp[bitmap_offset + rounded_width * (height - i - 1)];
 
-		memcpy(bmp_pointer, data, width);
+		memcpy(bmp_pointer, &data[i * width], width);
 		memset(bmp_pointer + width, 0, rounded_width - width);
 	}
 
