@@ -1288,6 +1288,7 @@ void G_DoSaveGame (void)
 	{
 		ArchiveToBuffer(savebuffer);
 		M_WriteFile(name, savebuffer, length);
+		free(savebuffer);
 	}
 
 	gameaction = ga_nothing;
