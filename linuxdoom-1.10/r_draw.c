@@ -236,7 +236,7 @@ void R_DrawColumnLow (void)
 
 /* Spectre/Invisibility. */
 #define FUZZTABLE               50
-#define FUZZOFF (SCREENWIDTH)
+#define FUZZOFF (SCREENHEIGHT)
 
 
 int     fuzzoffset[FUZZTABLE] =
