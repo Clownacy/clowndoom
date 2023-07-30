@@ -188,12 +188,6 @@
 #define ST_MAXAMMO3X            X_CENTRE(314)
 #define ST_MAXAMMO3Y            Y_BOTTOM(185)
 
-/* Incoming messages window location */
-/* UNUSED */
-/* #define ST_MSGTEXTX     (viewwindowx) */
-/* #define ST_MSGTEXTY     (viewwindowy+viewheight-18*SCREEN_MUL) */
-#define ST_MSGTEXTX             X_LEFT(0)
-#define ST_MSGTEXTY             Y_TOP(0)
 /* Dimensions given in characters. */
 #define ST_MSGWIDTH             52
 
