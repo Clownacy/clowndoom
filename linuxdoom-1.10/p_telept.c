@@ -32,9 +32,7 @@
 
 
 
-//
 // TELEPORTATION
-//
 int
 EV_Teleport
 ( line_t*	line,

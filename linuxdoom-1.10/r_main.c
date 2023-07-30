@@ -78,9 +78,7 @@ player_t*		viewplayer;
 // 0 = high, 1 = low
 int			detailshift;	
 
-//
 // precalculated math tables
-//
 angle_t			clipangle;
 
 // The viewangletox[viewangle + FINEANGLES/4] lookup
@@ -122,11 +120,9 @@ void (*spanfunc) (void);
 
 
 
-//
 // R_AddPointToBox
 // Expand a given bbox
 // so that it encloses a given point.
-//
 void
 R_AddPointToBox
 ( int		x,
@@ -144,12 +140,10 @@ R_AddPointToBox
 }
 
 
-//
 // R_PointOnSide
 // Traverse BSP (sub) tree,
 //  check point against partition plane.
 // Returns side 0 (front) or 1 (back).
-//
 int
 R_PointOnSide
 ( fixed_t	x,
@@ -266,7 +260,6 @@ R_PointOnSegSide
 }
 
 
-//
 // R_PointToAngle
 // To get a global angle from cartesian coordinates,
 //  the coordinates are flipped until they are in
@@ -275,7 +268,6 @@ R_PointOnSegSide
 //  tangent (slope) value which is looked up in the
 //  tantoangle[] table.
 
-//
 
 
 
@@ -412,9 +404,7 @@ R_PointToDist
 
 
 
-//
 // R_InitPointToAngle
-//
 void R_InitPointToAngle (void)
 {
     // UNUSED - now getting from tables.c
@@ -422,9 +412,7 @@ void R_InitPointToAngle (void)
     int	i;
     long	t;
     float	f;
-//
 // slope (tangent) to angle lookup
-//
     for (i=0 ; i<=SLOPERANGE ; i++)
     {
 	f = atan( (float)i/SLOPERANGE )/(3.141592657*2);
@@ -435,13 +423,11 @@ void R_InitPointToAngle (void)
 }
 
 
-//
 // R_ScaleFromGlobalAngle
 // Returns the texture mapping scale
 //  for the current line (horizontal span)
 //  at the given angle.
 // rw_distance must be calculated first.
-//
 fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 {
     fixed_t		scale;
@@ -495,9 +481,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 
 
 
-//
 // R_InitTables
-//
 void R_InitTables (void)
 {
     // UNUSED: now getting from tables.c
@@ -530,9 +514,7 @@ void R_InitTables (void)
 
 
 
-//
 // R_InitTextureMapping
-//
 void R_InitTextureMapping (void)
 {
     int			i;
@@ -543,7 +525,6 @@ void R_InitTextureMapping (void)
     // Use tangent table to generate viewangletox:
     //  viewangletox will give the next greatest x
     //  after the view angle.
-    //
     // Calc focallength
     //  so FIELDOFVIEW angles covers SCREENWIDTH.
     focallength = FixedDiv (centerxfrac,
@@ -596,11 +577,9 @@ void R_InitTextureMapping (void)
 
 
 
-//
 // R_InitLightTables
 // Only inits the zlight table,
 //  because the scalelight table changes with view size.
-//
 #define DISTMAP		2
 
 void R_InitLightTables (void)
@@ -635,12 +614,10 @@ void R_InitLightTables (void)
 
 
 
-//
 // R_SetViewSize
 // Do not really change anything here,
 //  because it might be in the middle of a refresh.
 // The change will take effect next refresh.
-//
 boolean		setsizeneeded;
 int		setblocks;
 int		setdetail;
@@ -657,9 +634,7 @@ R_SetViewSize
 }
 
 
-//
 // R_ExecuteSetViewSize
-//
 void R_ExecuteSetViewSize (void)
 {
     fixed_t	cosadj;
@@ -754,9 +729,7 @@ void R_ExecuteSetViewSize (void)
 
 
 
-//
 // R_Init
-//
 extern int	detailLevel;
 extern int	screenblocks;
 
@@ -786,9 +759,7 @@ void R_Init (void)
 }
 
 
-//
 // R_PointInSubsector
-//
 subsector_t*
 R_PointInSubsector
 ( fixed_t	x,
@@ -816,9 +787,7 @@ R_PointInSubsector
 
 
 
-//
 // R_SetupFrame
-//
 void R_SetupFrame (player_t* player)
 {		
     int		i;
@@ -856,9 +825,7 @@ void R_SetupFrame (player_t* player)
 
 
 
-//
 // R_RenderView
-//
 void R_RenderPlayerView (player_t* player)
 {	
     R_SetupFrame (player);

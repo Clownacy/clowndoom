@@ -37,9 +37,7 @@
 #include "dstrings.h"
 #include "sounds.h"
 
-//
 // Locally used constants, shortcuts.
-//
 #define HU_TITLE	(mapnames[(gameepisode-1)*9+gamemap-1])
 #define HU_TITLE2	(mapnames2[gamemap-1])
 #define HU_TITLEP	(mapnamesp[gamemap-1])
@@ -100,10 +98,8 @@ extern int		showMessages;
 
 static boolean		headsupactive = false;
 
-//
 // Builtin map names.
 // The actual names can be found in DStrings.h.
-//
 
 const char* const	mapnames[] =	// DOOM shareware/registered/retail (Ultimate) names.
 {

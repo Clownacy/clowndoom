@@ -24,9 +24,7 @@
 
 #include "doomtype.h"
 #include "d_event.h"
-//
 // FINALE
-//
 
 // Called by main loop.
 boolean F_Responder (const event_t* ev);

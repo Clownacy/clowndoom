@@ -127,9 +127,7 @@ const byte gammatable[5][256] =
 
 int	usegamma;
 			 
-//
 // V_MarkRect 
-// 
 void
 V_MarkRect
 ( int		x,
@@ -142,9 +140,7 @@ V_MarkRect
 } 
  
 
-//
 // V_CopyRect 
-// 
 void
 V_CopyRect
 ( int		srcx,
@@ -187,10 +183,8 @@ V_CopyRect
 } 
  
 
-//
 // V_DrawPatch
 // Masks a column based masked pic to the screen. 
-//
 void
 V_DrawPatch
 ( int		x,
@@ -253,11 +247,9 @@ V_DrawPatch
     }			 
 } 
  
-//
 // V_DrawPatchFlipped 
 // Masks a column based masked pic to the screen.
 // Flips horizontally, e.g. to mirror face.
-//
 void
 V_DrawPatchFlipped
 ( int		x,
@@ -320,10 +312,8 @@ V_DrawPatchFlipped
  
 
 
-//
 // V_DrawPatchDirect
 // Draws directly to the screen on the pc. 
-//
 void
 V_DrawPatchDirect
 ( int		x,
@@ -388,10 +378,8 @@ V_DrawPatchDirect
  
 
 
-//
 // V_DrawBlock
 // Draw a linear block of pixels into the view buffer.
-//
 void
 V_DrawBlock
 ( int		x,
@@ -428,10 +416,8 @@ V_DrawBlock
  
 
 
-//
 // V_GetBlock
 // Gets a linear block of pixels from the view buffer.
-//
 void
 V_GetBlock
 ( int		x,
@@ -467,9 +453,7 @@ V_GetBlock
 
 
 
-//
 // V_Init
-// 
 void V_Init (void) 
 { 
     int		i;

@@ -39,13 +39,10 @@
 
 
 
-//
 // NOTES: mobj_t
-//
 // mobj_ts are used to tell the refresh where to draw an image,
 // tell the world simulation when objects are contacted,
 // and tell the sound driver how to position a sound.
-//
 // The refresh uses the next and prev links to follow
 // lists of things in sectors as they are being drawn.
 // The sprite, frame, and angle elements determine which patch_t
@@ -61,24 +58,20 @@
 // with lumpy.exe.
 // A walking creature will have its z equal to the floor
 // it is standing on.
-//
 // The sound code uses the x,y, and subsector fields
 // to do stereo positioning of any sound effited by the mobj_t.
-//
 // The play simulation uses the blocklinks, x,y,z, radius, height
 // to determine when mobj_ts are touching each other,
 // touching lines in the map, or hit by trace lines (gunshots,
 // lines of sight, etc).
 // The mobj_t->flags element has various bit flags
 // used by the simulation.
-//
 // Every mobj_t is linked into a single sector
 // based on its origin coordinates.
 // The subsector_t is found with R_PointInSubsector(x,y),
 // and the sector_t can be found with subsector->sector.
 // The sector links are only used by the rendering code,
 // the play simulation does not care about them at all.
-//
 // Any mobj_t that needs to be acted upon by something else
 // in the play world (block movement, be shot, etc) will also
 // need to be linked into the blockmap.
@@ -89,7 +82,6 @@
 // Each block in the grid is 128*128 units, and knows about
 // every line_t that it contains a piece of, and every
 // interactable mobj_t that has its origin contained.  
-//
 // A valid mobj_t is a mobj_t that has the proper subsector_t
 // filled in for its xy coordinates and is linked into the
 // sector from which the subsector was made, or has the
@@ -99,13 +91,9 @@
 // Links should only be modified by the P_[Un]SetThingPosition()
 // functions.
 // Do not change the MF_NO? flags while a thing is valid.
-//
 // Any questions?
-//
 
-//
 // Misc. mobj flags
-//
 typedef enum
 {
     // Call P_SpecialThing when touched.

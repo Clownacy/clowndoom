@@ -34,9 +34,7 @@
 #include "r_state.h"
 
 
-//
 // CHANGE THE TEXTURE OF A WALL SWITCH TO ITS OPPOSITE
-//
 switchlist_t alphSwitchList[] =
 {
     // Doom shareware episode 1 switches
@@ -92,10 +90,8 @@ int		switchlist[MAXSWITCHES * 2];
 int		numswitches;
 button_t        buttonlist[MAXBUTTONS];
 
-//
 // P_InitSwitchList
 // Only called at game initialization.
-//
 void P_InitSwitchList(void)
 {
     int		i;
@@ -149,9 +145,7 @@ void P_InitSwitchList(void)
 }
 
 
-//
 // Start a button counting down till it turns off.
-//
 void
 P_StartButton
 ( line_t*	line,
@@ -194,10 +188,8 @@ P_StartButton
 
 
 
-//
 // Function that changes wall texture.
 // Tell it if switch is ok to use again (1=yes, it's a button).
-//
 void
 P_ChangeSwitchTexture
 ( line_t*	line,
@@ -262,11 +254,9 @@ P_ChangeSwitchTexture
 
 
 
-//
 // P_UseSpecialLine
 // Called when a thing uses a special line.
 // Only the front sides of lines are usable.
-//
 boolean
 P_UseSpecialLine
 ( mobj_t*	thing,

@@ -23,28 +23,22 @@
 #include "../ib_system.h"
 
 
-//
 // IB_GetTime
 // returns time in 1/70th second tics
-//
 int  IB_GetTime (void)
 {
     return SDL_GetTicks() * TICRATE / 1000;
 }
 
 
-//
 // IB_Init
-//
 void IB_Init (void)
 {
     SDL_Init(0);
 }
 
 
-//
 // IB_Quit
-//
 void IB_Quit (void)
 {
     SDL_Quit();

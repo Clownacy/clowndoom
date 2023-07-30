@@ -25,9 +25,7 @@
 #include "doomtype.h"
 
 
-//
 // Event handling.
-//
 
 // Input event types.
 typedef enum
@@ -64,9 +62,7 @@ typedef enum
 
 
 
-//
 // Button/action code definitions.
-//
 typedef enum
 {
     // Press "Fire".
@@ -100,9 +96,7 @@ typedef enum
 
 
 
-//
 // GLOBAL VARIABLES
-//
 #define MAXEVENTS		64
 
 extern  event_t		events[MAXEVENTS];

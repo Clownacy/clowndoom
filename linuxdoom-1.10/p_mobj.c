@@ -37,10 +37,8 @@ void G_PlayerReborn (int player);
 void P_SpawnMapThing (mapthing_t*	mthing);
 
 
-//
 // P_SetMobjState
 // Returns true if the mobj is still present.
-//
 int test;
 
 boolean
@@ -77,9 +75,7 @@ P_SetMobjState
 }
 
 
-//
 // P_ExplodeMissile  
-//
 void P_ExplodeMissile (mobj_t* mo)
 {
     mo->momx = mo->momy = mo->momz = 0;
@@ -98,9 +94,7 @@ void P_ExplodeMissile (mobj_t* mo)
 }
 
 
-//
 // P_XYMovement  
-//
 #define STOPSPEED		0x1000
 #define FRICTION		0xe800
 
@@ -233,9 +227,7 @@ void P_XYMovement (mobj_t* mo)
     }
 }
 
-//
 // P_ZMovement
-//
 void P_ZMovement (mobj_t* mo)
 {
     fixed_t	dist;
@@ -343,9 +335,7 @@ void P_ZMovement (mobj_t* mo)
 
 
 
-//
 // P_NightmareRespawn
-//
 void
 P_NightmareRespawn (mobj_t* mobj)
 {
@@ -402,9 +392,7 @@ P_NightmareRespawn (mobj_t* mobj)
 }
 
 
-//
 // P_MobjThinker
-//
 void P_MobjThinker (mobj_t* mobj)
 {
     // momentum movement
@@ -466,9 +454,7 @@ void P_MobjThinker (mobj_t* mobj)
 }
 
 
-//
 // P_SpawnMobj
-//
 mobj_t*
 P_SpawnMobj
 ( fixed_t	x,
@@ -527,9 +513,7 @@ P_SpawnMobj
 }
 
 
-//
 // P_RemoveMobj
-//
 mapthing_t	itemrespawnque[ITEMQUESIZE];
 int		itemrespawntime[ITEMQUESIZE];
 int		iquehead;
@@ -565,9 +549,7 @@ void P_RemoveMobj (mobj_t* mobj)
 
 
 
-//
 // P_RespawnSpecials
-//
 void P_RespawnSpecials (void)
 {
     fixed_t		x;
@@ -582,7 +564,7 @@ void P_RespawnSpecials (void)
 
     // only respawn items in deathmatch
     if (deathmatch != 2)
-	return;	// 
+	return;
 
     // nothing left to respawn?
     if (iquehead == iquetail)
@@ -626,12 +608,10 @@ void P_RespawnSpecials (void)
 
 
 
-//
 // P_SpawnPlayer
 // Called when a player is spawned on the level.
 // Most of the player structure stays unchanged
 //  between levels.
-//
 void P_SpawnPlayer (mapthing_t* mthing)
 {
     player_t*		p;
@@ -693,11 +673,9 @@ void P_SpawnPlayer (mapthing_t* mthing)
 }
 
 
-//
 // P_SpawnMapThing
 // The fields of the mapthing should
 // already be in host byte order.
-//
 void P_SpawnMapThing (mapthing_t* mthing)
 {
     int			i;
@@ -791,14 +769,10 @@ void P_SpawnMapThing (mapthing_t* mthing)
 
 
 
-//
 // GAME SPAWN FUNCTIONS
-//
 
 
-//
 // P_SpawnPuff
-//
 extern fixed_t attackrange;
 
 void
@@ -825,9 +799,7 @@ P_SpawnPuff
 
 
 
-//
 // P_SpawnBlood
-// 
 void
 P_SpawnBlood
 ( fixed_t	x,
@@ -853,11 +825,9 @@ P_SpawnBlood
 
 
 
-//
 // P_CheckMissileSpawn
 // Moves the missile forward a bit
 //  and possibly explodes it right there.
-//
 void P_CheckMissileSpawn (mobj_t* th)
 {
     th->tics -= P_Random()&3;
@@ -875,9 +845,7 @@ void P_CheckMissileSpawn (mobj_t* th)
 }
 
 
-//
 // P_SpawnMissile
-//
 mobj_t*
 P_SpawnMissile
 ( mobj_t*	source,
@@ -920,10 +888,8 @@ P_SpawnMissile
 }
 
 
-//
 // P_SpawnPlayerMissile
 // Tries to aim at a nearby monster
-//
 void
 P_SpawnPlayerMissile
 ( mobj_t*	source,

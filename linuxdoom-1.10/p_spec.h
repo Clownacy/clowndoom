@@ -25,9 +25,7 @@
 #define __P_SPEC__
 
 
-//
 // End-level timer (-TIMER option)
-//
 extern	boolean levelTimer;
 extern	int	levelTimeCount;
 
@@ -109,16 +107,12 @@ getNextSector
   sector_t*	sec );
 
 
-//
 // SPECIAL
-//
 int EV_DoDonut(line_t* line);
 
 
 
-//
 // P_LIGHTS
-//
 typedef struct
 {
     thinker_t	thinker;
@@ -201,9 +195,7 @@ void    P_SpawnGlowingLight(sector_t* sector);
 
 
 
-//
 // P_SWITCH
-//
 typedef struct
 {
     char	name1[9];
@@ -254,9 +246,7 @@ P_ChangeSwitchTexture
 void P_InitSwitchList(void);
 
 
-//
 // P_PLATS
-//
 typedef enum
 {
     up,
@@ -320,9 +310,7 @@ void    EV_StopPlat(line_t* line);
 void    P_ActivateInStasis(int tag);
 
 
-//
 // P_DOORS
-//
 typedef enum
 {
     normal,
@@ -388,9 +376,7 @@ P_SpawnDoorRaiseIn5Mins
 
 
 #if 0 // UNUSED
-//
 //      Sliding doors...
-//
 typedef enum
 {
     sd_opening,
@@ -471,9 +457,7 @@ EV_SlidingDoor
 
 
 
-//
 // P_CEILNG
-//
 typedef enum
 {
     lowerToFloor,
@@ -528,9 +512,7 @@ int	EV_CeilingCrushStop(line_t* line);
 void    P_ActivateInStasisCeiling(line_t* line);
 
 
-//
 // P_FLOOR
-//
 typedef enum
 {
     // lower floor to highest surrounding floor
@@ -625,9 +607,7 @@ EV_DoFloor
 
 void T_MoveFloor( floormove_t* floor);
 
-//
 // P_TELEPT
-//
 int
 EV_Teleport
 ( line_t*	line,

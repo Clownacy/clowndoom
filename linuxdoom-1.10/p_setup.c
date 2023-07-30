@@ -41,10 +41,8 @@
 void	P_SpawnMapThing (mapthing_t*	mthing);
 
 
-//
 // MAP related Lookup tables.
 // Store VERTEXES, LINEDEFS, SIDEDEFS, etc.
-//
 int		numvertexes;
 vertex_t*	vertexes;
 
@@ -73,7 +71,6 @@ side_t*		sides;
 // blocks of size ...
 // Used to speed up collision detection
 // by spatial subdivision in 2D.
-//
 // Blockmap size.
 int		bmapwidth;
 int		bmapheight;	// size in mapblocks
@@ -93,7 +90,6 @@ mobj_t**	blocklinks;
 //  LineOf Sight calculation.
 // Without special effect, this could be
 //  used as a PVS lookup as well.
-//
 byte*		rejectmatrix;
 
 
@@ -108,9 +104,7 @@ mapthing_t	playerstarts[MAXPLAYERS];
 
 
 
-//
 // P_LoadVertexes
-//
 void P_LoadVertexes (int lump)
 {
     byte*		data;
@@ -145,9 +139,7 @@ void P_LoadVertexes (int lump)
 
 
 
-//
 // P_LoadSegs
-//
 void P_LoadSegs (int lump)
 {
     byte*		data;
@@ -188,9 +180,7 @@ void P_LoadSegs (int lump)
 }
 
 
-//
 // P_LoadSubsectors
-//
 void P_LoadSubsectors (int lump)
 {
     byte*		data;
@@ -217,9 +207,7 @@ void P_LoadSubsectors (int lump)
 
 
 
-//
 // P_LoadSectors
-//
 void P_LoadSectors (int lump)
 {
     byte*		data;
@@ -250,9 +238,7 @@ void P_LoadSectors (int lump)
 }
 
 
-//
 // P_LoadNodes
-//
 void P_LoadNodes (int lump)
 {
     byte*	data;
@@ -287,9 +273,7 @@ void P_LoadNodes (int lump)
 }
 
 
-//
 // P_LoadThings
-//
 void P_LoadThings (int lump)
 {
     byte*		data;
@@ -342,10 +326,8 @@ void P_LoadThings (int lump)
 }
 
 
-//
 // P_LoadLineDefs
 // Also counts secret lines for intermissions.
-//
 void P_LoadLineDefs (int lump)
 {
     byte*		data;
@@ -424,9 +406,7 @@ void P_LoadLineDefs (int lump)
 }
 
 
-//
 // P_LoadSideDefs
-//
 void P_LoadSideDefs (int lump)
 {
     byte*		data;
@@ -455,9 +435,7 @@ void P_LoadSideDefs (int lump)
 }
 
 
-//
 // P_LoadBlockMap
-//
 void P_LoadBlockMap (int lump)
 {
     int		i;
@@ -483,11 +461,9 @@ void P_LoadBlockMap (int lump)
 
 
 
-//
 // P_GroupLines
 // Builds sector line lists and subsector sector numbers.
 // Finds block bounding boxes for sectors.
-//
 void P_GroupLines (void)
 {
     line_t**		linebuffer;
@@ -569,9 +545,7 @@ void P_GroupLines (void)
 }
 
 
-//
 // P_SetupLevel
-//
 void
 P_SetupLevel
 ( int		episode,
@@ -686,9 +660,7 @@ P_SetupLevel
 
 
 
-//
 // P_Init
-//
 void P_Init (void)
 {
     P_InitSwitchList ();

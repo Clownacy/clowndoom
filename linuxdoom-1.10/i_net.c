@@ -72,9 +72,7 @@ void	NetSend (void);
 boolean NetListen (void);
 
 
-//
 // NETWORKING
-//
 
 int	DOOMPORT =	(IPPORT_USERRESERVED +0x1d );
 
@@ -87,9 +85,7 @@ void	(*netget) (void);
 void	(*netsend) (void);
 
 
-//
 // UDPsocket
-//
 int UDPsocket (void)
 {
     int	s;
@@ -102,9 +98,7 @@ int UDPsocket (void)
     return s;
 }
 
-//
 // BindToLocalPort
-//
 void
 BindToLocalPort
 ( int	s,
@@ -124,9 +118,7 @@ BindToLocalPort
 }
 
 
-//
 // PacketSend
-//
 void PacketSend (void)
 {
     int		c;
@@ -158,9 +150,7 @@ void PacketSend (void)
 }
 
 
-//
 // PacketGet
-//
 void PacketGet (void)
 {
     int			i;
@@ -242,9 +232,7 @@ int GetLocalAddress (void)
 #endif
 
 
-//
 // I_InitNetwork
-//
 void I_InitNetwork (void)
 {
 #ifdef __unix__

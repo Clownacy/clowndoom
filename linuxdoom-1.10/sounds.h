@@ -23,9 +23,7 @@
 
 #include "doomtype.h"
 
-//
 // SoundFX struct.
-//
 typedef struct sfxinfo_struct	sfxinfo_t;
 
 struct sfxinfo_struct
@@ -66,9 +64,7 @@ struct sfxinfo_struct
 
 
 
-//
 // MusicInfo struct.
-//
 typedef struct
 {
     // up to 6-character name
@@ -94,9 +90,7 @@ extern sfxinfo_t	S_sfx[];
 // the complete set of music
 extern musicinfo_t	S_music[];
 
-//
 // Identifiers for all music in game.
-//
 
 typedef enum
 {
@@ -172,9 +166,7 @@ typedef enum
 } musicenum_t;
 
 
-//
 // Identifiers for all sfx in game.
-//
 
 typedef enum
 {

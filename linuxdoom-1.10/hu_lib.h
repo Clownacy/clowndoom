@@ -34,9 +34,7 @@
 #define HU_MAXLINES		4
 #define HU_MAXLINELENGTH	80
 
-//
 // Typedefs of widgets
-//
 
 // Text Line widget
 //  (parent of Scrolling Text and Input Text widgets)
@@ -90,16 +88,12 @@ typedef struct
 } hu_itext_t;
 
 
-//
 // Widget creation, access, and update routines
-//
 
 // initializes heads-up widget library
 void HUlib_init(void);
 
-//
 // textline code
-//
 
 // clear a line of text
 void	HUlib_clearTextLine(hu_textline_t *t);
@@ -119,9 +113,7 @@ void	HUlib_drawTextLine(hu_textline_t *l, boolean drawcursor);
 void	HUlib_eraseTextLine(hu_textline_t *l); 
 
 
-//
 // Scrolling Text window widget routines
-//
 
 // ?
 void

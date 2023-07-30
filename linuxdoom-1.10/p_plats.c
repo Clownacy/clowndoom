@@ -38,9 +38,7 @@ plat_t*		activeplats[MAXPLATS];
 
 
 
-//
 // Move a plat up and down
-//
 void T_PlatRaise(plat_t* plat)
 {
     result_e	res;
@@ -123,10 +121,8 @@ void T_PlatRaise(plat_t* plat)
 }
 
 
-//
 // Do Platforms
 //  "amount" is only used for SOME platforms.
-//
 int
 EV_DoPlat
 ( line_t*	line,

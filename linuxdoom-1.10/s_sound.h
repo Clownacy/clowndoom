@@ -26,11 +26,9 @@
 
 
 
-//
 // Initializes sound stuff, including volume
 // Sets channels, SFX and music volume,
 //  allocates channel buffer, sets S_sfx lookup.
-//
 void
 S_Init
 ( int		sfxVolume,
@@ -39,18 +37,14 @@ S_Init
 
 
 
-//
 // Per level startup code.
 // Kills playing sounds at start of level,
 //  determines music if any, changes music.
-//
 void S_Start(void);
 
 
-//
 // Start sound for thing at <origin>
 //  using <sound_id> from sounds.h
-//
 void
 S_StartSound
 ( const mobj_t*	origin,
@@ -88,9 +82,7 @@ void S_PauseSound(void);
 void S_ResumeSound(void);
 
 
-//
 // Updates music & sounds
-//
 void S_UpdateSounds(const mobj_t* listener);
 
 void S_SetMusicVolume(int volume);

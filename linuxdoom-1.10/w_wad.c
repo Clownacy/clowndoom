@@ -35,9 +35,7 @@
 
 
 
-//
 // GLOBALS
-//
 
 // Location of each lump on disk.
 lumpinfo_t*		lumpinfo;		
@@ -116,11 +114,8 @@ static unsigned long Read32LE(FILE* handle)
 
 
 
-//
 // LUMP BASED ROUTINES.
-//
 
-//
 // W_AddFile
 // All files are optional, but at least one file must be
 //  found (PWAD, if all required lumps are present).
@@ -128,7 +123,6 @@ static unsigned long Read32LE(FILE* handle)
 //  with multiple lumps.
 // Other files are single lumps with the base filename
 //  for the lump name.
-//
 // If filename starts with a tilde, the file is handled
 //  specially to allow map reloads.
 // But: the reload feature is a fragile hack...
@@ -233,11 +227,9 @@ void W_AddFile (const char *filename)
 
 
 
-//
 // W_Reload
 // Flushes any of the reloadable lumps in memory
 //  and reloads the directory.
-//
 void W_Reload (void)
 {
     lumpinfo_t*		lump_p;
@@ -277,7 +269,6 @@ void W_Reload (void)
 
 
 
-//
 // W_InitMultipleFiles
 // Pass a null terminated list of files to use.
 // All files are optional, but at least one file
@@ -289,7 +280,6 @@ void W_Reload (void)
 // Lump names can appear multiple times.
 // The name searcher looks backwards, so a later file
 //  does override all earlier ones.
-//
 void W_InitMultipleFiles (const char** filenames)
 {	
     size_t	size;
@@ -319,10 +309,8 @@ void W_InitMultipleFiles (const char** filenames)
 
 
 
-//
 // W_InitFile
 // Just initialize from a single file.
-//
 void W_InitFile (const char* filename)
 {
     const char*	names[2];
@@ -334,9 +322,7 @@ void W_InitFile (const char* filename)
 
 
 
-//
 // W_NumLumps
-//
 int W_NumLumps (void)
 {
     return numlumps;
@@ -344,10 +330,8 @@ int W_NumLumps (void)
 
 
 
-//
 // W_CheckNumForName
 // Returns -1 if name not found.
-//
 
 int W_CheckNumForName (const char* name)
 {
@@ -377,10 +361,8 @@ int W_CheckNumForName (const char* name)
 
 
 
-//
 // W_GetNumForName
 // Calls W_CheckNumForName, but bombs out if not found.
-//
 int W_GetNumForName (const char* name)
 {
     int	i;
@@ -394,10 +376,8 @@ int W_GetNumForName (const char* name)
 }
 
 
-//
 // W_LumpLength
 // Returns the buffer size needed to load the given lump.
-//
 int W_LumpLength (size_t lump)
 {
     if (lump >= numlumps)
@@ -408,11 +388,9 @@ int W_LumpLength (size_t lump)
 
 
 
-//
 // W_ReadLump
 // Loads the lump into the given buffer,
 //  which must be >= W_LumpLength().
-//
 void
 W_ReadLump
 ( size_t	lump,
@@ -454,9 +432,7 @@ W_ReadLump
 
 
 
-//
 // W_CacheLumpNum
-//
 void*
 W_CacheLumpNum
 ( size_t	lump,
@@ -484,9 +460,7 @@ W_CacheLumpNum
 
 
 
-//
 // W_CacheLumpName
-//
 void*
 W_CacheLumpName
 ( const char*	name,
@@ -496,9 +470,7 @@ W_CacheLumpName
 }
 
 
-//
 // W_Profile
-//
 int		info[2500][10];
 size_t		profilecount;
 

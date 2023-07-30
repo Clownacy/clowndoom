@@ -25,9 +25,7 @@
 #include "r_data.h"
 
 
-//
 // POV related.
-//
 extern fixed_t		viewcos;
 extern fixed_t		viewsin;
 
@@ -51,11 +49,9 @@ extern int		linecount;
 extern int		loopcount;
 
 
-//
 // Lighting LUT.
 // Used for z-depth cuing per column/row,
 //  and other lighting effects (sector ambient, flash).
-//
 
 // Lighting constants.
 // Now why not 32 levels here?
@@ -86,10 +82,8 @@ extern lighttable_t*	fixedcolormap;
 extern	int		detailshift;	
 
 
-//
 // Function pointers to switch refresh/drawing functions.
 // Used to select shadow mode etc.
-//
 extern void		(*colfunc) (void);
 extern void		(*basecolfunc) (void);
 extern void		(*fuzzcolfunc) (void);
@@ -98,7 +92,6 @@ extern void		(*transcolfunc) (void);
 extern void		(*spanfunc) (void);
 
 
-//
 // Utility functions.
 int
 R_PointOnSide
@@ -145,9 +138,7 @@ R_AddPointToBox
 
 
 
-//
 // REFRESH - the actual rendering functions.
-//
 
 // Called by G_Drawer.
 void R_RenderPlayerView (player_t *player);

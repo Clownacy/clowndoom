@@ -30,11 +30,9 @@
 
 
 
-//
 // Map level types.
 // The following data structures define the persistent format
 // used in the lumps of the WAD files.
-//
 
 // Lump order in a map WAD: each map needs a couple of lumps
 // to provide a complete scene geometry description.
@@ -91,9 +89,7 @@ typedef struct
 } maplinedef_t;
 
 
-//
 // LineDef attributes.
-//
 
 // Solid, is an obstacle.
 #define ML_BLOCKING		1

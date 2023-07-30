@@ -70,9 +70,7 @@ static boolean		grabMouse;
 static Cursor		nullCursor;
 
 
-//
 //  Translates the key currently in X_event
-//
 
 static int xlatekey(void)
 {
@@ -261,9 +259,7 @@ createnullcursor
     return cursor;
 }
 
-//
 // IB_StartTic
-//
 void IB_StartTic (void)
 {
 
@@ -296,9 +292,7 @@ void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 }
 
 
-//
 // IB_FinishUpdate
-//
 void IB_FinishUpdate (void)
 {
     if (doShm)
@@ -350,13 +344,11 @@ void IB_GetColor (unsigned char* bytes, unsigned char red, unsigned char green, 
 }
 
 
-//
 // This function is probably redundant,
 //  if XShmDetach works properly.
 // ddt never detached the XShm memory,
 //  thus there might have been stale
 //  handles accumulating.
-//
 static void grabsharedmemory(size_t size)
 {
 

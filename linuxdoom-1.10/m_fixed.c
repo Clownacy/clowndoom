@@ -128,9 +128,7 @@ FixedMul
 
 
 
-//
 // FixedDiv, C version.
-//
 
 fixed_t
 FixedDiv

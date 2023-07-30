@@ -137,9 +137,7 @@ byte*		savebuffer;
 int		always_run;
  
 
-// 
 // controls (have defaults) 
-// 
 int             key_right;
 int		key_left;
 
@@ -225,12 +223,10 @@ int G_CmdChecksum (ticcmd_t* cmd)
 } 
  
 
-//
 // G_BuildTiccmd
 // Builds a ticcmd from all of the available inputs
 // or reads it from the demo buffer. 
 // If recording a demo, write it out 
-// 
 void G_BuildTiccmd (ticcmd_t* cmd) 
 { 
     int		i; 
@@ -436,9 +432,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 } 
  
 
-//
 // G_DoLoadLevel 
-//
 extern  gamestate_t     wipegamestate; 
  
 void G_DoLoadLevel (void) 
@@ -494,10 +488,8 @@ void G_DoLoadLevel (void)
 } 
  
  
-//
 // G_Responder  
 // Get info needed to make ticcmd_ts for the players.
-// 
 boolean G_Responder (const event_t* ev) 
 { 
     // allow spy mode changes even during the demo
@@ -595,10 +587,8 @@ boolean G_Responder (const event_t* ev)
  
  
  
-//
 // G_Ticker
 // Make ticcmd_ts for the players.
-//
 void G_Ticker (void) 
 { 
     int		i;
@@ -745,16 +735,12 @@ void G_Ticker (void)
 } 
  
  
-//
 // PLAYER STRUCTURE FUNCTIONS
 // also see P_SpawnPlayer in P_Things
-//
 
-//
 // G_InitPlayer 
 // Called at the start.
 // Called by the game initialization functions.
-//
 void G_InitPlayer (int player) 
 { 
     // clear everything else to defaults 
@@ -764,10 +750,8 @@ void G_InitPlayer (int player)
  
  
 
-//
 // G_PlayerFinishLevel
 // Can when a player completes a level.
-//
 void G_PlayerFinishLevel (int player) 
 { 
     player_t*	p; 
@@ -784,11 +768,9 @@ void G_PlayerFinishLevel (int player)
 } 
  
 
-//
 // G_PlayerReborn
 // Called after a player dies 
 // almost everything is cleared and initialized 
-//
 void G_PlayerReborn (int player) 
 { 
     player_t*	p; 
@@ -824,12 +806,10 @@ void G_PlayerReborn (int player)
 		 
 }
 
-//
 // G_CheckSpot  
 // Returns false if the player cannot be respawned
 // at the given mapthing_t spot  
 // because something is occupying it 
-//
 void P_SpawnPlayer (mapthing_t* mthing); 
  
 boolean
@@ -881,11 +861,9 @@ G_CheckSpot
 } 
 
 
-//
 // G_DeathMatchSpawnPlayer 
 // Spawns a player at one of the random death match spots 
 // called at level load and each death 
-//
 void G_DeathMatchSpawnPlayer (int playernum) 
 { 
     int             i,j; 
@@ -910,9 +888,7 @@ void G_DeathMatchSpawnPlayer (int playernum)
     P_SpawnPlayer (&playerstarts[playernum]); 
 } 
 
-//
 // G_DoReborn 
-// 
 void G_DoReborn (int playernum) 
 { 
     int                             i; 
@@ -985,9 +961,7 @@ int cpars[32] =
 };
  
 
-//
 // G_DoCompleted 
-//
 boolean		secretexit; 
  
 void G_ExitLevel (void) 
@@ -1132,9 +1106,7 @@ void G_DoCompleted (void)
 } 
 
 
-//
 // G_WorldDone 
-//
 void G_WorldDone (void) 
 { 
     gameaction = ga_worlddone; 
@@ -1172,10 +1144,8 @@ void G_DoWorldDone (void)
  
 
 
-//
 // G_InitFromSavegame
 // Can be called by the startup code or the menu task. 
-//
 extern boolean setsizeneeded;
 void R_ExecuteSetViewSize (void);
 
@@ -1243,11 +1213,9 @@ void G_DoLoadGame (void)
 } 
  
 
-//
 // G_SaveGame
 // Called by the menu task.
 // Description is a 24 byte text string 
-//
 void
 G_SaveGame
 ( int	slot,
@@ -1311,11 +1279,9 @@ void G_DoSaveGame (void)
 } 
  
 
-//
 // G_InitNew
 // Can be called by the startup code or the menu task,
 // consoleplayer, displayplayer, playeringame[] should be set. 
-//
 skill_t	d_skill; 
 int     d_episode; 
 int     d_map; 
@@ -1473,9 +1439,7 @@ G_InitNew
 } 
  
 
-//
 // DEMO RECORDING 
-// 
 #define DEMOMARKER		0x80
 
 
@@ -1515,9 +1479,7 @@ void G_WriteDemoTiccmd (ticcmd_t* cmd)
  
  
  
-//
 // G_RecordDemo 
-// 
 void G_RecordDemo (const char* name) 
 { 
     int             i; 
@@ -1558,9 +1520,7 @@ void G_BeginRecording (void)
 } 
  
 
-//
 // G_PlayDemo 
-//
 
 const char*	defdemoname; 
  
@@ -1610,9 +1570,7 @@ void G_DoPlayDemo (void)
     demoplayback = true; 
 } 
 
-//
 // G_TimeDemo 
-//
 void G_TimeDemo (const char* name) 
 { 	 
     nodrawers = M_CheckParm ("-nodraw"); 

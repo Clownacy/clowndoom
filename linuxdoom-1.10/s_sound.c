@@ -118,9 +118,7 @@ int			numChannels;
 
 
 
-//
 // Internals.
-//
 static int
 S_getChannel
 ( const mobj_t*	origin,
@@ -138,11 +136,9 @@ static void S_StopChannel(int cnum);
 
 
 
-//
 // Initializes sound stuff, including volume
 // Sets channels, SFX and music volume,
 //  allocates channel buffer, sets S_sfx lookup.
-//
 void S_Init
 ( int		sfxVolume,
   int		musicVolume )
@@ -177,11 +173,9 @@ void S_Init
 
 
 
-//
 // Per level startup code.
 // Kills playing sounds at start of level,
 //  determines music if any, changes music.
-//
 void S_Start(void)
 {
   int cnum;
@@ -333,11 +327,9 @@ S_StartSoundAtVolume
   if (cnum<0)
     return;
 
-  //
   // This is supposed to handle the loading/caching.
   // For some odd reason, the caching is done nearly
   //  each time the sound is needed?
-  //
   
   // get lumpnum if necessary
   if (sfx->lumpnum < 0)
@@ -469,9 +461,7 @@ void S_StopSound(const mobj_t *origin)
 
 
 
-//
 // Stop and resume music, during game PAUSE.
-//
 void S_PauseSound(void)
 {
     if (mus_playing && !mus_paused)
@@ -491,9 +481,7 @@ void S_ResumeSound(void)
 }
 
 
-//
 // Updates music & sounds
-//
 void S_UpdateSounds(const mobj_t* listener)
 {
     int		audible;
@@ -610,9 +598,7 @@ void S_SetSfxVolume(int volume)
     snd_SfxVolume = volume;
 }
 
-//
 // Starts some music with the music id found in sounds.h.
-//
 void S_StartMusic(int m_id)
 {
     S_ChangeMusic(m_id, false);
@@ -715,12 +701,10 @@ static void S_StopChannel(int cnum)
 
 
 
-//
 // Changes volume, stereo-separation, and pitch variables
 //  from the norm of a sound effect to be played.
 // If the sound is not audible, returns a 0.
 // Otherwise, modifies parameters and returns 1.
-//
 static int
 S_AdjustSoundParams
 ( const mobj_t*	listener,
@@ -799,10 +783,8 @@ S_AdjustSoundParams
 
 
 
-//
 // S_getChannel :
 //   If none available, return -1.  Otherwise channel #.
-//
 static int
 S_getChannel
 ( const mobj_t*	origin,

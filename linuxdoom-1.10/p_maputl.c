@@ -32,10 +32,8 @@
 // State.
 #include "r_state.h"
 
-//
 // P_AproxDistance
 // Gives an estimation of distance (not exact)
-//
 
 fixed_t
 P_AproxDistance
@@ -50,10 +48,8 @@ P_AproxDistance
 }
 
 
-//
 // P_PointOnLineSide
 // Returns 0 or 1
-//
 int
 P_PointOnLineSide
 ( fixed_t	x,
@@ -93,11 +89,9 @@ P_PointOnLineSide
 
 
 
-//
 // P_BoxOnLineSide
 // Considers the line to be infinite
 // Returns side 0 or 1, -1 if box crosses the line.
-//
 int
 P_BoxOnLineSide
 ( fixed_t*	tmbox,
@@ -146,10 +140,8 @@ P_BoxOnLineSide
 }
 
 
-//
 // P_PointOnDivlineSide
 // Returns 0 or 1.
-//
 int
 P_PointOnDivlineSide
 ( fixed_t	x,
@@ -197,9 +189,7 @@ P_PointOnDivlineSide
 
 
 
-//
 // P_MakeDivline
-//
 void
 P_MakeDivline
 ( line_t*	li,
@@ -213,13 +203,11 @@ P_MakeDivline
 
 
 
-//
 // P_InterceptVector
 // Returns the fractional intercept point
 // along the first divline.
 // This is only called by the addthings
 // and addlines traversers.
-//
 fixed_t
 P_InterceptVector
 ( divline_t*	v2,
@@ -278,12 +266,10 @@ P_InterceptVector
 }
 
 
-//
 // P_LineOpening
 // Sets opentop and openbottom to the window
 // through a two sided line.
 // OPTIMIZE: keep this precalculated
-//
 fixed_t opentop;
 fixed_t openbottom;
 fixed_t openrange;
@@ -325,18 +311,14 @@ void P_LineOpening (line_t* linedef)
 }
 
 
-//
 // THING POSITION SETTING
-//
 
 
-//
 // P_UnsetThingPosition
 // Unlinks a thing from block map and sectors.
 // On each position change, BLOCKMAP and other
 // lookups maintaining lists ot things inside
 // these structures need to be updated.
-//
 void P_UnsetThingPosition (mobj_t* thing)
 {
     int		blockx;
@@ -379,12 +361,10 @@ void P_UnsetThingPosition (mobj_t* thing)
 }
 
 
-//
 // P_SetThingPosition
 // Links a thing into both a block and a subsector
 // based on it's x y.
 // Sets thing->subsector properly
-//
 void
 P_SetThingPosition (mobj_t* thing)
 {
@@ -444,23 +424,19 @@ P_SetThingPosition (mobj_t* thing)
 
 
 
-//
 // BLOCK MAP ITERATORS
 // For each line/thing in the given mapblock,
 // call the passed PIT_* function.
 // If the function returns false,
 // exit with false without checking anything else.
-//
 
 
-//
 // P_BlockLinesIterator
 // The validcount flags are used to avoid checking lines
 // that are marked in multiple mapblocks,
 // so increment validcount before the first call
 // to P_BlockLinesIterator, then make one or more calls
 // to it.
-//
 boolean
 P_BlockLinesIterator
 ( int			x,
@@ -499,9 +475,7 @@ P_BlockLinesIterator
 }
 
 
-//
 // P_BlockThingsIterator
-//
 boolean
 P_BlockThingsIterator
 ( int			x,
@@ -531,9 +505,7 @@ P_BlockThingsIterator
 
 
 
-//
 // INTERCEPT ROUTINES
-//
 intercept_t	intercepts[MAXINTERCEPTS];
 intercept_t*	intercept_p;
 
@@ -541,16 +513,13 @@ divline_t 	trace;
 boolean 	earlyout;
 int		ptflags;
 
-//
 // PIT_AddLineIntercepts.
 // Looks for lines in the given block
 // that intercept the given trace
 // to add to the intercepts list.
-//
 // A line is crossed if its endpoints
 // are on opposite sides of the trace.
 // Returns true if earlyout and a solid line hit.
-//
 boolean
 PIT_AddLineIntercepts (line_t* ld)
 {
@@ -606,9 +575,7 @@ PIT_AddLineIntercepts (line_t* ld)
 
 
 
-//
 // PIT_AddThingIntercepts
-//
 boolean PIT_AddThingIntercepts (mobj_t* thing)
 {
     fixed_t		x1;
@@ -673,11 +640,9 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
 }
 
 
-//
 // P_TraverseIntercepts
 // Returns true if the traverser function returns true
 // for all lines.
-// 
 boolean
 P_TraverseIntercepts
 ( traverser_t	func,
@@ -731,13 +696,11 @@ P_TraverseIntercepts
 
 
 
-//
 // P_PathTraverse
 // Traces a line from x1,y1 to x2,y2,
 // calling the traverser function for each.
 // Returns true if the traverser function returns true
 // for all lines.
-//
 boolean
 P_PathTraverse
 ( fixed_t		x1,

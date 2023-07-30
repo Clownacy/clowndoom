@@ -37,10 +37,8 @@
 #include "r_local.h"
 
 
-//
 // Hack display negative frags.
 //  Loads and store the stminus lump.
-//
 patch_t*		sttminus;
 
 void STlib_init(void)
@@ -70,11 +68,9 @@ STlib_initNum
 }
 
 
-// 
 // A fairly efficient way to draw a number
 //  based on differences from the old number.
 // Note: worth the trouble?
-//
 void
 STlib_drawNum
 ( st_number_t*	n,
@@ -138,7 +134,6 @@ STlib_drawNum
 }
 
 
-//
 void
 STlib_updateNum
 ( st_number_t*		n,
@@ -148,7 +143,6 @@ STlib_updateNum
 }
 
 
-//
 void
 STlib_initPercent
 ( st_percent_t*		p,

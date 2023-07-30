@@ -34,9 +34,7 @@ byte*		save_p;
 
 
 
-//
 // P_ArchivePlayers
-//
 void P_ArchivePlayers (void)
 {
     int		i;
@@ -66,9 +64,7 @@ void P_ArchivePlayers (void)
 
 
 
-//
 // P_UnArchivePlayers
-//
 void P_UnArchivePlayers (void)
 {
     int		i;
@@ -101,9 +97,7 @@ void P_UnArchivePlayers (void)
 }
 
 
-//
 // P_ArchiveWorld
-//
 void P_ArchiveWorld (void)
 {
     int			i;
@@ -154,9 +148,7 @@ void P_ArchiveWorld (void)
 
 
 
-//
 // P_UnArchiveWorld
-//
 void P_UnArchiveWorld (void)
 {
     int			i;
@@ -207,9 +199,7 @@ void P_UnArchiveWorld (void)
 
 
 
-//
 // Thinkers
-//
 typedef enum
 {
     tc_end,
@@ -219,9 +209,7 @@ typedef enum
 
 
 
-//
 // P_ArchiveThinkers
-//
 void P_ArchiveThinkers (void)
 {
     thinker_t*		th;
@@ -253,9 +241,7 @@ void P_ArchiveThinkers (void)
 
 
 
-//
 // P_UnArchiveThinkers
-//
 void P_UnArchiveThinkers (void)
 {
     thinkerclass_t	tclass;
@@ -316,9 +302,7 @@ void P_UnArchiveThinkers (void)
 }
 
 
-//
 // P_ArchiveSpecials
-//
 typedef enum
 {
     tc_ceiling,
@@ -334,9 +318,7 @@ typedef enum
 
 
 
-//
 // Things to handle:
-//
 // T_MoveCeiling, (ceiling_t: sector_t * swizzle), - active list
 // T_VerticalDoor, (vldoor_t: sector_t * swizzle),
 // T_MoveFloor, (floormove_t: sector_t * swizzle),
@@ -344,7 +326,6 @@ typedef enum
 // T_StrobeFlash, (strobe_t: sector_t *),
 // T_Glow, (glow_t: sector_t *),
 // T_PlatRaise, (plat_t: sector_t *), - active list
-//
 void P_ArchiveSpecials (void)
 {
     thinker_t*		th;
@@ -462,9 +443,7 @@ void P_ArchiveSpecials (void)
 }
 
 
-//
 // P_UnArchiveSpecials
-//
 void P_UnArchiveSpecials (void)
 {
     specials_e		tclass;

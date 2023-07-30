@@ -32,9 +32,7 @@
 #include "sounds.h"
 
 #if 0
-//
 // Sliding door frame information
-//
 slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 {
     {"GDOORF1","GDOORF2","GDOORF3","GDOORF4",	// front
@@ -45,13 +43,9 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 #endif
 
 
-//
 // VERTICAL DOORS
-//
 
-//
 // T_VerticalDoor
-//
 void T_VerticalDoor (vldoor_t* door)
 {
     result_e	res;
@@ -190,10 +184,8 @@ void T_VerticalDoor (vldoor_t* door)
 }
 
 
-//
 // EV_DoLockedDoor
 // Move a locked door up/down
-//
 
 int
 EV_DoLockedDoor
@@ -339,9 +331,7 @@ EV_DoDoor
 }
 
 
-//
 // EV_VerticalDoor : open a door manually, no tag value
-//
 void
 EV_VerticalDoor
 ( line_t*	line,
@@ -489,9 +479,7 @@ EV_VerticalDoor
 }
 
 
-//
 // Spawn a door that closes after 30 seconds
-//
 void P_SpawnDoorCloseIn30 (sector_t* sec)
 {
     vldoor_t*	door;
@@ -511,9 +499,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
     door->topcountdown = 30 * 35;
 }
 
-//
 // Spawn a door that opens after 5 minutes
-//
 void
 P_SpawnDoorRaiseIn5Mins
 ( sector_t*	sec )
@@ -544,10 +530,8 @@ P_SpawnDoorRaiseIn5Mins
 // Separate into p_slidoor.c?
 
 #if 0		// ABANDONED TO THE MISTS OF TIME!!!
-//
 // EV_SlidingDoor : slide a door horizontally
 // (animate midtexture, then set noblocking line)
-//
 
 
 slideframe_t slideFrames[MAXSLIDEDOORS];
@@ -592,10 +576,8 @@ void P_InitSlidingDoorFrames(void)
 }
 
 
-//
 // Return index into "slideFrames" array
 // for which door type to use
-//
 int P_FindSlidingDoorType(line_t*	line)
 {
     int		i;

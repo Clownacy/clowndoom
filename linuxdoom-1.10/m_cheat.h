@@ -21,9 +21,7 @@
 #ifndef __M_CHEAT__
 #define __M_CHEAT__
 
-//
 // CHEAT SEQUENCE PACKAGE
-//
 
 #define SCRAMBLE(a) \
 ((((a)&1)<<7) + (((a)&2)<<5) + ((a)&4) + (((a)&8)<<1) \

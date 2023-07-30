@@ -22,9 +22,7 @@
 #include "d_event.h"
 
 
-//
 // Globally visible constants.
-//
 #define HU_FONTSTART	'!'	// the first font characters
 #define HU_FONTEND	'_'	// the last font characters
 
@@ -41,9 +39,7 @@
 
 #define HU_MSGTIMEOUT	(4*TICRATE)
 
-//
 // HEADS UP TEXT
-//
 
 void HU_Init(void);
 void HU_Start(void);

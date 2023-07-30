@@ -50,16 +50,12 @@
 
 
 
-//
 // INTERNAL MAP TYPES
 //  used by play and refresh
-//
 
-//
 // Your plain vanilla vertex.
 // Note: transformed values not buffered locally,
 //  like some DOOM-alikes ("wt", "WebView") did.
-//
 typedef struct
 {
     fixed_t	x;
@@ -86,10 +82,8 @@ typedef struct
 
 } degenmobj_t;
 
-//
 // The SECTORS record, at runtime.
 // Stores things/mobjs.
-//
 typedef	struct
 {
     fixed_t	floorheight;
@@ -129,9 +123,7 @@ typedef	struct
 
 
 
-//
 // The SideDef.
-//
 
 typedef struct
 {
@@ -154,9 +146,7 @@ typedef struct
 
 
 
-//
 // Move clipping aid for LineDefs.
-//
 typedef enum
 {
     ST_HORIZONTAL,
@@ -209,13 +199,11 @@ typedef struct line_s
 
 
 
-//
 // A SubSector.
 // References a Sector.
 // Basically, this is a list of LineSegs,
 //  indicating the visible walls that define
 //  (all or some) sides of a convex BSP leaf.
-//
 typedef struct subsector_s
 {
     sector_t*	sector;
@@ -226,9 +214,7 @@ typedef struct subsector_s
 
 
 
-//
 // The LineSeg.
-//
 typedef struct
 {
     vertex_t*	v1;
@@ -251,9 +237,7 @@ typedef struct
 
 
 
-//
 // BSP node.
-//
 typedef struct
 {
     // Partition line.
@@ -294,9 +278,7 @@ typedef post_t	column_t;
 
 
 
-//
 // OTHER TYPES
-//
 
 // This could be wider for >8 bit display.
 // Indeed, true color support is posibble
@@ -308,9 +290,7 @@ typedef byte	lighttable_t;
 
 
 
-//
 // ?
-//
 typedef struct drawseg_s
 {
     seg_t*		curline;
@@ -401,7 +381,6 @@ typedef struct vissprite_s
 } vissprite_t;
 
 
-//	
 // Sprites are patches with a special naming convention
 //  so they can be recognized by R_InitSprites.
 // The base name is NNNNFx or NNNNFxFx, with
@@ -415,7 +394,6 @@ typedef struct vissprite_s
 //  thus NNNNF2F5 defines a mirrored patch.
 // Some sprites will only have one picture used
 // for all views: NNNNF0
-//
 typedef struct
 {
     // If false use 0 for any position.
@@ -433,10 +411,8 @@ typedef struct
 
 
 
-//
 // A sprite definition:
 //  a number of animation frames.
-//
 typedef struct
 {
     int			numframes;
@@ -446,9 +422,7 @@ typedef struct
 
 
 
-//
 // Now what is a visplane, anyway?
-// 
 typedef struct
 {
   fixed_t		height;

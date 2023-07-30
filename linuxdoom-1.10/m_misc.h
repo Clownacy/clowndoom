@@ -23,9 +23,7 @@
 
 
 #include "doomtype.h"
-//
 // MISC
-//
 
 
 

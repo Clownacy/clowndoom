@@ -27,9 +27,7 @@
 
 #include "f_wipe.h"
 
-//
 //                       SCREEN WIPE PACKAGE
-//
 
 // when zero, stop the wipe
 static boolean	go = 0;

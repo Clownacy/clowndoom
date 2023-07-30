@@ -29,17 +29,13 @@
 // Data.
 #include "sounds.h"
 
-//
 // CEILINGS
-//
 
 
 ceiling_t*	activeceilings[MAXCEILINGS];
 
 
-//
 // T_MoveCeiling
-//
 
 void T_MoveCeiling (ceiling_t* ceiling)
 {
@@ -159,10 +155,8 @@ void T_MoveCeiling (ceiling_t* ceiling)
 }
 
 
-//
 // EV_DoCeiling
 // Move a ceiling up/down and all around!
-//
 int
 EV_DoCeiling
 ( line_t*	line,
@@ -241,9 +235,7 @@ EV_DoCeiling
 }
 
 
-//
 // Add an active ceiling
-//
 void P_AddActiveCeiling(ceiling_t* c)
 {
     int		i;
@@ -260,9 +252,7 @@ void P_AddActiveCeiling(ceiling_t* c)
 
 
 
-//
 // Remove a ceiling's thinker
-//
 void P_RemoveActiveCeiling(ceiling_t* c)
 {
     int		i;
@@ -281,9 +271,7 @@ void P_RemoveActiveCeiling(ceiling_t* c)
 
 
 
-//
 // Restart a ceiling that's in-stasis
-//
 void P_ActivateInStasisCeiling(line_t* line)
 {
     int		i;
@@ -303,10 +291,8 @@ void P_ActivateInStasisCeiling(line_t* line)
 
 
 
-//
 // EV_CeilingCrushStop
 // Stop a ceiling from crushing!
-//
 int	EV_CeilingCrushStop(line_t	*line)
 {
     int		i;

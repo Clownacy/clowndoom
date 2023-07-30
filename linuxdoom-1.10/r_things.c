@@ -56,13 +56,11 @@ typedef struct
 
 
 
-//
 // Sprite rotation 0 is facing the viewer,
 //  rotation 1 is one angle turn CLOCKWISE around the axis.
 // This is not the same as the angle,
 //  which increases counter clockwise (protractor).
 // There was a lot of stuff grabbed wrong, so I changed it...
-//
 fixed_t		pspritescale;
 fixed_t		pspriteiscale;
 
@@ -74,9 +72,7 @@ short		negonearray[SCREENWIDTH];
 short		screenheightarray[SCREENWIDTH];
 
 
-//
 // INITIALIZATION FUNCTIONS
-//
 
 // variables used to look up
 //  and range check thing_t sprites patches
@@ -90,10 +86,8 @@ const char*	spritename;
 
 
 
-//
 // R_InstallSpriteLump
 // Local function for R_InitSprites.
-//
 void
 R_InstallSpriteLump
 ( int		lump,
@@ -151,7 +145,6 @@ R_InstallSpriteLump
 
 
 
-//
 // R_InitSpriteDefs
 // Pass a null terminated list of sprite names
 //  (4 chars exactly) to be used.
@@ -159,13 +152,11 @@ R_InstallSpriteLump
 //  for horizontally flipped sprites.
 // Will report an error if the lumps are inconsistant. 
 // Only called at startup.
-//
 // Sprite lump names are 4 characters for the actor,
 //  a letter for the frame, and a number for the rotation.
 // A sprite that is flippable will have an additional
 //  letter/number appended.
 // The rotation character can be 0 to signify no rotations.
-//
 void R_InitSpriteDefs (const char* const *namelist) 
 { 
     const char* const *	check;
@@ -275,19 +266,15 @@ void R_InitSpriteDefs (const char* const *namelist)
 
 
 
-//
 // GAME FUNCTIONS
-//
 vissprite_t	vissprites[MAXVISSPRITES];
 vissprite_t*	vissprite_p;
 int		newvissprite;
 
 
 
-//
 // R_InitSprites
 // Called at program start.
-//
 void R_InitSprites (const char* const *namelist)
 {
     int		i;
@@ -302,19 +289,15 @@ void R_InitSprites (const char* const *namelist)
 
 
 
-//
 // R_ClearSprites
 // Called at frame start.
-//
 void R_ClearSprites (void)
 {
     vissprite_p = vissprites;
 }
 
 
-//
 // R_NewVisSprite
-//
 vissprite_t	overflowsprite;
 
 vissprite_t* R_NewVisSprite (void)
@@ -328,12 +311,10 @@ vissprite_t* R_NewVisSprite (void)
 
 
 
-//
 // R_DrawMaskedColumn
 // Used for sprites and masked mid textures.
 // Masked means: partly transparent, i.e. stored
 //  in posts/runs of opaque pixels.
-//
 short*		mfloorclip;
 short*		mceilingclip;
 
@@ -381,10 +362,8 @@ void R_DrawMaskedColumn (column_t* column)
 
 
 
-//
 // R_DrawVisSprite
 //  mfloorclip and mceilingclip should also be set.
-//
 void
 R_DrawVisSprite
 ( vissprite_t*		vis )
@@ -434,11 +413,9 @@ R_DrawVisSprite
 
 
 
-//
 // R_ProjectSprite
 // Generates a vissprite for a thing
 //  if it might be visible.
-//
 void R_ProjectSprite (mobj_t* thing)
 {
     fixed_t		tr_x;
@@ -596,10 +573,8 @@ void R_ProjectSprite (mobj_t* thing)
 
 
 
-//
 // R_AddSprites
 // During BSP traversal, this adds sprites by sector.
-//
 void R_AddSprites (sector_t* sec)
 {
     mobj_t*		thing;
@@ -630,9 +605,7 @@ void R_AddSprites (sector_t* sec)
 }
 
 
-//
 // R_DrawPSprite
-//
 void R_DrawPSprite (pspdef_t* psp)
 {
     fixed_t		tx;
@@ -730,9 +703,7 @@ void R_DrawPSprite (pspdef_t* psp)
 
 
 
-//
 // R_DrawPlayerSprites
-//
 void R_DrawPlayerSprites (void)
 {
     int		i;
@@ -768,9 +739,7 @@ void R_DrawPlayerSprites (void)
 
 
 
-//
 // R_SortVisSprites
-//
 vissprite_t	vsprsortedhead;
 
 
@@ -826,9 +795,7 @@ void R_SortVisSprites (void)
 
 
 
-//
 // R_DrawSprite
-//
 void R_DrawSprite (vissprite_t* spr)
 {
     drawseg_t*		ds;
@@ -942,9 +909,7 @@ void R_DrawSprite (vissprite_t* spr)
 
 
 
-//
 // R_DrawMasked
-//
 void R_DrawMasked (void)
 {
     vissprite_t*	spr;

@@ -42,14 +42,12 @@
 // status bar height at bottom of screen
 #define SBARHEIGHT		32
 
-//
 // All drawing to the view buffer is accomplished in this file.
 // The other refresh files only know about ccordinates,
 //  not the architecture of the frame buffer.
 // Conveniently, the frame buffer is a linear one,
 //  and we need only the base address,
 //  and the total size == width*height*depth/8.,
-//
 
 
 byte*		viewimage; 
@@ -64,16 +62,13 @@ int		columnofs[MAXWIDTH];
 // Color tables for different players,
 //  translate a limited part to another
 //  (color ramps used for  suit colors).
-//
 byte		translations[3][256];	
  
  
 
 
-//
 // R_DrawColumn
 // Source is the top of the column to scale.
-//
 lighttable_t*		dc_colormap; 
 int			dc_x; 
 int			dc_yl; 
@@ -87,13 +82,11 @@ byte*			dc_source;
 // just for profiling 
 int			dccount;
 
-//
 // A column is a vertical slice/span from a wall texture that,
 //  given the DOOM style restrictions on the view orientation,
 //  will always have constant z depth.
 // Thus a special case loop for very fast rendering can
 //  be used. It has also been used with Wolfenstein 3D.
-// 
 void R_DrawColumn (void) 
 { 
     int			count; 
@@ -243,9 +236,7 @@ void R_DrawColumnLow (void)
 }
 
 
-//
 // Spectre/Invisibility.
-//
 #define FUZZTABLE		50 
 #define FUZZOFF	(SCREENWIDTH)
 
@@ -264,14 +255,12 @@ int	fuzzoffset[FUZZTABLE] =
 int	fuzzpos = 0; 
 
 
-//
 // Framebuffer postprocessing.
 // Creates a fuzzy image by copying pixels
 //  from adjacent ones to left and right.
 // Used with an all black colormap, this
 //  could create the SHADOW effect,
 //  i.e. spectres and invisible players.
-//
 void R_DrawFuzzColumn (void) 
 { 
     int			count; 
@@ -448,7 +437,6 @@ void R_DrawFuzzColumnLow (void)
   
  
 
-//
 // R_DrawTranslatedColumn
 // Used to draw player sprites
 //  with the green colorramp mapped to others.
@@ -456,7 +444,6 @@ void R_DrawFuzzColumnLow (void)
 //  tables, e.g. the lighter colored version
 //  of the BaronOfHell, the HellKnight, uses
 //  identical sprites, kinda brightened up.
-//
 byte*	dc_translation;
 byte*	translationtables;
 
@@ -592,13 +579,11 @@ void R_DrawTranslatedColumnLow (void)
 
 
 
-//
 // R_InitTranslationTables
 // Creates the translation tables to map
 //  the green color ramp to gray, brown, red.
 // Assumes a given structure of the PLAYPAL.
 // Could be read from a lump instead.
-//
 void R_InitTranslationTables (void)
 {
     int		i;
@@ -628,7 +613,6 @@ void R_InitTranslationTables (void)
 
 
 
-//
 // R_DrawSpan 
 // With DOOM style restrictions on view orientation,
 //  the floors and ceilings consist of horizontal slices
@@ -639,7 +623,6 @@ void R_InitTranslationTables (void)
 //  the texture at an angle in all but a few cases.
 // In consequence, flats are not stored by column (like walls),
 //  and the inner loop has to step in texture space u and v.
-//
 int			ds_y; 
 int			ds_x1; 
 int			ds_x2;
@@ -658,7 +641,6 @@ byte*			ds_source;
 int			dscount;
 
 
-//
 // Draws the actual span.
 void R_DrawSpan (void) 
 { 
@@ -780,9 +762,7 @@ void R_DrawSpan (void)
 #endif
 
 
-//
 // Again..
-//
 void R_DrawSpanLow (void) 
 { 
     fixed_t		xfrac;
@@ -825,13 +805,11 @@ void R_DrawSpanLow (void)
     } while (count--); 
 }
 
-//
 // R_InitBuffer 
 // Creats lookup tables that avoid
 //  multiplies and other hazzles
 //  for getting the framebuffer address
 //  of a pixel to draw.
-//
 void
 R_InitBuffer
 ( int		width,
@@ -862,12 +840,10 @@ R_InitBuffer
  
 
 
-//
 // R_FillBackScreen
 // Fills the back screen with a pattern
 //  for variable screen sizes
 // Also draws a beveled edge.
-//
 void R_FillBackScreen (void) 
 { 
     byte*	src;
@@ -951,9 +927,7 @@ void R_FillBackScreen (void)
 } 
  
 
-//
 // Copy a screen buffer.
-//
 void
 R_VideoErase
 ( unsigned	ofs,
@@ -968,11 +942,9 @@ R_VideoErase
 } 
 
 
-//
 // R_DrawViewBorder
 // Draws the border around the view
 //  for different size windows?
-//
 void
 V_MarkRect
 ( int		x,

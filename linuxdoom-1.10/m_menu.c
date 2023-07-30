@@ -59,9 +59,7 @@ extern boolean		message_dontfuckwithme;
 
 extern boolean		chat_on;		// in heads-up code
 
-//
 // defaulted values
-//
 int			mouseSensitivity;       // has default
 
 // Show messages has default, 0 = off, 1 = on
@@ -130,9 +128,7 @@ char			savegamestrings[10][SAVESTRINGSIZE];
 char	endstring[160];
 
 
-//
 // MENU TYPEDEFS
-//
 typedef struct
 {
     // 0 = no cursor here, 1 = ok, 2 = arrows ok
@@ -173,9 +169,7 @@ char    skullName[2][/*8*/9] = {"M_SKULL1","M_SKULL2"};
 // current menudef
 menu_t*	currentMenu;                          
 
-//
 // PROTOTYPES
-//
 void M_NewGame(int choice);
 void M_Episode(int choice);
 void M_ChooseSkill(int choice);
@@ -229,9 +223,7 @@ void M_ClearMenus (void);
 
 
 
-//
 // DOOM MENU
-//
 typedef enum
 {
     newgame = 0,
@@ -265,9 +257,7 @@ menu_t  MainDef =
 };
 
 
-//
 // EPISODE SELECT
-//
 typedef enum
 {
     ep1,
@@ -295,9 +285,7 @@ menu_t  EpiDef =
     ep1			// lastOn
 };
 
-//
 // NEW GAME
-//
 typedef enum
 {
     killthings,
@@ -329,9 +317,7 @@ menu_t  NewDef =
 
 
 
-//
 // OPTIONS MENU
-//
 typedef enum
 {
     endgame,
@@ -367,9 +353,7 @@ menu_t  OptionsDef =
     0
 };
 
-//
 // Read This! MENU 1 & 2
-//
 typedef enum
 {
     rdthsempty1,
@@ -412,9 +396,7 @@ menu_t  ReadDef2 =
     0
 };
 
-//
 // SOUND VOLUME MENU
-//
 typedef enum
 {
     sfx_vol,
@@ -442,9 +424,7 @@ menu_t  SoundDef =
     0
 };
 
-//
 // LOAD GAME MENU
-//
 typedef enum
 {
     load1,
@@ -476,9 +456,7 @@ menu_t  LoadDef =
     0
 };
 
-//
 // SAVE GAME MENU
-//
 menuitem_t SaveMenu[]=
 {
     {1,"", M_SaveSelect,'1'},
@@ -500,10 +478,8 @@ menu_t  SaveDef =
 };
 
 
-//
 // M_ReadSaveStrings
 //  read the strings from the savegame files
-//
 void M_ReadSaveStrings(void)
 {
     FILE*           handle;
@@ -531,9 +507,7 @@ void M_ReadSaveStrings(void)
 }
 
 
-//
 // M_LoadGame & Cie.
-//
 void M_DrawLoad(void)
 {
     int             i;
@@ -548,9 +522,7 @@ void M_DrawLoad(void)
 
 
 
-//
 // Draw border for the savegame description
-//
 void M_DrawSaveLoadBorder(int x,int y)
 {
     int             i;
@@ -568,9 +540,7 @@ void M_DrawSaveLoadBorder(int x,int y)
 
 
 
-//
 // User wants to load this game
-//
 void M_LoadSelect(int choice)
 {
     char    name[256];
@@ -583,9 +553,7 @@ void M_LoadSelect(int choice)
     M_ClearMenus ();
 }
 
-//
 // Selected from DOOM menu
-//
 void M_LoadGame (int choice)
 {
     (void)choice;
@@ -601,9 +569,7 @@ void M_LoadGame (int choice)
 }
 
 
-//
 //  M_SaveGame & Cie.
-//
 void M_DrawSave(void)
 {
     int             i;
@@ -622,9 +588,7 @@ void M_DrawSave(void)
     }
 }
 
-//
 // M_Responder calls this when user is finished
-//
 void M_DoSave(int slot)
 {
     G_SaveGame (slot,savegamestrings[slot]);
@@ -635,9 +599,7 @@ void M_DoSave(int slot)
 	quickSaveSlot = slot;
 }
 
-//
 // User wants to save. Start string input for M_Responder
-//
 void M_SaveSelect(int choice)
 {
     // we are going to be intercepting all chars
@@ -650,9 +612,7 @@ void M_SaveSelect(int choice)
     saveCharIndex = strlen(savegamestrings[choice]);
 }
 
-//
 // Selected from DOOM menu
-//
 void M_SaveGame (int choice)
 {
     (void)choice;
@@ -672,9 +632,7 @@ void M_SaveGame (int choice)
 
 
 
-//
 //      M_QuickSave
-//
 char    tempstring[83];
 
 void M_QuickSaveResponse(int ch)
@@ -711,9 +669,7 @@ void M_QuickSave(void)
 
 
 
-//
 // M_QuickLoad
-//
 void M_QuickLoadResponse(int ch)
 {
     if (ch == 'y')
@@ -744,10 +700,8 @@ void M_QuickLoad(void)
 
 
 
-//
 // Read This Menus
 // Had a "quick hack to fix romero bug"
-//
 void M_DrawReadThis1(void)
 {
     inhelpscreens = true;
@@ -769,9 +723,7 @@ void M_DrawReadThis1(void)
 
 
 
-//
 // Read This Menus - optional second page.
-//
 void M_DrawReadThis2(void)
 {
     inhelpscreens = true;
@@ -793,9 +745,7 @@ void M_DrawReadThis2(void)
 }
 
 
-//
 // Change Sfx & Music volumes
-//
 void M_DrawSound(void)
 {
     V_DrawPatchDirect (60,38,0,W_CacheLumpName("M_SVOL",PU_CACHE));
@@ -851,9 +801,7 @@ void M_MusicVol(int choice)
 
 
 
-//
 // M_DrawMainMenu
-//
 void M_DrawMainMenu(void)
 {
     V_DrawPatchDirect (94,2,0,W_CacheLumpName("M_DOOM",PU_CACHE));
@@ -862,9 +810,7 @@ void M_DrawMainMenu(void)
 
 
 
-//
 // M_NewGame
-//
 void M_DrawNewGame(void)
 {
     V_DrawPatchDirect (96,14,0,W_CacheLumpName("M_NEWG",PU_CACHE));
@@ -888,9 +834,7 @@ void M_NewGame(int choice)
 }
 
 
-//
 //      M_Episode
-//
 int     epi;
 
 void M_DrawEpisode(void)
@@ -944,9 +888,7 @@ void M_Episode(int choice)
 
 
 
-//
 // M_Options
-//
 char    detailNames[2][9]	= {"M_GDHIGH","M_GDLOW"};
 char	msgNames[2][9]		= {"M_MSGOFF","M_MSGON"};
 
@@ -977,9 +919,7 @@ void M_Options(int choice)
 
 
 
-//
 //      Toggle messages on/off
-//
 void M_ChangeMessages(int choice)
 {
     // warning: unused parameter `int choice'
@@ -996,9 +936,7 @@ void M_ChangeMessages(int choice)
 }
 
 
-//
 // M_EndGame
-//
 void M_EndGameResponse(int ch)
 {
     if (ch != 'y')
@@ -1031,9 +969,7 @@ void M_EndGame(int choice)
 
 
 
-//
 // M_ReadThis
-//
 void M_ReadThis(int choice)
 {
     (void)choice;
@@ -1058,9 +994,7 @@ void M_FinishReadThis(int choice)
 
 
 
-//
 // M_QuitDOOM
-//
 int     quitsounds[8] =
 {
     sfx_pldeth,
@@ -1184,9 +1118,7 @@ void M_SizeDisplay(int choice)
 
 
 
-//
 //      Menu Functions
-//
 void
 M_DrawThermo
 ( int	x,
@@ -1257,9 +1189,7 @@ void M_StopMessage(void)
 
 
 
-//
 // Find string width from hu_font chars
-//
 int M_StringWidth(const char* string)
 {
     size_t          i;
@@ -1280,9 +1210,7 @@ int M_StringWidth(const char* string)
 
 
 
-//
 //      Find string height from hu_font chars
-//
 int M_StringHeight(const char* string)
 {
     size_t          i;
@@ -1298,9 +1226,7 @@ int M_StringHeight(const char* string)
 }
 
 
-//
 //      Write a string using the hu_font
-//
 void
 M_WriteText
 ( int		x,
@@ -1347,13 +1273,9 @@ M_WriteText
 
 
 
-//
 // CONTROL PANEL
-//
 
-//
 // M_Responder
-//
 boolean M_Responder (event_t* ev)
 {
     int             ch;
@@ -1725,9 +1647,7 @@ boolean M_Responder (event_t* ev)
 
 
 
-//
 // M_StartControlPanel
-//
 void M_StartControlPanel (void)
 {
     // intro might call this repeatedly
@@ -1742,11 +1662,9 @@ void M_StartControlPanel (void)
 }
 
 
-//
 // M_Drawer
 // Called after the view has been rendered,
 // but before it has been blitted.
-//
 void M_Drawer (void)
 {
     static short	x;
@@ -1815,9 +1733,7 @@ void M_Drawer (void)
 }
 
 
-//
 // M_ClearMenus
-//
 void M_ClearMenus (void)
 {
     I_GrabMouse(true);
@@ -1830,9 +1746,7 @@ void M_ClearMenus (void)
 
 
 
-//
 // M_SetupNextMenu
-//
 void M_SetupNextMenu(menu_t *menudef)
 {
     currentMenu = menudef;
@@ -1840,9 +1754,7 @@ void M_SetupNextMenu(menu_t *menudef)
 }
 
 
-//
 // M_Ticker
-//
 void M_Ticker (void)
 {
     if (--skullAnimCounter <= 0)
@@ -1853,9 +1765,7 @@ void M_Ticker (void)
 }
 
 
-//
 // M_Init
-//
 void M_Init (void)
 {
     currentMenu = &MainDef;

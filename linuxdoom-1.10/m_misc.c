@@ -48,11 +48,9 @@
 
 #include "m_misc.h"
 
-//
 // M_DrawText
 // Returns the final X coordinate
 // HU_Init must have been called to init the font
-//
 extern patch_t*		hu_font[HU_FONTSIZE];
 
 int
@@ -91,9 +89,7 @@ M_DrawText
 
 
 
-//
 // M_WriteFile
-//
 boolean
 M_WriteFile
 ( char const*	name,
@@ -118,9 +114,7 @@ M_WriteFile
 }
 
 
-//
 // M_ReadFile
-//
 int
 M_ReadFile
 ( char const*	name,
@@ -155,9 +149,7 @@ M_ReadFile
 }
 
 
-//
 // DEFAULTS
-//
 int		usemouse;
 int		usejoystick;
 int		bmp_screenshots;
@@ -285,9 +277,7 @@ int	numdefaults;
 char*	defaultfile;
 
 
-//
 // M_SaveDefaults
-//
 void M_SaveDefaults (void)
 {
     int		i;
@@ -314,9 +304,7 @@ void M_SaveDefaults (void)
 }
 
 
-//
 // M_LoadDefaults
-//
 extern byte	scantokey[128];
 
 void M_LoadDefaults (void)
@@ -388,9 +376,7 @@ void M_LoadDefaults (void)
 }
 
 
-//
 // SCREEN SHOTS
-//
 
 
 static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int total_bytes)
@@ -405,9 +391,7 @@ static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int to
 #define WriteU32LE(pointer, value) WriteLE(pointer, value, 4)
 
 
-//
 // WritePCXfile
-//
 void
 WritePCXfile
 ( char*		filename,
@@ -501,9 +485,7 @@ WritePCXfile
 }
 
 
-//
 // WriteBMPfile
-//
 void
 WriteBMPfile
 ( char*		filename,
@@ -588,9 +570,7 @@ WriteBMPfile
 }
 
 
-//
 // M_ScreenShot
-//
 void M_ScreenShot (void)
 {
     int		i;

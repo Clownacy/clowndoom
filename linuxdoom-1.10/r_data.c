@@ -40,24 +40,20 @@
 
 #include "r_data.h"
 
-//
 // Graphics.
 // DOOM graphics for walls and sprites
 // is stored in vertical runs of opaque pixels (posts).
 // A column is composed of zero or more posts,
 // a patch or sprite is composed of zero or more columns.
-// 
 
 
 
-//
 // Texture definition.
 // Each texture is composed of one or more patches,
 // with patches being lumps stored in the WAD.
 // The lumps are referenced by number, and patched
 // into the rectangular texture space using origin
 // and possibly other attributes.
-//
 enum
 {
     MAPPATCH_ORIGIN_X  = 0,
@@ -69,11 +65,9 @@ enum
 };
 
 
-//
 // Texture definition.
 // A DOOM wall texture is a list of patches
 // which are to be combined in a predefined order.
-//
 enum
 {
     MAPTEXTURE_NAME             = 0,
@@ -155,7 +149,6 @@ fixed_t*	spritetopoffset;
 lighttable_t	*colormaps;
 
 
-//
 // MAPTEXTURE_T CACHING
 // When a texture is first needed,
 //  it counts the number of composite columns
@@ -165,15 +158,12 @@ lighttable_t	*colormaps;
 //  if there is only one patch in a given column,
 //  but any columns with multiple patches
 //  will have new column_ts generated.
-//
 
 
 
-//
 // R_DrawColumnInCache
 // Clip and draw a column
 //  from a patch into a cached post.
-//
 void
 R_DrawColumnInCache
 ( column_t*	patch,
@@ -209,12 +199,10 @@ R_DrawColumnInCache
 
 
 
-//
 // R_GenerateComposite
 // Using the texture definition,
 //  the composite texture is created from the patches,
 //  and each column is cached.
-//
 void R_GenerateComposite (int texnum)
 {
     byte*		block;
@@ -280,9 +268,7 @@ void R_GenerateComposite (int texnum)
 
 
 
-//
 // R_GenerateLookup
-//
 void R_GenerateLookup (int texnum)
 {
     texture_t*		texture;
@@ -373,9 +359,7 @@ void R_GenerateLookup (int texnum)
 
 
 
-//
 // R_GetColumn
-//
 byte*
 R_GetColumn
 ( int		tex,
@@ -400,11 +384,9 @@ R_GetColumn
 
 
 
-//
 // R_InitTextures
 // Initializes the texture list
 //  with the textures from the world map.
-//
 void R_InitTextures (void)
 {
     byte*		mtexture;
@@ -574,9 +556,7 @@ void R_InitTextures (void)
 
 
 
-//
 // R_InitFlats
-//
 void R_InitFlats (void)
 {
     int		i;
@@ -593,12 +573,10 @@ void R_InitFlats (void)
 }
 
 
-//
 // R_InitSpriteLumps
 // Finds the width and hoffset of all sprites in the wad,
 //  so the sprite does not need to be cached completely
 //  just for having the header info ready during rendering.
-//
 void R_InitSpriteLumps (void)
 {
     int		i;
@@ -626,9 +604,7 @@ void R_InitSpriteLumps (void)
 
 
 
-//
 // R_InitColormaps
-//
 void R_InitColormaps (void)
 {
     int	lump, length;
@@ -644,12 +620,10 @@ void R_InitColormaps (void)
 
 
 
-//
 // R_InitData
 // Locates all the lumps
 //  that will be used by all views
 // Must be called after W_Init.
-//
 void R_InitData (void)
 {
     R_InitTextures ();
@@ -664,10 +638,8 @@ void R_InitData (void)
 
 
 
-//
 // R_FlatNumForName
 // Retrieval, get a flat number for a flat name.
-//
 int R_FlatNumForName (const char* name)
 {
     int		i;
@@ -687,11 +659,9 @@ int R_FlatNumForName (const char* name)
 
 
 
-//
 // R_CheckTextureNumForName
 // Check whether texture is available.
 // Filter out NoTexture indicator.
-//
 int	R_CheckTextureNumForName (const char *name)
 {
     int		i;
@@ -709,11 +679,9 @@ int	R_CheckTextureNumForName (const char *name)
 
 
 
-//
 // R_TextureNumForName
 // Calls R_CheckTextureNumForName,
 //  aborts with error message.
-//
 int	R_TextureNumForName (const char* name)
 {
     int		i;
@@ -731,10 +699,8 @@ int	R_TextureNumForName (const char* name)
 
 
 
-//
 // R_PrecacheLevel
 // Preloads all relevant graphics for the level.
-//
 int		flatmemory;
 int		texturememory;
 int		spritememory;

@@ -37,11 +37,9 @@
 #define SAVEGAMENAME	"doomsav"
 
 
-//
 // File locations,
 //  relative to current position.
 // Path names are OS-sensitive.
-//
 #define DEVMAPS "devmaps"
 #define DEVDATA "devdata"
 

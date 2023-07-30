@@ -60,9 +60,7 @@
 
 
 
-//
 // P_TICK
-//
 
 // both the head and tail of the thinker list
 extern	thinker_t	thinkercap;	
@@ -73,23 +71,17 @@ void P_AddThinker (thinker_t* thinker);
 void P_RemoveThinker (thinker_t* thinker);
 
 
-//
 // P_PSPR
-//
 void P_SetupPsprites (player_t* curplayer);
 void P_MovePsprites (player_t* curplayer);
 void P_DropWeapon (player_t* player);
 
 
-//
 // P_USER
-//
 void	P_PlayerThink (player_t* player);
 
 
-//
 // P_MOBJ
-//
 #define ONFLOORZ		MININT
 #define ONCEILINGZ		MAXINT
 
@@ -121,15 +113,11 @@ mobj_t* P_SpawnMissile (mobj_t* source, mobj_t* dest, mobjtype_t type);
 void	P_SpawnPlayerMissile (mobj_t* source, mobjtype_t type);
 
 
-//
 // P_ENEMY
-//
 void P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
 
 
-//
 // P_MAPUTL
-//
 typedef struct
 {
     fixed_t	x;
@@ -192,9 +180,7 @@ void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
 
 
-//
 // P_MAP
-//
 
 // If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
@@ -238,9 +224,7 @@ P_RadiusAttack
 
 
 
-//
 // P_SETUP
-//
 extern byte*		rejectmatrix;	// for fast sight rejection
 extern short*		blockmaplump;	// offsets in blockmap are from here
 extern short*		blockmap;
@@ -252,9 +236,7 @@ extern mobj_t**		blocklinks;	// for thing chains
 
 
 
-//
 // P_INTER
-//
 extern int		maxammo[NUMAMMO];
 extern int		clipammo[NUMAMMO];
 
@@ -271,9 +253,7 @@ P_DamageMobj
   int		damage );
 
 
-//
 // P_SPEC
-//
 #include "p_spec.h"
 
 

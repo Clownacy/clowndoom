@@ -24,13 +24,11 @@
 #include "d_player.h"
 
 
-//
 // Network play related stuff.
 // There is a data struct that stores network
 //  communication related stuff, and another
 //  one that defines the actual packets to
 //  be transmitted.
-//
 
 #define DOOMCOM_ID		0x12345678l
 
@@ -49,9 +47,7 @@ typedef enum
 } command_t;
 
 
-//
 // Network packet data.
-//
 typedef struct
 {
     // High bit is retransmit request.

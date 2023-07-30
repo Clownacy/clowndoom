@@ -33,9 +33,7 @@
 #define INVERSECOLORMAP		32
 
 
-//
 // Movement.
-//
 
 // 16 pixels of bob
 #define MAXBOB	0x100000	
@@ -43,10 +41,8 @@
 boolean		onground;
 
 
-//
 // P_Thrust
 // Moves the given origin along a given angle.
-//
 void
 P_Thrust
 ( player_t*	player,
@@ -62,10 +58,8 @@ P_Thrust
 
 
 
-//
 // P_CalcHeight
 // Calculate the walking / running height adjustment
-//
 void P_CalcHeight (player_t* player) 
 {
     int		angle;
@@ -134,9 +128,7 @@ void P_CalcHeight (player_t* player)
 
 
 
-//
 // P_MovePlayer
-//
 void P_MovePlayer (player_t* player)
 {
     ticcmd_t*		cmd;
@@ -164,11 +156,9 @@ void P_MovePlayer (player_t* player)
 
 
 
-//
 // P_DeathThink
 // Fall on your face when dying.
 // Decrease POV height to floor height.
-//
 #define ANG5   	(ANG90/18)
 
 void P_DeathThink (player_t* player)
@@ -222,9 +212,7 @@ void P_DeathThink (player_t* player)
 
 
 
-//
 // P_PlayerThink
-//
 void P_PlayerThink (player_t* player)
 {
     ticcmd_t*		cmd;

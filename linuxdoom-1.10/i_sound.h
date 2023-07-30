@@ -34,9 +34,7 @@ void I_StartupSound(void);
 void I_ShutdownSound(void);
 
 
-//
 //  SFX I/O
-//
 
 // Set channel count
 void I_SetChannels(int channels);
@@ -60,9 +58,7 @@ boolean I_SoundIsPlaying(int handle);
 void I_UpdateSoundParams(int handle, int vol, int sep, int pitch);
 
 
-//
 //  MUSIC I/O
-//
 
 // Volume.
 void I_SetMusicVolume(int volume);

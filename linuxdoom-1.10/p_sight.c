@@ -25,9 +25,7 @@
 // State.
 #include "r_state.h"
 
-//
 // P_CheckSight
-//
 fixed_t		sightzstart;		// eye z of looker
 fixed_t		topslope;
 fixed_t		bottomslope;		// slopes to top and bottom of target
@@ -39,10 +37,8 @@ fixed_t		t2y;
 int		sightcounts[2];
 
 
-//
 // P_DivlineSide
 // Returns side 0 (front), 1 (back), or 2 (on).
-//
 int
 P_DivlineSide
 ( fixed_t	x,
@@ -91,12 +87,10 @@ P_DivlineSide
 }
 
 
-//
 // P_InterceptVector2
 // Returns the fractional intercept point
 // along the first divline.
 // This is only called by the addthings and addlines traversers.
-//
 fixed_t
 P_InterceptVector2
 ( divline_t*	v2,
@@ -119,11 +113,9 @@ P_InterceptVector2
     return frac;
 }
 
-//
 // P_CrossSubsector
 // Returns true
 //  if strace crosses the given subsector successfully.
-//
 boolean P_CrossSubsector (int num)
 {
     seg_t*		seg;
@@ -241,11 +233,9 @@ boolean P_CrossSubsector (int num)
 
 
 
-//
 // P_CrossBSPNode
 // Returns true
 //  if strace crosses the given node successfully.
-//
 boolean P_CrossBSPNode (int bspnum)
 {
     node_t*	bsp;
@@ -282,12 +272,10 @@ boolean P_CrossBSPNode (int bspnum)
 }
 
 
-//
 // P_CheckSight
 // Returns true
 //  if a straight line between t1 and t2 is unobstructed.
 // Uses REJECT.
-//
 boolean
 P_CheckSight
 ( mobj_t*	t1,

@@ -24,9 +24,7 @@
 #include "doomtype.h"
 #include "sounds.h"
 
-//
 // Information about all the music
-//
 
 musicinfo_t S_music[] =
 {
@@ -101,9 +99,7 @@ musicinfo_t S_music[] =
 };
 
 
-//
 // Information about all the sfx
-//
 
 sfxinfo_t S_sfx[] =
 {

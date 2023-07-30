@@ -46,36 +46,28 @@ static size_t output_width;
 static size_t output_height;
 
 
-//
 // I_StartFrame
-//
 void I_StartFrame (void)
 {
     // er?
 }
 
 
-//
 // I_StartTic
-//
 void I_StartTic (void)
 {
     IB_StartTic();
 }
 
 
-//
 // I_UpdateNoBlit
-//
 void I_UpdateNoBlit (void)
 {
     // what is this?
 }
 
 
-//
 // I_FinishUpdate
-//
 void I_FinishUpdate (void)
 {
     static int lasttic;
@@ -149,18 +141,14 @@ void I_FinishUpdate (void)
 }
 
 
-//
 // I_ReadScreen
-//
 void I_ReadScreen (byte* scr)
 {
     memcpy(scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
 }
 
 
-//
 // I_SetPalette
-//
 void I_SetPalette (const byte* palette)
 {
     register int	i;

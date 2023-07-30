@@ -22,10 +22,8 @@
 #include "d_items.h"
 
 
-//
 // PSPRITE ACTIONS for waepons.
 // This struct controls the weapon animations.
-//
 // Each entry is:
 //   ammo/amunition type
 //  upstate
@@ -33,7 +31,6 @@
 // readystate
 // atkstate, i.e. attack/fire/hit frame
 // flashstate, muzzle flash
-//
 weaponinfo_t	weaponinfo[NUMWEAPONS] =
 {
     {

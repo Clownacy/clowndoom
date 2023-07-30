@@ -28,13 +28,9 @@
 // State.
 #include "r_state.h"
 
-//
 // FIRELIGHT FLICKER
-//
 
-//
 // T_FireFlicker
-//
 void T_FireFlicker (fireflicker_t* flick)
 {
     int	amount;
@@ -54,9 +50,7 @@ void T_FireFlicker (fireflicker_t* flick)
 
 
 
-//
 // P_SpawnFireFlicker
-//
 void P_SpawnFireFlicker (sector_t*	sector)
 {
     fireflicker_t*	flick;
@@ -78,15 +72,11 @@ void P_SpawnFireFlicker (sector_t*	sector)
 
 
 
-//
 // BROKEN LIGHT FLASHING
-//
 
 
-//
 // T_LightFlash
 // Do flashing lights.
-//
 void T_LightFlash (lightflash_t* flash)
 {
     if (--flash->count)
@@ -108,11 +98,9 @@ void T_LightFlash (lightflash_t* flash)
 
 
 
-//
 // P_SpawnLightFlash
 // After the map has been loaded, scan each sector
 // for specials that spawn thinkers
-//
 void P_SpawnLightFlash (sector_t*	sector)
 {
     lightflash_t*	flash;
@@ -136,14 +124,10 @@ void P_SpawnLightFlash (sector_t*	sector)
 
 
 
-//
 // STROBE LIGHT FLASHING
-//
 
 
-//
 // T_StrobeFlash
-//
 void T_StrobeFlash (strobe_t*		flash)
 {
     if (--flash->count)
@@ -164,11 +148,9 @@ void T_StrobeFlash (strobe_t*		flash)
 
 
 
-//
 // P_SpawnStrobeFlash
 // After the map has been loaded, scan each sector
 // for specials that spawn thinkers
-//
 void
 P_SpawnStrobeFlash
 ( sector_t*	sector,
@@ -201,9 +183,7 @@ P_SpawnStrobeFlash
 }
 
 
-//
 // Start strobing lights (usually from a trigger)
-//
 void EV_StartLightStrobing(line_t*	line)
 {
     int		secnum;
@@ -222,9 +202,7 @@ void EV_StartLightStrobing(line_t*	line)
 
 
 
-//
 // TURN LINE'S TAG LIGHTS OFF
-//
 void EV_TurnTagLightsOff(line_t* line)
 {
     int			i;
@@ -256,9 +234,7 @@ void EV_TurnTagLightsOff(line_t* line)
 }
 
 
-//
 // TURN LINE'S TAG LIGHTS ON
-//
 void
 EV_LightTurnOn
 ( line_t*	line,
@@ -299,9 +275,7 @@ EV_LightTurnOn
 }
 
     
-//
 // Spawn glowing light
-//
 
 void T_Glow(glow_t*	g)
 {

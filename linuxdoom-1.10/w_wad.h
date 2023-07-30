@@ -24,9 +24,7 @@
 #include <stddef.h>
 #include <stdio.h>
 
-//
 // TYPES
-//
 typedef struct
 {
     // Should be "IWAD" or "PWAD".
@@ -37,9 +35,7 @@ typedef struct
 } wadinfo_t;
 
 
-//
 // WADFILE I/O related stuff.
-//
 typedef struct
 {
     char	name[8];

@@ -24,9 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 
-//
 // Global parameters/defines.
-//
 // DOOM version
 enum { VERSION =  109 };
 
@@ -80,10 +78,8 @@ typedef enum
 //#define X11_DGA		1
 
 
-//
 // For resize of screen, at start of game.
 // It will not work dynamically, see visplanes.
-//
 #define	BASE_WIDTH		320
 
 // It is educational but futile to change this
@@ -121,9 +117,7 @@ typedef enum
     GS_DEMOSCREEN
 } gamestate_t;
 
-//
 // Difficulty/skill settings/filters.
-//
 
 // Skill flags.
 #define	MTF_EASY		1
@@ -145,9 +139,7 @@ typedef enum
 
 
 
-//
 // Key cards.
-//
 typedef enum
 {
     it_bluecard,
@@ -214,11 +206,9 @@ typedef enum
 
 
 
-//
 // Power up durations,
 //  how many seconds till expiration,
 //  assuming TICRATE is 35 ticks/second.
-//
 typedef enum
 {
     INVULNTICS	= (30*TICRATE),
@@ -231,11 +221,9 @@ typedef enum
 
 
 
-//
 // DOOM keyboard definition.
 // This is the stuff configured by Setup.Exe.
 // Most key data are simple ascii (uppercased).
-//
 #define KEY_RIGHTARROW	0xae
 #define KEY_LEFTARROW	0xac
 #define KEY_UPARROW	0xad

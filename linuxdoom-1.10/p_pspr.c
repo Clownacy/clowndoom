@@ -45,9 +45,7 @@
 #define BFGCELLS		40		
 
 
-//
 // P_SetPsprite
-//
 void
 P_SetPsprite
 ( player_t*	player,
@@ -96,9 +94,7 @@ P_SetPsprite
 
 
 
-//
 // P_CalcSwing
-//	
 fixed_t		swingx;
 fixed_t		swingy;
 
@@ -122,12 +118,10 @@ void P_CalcSwing (player_t*	player)
 
 
 
-//
 // P_BringUpWeapon
 // Starts bringing the pending weapon up
 // from the bottom of the screen.
 // Uses player
-//
 void P_BringUpWeapon (player_t* player)
 {
     statenum_t	newstate;
@@ -146,11 +140,9 @@ void P_BringUpWeapon (player_t* player)
     P_SetPsprite (player, ps_weapon, newstate);
 }
 
-//
 // P_CheckAmmo
 // Returns true if there is enough ammo to shoot.
 // If not, selects the next weapon to use.
-//
 boolean P_CheckAmmo (player_t* player)
 {
     ammotype_t		ammo;
@@ -233,9 +225,7 @@ boolean P_CheckAmmo (player_t* player)
 }
 
 
-//
 // P_FireWeapon.
-//
 void P_FireWeapon (player_t* player)
 {
     statenum_t	newstate;
@@ -251,10 +241,8 @@ void P_FireWeapon (player_t* player)
 
 
 
-//
 // P_DropWeapon
 // Player died, so put the weapon away.
-//
 void P_DropWeapon (player_t* player)
 {
     P_SetPsprite (player,
@@ -264,13 +252,11 @@ void P_DropWeapon (player_t* player)
 
 
 
-//
 // A_WeaponReady
 // The player can fire the weapon
 // or change to another weapon at this time.
 // Follows after getting weapon up,
 // or after previous attack/fire sequence.
-//
 void
 A_WeaponReady
 ( player_t*	player,
@@ -328,11 +314,9 @@ A_WeaponReady
 
 
 
-//
 // A_ReFire
 // The player can re-fire the weapon
 // without lowering it entirely.
-//
 void A_ReFire
 ( player_t*	player,
   pspdef_t*	psp )
@@ -372,11 +356,9 @@ A_CheckReload
 
 
 
-//
 // A_Lower
 // Lowers current weapon,
 //  and changes weapon at bottom.
-//
 void
 A_Lower
 ( player_t*	player,
@@ -412,9 +394,7 @@ A_Lower
 }
 
 
-//
 // A_Raise
-//
 void
 A_Raise
 ( player_t*	player,
@@ -438,9 +418,7 @@ A_Raise
 
 
 
-//
 // A_GunFlash
-//
 void
 A_GunFlash
 ( player_t*	player,
@@ -454,14 +432,10 @@ A_GunFlash
 
 
 
-//
 // WEAPON ATTACKS
-//
 
 
-//
 // A_Punch
-//
 void
 A_Punch
 ( player_t*	player,
@@ -495,9 +469,7 @@ A_Punch
 }
 
 
-//
 // A_Saw
-//
 void
 A_Saw
 ( player_t*	player,
@@ -546,9 +518,7 @@ A_Saw
 
 
 
-//
 // A_FireMissile
-//
 void
 A_FireMissile
 ( player_t*	player,
@@ -561,9 +531,7 @@ A_FireMissile
 }
 
 
-//
 // A_FireBFG
-//
 void
 A_FireBFG
 ( player_t*	player,
@@ -577,9 +545,7 @@ A_FireBFG
 
 
 
-//
 // A_FirePlasma
-//
 void
 A_FirePlasma
 ( player_t*	player,
@@ -598,11 +564,9 @@ A_FirePlasma
 
 
 
-//
 // P_BulletSlope
 // Sets a slope so a near miss is at aproximately
 // the height of the intended target
-//
 fixed_t		bulletslope;
 
 
@@ -627,9 +591,7 @@ void P_BulletSlope (mobj_t*	mo)
 }
 
 
-//
 // P_GunShot
-//
 void
 P_GunShot
 ( mobj_t*	mo,
@@ -648,9 +610,7 @@ P_GunShot
 }
 
 
-//
 // A_FirePistol
-//
 void
 A_FirePistol
 ( player_t*	player,
@@ -672,9 +632,7 @@ A_FirePistol
 }
 
 
-//
 // A_FireShotgun
-//
 void
 A_FireShotgun
 ( player_t*	player,
@@ -701,9 +659,7 @@ A_FireShotgun
 
 
 
-//
 // A_FireShotgun2
-//
 void
 A_FireShotgun2
 ( player_t*	player,
@@ -739,9 +695,7 @@ A_FireShotgun2
 }
 
 
-//
 // A_FireCGun
-//
 void
 A_FireCGun
 ( player_t*	player,
@@ -768,9 +722,7 @@ A_FireCGun
 
 
 
-//
 // ?
-//
 void A_Light0 (player_t *player, pspdef_t *psp)
 {
     (void)psp;
@@ -793,10 +745,8 @@ void A_Light2 (player_t *player, pspdef_t *psp)
 }
 
 
-//
 // A_BFGSpray
 // Spawn a BFG explosion on every monster in view
-//
 void A_BFGSpray (mobj_t* mo) 
 {
     int			i;
@@ -830,9 +780,7 @@ void A_BFGSpray (mobj_t* mo)
 }
 
 
-//
 // A_BFGsound
-//
 void
 A_BFGsound
 ( player_t*	player,
@@ -845,10 +793,8 @@ A_BFGsound
 
 
 
-//
 // P_SetupPsprites
 // Called at start of level for each player.
-//
 void P_SetupPsprites (player_t* player) 
 {
     int	i;
@@ -865,10 +811,8 @@ void P_SetupPsprites (player_t* player)
 
 
 
-//
 // P_MovePsprites
 // Called every tic by player thinking routine.
-//
 void P_MovePsprites (player_t* player) 
 {
     int		i;

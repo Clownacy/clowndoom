@@ -30,13 +30,9 @@
 #include "sounds.h"
 
 
-//
 // FLOORS
-//
 
-//
 // Move a plane (floor or ceiling) and check for crushing
-//
 result_e
 T_MovePlane
 ( sector_t*	sector,
@@ -195,9 +191,7 @@ T_MovePlane
 }
 
 
-//
 // MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN)
-//
 void T_MoveFloor(floormove_t* floor)
 {
     result_e	res;
@@ -245,9 +239,7 @@ void T_MoveFloor(floormove_t* floor)
 
 }
 
-//
 // HANDLE FLOOR TYPES
-//
 int
 EV_DoFloor
 ( line_t*	line,
@@ -439,9 +431,7 @@ EV_DoFloor
 
 
 
-//
 // BUILD A STAIRCASE!
-//
 int
 EV_BuildStairs
 ( line_t*	line,

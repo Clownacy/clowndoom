@@ -27,10 +27,8 @@
 
 
 
-//
 // Refresh internal data structures,
 //  for rendering.
-//
 
 // needed for texture pegging
 extern fixed_t*		textureheight;
@@ -61,9 +59,7 @@ extern int		numspritelumps;
 
 
 
-//
 // Lookup tables for map data.
-//
 extern int		numsprites;
 extern spritedef_t*	sprites;
 
@@ -89,9 +85,7 @@ extern int		numsides;
 extern side_t*		sides;
 
 
-//
 // POV data.
-//
 extern fixed_t		viewx;
 extern fixed_t		viewy;
 extern fixed_t		viewz;

@@ -25,9 +25,7 @@
 
 #include "d_event.h"
 
-//
 // MENUS
-//
 
 //  Sound FX volume has default, 0 - 15
 //  Music volume has default, 0 - 15

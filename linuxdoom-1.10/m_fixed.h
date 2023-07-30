@@ -22,9 +22,7 @@
 #define __M_FIXED__
 
 
-//
 // Fixed point, 32bit as 16.16.
-//
 #define FRACBITS		16
 #define FRACUNIT		(1l<<FRACBITS)
 

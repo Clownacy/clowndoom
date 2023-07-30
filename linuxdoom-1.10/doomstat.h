@@ -37,7 +37,6 @@
 
 // ------------------------
 // Command line parameters.
-//
 extern  boolean	nomonsters;	// checkparm of -nomonsters
 extern  boolean	respawnparm;	// checkparm of -respawn
 extern  boolean	fastparm;	// checkparm of -fast
@@ -48,7 +47,6 @@ extern  boolean	devparm;	// DEBUG: launched with -devparm
 
 // -----------------------------------------------------
 // Game Mode - identify IWAD as shareware, retail etc.
-//
 extern GameMode_t	gamemode;
 extern GameMission_t	gamemission;
 
@@ -63,7 +61,6 @@ extern  Language_t   language;
 
 // -------------------------------------------
 // Selected skill type, map etc.
-//
 
 // Defaults for menu, methinks.
 extern  skill_t		startskill;
@@ -113,7 +110,6 @@ extern int musicVolume;    // maximum volume for music
 
 // -------------------------
 // Status flags for refresh.
-//
 
 // Depending on view size - no status bar?
 // Note that there is no way to disable the
@@ -153,7 +149,6 @@ extern  int	displayplayer;
 // -------------------------------------
 // Scores, rating.
 // Statistics on a given map, for intermission.
-//
 extern  int	totalkills;
 extern	int	totalitems;
 extern	int	totalsecret;
@@ -229,7 +224,6 @@ extern  int		maxammo[NUMAMMO];
 
 //-----------------------------------------
 // Internal parameters, used for engine.
-//
 
 // File handling stuff.
 extern	char		basedefault[1024];

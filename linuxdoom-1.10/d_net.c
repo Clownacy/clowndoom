@@ -38,15 +38,11 @@ doomcom_t*	doomcom;
 doomdata_t*	netbuffer;		// points inside doomcom
 
 
-//
 // NETWORKING
-//
 // gametic is the tic about to (or currently being) run
 // maketic is the tick that hasn't had control made for it yet
 // nettics[] has the maketics for all players 
-//
 // a gametic cannot be run until nettics[] > gametic for all players
-//
 #define	RESENDCOUNT	10
 #define	PL_DRONE	0x80	// bit flag in doomdata->player
 
@@ -77,17 +73,12 @@ doomdata_t	reboundstore;
 
 
 
-//
-//
-//
 size_t NetbufferSize (void)
 {
     return (size_t)&(((doomdata_t *)0)->cmds[netbuffer->numtics]); 
 }
 
-//
 // Checksum 
-//
 unsigned NetbufferChecksum (void)
 {
     unsigned		c;
@@ -103,9 +94,6 @@ unsigned NetbufferChecksum (void)
     return c & NCMD_CHECKSUM;
 }
 
-//
-//
-//
 int ExpandTics (int low)
 {
     int	delta;
@@ -125,9 +113,7 @@ int ExpandTics (int low)
 
 
 
-//
 // HSendPacket
-//
 void
 HSendPacket
  (int	node,
@@ -174,10 +160,8 @@ HSendPacket
     I_NetCmd ();
 }
 
-//
 // HGetPacket
 // Returns false if no packet is waiting
-//
 boolean HGetPacket (void)
 {	
     if (reboundpacket)
@@ -242,9 +226,7 @@ boolean HGetPacket (void)
 }
 
 
-//
 // GetPackets
-//
 char    exitmsg[80];
 
 void GetPackets (void)
@@ -347,11 +329,9 @@ void GetPackets (void)
 }
 
 
-//
 // NetUpdate
 // Builds ticcmds for console player,
 // sends out a packet
-//
 int      gametime;
 
 void NetUpdate (void)
@@ -436,9 +416,7 @@ void NetUpdate (void)
 
 
 
-//
 // CheckAbort
-//
 void CheckAbort (void)
 {
     event_t *ev;
@@ -459,9 +437,7 @@ void CheckAbort (void)
 }
 
 
-//
 // D_ArbitrateNetStart
-//
 void D_ArbitrateNetStart (void)
 {
     int		i;
@@ -535,10 +511,8 @@ void D_ArbitrateNetStart (void)
     }
 }
 
-//
 // D_CheckNetGame
 // Works out player numbers among the net participants
-//
 extern	int			viewangleoffset;
 
 void D_CheckNetGame (void)
@@ -583,11 +557,9 @@ void D_CheckNetGame (void)
 }
 
 
-//
 // D_QuitNetGame
 // Called before quitting to leave a net game
 // without hanging the other players
-//
 void D_QuitNetGame (void)
 {
     int             i, j;
@@ -612,9 +584,7 @@ void D_QuitNetGame (void)
 
 
 
-//
 // TryRunTics
-//
 int	frametics[4];
 int	frameon;
 int	frameskip[4];

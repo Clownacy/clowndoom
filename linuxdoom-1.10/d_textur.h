@@ -27,9 +27,7 @@
 
 
 
-//
 // Flats?
-//
 // a pic is an unmasked block of pixels
 typedef struct
 {

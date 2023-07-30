@@ -48,9 +48,7 @@ angle_t		rw_normalangle;
 // angle to line origin
 angle_t		rw_angle1;	
 
-//
 // regular wall
-//
 int		rw_x;
 int		rw_stopx;
 angle_t		rw_centerangle;
@@ -85,9 +83,7 @@ short*		maskedtexturecol;
 
 
 
-//
 // R_RenderMaskedSegRange
-//
 void
 R_RenderMaskedSegRange
 ( drawseg_t*	ds,
@@ -181,14 +177,12 @@ R_RenderMaskedSegRange
 
 
 
-//
 // R_RenderSegLoop
 // Draws zero, one, or two textures (and possibly a masked
 //  texture) for walls.
 // Can draw or mark the starting pixel of floor and ceiling
 //  textures.
 // CALLED: CORE LOOPING ROUTINE.
-//
 #define HEIGHTBITS		12
 #define HEIGHTUNIT		(1<<HEIGHTBITS)
 
@@ -355,11 +349,9 @@ void R_RenderSegLoop (void)
 
 
 
-//
 // R_StoreWallRange
 // A wall segment will be drawn
 //  between start and stop pixels (inclusive).
-//
 void
 R_StoreWallRange
 ( int	start,

@@ -53,9 +53,7 @@
 #include "dstrings.h"
 #include "sounds.h"
 
-//
 // STATUS BAR DATA
-//
 
 
 // Palette indices.
@@ -422,7 +420,6 @@ unsigned char	cheat_noclip_seq[] =
     0xea, 0x2a, 0xf6, 0x2a, 0x26, 0xff
 };
 
-//
 unsigned char	cheat_commercial_noclip_seq[] =
 {
     0xb2, 0x26, 0xe2, 0x36, 0xb2, 0x2a, 0xff	// idclip
@@ -479,13 +476,10 @@ cheatseq_t	cheat_clev = { cheat_clev_seq, 0 };
 cheatseq_t	cheat_mypos = { cheat_mypos_seq, 0 };
 
 
-// 
 extern const char* const	mapnames[];
 
 
-//
 // STATUS BAR CODE
-//
 void ST_Stop(void);
 
 void ST_refreshBackground(void)
@@ -735,12 +729,10 @@ int ST_calcPainOffset(void)
 }
 
 
-//
 // This is a not-very-pretty routine which handles
 //  the face states and their timing.
 // the precedence of expressions is:
 //  dead > evil grin > turned head > straight ahead
-//
 void ST_updateFaceWidget(void)
 {
     int		i;

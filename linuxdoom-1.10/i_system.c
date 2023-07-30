@@ -71,10 +71,8 @@ byte* I_ZoneBase (size_t*	size)
 
 
 
-//
 // I_GetTime
 // returns time in 1/70th second tics
-//
 int  I_GetTime (void)
 {
     return IB_GetTime();
@@ -82,9 +80,7 @@ int  I_GetTime (void)
 
 
 
-//
 // I_Init
-//
 void I_Init (void)
 {
     IB_Init();
@@ -93,9 +89,7 @@ void I_Init (void)
     //  I_InitGraphics();
 }
 
-//
 // I_Quit
-//
 void I_Quit (void)
 {
     D_QuitNetGame ();
@@ -132,9 +126,7 @@ byte*	I_AllocLow(size_t length)
 }
 
 
-//
 // I_Error
-//
 extern boolean demorecording;
 
 void I_Error (const char *error, ...)

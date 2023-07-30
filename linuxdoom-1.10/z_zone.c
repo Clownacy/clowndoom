@@ -21,16 +21,12 @@
 #include "doomdef.h"
 
 
-//
 // ZONE MEMORY ALLOCATION
-//
 // There is never any space between memblocks,
 //  and there will never be two contiguous free memblocks.
 // The rover can be left pointing at a non-empty block.
-//
 // It is of no value to free a cachable block,
 //  because it will get overwritten automatically if needed.
-// 
  
 #define ZONEID	0x1d4a11
 
@@ -53,9 +49,7 @@ memzone_t*	mainzone;
 
 
 
-//
 // Z_ClearZone
-//
 void Z_ClearZone (memzone_t* zone)
 {
     memblock_t*		block;
@@ -79,9 +73,7 @@ void Z_ClearZone (memzone_t* zone)
 
 
 
-//
 // Z_Init
-//
 void Z_Init (void)
 {
     memblock_t*	block;
@@ -108,9 +100,7 @@ void Z_Init (void)
 }
 
 
-//
 // Z_Free
-//
 void Z_Free (void* ptr)
 {
     memblock_t*		block;
@@ -165,10 +155,8 @@ void Z_Free (void* ptr)
 
 
 
-//
 // Z_Malloc
 // You can pass a NULL user if the tag is < PU_PURGELEVEL.
-//
 #define MINFRAGMENT		64
 
 
@@ -282,9 +270,7 @@ Z_Malloc
 
 
 
-//
 // Z_FreeTags
-//
 void
 Z_FreeTags
 ( int		lowtag,
@@ -311,10 +297,8 @@ Z_FreeTags
 
 
 
-//
 // Z_DumpHeap
 // Note: TFileDumpHeap( stdout ) ?
-//
 void
 Z_DumpHeap
 ( int		lowtag,
@@ -352,9 +336,7 @@ Z_DumpHeap
 }
 
 
-//
 // Z_FileDumpHeap
-//
 void Z_FileDumpHeap (FILE* f)
 {
     memblock_t*	block;
@@ -385,9 +367,7 @@ void Z_FileDumpHeap (FILE* f)
 
 
 
-//
 // Z_CheckHeap
-//
 void Z_CheckHeap (void)
 {
     memblock_t*	block;
@@ -414,9 +394,7 @@ void Z_CheckHeap (void)
 
 
 
-//
 // Z_ChangeTag
-//
 void
 Z_ChangeTag2
 ( void*		ptr,
@@ -437,9 +415,7 @@ Z_ChangeTag2
 
 
 
-//
 // Z_FreeMemory
-//
 size_t Z_FreeMemory (void)
 {
     memblock_t*		block;

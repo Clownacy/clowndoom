@@ -21,9 +21,7 @@
 #ifndef __M_ARGV__
 #define __M_ARGV__
 
-//
 // MISC
-//
 extern  int	myargc;
 extern  char**	myargv;
 

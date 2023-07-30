@@ -89,9 +89,7 @@ void	F_CastTicker (void);
 boolean F_CastResponder (const event_t *ev);
 void	F_CastDrawer (void);
 
-//
 // F_StartFinale
-//
 void F_StartFinale (void)
 {
     unsigned int finaletextindex = 0;
@@ -219,9 +217,7 @@ boolean F_Responder (const event_t *event)
 }
 
 
-//
 // F_Ticker
-//
 void F_Ticker (void)
 {
     int		i;
@@ -268,9 +264,7 @@ void F_Ticker (void)
 
 
 
-//
 // F_TextWrite
-//
 
 #include "hu_stuff.h"
 extern	patch_t *hu_font[HU_FONTSIZE];
@@ -344,11 +338,9 @@ void F_TextWrite (void)
 	
 }
 
-//
 // Final DOOM 2 animation
 // Casting by id Software.
 //   in order of appearance
-//
 typedef struct
 {
     const char		*name;
@@ -386,9 +378,7 @@ int		castonmelee;
 boolean		castattacking;
 
 
-//
 // F_StartCast
-//
 extern	gamestate_t     wipegamestate;
 
 
@@ -407,9 +397,7 @@ void F_StartCast (void)
 }
 
 
-//
 // F_CastTicker
-//
 void F_CastTicker (void)
 {
     int		st;
@@ -513,9 +501,7 @@ void F_CastTicker (void)
 }
 
 
-//
 // F_CastResponder
-//
 
 boolean F_CastResponder (const event_t* ev)
 {
@@ -589,9 +575,7 @@ void F_CastPrint (const char* text)
 }
 
 
-//
 // F_CastDrawer
-//
 void V_DrawPatchFlipped (int x, int y, int scrn, patch_t *patch);
 
 void F_CastDrawer (void)
@@ -621,9 +605,7 @@ void F_CastDrawer (void)
 }
 
 
-//
 // F_DrawPatchCol
-//
 void
 F_DrawPatchCol
 ( int		x,
@@ -656,9 +638,7 @@ F_DrawPatchCol
 }
 
 
-//
 // F_BunnyScroll
-//
 void F_BunnyScroll (void)
 {
     int		scrolled;
@@ -716,9 +696,7 @@ void F_BunnyScroll (void)
 }
 
 
-//
 // F_Drawer
-//
 void F_Drawer (void)
 {
     if (finalestage == 2)

@@ -41,9 +41,7 @@
 
 
 
-//
 // Player states.
-//
 typedef enum
 {
     // Playing or camping.
@@ -56,9 +54,7 @@ typedef enum
 } playerstate_t;
 
 
-//
 // Player internal flags, for cheats and debug.
-//
 typedef enum
 {
     // No clipping, walk through barriers.
@@ -71,9 +67,7 @@ typedef enum
 } cheat_t;
 
 
-//
 // Extended player object info: player_t
-//
 typedef struct player_s
 {
     mobj_t*		mo;
@@ -160,10 +154,8 @@ typedef struct player_s
 } player_t;
 
 
-//
 // INTERMISSION
 // Structure passed e.g. to WI_Start(wb)
-//
 typedef struct
 {
     boolean	in;	// whether the player is in game

@@ -42,14 +42,11 @@
 
 #include "wi_stuff.h"
 
-//
 // Data needed to add patches to full screen intermission pics.
 // Patches are statistics messages, and animations.
 // Loads of by-pixel layout and placement, offsets etc.
-//
 
 
-//
 // Different vetween registered DOOM (1994) and
 //  Ultimate DOOM - Final edition (retail, 1995?).
 // This is supposedly ignored for commercial
@@ -119,10 +116,8 @@ typedef struct
 } point_t;
 
 
-//
 // Animation.
 // There is another anim_t used in p_spec.
-//
 typedef struct
 {
     animenum_t	type;
@@ -210,11 +205,9 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 };
 
 
-//
 // Animation locations for episode 0 (1).
 // Using patches saves a lot of space,
 //  as they replace 320x200 full screen frames.
-//
 static anim_t epsd0animinfo[] =
 {
     { ANIM_ALWAYS, TICRATE/3, 3, { 224, 104 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
@@ -267,13 +260,9 @@ static anim_t *anims[NUMEPISODES] =
 };
 
 
-//
 // GENERAL DATA
-//
 
-//
 // Locally used stuff.
-//
 #define FB 0
 
 
@@ -326,9 +315,7 @@ static int		cnt_pause;
 static int		NUMCMAPS; 
 
 
-//
 //	GRAPHICS
-//
 
 // background (map of levels).
 static patch_t*		bg;
@@ -387,9 +374,7 @@ static patch_t*		bp[MAXPLAYERS];
  // Name graphics of each level (centered)
 static patch_t**	lnames;
 
-//
 // CODE
-//
 
 // slam background
 // UNUSED static unsigned char *background=0;
@@ -595,12 +580,10 @@ void WI_drawAnimatedBack(void)
 
 }
 
-//
 // Draws a number.
 // If digits > 0, then use that many digits minimum,
 //  otherwise only use as many as necessary.
 // Returns new x position.
-//
 
 int
 WI_drawNum
@@ -674,10 +657,8 @@ WI_drawPercent
 
 
 
-//
 // Display level completion time and par,
 //  or "sucks" message if overflow.
-//
 void
 WI_drawTime
 ( int		x,

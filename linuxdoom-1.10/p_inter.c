@@ -48,16 +48,12 @@ int	maxammo[NUMAMMO] = {200, 50, 300, 50};
 int	clipammo[NUMAMMO] = {10, 4, 20, 1};
 
 
-//
 // GET STUFF
-//
 
-//
 // P_GiveAmmo
 // Num is the number of clip loads,
 // not the individual count (0= 1/2 clip).
 // Returns false if the ammo can't be picked up at all
-//
 
 boolean
 P_GiveAmmo
@@ -149,10 +145,8 @@ P_GiveAmmo
 }
 
 
-//
 // P_GiveWeapon
 // The weapon name may have a MF_DROPPED flag ored in.
-//
 boolean
 P_GiveWeapon
 ( player_t*	player,
@@ -210,10 +204,8 @@ P_GiveWeapon
 
  
 
-//
 // P_GiveBody
 // Returns false if the body isn't needed at all
-//
 boolean
 P_GiveBody
 ( player_t*	player,
@@ -232,11 +224,9 @@ P_GiveBody
 
 
 
-//
 // P_GiveArmor
 // Returns false if the armor is worse
 // than the current armor.
-//
 boolean
 P_GiveArmor
 ( player_t*	player,
@@ -256,9 +246,7 @@ P_GiveArmor
 
 
 
-//
 // P_GiveCard
-//
 void
 P_GiveCard
 ( player_t*	player,
@@ -272,9 +260,7 @@ P_GiveCard
 }
 
 
-//
 // P_GivePower
-//
 boolean
 P_GivePower
 ( player_t*	player,
@@ -321,9 +307,7 @@ P_GivePower
 
 
 
-//
 // P_TouchSpecialThing
-//
 void
 P_TouchSpecialThing
 ( mobj_t*	special,
@@ -650,9 +634,7 @@ P_TouchSpecialThing
 }
 
 
-//
 // KillMobj
-//
 void
 P_KillMobj
 ( mobj_t*	source,
@@ -749,7 +731,6 @@ P_KillMobj
 
 
 
-//
 // P_DamageMobj
 // Damages both enemies and players
 // "inflictor" is the thing that caused the damage
@@ -759,7 +740,6 @@ P_KillMobj
 // Source and inflictor are the same for melee attacks.
 // Source can be NULL for slime, barrel explosions
 // and other environmental stuff.
-//
 void
 P_DamageMobj
 ( mobj_t*	target,

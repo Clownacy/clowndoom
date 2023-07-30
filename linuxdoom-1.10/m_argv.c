@@ -26,7 +26,6 @@ char**		myargv;
 
 
 
-//
 // M_CheckParm
 // Checks for the given parameter
 // in the program's command line arguments.

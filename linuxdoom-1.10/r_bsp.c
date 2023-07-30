@@ -54,9 +54,7 @@ R_StoreWallRange
 
 
 
-//
 // R_ClearDrawSegs
-//
 void R_ClearDrawSegs (void)
 {
     ds_p = drawsegs;
@@ -64,11 +62,9 @@ void R_ClearDrawSegs (void)
 
 
 
-//
 // ClipWallSegment
 // Clips the given range of columns
 // and includes it in the new clip list.
-//
 typedef	struct
 {
     int	first;
@@ -86,12 +82,10 @@ cliprange_t	solidsegs[MAXSEGS];
 
 
 
-//
 // R_ClipSolidWallSegment
 // Does handle solid walls,
 //  e.g. single sided LineDefs (middle texture)
 //  that entirely block the view.
-// 
 void
 R_ClipSolidWallSegment
 ( int			first,
@@ -178,13 +172,11 @@ R_ClipSolidWallSegment
 
 
 
-//
 // R_ClipPassWallSegment
 // Clips the given range of columns,
 //  but does not includes it in the clip list.
 // Does handle windows,
 //  e.g. LineDefs with upper and lower texture.
-//
 void
 R_ClipPassWallSegment
 ( int	first,
@@ -231,9 +223,7 @@ R_ClipPassWallSegment
 
 
 
-//
 // R_ClearClipSegs
-//
 void R_ClearClipSegs (void)
 {
     solidsegs[0].first = -0x7fffffff;
@@ -243,11 +233,9 @@ void R_ClearClipSegs (void)
     newend = solidsegs+2;
 }
 
-//
 // R_AddLine
 // Clips the given segment
 // and adds any visible pieces to the line list.
-//
 void R_AddLine (seg_t*	line)
 {
     int			x1;
@@ -348,12 +336,10 @@ void R_AddLine (seg_t*	line)
 }
 
 
-//
 // R_CheckBBox
 // Checks BSP node/subtree bounding box.
 // Returns true
 //  if some part of the bbox might be visible.
-//
 int	checkcoord[12][4] =
 {
     {3,0,2,1},
@@ -480,12 +466,10 @@ boolean R_CheckBBox (fixed_t*	bspcoord)
 
 
 
-//
 // R_Subsector
 // Determine floor/ceiling planes.
 // Add sprites of things in sector.
 // Draw one or more line segments.
-//
 void R_Subsector (int num)
 {
     int			count;
@@ -536,7 +520,6 @@ void R_Subsector (int num)
 
 
 
-//
 // RenderBSPNode
 // Renders all subsectors below a given node,
 //  traversing subtree recursively.

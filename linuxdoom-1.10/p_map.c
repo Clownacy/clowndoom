@@ -64,13 +64,9 @@ int		numspechit;
 
 
 
-//
 // TELEPORT MOVE
-// 
 
-//
 // PIT_StompThing
-//
 boolean PIT_StompThing (mobj_t* thing)
 {
     fixed_t	blockdist;
@@ -101,9 +97,7 @@ boolean PIT_StompThing (mobj_t* thing)
 }
 
 
-//
 // P_TeleportMove
-//
 boolean
 P_TeleportMove
 ( mobj_t*	thing,
@@ -170,15 +164,11 @@ P_TeleportMove
 }
 
 
-//
 // MOVEMENT ITERATOR FUNCTIONS
-//
 
 
-//
 // PIT_CheckLine
 // Adjusts tmfloorz and tmceilingz as lines are contacted
-//
 boolean PIT_CheckLine (line_t* ld)
 {
     if (tmbbox[BOXRIGHT] <= ld->bbox[BOXLEFT]
@@ -239,9 +229,7 @@ boolean PIT_CheckLine (line_t* ld)
     return true;
 }
 
-//
 // PIT_CheckThing
-//
 boolean PIT_CheckThing (mobj_t* thing)
 {
     fixed_t		blockdist;
@@ -336,24 +324,18 @@ boolean PIT_CheckThing (mobj_t* thing)
 }
 
 
-//
 // MOVEMENT CLIPPING
-//
 
-//
 // P_CheckPosition
 // This is purely informative, nothing is modified
 // (except things picked up).
-// 
 // in:
 //  a mobj_t (can be valid or invalid)
 //  a position to be checked
 //   (doesn't need to be related to the mobj_t->x,y)
-//
 // during:
 //  special things are touched if MF_PICKUP
 //  early out on solid lines?
-//
 // out:
 //  newsubsec
 //  floorz
@@ -363,7 +345,6 @@ boolean PIT_CheckThing (mobj_t* thing)
 //   (monsters won't move to a dropoff)
 //  speciallines[]
 //  numspeciallines
-//
 boolean
 P_CheckPosition
 ( mobj_t*	thing,
@@ -435,11 +416,9 @@ P_CheckPosition
 }
 
 
-//
 // P_TryMove
 // Attempt to move to a new position,
 // crossing special lines unless MF_TELEPORT is set.
-//
 boolean
 P_TryMove
 ( mobj_t*	thing,
@@ -510,7 +489,6 @@ P_TryMove
 }
 
 
-//
 // P_ThingHeightClip
 // Takes a valid thing and adjusts the thing->floorz,
 // thing->ceilingz, and possibly thing->z.
@@ -519,7 +497,6 @@ P_TryMove
 // If the thing doesn't fit,
 // the z will be set to the lowest value
 // and false will be returned.
-//
 boolean P_ThingHeightClip (mobj_t* thing)
 {
     boolean		onfloor;
@@ -552,10 +529,8 @@ boolean P_ThingHeightClip (mobj_t* thing)
 
 
 
-//
 // SLIDE MOVE
 // Allows the player to slide along any angled walls.
-//
 fixed_t		bestslidefrac;
 fixed_t		secondslidefrac;
 
@@ -569,11 +544,9 @@ fixed_t		tmymove;
 
 
 
-//
 // P_HitSlideLine
 // Adjusts the xmove / ymove
 // so that the next move will slide along the wall.
-//
 void P_HitSlideLine (line_t* ld)
 {
     int			side;
@@ -623,9 +596,7 @@ void P_HitSlideLine (line_t* ld)
 }
 
 
-//
 // PTR_SlideTraverse
-//
 boolean PTR_SlideTraverse (intercept_t* in)
 {
     line_t*	li;
@@ -676,15 +647,12 @@ boolean PTR_SlideTraverse (intercept_t* in)
 
 
 
-//
 // P_SlideMove
 // The momx / momy move is bad, so try to slide
 // along a wall.
 // Find the first line hit, move flush to it,
 // and slide along it
-//
 // This is a kludgy mess.
-//
 void P_SlideMove (mobj_t* mo)
 {
     fixed_t		leadx;
@@ -781,9 +749,7 @@ void P_SlideMove (mobj_t* mo)
 }
 
 
-//
 // P_LineAttack
-//
 mobj_t*		linetarget;	// who got hit (or NULL)
 mobj_t*		shootthing;
 
@@ -801,10 +767,8 @@ extern fixed_t	topslope;
 extern fixed_t	bottomslope;	
 
 
-//
 // PTR_AimTraverse
 // Sets linetaget and aimslope when a target is aimed at.
-//
 boolean
 PTR_AimTraverse (intercept_t* in)
 {
@@ -886,9 +850,7 @@ PTR_AimTraverse (intercept_t* in)
 }
 
 
-//
 // PTR_ShootTraverse
-//
 boolean PTR_ShootTraverse (intercept_t* in)
 {
     fixed_t		x;
@@ -1009,9 +971,7 @@ boolean PTR_ShootTraverse (intercept_t* in)
 }
 
 
-//
 // P_AimLineAttack
-//
 fixed_t
 P_AimLineAttack
 ( mobj_t*	t1,
@@ -1047,11 +1007,9 @@ P_AimLineAttack
 }
  
 
-//
 // P_LineAttack
 // If damage == 0, it is just a test trace
 // that will leave linetarget set.
-//
 void
 P_LineAttack
 ( mobj_t*	t1,
@@ -1080,9 +1038,7 @@ P_LineAttack
  
 
 
-//
 // USE LINES
-//
 mobj_t*		usething;
 
 boolean	PTR_UseTraverse (intercept_t* in)
@@ -1116,10 +1072,8 @@ boolean	PTR_UseTraverse (intercept_t* in)
 }
 
 
-//
 // P_UseLines
 // Looks for special lines in front of the player to activate.
-//
 void P_UseLines (player_t*	player) 
 {
     int		angle;
@@ -1141,19 +1095,15 @@ void P_UseLines (player_t*	player)
 }
 
 
-//
 // RADIUS ATTACK
-//
 mobj_t*		bombsource;
 mobj_t*		bombspot;
 int		bombdamage;
 
 
-//
 // PIT_RadiusAttack
 // "bombsource" is the creature
 // that caused the explosion at "bombspot".
-//
 boolean PIT_RadiusAttack (mobj_t* thing)
 {
     fixed_t	dx;
@@ -1191,10 +1141,8 @@ boolean PIT_RadiusAttack (mobj_t* thing)
 }
 
 
-//
 // P_RadiusAttack
 // Source is the creature that caused the explosion at spot.
-//
 void
 P_RadiusAttack
 ( mobj_t*	spot,
@@ -1227,26 +1175,21 @@ P_RadiusAttack
 
 
 
-//
 // SECTOR HEIGHT CHANGING
 // After modifying a sectors floor or ceiling height,
 // call this routine to adjust the positions
 // of all things that touch the sector.
-//
 // If anything doesn't fit anymore, true will be returned.
 // If crunch is true, they will take damage
 //  as they are being crushed.
 // If Crunch is false, you should set the sector height back
 //  the way it was and call P_ChangeSector again
 //  to undo the changes.
-//
 boolean		crushchange;
 boolean		nofit;
 
 
-//
 // PIT_ChangeSector
-//
 boolean PIT_ChangeSector (mobj_t*	thing)
 {
     mobj_t*	mo;
@@ -1307,9 +1250,7 @@ boolean PIT_ChangeSector (mobj_t*	thing)
 
 
 
-//
 // P_ChangeSector
-//
 boolean
 P_ChangeSector
 ( sector_t*	sector,

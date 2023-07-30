@@ -46,10 +46,8 @@
 #include "sounds.h"
 
 
-//
 // Animating textures and planes
 // There is another anim_t used in wi_stuff, unrelated.
-//
 typedef struct
 {
     boolean	istexture;
@@ -60,9 +58,7 @@ typedef struct
     
 } anim_t;
 
-//
 //      source animation definition
-//
 typedef struct
 {
     boolean	istexture;	// if false, it is a flat
@@ -78,9 +74,7 @@ typedef struct
 extern anim_t	anims[MAXANIMS];
 extern anim_t*	lastanim;
 
-//
 // P_InitPicAnims
-//
 
 // Floor/ceiling animation sequences,
 //  defined by first and last frame,
@@ -90,7 +84,6 @@ extern anim_t*	lastanim;
 //  using all the flats between the start
 //  and end entry, in the order found in
 //  the WAD file.
-//
 animdef_t		animdefs[] =
 {
     {false,	"NUKAGE3",	"NUKAGE1",	8},
@@ -128,9 +121,7 @@ anim_t		anims[MAXANIMS];
 anim_t*		lastanim;
 
 
-//
 //      Animating line specials
-//
 #define MAXLINEANIMS            64
 
 extern  short	numlinespecials;
@@ -181,18 +172,14 @@ void P_InitPicAnims (void)
 
 
 
-//
 // UTILITIES
-//
 
 
 
-//
 // getSide()
 // Will return a side_t*
 //  given the number of the current sector,
 //  the line number, and the side (0/1) that you want.
-//
 side_t*
 getSide
 ( int		currentSector,
@@ -203,12 +190,10 @@ getSide
 }
 
 
-//
 // getSector()
 // Will return a sector_t*
 //  given the number of the current sector,
 //  the line number and the side (0/1) that you want.
-//
 sector_t*
 getSector
 ( int		currentSector,
@@ -219,11 +204,9 @@ getSector
 }
 
 
-//
 // twoSided()
 // Given the sector number and the line number,
 //  it will tell you whether the line is two-sided or not.
-//
 int
 twoSided
 ( int	sector,
@@ -235,11 +218,9 @@ twoSided
 
 
 
-//
 // getNextSector()
 // Return sector_t * of sector next to current.
 // NULL if not two-sided line
-//
 sector_t*
 getNextSector
 ( line_t*	line,
@@ -256,10 +237,8 @@ getNextSector
 
 
 
-//
 // P_FindLowestFloorSurrounding()
 // FIND LOWEST FLOOR HEIGHT IN SURROUNDING SECTORS
-//
 fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)
 {
     int			i;
@@ -283,10 +262,8 @@ fixed_t	P_FindLowestFloorSurrounding(sector_t* sec)
 
 
 
-//
 // P_FindHighestFloorSurrounding()
 // FIND HIGHEST FLOOR HEIGHT IN SURROUNDING SECTORS
-//
 fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
 {
     int			i;
@@ -310,7 +287,6 @@ fixed_t	P_FindHighestFloorSurrounding(sector_t *sec)
 
 
 
-//
 // P_FindNextHighestFloor
 // FIND NEXT HIGHEST FLOOR IN SURROUNDING SECTORS
 // Note: this should be doable w/o a fixed array.
@@ -368,9 +344,7 @@ P_FindNextHighestFloor
 }
 
 
-//
 // FIND LOWEST CEILING IN THE SURROUNDING SECTORS
-//
 fixed_t
 P_FindLowestCeilingSurrounding(sector_t* sec)
 {
@@ -394,9 +368,7 @@ P_FindLowestCeilingSurrounding(sector_t* sec)
 }
 
 
-//
 // FIND HIGHEST CEILING IN THE SURROUNDING SECTORS
-//
 fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)
 {
     int		i;
@@ -420,9 +392,7 @@ fixed_t	P_FindHighestCeilingSurrounding(sector_t* sec)
 
 
 
-//
 // RETURN NEXT SECTOR # THAT LINE TAG REFERS TO
-//
 int
 P_FindSectorFromLineTag
 ( line_t*	line,
@@ -440,9 +410,7 @@ P_FindSectorFromLineTag
 
 
 
-//
 // Find minimum light from an adjacent sector
-//
 int
 P_FindMinSurroundingLight
 ( sector_t*	sector,
@@ -470,17 +438,13 @@ P_FindMinSurroundingLight
 
 
 
-//
 // EVENTS
 // Events are operations triggered by using, crossing,
 // or shooting special lines, or by timed thinkers.
-//
 
-//
 // P_CrossSpecialLine - TRIGGER
 // Called every time a thing origin is about
 //  to cross a line with a non 0 special.
-//
 void
 P_CrossSpecialLine
 ( int		linenum,
@@ -944,10 +908,8 @@ P_CrossSpecialLine
 
 
 
-//
 // P_ShootSpecialLine - IMPACT SPECIALS
 // Called when a thing shoots a special line.
-//
 void
 P_ShootSpecialLine
 ( mobj_t*	thing,
@@ -994,11 +956,9 @@ P_ShootSpecialLine
 
 
 
-//
 // P_PlayerInSpecialSector
 // Called every tic frame
 //  that the player origin is in a special sector
-//
 void P_PlayerInSpecialSector (player_t* player)
 {
     sector_t*	sector;
@@ -1066,10 +1026,8 @@ void P_PlayerInSpecialSector (player_t* player)
 
 
 
-//
 // P_UpdateSpecials
 // Animate planes, scroll walls, etc.
-//
 boolean		levelTimer;
 int		levelTimeCount;
 
@@ -1150,9 +1108,7 @@ void P_UpdateSpecials (void)
 
 
 
-//
 // Special Stuff that can not be categorized
-//
 int EV_DoDonut(line_t*	line)
 {
     sector_t*		s1;
@@ -1215,15 +1171,11 @@ int EV_DoDonut(line_t*	line)
 
 
 
-//
 // SPECIAL SPAWNING
-//
 
-//
 // P_SpawnSpecials
 // After the map has been loaded, scan for specials
 //  that spawn thinkers
-//
 short		numlinespecials;
 line_t*		linespeciallist[MAXLINEANIMS];
 

@@ -37,9 +37,7 @@
 planefunction_t		floorfunc;
 planefunction_t		ceilingfunc;
 
-//
 // opening
-//
 
 // Here comes the obnoxious "visplane".
 #define MAXVISPLANES	128
@@ -54,24 +52,18 @@ short			openings[MAXOPENINGS];
 short*			lastopening;
 
 
-//
 // Clip values are the solid pixel bounding the range.
 //  floorclip starts out SCREENHEIGHT
 //  ceilingclip starts out -1
-//
 short			floorclip[SCREENWIDTH];
 short			ceilingclip[SCREENWIDTH];
 
-//
 // spanstart holds the start of a plane span
 // initialized to 0 at start
-//
 int			spanstart[SCREENHEIGHT];
 int			spanstop[SCREENHEIGHT];
 
-//
 // texture mapping
-//
 lighttable_t**		planezlight;
 fixed_t			planeheight;
 
@@ -87,19 +79,15 @@ fixed_t			cachedystep[SCREENHEIGHT];
 
 
 
-//
 // R_InitPlanes
 // Only at game startup.
-//
 void R_InitPlanes (void)
 {
   // Doh!
 }
 
 
-//
 // R_MapPlane
-//
 // Uses global vars:
 //  planeheight
 //  ds_source
@@ -107,9 +95,7 @@ void R_InitPlanes (void)
 //  baseyscale
 //  viewx
 //  viewy
-//
 // BASIC PRIMITIVE
-//
 void
 R_MapPlane
 ( int		y,
@@ -171,10 +157,8 @@ R_MapPlane
 }
 
 
-//
 // R_ClearPlanes
 // At begining of frame.
-//
 void R_ClearPlanes (void)
 {
     int		i;
@@ -204,9 +188,7 @@ void R_ClearPlanes (void)
 
 
 
-//
 // R_FindPlane
-//
 visplane_t*
 R_FindPlane
 ( fixed_t	height,
@@ -252,9 +234,7 @@ R_FindPlane
 }
 
 
-//
 // R_CheckPlane
-//
 visplane_t*
 R_CheckPlane
 ( visplane_t*	pl,
@@ -317,9 +297,7 @@ R_CheckPlane
 }
 
 
-//
 // R_MakeSpans
-//
 void
 R_MakeSpans
 ( int		x,
@@ -353,10 +331,8 @@ R_MakeSpans
 
 
 
-//
 // R_DrawPlanes
 // At the end of each frame.
-//
 void R_DrawPlanes (void)
 {
     visplane_t*		pl;

@@ -32,9 +32,7 @@
 #define ST_Y		(SCREENHEIGHT - ST_HEIGHT)
 
 
-//
 // STATUS BAR
-//
 
 // Called by main loop.
 boolean ST_Responder (const event_t* ev);

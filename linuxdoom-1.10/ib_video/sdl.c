@@ -117,9 +117,7 @@ static int xlatekey(SDLKey keysym)
 }
 
 
-//
 // IB_StartTic
-//
 void IB_StartTic (void)
 {
     event_t event;
@@ -210,9 +208,7 @@ void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 }
 
 
-//
 // IB_FinishUpdate
-//
 void IB_FinishUpdate (void)
 {
     SDL_UnlockSurface(surface);

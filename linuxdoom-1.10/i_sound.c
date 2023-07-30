@@ -97,7 +97,6 @@ static boolean          music_playing;
 
 
 
-//
 // This function loops all active (internal) sound
 //  channels, retrieves a given number of samples
 //  from the raw sound data, modifies it according
@@ -107,9 +106,7 @@ static boolean          music_playing;
 //  and sets up everything for transferring the
 //  contents of the mixbuffer to the (two)
 //  hardware channels (left and right, that is).
-//
 // This function currently supports only 16bit.
-//
 static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_data)
 {
     // Mix current sound data.
@@ -240,10 +237,8 @@ static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 
 
 
-//
 // This function loads the sound data from the WAD lump,
 //  for a single sound.
-//
 static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
 {
     unsigned char* sfx;
@@ -284,14 +279,10 @@ static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
 
 
 
-//
 // SFX API
-//
 
-//
 // This used to set DMX's internal
 // channel count and sample rate, it seems.
-//
 void I_SetChannels(int channels)
 {
     (void)channels;
@@ -300,10 +291,8 @@ void I_SetChannels(int channels)
 
 
 
-//
 // Retrieve the raw data lump index
 //  for a given SFX name.
-//
 int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 {
     char namebuf[9];
@@ -314,7 +303,6 @@ int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 
 
 
-//
 // Starting a sound means adding it
 //  to the current list of active sounds
 //  in the internal channels.
@@ -323,7 +311,6 @@ int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 //  it is ignored.
 // As our sound handling does not handle
 //  priority, it is ignored.
-//
 int I_StartSound(int id, int vol, int sep, int pitch)
 {
     static unsigned short handlenums = 0;
@@ -496,9 +483,7 @@ void I_StartupSound(void)
     int i;
     int j;
 
-      //
      // Init internal lookups (raw data, mixing buffer, channels).
-    //
 
     // This table provides step widths for pitch parameters.
     for (i=0 ; i<256 ; ++i)
@@ -514,9 +499,7 @@ void I_StartupSound(void)
     if (!IB_StartupSound(StartupCallback, AudioCallback, NULL))
         I_Error("I_StartupSound: Failed to initialize backend");
 
-      //
      // Cache sounds.
-    //
 
     // Initialize external data (all sounds) at start, keep static.
 
@@ -556,9 +539,7 @@ void I_ShutdownSound(void)
 
 
 
-//
 // MUSIC API.
-//
 
 void I_PlaySong(int handle, boolean looping)
 {
