@@ -151,6 +151,7 @@ int             usemouse;
 int             usejoystick;
 int             show_stats;
 int             full_colour;
+int             prototype_light_amplification_visor_effect;
 
 extern int      key_right;
 extern int      key_left;
@@ -250,6 +251,7 @@ default_t       defaults[] =
 	{"usegamma",&usegamma, 0, d_false},
 	{"aspect_ratio_correction",&aspect_ratio_correction, 1, d_false},
 	{"full_colour",&full_colour, 1, d_false},
+	{"prototype_light_amplification_visor_effect",&prototype_light_amplification_visor_effect, 1, d_false},
 
 	/* Audio */
 	{"music_volume",&musicVolume, 8, d_false},

@@ -347,10 +347,7 @@ void P_PlayerThink (player_t* player)
 	{
 		if (player->powers[pw_infrared] > 4*32
 			|| (player->powers[pw_infrared]&8) )
-		{
-			/* almost full bright */
-			player->fixedcolormap = 1;
-		}
+			player->fixedcolormap = LIGHTAMPCOLORMAP;
 		else
 			player->fixedcolormap = 0;
 	}
