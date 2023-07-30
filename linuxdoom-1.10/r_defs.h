@@ -284,7 +284,7 @@ typedef post_t  column_t;
 /* Indeed, true color support is posibble */
 /*  precalculating 24bpp lightmap/colormap LUT. */
 /*  from darkening PLAYPAL to all black. */
-/* Could even us emore than 32 levels. */
+/* Could even use more than 32 levels. */
 typedef unsigned char    lighttable_t;
 
 

@@ -28,11 +28,6 @@
 #include "doomstat.h"
 
 
-
-/* Index of the special effects (INVUL inverse) map. */
-#define INVERSECOLORMAP         32
-
-
 /* Movement. */
 
 /* 16 pixels of bob */

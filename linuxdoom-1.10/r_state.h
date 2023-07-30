@@ -27,6 +27,9 @@
 
 
 
+/* Index of the special effects (INVUL inverse) map. */
+#define INVERSECOLORMAP         32
+
 /* Refresh internal data structures, */
 /*  for rendering. */
 
