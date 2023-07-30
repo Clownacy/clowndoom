@@ -1,29 +1,28 @@
-// Emacs style mode select   -*- C++ -*- 
-//-----------------------------------------------------------------------------
-//
-// $Id:$
-//
-// Copyright (C) 1993-1996 by id Software, Inc.
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// $Log:$
-//
-// DESCRIPTION:
-//	DOOM main program (D_DoomMain) and game loop (D_DoomLoop),
-//	plus functions to determine game mode (shareware, registered),
-//	parse command line parameters, configure game parameters (turbo),
-//	and call the startup functions.
-//
-//-----------------------------------------------------------------------------
+/******************************************************************************
+  
+   $Id:$
+  
+   Copyright (C) 1993-1996 by id Software, Inc.
+  
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
+  
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+  
+   $Log:$
+  
+   DESCRIPTION:
+  	DOOM main program (D_DoomMain) and game loop (D_DoomLoop),
+  	plus functions to determine game mode (shareware, registered),
+  	parse command line parameters, configure game parameters (turbo),
+  	and call the startup functions.
+  
+******************************************************************************/
 
 
 #define	BGCOLOR		7
