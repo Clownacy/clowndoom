@@ -27,6 +27,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 #ifdef __unix__
@@ -522,16 +523,6 @@ void D_AddFile (const char *file)
 /* should be executed (notably loading PWAD's). */
 void IdentifyVersion (void)
 {
-
-	char*       doom1wad;
-	char*       doomwad;
-	char*       doomuwad;
-	char*       doom2wad;
-
-	char*       doom2fwad;
-	char*       plutoniawad;
-	char*       tntwad;
-
 #ifdef __unix__
 	const char *configdir;
 #endif
@@ -541,35 +532,6 @@ void IdentifyVersion (void)
 	if (!doomwaddir)
 #endif
 		doomwaddir = ".";
-
-	/* Commercial. */
-	doom2wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-	sprintf(doom2wad, "%s/doom2.wad", doomwaddir);
-
-	/* Retail. */
-	doomuwad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-	sprintf(doomuwad, "%s/doomu.wad", doomwaddir);
-
-	/* Registered. */
-	doomwad = (char*)malloc(strlen(doomwaddir)+1+8+1);
-	sprintf(doomwad, "%s/doom.wad", doomwaddir);
-
-	/* Shareware. */
-	doom1wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
-	sprintf(doom1wad, "%s/doom1.wad", doomwaddir);
-
-	 /* Bug, dear Shawn. */
-	/* Insufficient malloc, caused spurious realloc errors. */
-	plutoniawad = (char*)malloc(strlen(doomwaddir)+1+/*9*/12+1);
-	sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
-
-	tntwad = (char*)malloc(strlen(doomwaddir)+1+7+1);
-	sprintf(tntwad, "%s/tnt.wad", doomwaddir);
-
-
-	/* French stuff. */
-	doom2fwad = (char*)malloc(strlen(doomwaddir)+1+10+1);
-	sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
 
 #ifdef __unix__
 	configdir = getenv("XDG_CONFIG_HOME");
@@ -626,70 +588,67 @@ void IdentifyVersion (void)
 		D_AddFile (DEVMAPS"cdata/pnames.lmp");
 		strcpy (basedefault,DEVDATA"default.cfg");
 	}
-	else if ( M_FileExists (doom2fwad) )
-	{
-		gamemode = commercial;
-		gamemission = doom2;
-		/* C'est ridicule! */
-		/* Let's handle languages in config files, okay? */
-		language = french;
-		printf("French version\n");
-		D_AddFile (doom2fwad);
-	}
-	else if ( M_FileExists (doom2wad) )
-	{
-		gamemode = commercial;
-		gamemission = doom2;
-		D_AddFile (doom2wad);
-	}
-	else if ( M_FileExists (plutoniawad ) )
-	{
-	  gamemode = commercial;
-	  gamemission = pack_plut;
-	  D_AddFile (plutoniawad);
-	}
-	else if ( M_FileExists ( tntwad ) )
-	{
-	  gamemode = commercial;
-	  gamemission = pack_tnt;
-	  D_AddFile (tntwad);
-	}
-	else if ( M_FileExists (doomuwad) )
-	{
-	  gamemode = retail;
-	  gamemission = doom;
-	  D_AddFile (doomuwad);
-	}
-	else if ( M_FileExists (doomwad) )
-	{
-	  gamemode = registered;
-	  gamemission = doom;
-	  D_AddFile (doomwad);
-	}
-	else if ( M_FileExists (doom1wad) )
-	{
-	  gamemode = shareware;
-	  gamemission = doom;
-	  D_AddFile (doom1wad);
-	}
 	else
 	{
-		printf("Game mode indeterminate.\n");
+		static const struct
+		{
+			char filename[8 + 1];
+			GameMode_t gamemode;
+			GameMission_t gamemission;
+			Language_t language;
+		} wads[] = {
+			{"doom2f",   commercial, doom2,     french },
+			{"doom2",    commercial, doom2,     english},
+			{"plutonia", commercial, pack_plut, english},
+			{"tnt",      commercial, pack_tnt,  english},
+			{"doomu",    retail,     doom,      english},
+			{"doom",     registered, doom,      english},
+			{"doom1",    shareware,  doom,      english},
+		};
+
+		const size_t wad_directory_length = strlen(doomwaddir);
+		char* const path = (char*)malloc(wad_directory_length + 1 + sizeof(wads[0].filename) + 4 + 1);
+
 		gamemode = indetermined;
 		gamemission = none;
+		language = english;
 
-		/* We don't abort. Let's see what the PWAD contains. */
-/* exit(1); */
-/* I_Error ("Game mode indeterminate\n"); */
+		if (path != NULL)
+		{
+			size_t i;
+
+			memcpy(&path[0], doomwaddir, wad_directory_length);
+			path[wad_directory_length] = '/';
+
+			for (i = 0; i < D_COUNT_OF(wads); ++i)
+			{
+				sprintf(&path[wad_directory_length + 1], "%s.wad", wads[i].filename);
+
+				if (M_FileExists(path))
+				{
+					gamemode = wads[i].gamemode;
+					gamemission = wads[i].gamemission;
+					language = wads[i].language;
+					D_AddFile(path);
+					break;
+				}
+			}
+
+			free(path);
+
+			if (language == french)
+				printf("French version\n");
+		}
+
+		if (gamemode == indetermined)
+		{
+			printf("Game mode indeterminate.\n");
+
+			/* We don't abort. Let's see what the PWAD contains. */
+			/* exit(1); */
+			/* I_Error ("Game mode indeterminate\n"); */
+		}
 	}
-
-	free(doom1wad);
-	free(doomwad);
-	free(doomuwad);
-	free(doom2wad);
-	free(doom2fwad);
-	free(plutoniawad);
-	free(tntwad);
 }
 
 /* Find a Response File */
