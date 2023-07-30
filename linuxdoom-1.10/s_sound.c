@@ -141,31 +141,31 @@ void S_Init
 ( int           sfxVolume,
   int           musicVolume )
 {
-  int           i;
+	int           i;
 
-  I_Info("S_Init: default sfx volume %d\n", sfxVolume);
+	I_Info("S_Init: default sfx volume %d\n", sfxVolume);
 
-  I_SetChannels(numChannels);
+	I_SetChannels(numChannels);
 
-  S_SetSfxVolume(sfxVolume);
-  S_SetMusicVolume(musicVolume);
+	S_SetSfxVolume(sfxVolume);
+	S_SetMusicVolume(musicVolume);
 
-  /* Allocating the internal channels for mixing */
-  /* (the maximum numer of sounds rendered */
-  /* simultaneously) within zone memory. */
-  channels =
-	(channel_t *) Z_Malloc(numChannels*sizeof(channel_t), PU_STATIC, NULL);
+	/* Allocating the internal channels for mixing */
+	/* (the maximum numer of sounds rendered */
+	/* simultaneously) within zone memory. */
+	channels =
+		(channel_t *) Z_Malloc(numChannels*sizeof(channel_t), PU_STATIC, NULL);
 
-  /* Free all channels for use */
-  for (i=0 ; i<numChannels ; i++)
-	channels[i].sfxinfo = NULL;
+	/* Free all channels for use */
+	for (i=0 ; i<numChannels ; i++)
+		channels[i].sfxinfo = NULL;
 
-  /* no sounds are playing, and they are not mus_paused */
-  mus_paused = d_false;
+	/* no sounds are playing, and they are not mus_paused */
+	mus_paused = d_false;
 
-  /* Note that sounds have not been cached (yet). */
-  for (i=1 ; i<NUMSFX ; i++)
-	S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
+	/* Note that sounds have not been cached (yet). */
+	for (i=1 ; i<NUMSFX ; i++)
+		S_sfx[i].lumpnum = S_sfx[i].usefulness = -1;
 }
 
 
@@ -176,50 +176,50 @@ void S_Init
 /*  determines music if any, changes music. */
 void S_Start(void)
 {
-  int cnum;
-  int mnum;
+	int cnum;
+	int mnum;
 
-  /* kill all playing sounds at start of level */
-  /*  (trust me - a good idea) */
-  for (cnum=0 ; cnum<numChannels ; cnum++)
-	if (channels[cnum].sfxinfo)
-	  S_StopChannel(cnum);
+	/* kill all playing sounds at start of level */
+	/*  (trust me - a good idea) */
+	for (cnum=0 ; cnum<numChannels ; cnum++)
+		if (channels[cnum].sfxinfo)
+			S_StopChannel(cnum);
 
-  /* start new music for the level */
-  mus_paused = 0;
+	/* start new music for the level */
+	mus_paused = 0;
 
-  if (gamemode == commercial)
-	mnum = mus_runnin + gamemap - 1;
-  else
-  {
-	int spmus[]=
-	{
-	  /* Song - Who? - Where? */
-
-	  mus_e3m4, /* American     e4m1 */
-	  mus_e3m2, /* Romero       e4m2 */
-	  mus_e3m3, /* Shawn        e4m3 */
-	  mus_e1m5, /* American     e4m4 */
-	  mus_e2m7, /* Tim  e4m5 */
-	  mus_e2m4, /* Romero       e4m6 */
-	  mus_e2m6, /* J.Anderson   e4m7 CHIRON.WAD */
-	  mus_e2m5, /* Shawn        e4m8 */
-	  mus_e1m9  /* Tim          e4m9 */
-	};
-
-	if (gameepisode < 4)
-	  mnum = mus_e1m1 + (gameepisode-1)*9 + gamemap-1;
+	if (gamemode == commercial)
+		mnum = mus_runnin + gamemap - 1;
 	else
-	  mnum = spmus[gamemap-1];
+	{
+		int spmus[]=
+		{
+			/* Song - Who? - Where? */
+
+			mus_e3m4, /* American     e4m1 */
+			mus_e3m2, /* Romero       e4m2 */
+			mus_e3m3, /* Shawn        e4m3 */
+			mus_e1m5, /* American     e4m4 */
+			mus_e2m7, /* Tim  e4m5 */
+			mus_e2m4, /* Romero       e4m6 */
+			mus_e2m6, /* J.Anderson   e4m7 CHIRON.WAD */
+			mus_e2m5, /* Shawn        e4m8 */
+			mus_e1m9  /* Tim          e4m9 */
+		};
+
+		if (gameepisode < 4)
+			mnum = mus_e1m1 + (gameepisode-1)*9 + gamemap-1;
+		else
+			mnum = spmus[gamemap-1];
 	}
 
-  /* HACK FOR COMMERCIAL */
-  /*  if (commercial && mnum > mus_e3m9) */
-  /*      mnum -= mus_e3m9; */
+	/* HACK FOR COMMERCIAL */
+	/*  if (commercial && mnum > mus_e3m9) */
+	/*      mnum -= mus_e3m9; */
 
-  S_ChangeMusic(mnum, d_true);
+	S_ChangeMusic(mnum, d_true);
 
-  nextcleanup = 15;
+	nextcleanup = 15;
 }
 
 
@@ -233,128 +233,127 @@ S_StartSoundAtVolume
   int           volume )
 {
 
-  int           rc;
-  int           sep;
-  int           pitch;
-  sfxinfo_t*    sfx;
-  int           cnum;
+	int           rc;
+	int           sep;
+	int           pitch;
+	sfxinfo_t*    sfx;
+	int           cnum;
 
 
-  /* Debug. */
-  /*I_Info("S_StartSoundAtVolume: playing sound %d (%s)\n",
-		   sfx_id, S_sfx[sfx_id].name );*/
+	/* Debug. */
+	/*I_Info("S_StartSoundAtVolume: playing sound %d (%s)\n",
+				sfx_id, S_sfx[sfx_id].name );*/
 
 #ifdef RANGECHECK
-  /* check for bogus sound # */
-  if (sfx_id < 1 || sfx_id > NUMSFX)
-	I_Error("Bad sfx #: %d", sfx_id);
+	/* check for bogus sound # */
+	if (sfx_id < 1 || sfx_id > NUMSFX)
+		I_Error("Bad sfx #: %d", sfx_id);
 #endif
 
-  sfx = &S_sfx[sfx_id];
+	sfx = &S_sfx[sfx_id];
 
-  /* Initialize sound parameters */
-  if (sfx->link)
-  {
-	pitch = sfx->pitch;
-	volume += sfx->volume;
-
-	if (volume < 1)
-	  return;
-
-	if (volume > snd_SfxVolume)
-	  volume = snd_SfxVolume;
-  }
-  else
-  {
-	pitch = NORM_PITCH;
-  }
-
-
-  /* Check to see if it is audible, */
-  /*  and if not, modify the params */
-  if (origin && origin != players[consoleplayer].mo)
-  {
-	rc = S_AdjustSoundParams(players[consoleplayer].mo,
-							 origin,
-							 &volume,
-							 &sep);
-
-	if ( origin->x == players[consoleplayer].mo->x
-		 && origin->y == players[consoleplayer].mo->y)
+	/* Initialize sound parameters */
+	if (sfx->link)
 	{
-	  sep       = NORM_SEP;
+		pitch = sfx->pitch;
+		volume += sfx->volume;
+
+		if (volume < 1)
+			return;
+
+		if (volume > snd_SfxVolume)
+			volume = snd_SfxVolume;
+	}
+	else
+	{
+		pitch = NORM_PITCH;
 	}
 
-	if (!rc)
-	  return;
-  }
-  else
-  {
-	sep = NORM_SEP;
-  }
 
-  /* hacks to vary the sfx pitches */
-  if (sfx_id >= sfx_sawup
-	  && sfx_id <= sfx_sawhit)
-  {
-	pitch += 8 - (M_Random()&15);
+	/* Check to see if it is audible, */
+	/*  and if not, modify the params */
+	if (origin && origin != players[consoleplayer].mo)
+	{
+		rc = S_AdjustSoundParams(players[consoleplayer].mo,
+		                         origin,
+		                         &volume,
+		                         &sep);
 
-	if (pitch<0)
-	  pitch = 0;
-	else if (pitch>255)
-	  pitch = 255;
-  }
-  else if (sfx_id != sfx_itemup
-		   && sfx_id != sfx_tink)
-  {
-	pitch += 16 - (M_Random()&31);
+		if ( origin->x == players[consoleplayer].mo->x
+		  && origin->y == players[consoleplayer].mo->y)
+		{
+			sep = NORM_SEP;
+		}
 
-	if (pitch<0)
-	  pitch = 0;
-	else if (pitch>255)
-	  pitch = 255;
-  }
+		if (!rc)
+			return;
+	}
+	else
+	{
+		sep = NORM_SEP;
+	}
 
-  /* kill old sound */
-  S_StopSound(origin);
+	/* hacks to vary the sfx pitches */
+	if (sfx_id >= sfx_sawup
+	    && sfx_id <= sfx_sawhit)
+	{
+		pitch += 8 - (M_Random()&15);
 
-  /* try to find a channel */
-  cnum = S_getChannel(origin, sfx);
+		if (pitch<0)
+			pitch = 0;
+		else if (pitch>255)
+			pitch = 255;
+	}
+	else if (sfx_id != sfx_itemup
+	      && sfx_id != sfx_tink)
+	{
+		pitch += 16 - (M_Random()&31);
 
-  if (cnum<0)
-	return;
+		if (pitch<0)
+			pitch = 0;
+		else if (pitch>255)
+			pitch = 255;
+	}
 
-  /* This is supposed to handle the loading/caching. */
-  /* For some odd reason, the caching is done nearly */
-  /*  each time the sound is needed? */
+	/* kill old sound */
+	S_StopSound(origin);
 
-  /* get lumpnum if necessary */
-  if (sfx->lumpnum < 0)
-	sfx->lumpnum = I_GetSfxLumpNum(sfx);
+	/* try to find a channel */
+	cnum = S_getChannel(origin, sfx);
+
+	if (cnum<0)
+		return;
+
+	/* This is supposed to handle the loading/caching. */
+	/* For some odd reason, the caching is done nearly */
+	/*  each time the sound is needed? */
+
+	/* get lumpnum if necessary */
+	if (sfx->lumpnum < 0)
+		sfx->lumpnum = I_GetSfxLumpNum(sfx);
 
 #ifndef SNDSRV
-  /* cache data if necessary */
-  if (sfx->data == NULL)
-  {
-    sfx->data = (unsigned char*) W_CacheLumpNum(sfx->lumpnum, PU_STATIC);
-	/* I_Info(*/
-	/*       "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n", */
-	/*       sfx_id, sfx->lumpnum, (int)sfx->data ); */
-
-  }
+	/* cache data if necessary */
+	if (sfx->data == NULL)
+	{
+		sfx->data = (unsigned char*) W_CacheLumpNum(sfx->lumpnum, PU_STATIC);
+		/* I_Info(*/
+		/*       "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n", */
+		/*       sfx_id, sfx->lumpnum, (int)sfx->data ); */
+	}
 #endif
 
-  /* increase the usefulness */
-  if (sfx->usefulness++ < 0)
-	sfx->usefulness = 1;
+	/* increase the usefulness */
+	if (sfx->usefulness++ < 0)
+		sfx->usefulness = 1;
 
-  /* Assigns the handle to one of the channels in the */
-  /*  mix/output buffer. */
-  channels[cnum].handle = I_StartSound(sfx_id,
-									   sfx->data,
-									   volume,
-									   sep,
-									   pitch);
+	/* Assigns the handle to one of the channels in the */
+	/*  mix/output buffer. */
+	channels[cnum].handle = I_StartSound(sfx_id,
+	                                     sfx->data,
+	                                     volume,
+	                                     sep,
+	                                     pitch);
 }
 
 void
