@@ -619,15 +619,15 @@ void R_InitColormaps (void)
 
 	if (full_colour)
 	{
-		/* Make the brightness-related light tables pass-through straight to the
-		   underlying expanded palette, enabling 'full-colour' rendering. */
+		/* Make the brightness-related colour maps pass-through straight to the underlying
+		   expanded palette, bypassing colour-aliasing and enabling 'full-colour' rendering. */
 		for (i = 0; i < NUMLIGHTCOLORMAPS; ++i)
 			for (j = 0; j < D_COUNT_OF(colormaps[i]); ++j)
 				colormaps[i][j] = i * D_COUNT_OF(colormaps[i]) + j;
 	}
 	else
 	{
-		/* Make a copy just for the Spectre's fuzz effect that won't be overwritten. */
+		/* Load the original colour maps. */
 		memcpy(colormaps[0], colormaps[FUZZCOLORMAPS], sizeof(colormaps[0]) * NUMLIGHTCOLORMAPS);
 	}
 
