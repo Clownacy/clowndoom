@@ -172,7 +172,7 @@ V_CopyRect
 }
 
 
-static void
+void
 V_DrawPatchColumnInternal
 ( unsigned char* desttop,
   const patch_t* patch,
@@ -253,19 +253,6 @@ V_DrawPatchFlipped
 
 	for ( ; col<w ; col++, desttop += SCREENHEIGHT*HUD_SCALE)
 		V_DrawPatchColumnInternal(desttop, patch, flip ? w - 1 - col : col);
-}
-
-
-
-void
-V_DrawPatchColumn
-( int            x,
-  int            y,
-  screen_t       scrn,
-  const patch_t* patch,
-  int            col )
-{
-	V_DrawPatchColumnInternal(screens[scrn]+y+x*SCREENHEIGHT, patch, col);
 }
 
 

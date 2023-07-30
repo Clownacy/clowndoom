@@ -72,6 +72,14 @@ V_CopyRect
   screen_t      destscrn );
 
 void
+V_DrawPatchColumnInternal
+(unsigned char* desttop,
+    const patch_t* patch,
+    int            col);
+
+#define V_DrawPatchColumn(x, y, scrn, patch, col) V_DrawPatchColumnInternal(&screens[scrn][(y)+(x)*SCREENHEIGHT], patch, col)
+
+void
 V_DrawPatchFlipped
 ( int            x,
   int            y,
@@ -82,14 +90,6 @@ V_DrawPatchFlipped
 /* V_DrawPatch */
 /* Masks a column based masked pic to the screen. */
 #define V_DrawPatch(x, y, scrn, patch) V_DrawPatchFlipped(x, y, scrn, patch, d_false)
-
-void
-V_DrawPatchColumn
-( int            x,
-  int            y,
-  screen_t       scrn,
-  const patch_t* patch,
-  int            col );
 
 void
 V_FillScreenWithPattern
