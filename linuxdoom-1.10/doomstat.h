@@ -1,17 +1,17 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
      All the global variables that store the internal state.
      Theoretically speaking, the internal state of the engine
@@ -19,7 +19,7 @@
       here, and every relevant module will have to include
       this header file.
      In practice, things are a bit messy.
-  
+
 ******************************************************************************/
 
 
@@ -82,8 +82,8 @@ extern  boolean	netgame;
 
 /* Flag: true only if started as net deathmatch. */
 /* An enum might handle altdeath/cooperative better. */
-extern  boolean	deathmatch;	
-	
+extern  boolean	deathmatch;
+
 /* ------------------------- */
 /* Internal parameters for sound rendering. */
 /* These have been taken from the DOS version, */
@@ -142,7 +142,7 @@ extern	int		scaledviewwidth;
 extern  int	viewangleoffset;
 
 /* Player taking events, and displaying. */
-extern  int	consoleplayer;	
+extern  int	consoleplayer;
 extern  int	displayplayer;
 
 
@@ -170,7 +170,7 @@ extern  boolean	demoplayback;
 extern  boolean	demorecording;
 
 /* Quit after playing a demo from cmdline. */
-extern  boolean		singledemo;	
+extern  boolean		singledemo;
 
 
 
@@ -211,7 +211,7 @@ extern  mapthing_t      playerstarts[MAXPLAYERS];
 
 /* Intermission stats. */
 /* Parameters for world map / intermission. */
-extern  wbstartstruct_t		wminfo;	
+extern  wbstartstruct_t		wminfo;
 
 
 /* LUT of ammunition limits for each kind. */
@@ -240,7 +240,7 @@ extern  gamestate_t     wipegamestate;
 extern  int             mouseSensitivity;
 /* ? */
 /* debug flag to cancel adaptiveness */
-extern  boolean         singletics;	
+extern  boolean         singletics;
 
 extern  int             bodyqueslot;
 
@@ -259,7 +259,7 @@ extern int		skyflatnum;
 extern  doomcom_t*	doomcom;
 
 /* This points inside doomcom. */
-extern  doomdata_t*	netbuffer;	
+extern  doomdata_t*	netbuffer;
 
 
 extern  ticcmd_t	localcmds[BACKUPTICS];

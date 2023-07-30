@@ -1,21 +1,21 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	Handle Sector base lighting effects.
   	Muzzle flash?
-  
+
 ******************************************************************************/
 
 #include "z_zone.h"
@@ -34,12 +34,12 @@
 void T_FireFlicker (fireflicker_t* flick)
 {
     int	amount;
-	
+
     if (--flick->count)
 	return;
-	
+
     amount = (P_Random()&3)*16;
-    
+
     if (flick->sector->lightlevel - amount < flick->minlight)
 	flick->sector->lightlevel = flick->minlight;
     else
@@ -54,11 +54,11 @@ void T_FireFlicker (fireflicker_t* flick)
 void P_SpawnFireFlicker (sector_t*	sector)
 {
     fireflicker_t*	flick;
-	
+
     /* Note that we are resetting sector attributes. */
     /* Nothing special about it during gameplay. */
-    sector->special = 0; 
-	
+    sector->special = 0;
+
     flick = Z_Malloc ( sizeof(*flick), PU_LEVSPEC, 0);
 
     P_AddThinker (&flick->thinker);
@@ -81,7 +81,7 @@ void T_LightFlash (lightflash_t* flash)
 {
     if (--flash->count)
 	return;
-	
+
     if (flash->sector->lightlevel == flash->maxlight)
     {
 	flash-> sector->lightlevel = flash->minlight;
@@ -106,8 +106,8 @@ void P_SpawnLightFlash (sector_t*	sector)
     lightflash_t*	flash;
 
     /* nothing special about it during gameplay */
-    sector->special = 0;	
-	
+    sector->special = 0;
+
     flash = Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0);
 
     P_AddThinker (&flash->thinker);
@@ -132,7 +132,7 @@ void T_StrobeFlash (strobe_t*		flash)
 {
     if (--flash->count)
 	return;
-	
+
     if (flash->sector->lightlevel == flash->minlight)
     {
 	flash-> sector->lightlevel = flash->maxlight;
@@ -158,7 +158,7 @@ P_SpawnStrobeFlash
   int		inSync )
 {
     strobe_t*	flash;
-	
+
     flash = Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0);
 
     P_AddThinker (&flash->thinker);
@@ -169,12 +169,12 @@ P_SpawnStrobeFlash
     flash->thinker.function.acp1 = (actionf_p1) T_StrobeFlash;
     flash->maxlight = sector->lightlevel;
     flash->minlight = P_FindMinSurroundingLight(sector, sector->lightlevel);
-		
+
     if (flash->minlight == flash->maxlight)
 	flash->minlight = 0;
 
     /* nothing special about it during gameplay */
-    sector->special = 0;	
+    sector->special = 0;
 
     if (!inSync)
 	flash->count = (P_Random()&7)+1;
@@ -188,14 +188,14 @@ void EV_StartLightStrobing(line_t*	line)
 {
     int		secnum;
     sector_t*	sec;
-	
+
     secnum = -1;
     while ((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
     {
 	sec = &sectors[secnum];
 	if (sec->specialdata)
 	    continue;
-	
+
 	P_SpawnStrobeFlash (sec,SLOWDARK, 0);
     }
 }
@@ -211,9 +211,9 @@ void EV_TurnTagLightsOff(line_t* line)
     sector_t*		sector;
     sector_t*		tsec;
     line_t*		templine;
-	
+
     sector = sectors;
-    
+
     for (j = 0;j < numsectors; j++, sector++)
     {
 	if (sector->tag == line->tag)
@@ -245,9 +245,9 @@ EV_LightTurnOn
     sector_t*	sector;
     sector_t*	temp;
     line_t*	templine;
-	
+
     sector = sectors;
-	
+
     for (i=0;i<numsectors;i++, sector++)
     {
 	if (sector->tag == line->tag)
@@ -274,7 +274,7 @@ EV_LightTurnOn
     }
 }
 
-    
+
 /* Spawn glowing light */
 
 void T_Glow(glow_t*	g)
@@ -290,7 +290,7 @@ void T_Glow(glow_t*	g)
 	    g->direction = 1;
 	}
 	break;
-	
+
       case 1:
 	/* UP */
 	g->sector->lightlevel += GLOWSPEED;
@@ -307,7 +307,7 @@ void T_Glow(glow_t*	g)
 void P_SpawnGlowingLight(sector_t*	sector)
 {
     glow_t*	g;
-	
+
     g = Z_Malloc( sizeof(*g), PU_LEVSPEC, 0);
 
     P_AddThinker(&g->thinker);

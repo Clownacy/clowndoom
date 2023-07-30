@@ -1,20 +1,20 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	System specific interface stuff.
-  
+
 ******************************************************************************/
 
 
@@ -30,7 +30,7 @@ extern fixed_t		dc_iscale;
 extern fixed_t		dc_texturemid;
 
 /* first pixel in a column */
-extern byte*		dc_source;		
+extern byte*		dc_source;
 
 
 /* The span blitting interface. */
@@ -66,7 +66,7 @@ extern fixed_t		ds_xstep;
 extern fixed_t		ds_ystep;
 
 /* start of a 64*64 tile image */
-extern byte*		ds_source;		
+extern byte*		ds_source;
 
 extern byte*		translationtables;
 extern byte*		dc_translation;

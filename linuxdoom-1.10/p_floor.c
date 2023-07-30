@@ -1,20 +1,20 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	Floor animation: raising stairs.
-  
+
 ******************************************************************************/
 
 #include "z_zone.h"
@@ -44,7 +44,7 @@ T_MovePlane
 {
     boolean	flag;
     fixed_t	lastpos;
-	
+
     switch(floorOrCeiling)
     {
       case 0:
@@ -79,7 +79,7 @@ T_MovePlane
 		}
 	    }
 	    break;
-						
+
 	  case 1:
 	    /* UP */
 	    if (sector->floorheight + speed > dest)
@@ -113,7 +113,7 @@ T_MovePlane
 	    break;
 	}
 	break;
-									
+
       case 1:
 	/* CEILING */
 	switch(direction)
@@ -151,7 +151,7 @@ T_MovePlane
 		}
 	    }
 	    break;
-						
+
 	  case 1:
 	    /* UP */
 	    if (sector->ceilingheight + speed > dest)
@@ -185,7 +185,7 @@ T_MovePlane
 	    break;
 	}
 	break;
-		
+
     }
     return ok;
 }
@@ -195,16 +195,16 @@ T_MovePlane
 void T_MoveFloor(floormove_t* floor)
 {
     result_e	res;
-	
+
     res = T_MovePlane(floor->sector,
 		      floor->speed,
 		      floor->floordestheight,
 		      floor->crush,0,floor->direction);
-    
+
     if (!(leveltime&7))
 	S_StartSound((mobj_t *)&floor->sector->soundorg,
 		     sfx_stnmov);
-    
+
     if (res == pastdest)
     {
 	floor->sector->specialdata = NULL;
@@ -256,11 +256,11 @@ EV_DoFloor
     while ((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
     {
 	sec = &sectors[secnum];
-		
+
 	/* ALREADY MOVING?  IF SO, KEEP GOING... */
 	if (sec->specialdata)
 	    continue;
-	
+
 	/* new floor thinker */
 	rtn = 1;
 	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
@@ -276,7 +276,7 @@ EV_DoFloor
 	    floor->direction = -1;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
-	    floor->floordestheight = 
+	    floor->floordestheight =
 		P_FindHighestFloorSurrounding(sec);
 	    break;
 
@@ -284,7 +284,7 @@ EV_DoFloor
 	    floor->direction = -1;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
-	    floor->floordestheight = 
+	    floor->floordestheight =
 		P_FindLowestFloorSurrounding(sec);
 	    break;
 
@@ -292,7 +292,7 @@ EV_DoFloor
 	    floor->direction = -1;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED * 4;
-	    floor->floordestheight = 
+	    floor->floordestheight =
 		P_FindHighestFloorSurrounding(sec);
 	    if (floor->floordestheight != sec->floorheight)
 		floor->floordestheight += 8*FRACUNIT;
@@ -305,7 +305,7 @@ EV_DoFloor
 	    floor->direction = 1;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
-	    floor->floordestheight = 
+	    floor->floordestheight =
 		P_FindLowestCeilingSurrounding(sec);
 	    if (floor->floordestheight > sec->ceilingheight)
 		floor->floordestheight = sec->ceilingheight;
@@ -317,7 +317,7 @@ EV_DoFloor
 	    floor->direction = 1;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED*4;
-	    floor->floordestheight = 
+	    floor->floordestheight =
 		P_FindNextHighestFloor(sec,sec->floorheight);
 	    break;
 
@@ -325,7 +325,7 @@ EV_DoFloor
 	    floor->direction = 1;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
-	    floor->floordestheight = 
+	    floor->floordestheight =
 		P_FindNextHighestFloor(sec,sec->floorheight);
 	    break;
 
@@ -358,7 +358,7 @@ EV_DoFloor
 	  {
 	      int	minsize = MAXINT;
 	      side_t*	side;
-				
+
 	      floor->direction = 1;
 	      floor->sector = sec;
 	      floor->speed = FLOORSPEED;
@@ -368,15 +368,15 @@ EV_DoFloor
 		  {
 		      side = getSide(secnum,i,0);
 		      if (side->bottomtexture >= 0)
-			  if (textureheight[side->bottomtexture] < 
+			  if (textureheight[side->bottomtexture] <
 			      minsize)
-			      minsize = 
+			      minsize =
 				  textureheight[side->bottomtexture];
 		      side = getSide(secnum,i,1);
 		      if (side->bottomtexture >= 0)
-			  if (textureheight[side->bottomtexture] < 
+			  if (textureheight[side->bottomtexture] <
 			      minsize)
-			      minsize = 
+			      minsize =
 				  textureheight[side->bottomtexture];
 		  }
 	      }
@@ -384,12 +384,12 @@ EV_DoFloor
 		  floor->sector->floorheight + minsize;
 	  }
 	  break;
-	  
+
 	  case lowerAndChange:
 	    floor->direction = -1;
 	    floor->sector = sec;
 	    floor->speed = FLOORSPEED;
-	    floor->floordestheight = 
+	    floor->floordestheight =
 		P_FindLowestFloorSurrounding(sec);
 	    floor->texture = sec->floorpic;
 
@@ -444,12 +444,12 @@ EV_BuildStairs
     int			texture;
     int			ok;
     int			rtn;
-    
+
     sector_t*		sec;
     sector_t*		tsec;
 
     floormove_t*	floor;
-    
+
     fixed_t		stairsize;
     fixed_t		speed;
 
@@ -458,11 +458,11 @@ EV_BuildStairs
     while ((secnum = P_FindSectorFromLineTag(line,secnum)) >= 0)
     {
 	sec = &sectors[secnum];
-		
+
 	/* ALREADY MOVING?  IF SO, KEEP GOING... */
 	if (sec->specialdata)
 	    continue;
-	
+
 	/* new floor thinker */
 	rtn = 1;
 	floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);
@@ -486,9 +486,9 @@ EV_BuildStairs
 	floor->speed = speed;
 	height = sec->floorheight + stairsize;
 	floor->floordestheight = height;
-		
+
 	texture = sec->floorpic;
-	
+
 	/* Find next sector to raise */
 	/* 1.	Find 2-sided line with same sector side[0] */
 	/* 2.	Other side is the next sector to raise */
@@ -499,10 +499,10 @@ EV_BuildStairs
 	    {
 		if ( !((sec->lines[i])->flags & ML_TWOSIDED) )
 		    continue;
-					
+
 		tsec = (sec->lines[i])->frontsector;
 		newsecnum = tsec-sectors;
-		
+
 		if (secnum != newsecnum)
 		    continue;
 
@@ -511,12 +511,12 @@ EV_BuildStairs
 
 		if (tsec->floorpic != texture)
 		    continue;
-					
+
 		height += stairsize;
 
 		if (tsec->specialdata)
 		    continue;
-					
+
 		sec = tsec;
 		secnum = newsecnum;
 		floor = Z_Malloc (sizeof(*floor), PU_LEVSPEC, 0);

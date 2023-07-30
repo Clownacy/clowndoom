@@ -1,20 +1,20 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	DOOM graphics stuff for X11, UNIX.
-  
+
 ******************************************************************************/
 
 #include <stddef.h>
@@ -70,7 +70,7 @@ static int xlatekey(SDLKey keysym)
       case SDLK_F10:	rc = KEY_F10;		break;
       case SDLK_F11:	rc = KEY_F11;		break;
       case SDLK_F12:	rc = KEY_F12;		break;
-	
+
       case SDLK_BACKSPACE:
       case SDLK_DELETE:	rc = KEY_BACKSPACE;	break;
 
@@ -86,12 +86,12 @@ static int xlatekey(SDLKey keysym)
       case SDLK_RSHIFT:
 	rc = KEY_RSHIFT;
 	break;
-	
+
       case SDLK_LCTRL:
       case SDLK_RCTRL:
 	rc = KEY_RCTRL;
 	break;
-	
+
       case SDLK_LALT:
       case SDLK_RALT:
 #if SDL_MAJOR_VERSION >= 2
@@ -103,7 +103,7 @@ static int xlatekey(SDLKey keysym)
 #endif
 	rc = KEY_RALT;
 	break;
-	
+
       default:
 	if (rc >= SDLK_SPACE && rc <= SDLK_BACKQUOTE)
 	    rc = rc - SDLK_SPACE + ' ';

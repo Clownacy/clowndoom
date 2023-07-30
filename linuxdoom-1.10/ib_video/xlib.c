@@ -1,20 +1,20 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	DOOM graphics stuff for X11, UNIX.
-  
+
 ******************************************************************************/
 
 #include <stdlib.h>
@@ -98,7 +98,7 @@ static int xlatekey(void)
       case XK_F10:	rc = KEY_F10;		break;
       case XK_F11:	rc = KEY_F11;		break;
       case XK_F12:	rc = KEY_F12;		break;
-	
+
       case XK_BackSpace:
       case XK_Delete:	rc = KEY_BACKSPACE;	break;
 
@@ -114,19 +114,19 @@ static int xlatekey(void)
       case XK_Shift_R:
 	rc = KEY_RSHIFT;
 	break;
-	
+
       case XK_Control_L:
       case XK_Control_R:
 	rc = KEY_RCTRL;
 	break;
-	
+
       case XK_Alt_L:
       case XK_Meta_L:
       case XK_Alt_R:
       case XK_Meta_R:
 	rc = KEY_RALT;
 	break;
-	
+
       default:
 	if (rc >= XK_space && rc <= XK_asciitilde)
 	    rc = rc - XK_space + ' ';
@@ -222,11 +222,11 @@ static void IB_GetEvent(void)
 	    }
 	}
 	break;
-	
+
       case Expose:
       case ConfigureNotify:
 	break;
-	
+
       default:
 	if (doShm && X_event.type == X_shmeventtype) shmFinished = true;
 	break;
@@ -359,7 +359,7 @@ static void grabsharedmemory(size_t size)
   int			rc;
   /* UNUSED int done=0; */
   int			pollution=5;
-  
+
   /* try to use what was here before */
   do
   {
@@ -367,7 +367,7 @@ static void grabsharedmemory(size_t size)
     if (id != -1)
     {
       rc=shmctl(id, IPC_STAT, &shminfo); /* get stats on it */
-      if (!rc) 
+      if (!rc)
       {
 	if (shminfo.shm_nattch)
 	{
@@ -385,15 +385,15 @@ static void grabsharedmemory(size_t size)
 		      "Was able to kill my old shared memory\n");
 	    else
 	      I_Error("Was NOT able to kill my old shared memory");
-	    
+
 	    id = shmget((key_t)key, size, IPC_CREAT|0777);
 	    if (id==-1)
 	      I_Error("Could not get shared memory");
-	    
+
 	    rc=shmctl(id, IPC_STAT, &shminfo);
-	    
+
 	    break;
-	    
+
 	  }
 	  if (size >= shminfo.shm_segsz)
 	  {
@@ -429,18 +429,18 @@ static void grabsharedmemory(size_t size)
       break;
     }
   } while (--pollution);
-  
+
   if (!pollution)
   {
     I_Error("Sorry, system too polluted with stale "
 	    "shared memory segments.\n");
-    }	
-  
+    }
+
   X_shminfo.shmid = id;
-  
+
   /* attach to the shared memory segment */
   image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
-  
+
   fprintf(stderr, "shared memory id=%d, addr=0x%p\n", id,
 	  (void*) (image->data));
 }
@@ -461,11 +461,11 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
     int			pnum;
     int			x=0;
     int			y=0;
-    
+
     /* warning: char format, different type arg */
     char		xsign=' ';
     char		ysign=' ';
-    
+
     int			oktodraw;
     unsigned long	attribmask;
     XSetWindowAttributes attribs;
@@ -488,7 +488,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
     {
 	/* warning: char format, different type arg 3,5 */
 	n = sscanf(myargv[pnum+1], "%c%d%c%d", &xsign, &x, &ysign, &y);
-	
+
 	if (n==2)
 	    x = y = 0;
 	else if (n==6)
@@ -614,7 +614,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	/* fprintf(stderr, "shared memory id=%d\n", X_shminfo.shmid); */
 	/* attach to the shared memory segment */
 	/* image->data = X_shminfo.shmaddr = shmat(X_shminfo.shmid, 0, 0); */
-	
+
 
 	if (!image->data)
 	{

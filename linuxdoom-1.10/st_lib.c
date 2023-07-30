@@ -1,20 +1,20 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	The status bar widget code.
-  
+
 ******************************************************************************/
 
 
@@ -79,11 +79,11 @@ STlib_drawNum
 
     int		numdigits = n->width;
     int		num = *n->num;
-    
+
     int		w = SHORT(n->p[0]->width);
     int		h = SHORT(n->p[0]->height);
     int		x = n->x;
-    
+
     int		neg;
 
     (void)refresh;
@@ -98,7 +98,7 @@ STlib_drawNum
 	    num = -9;
 	else if (numdigits == 3 && num < -99)
 	    num = -99;
-	
+
 	num = -num;
     }
 
@@ -167,7 +167,7 @@ STlib_updatePercent
 {
     if (refresh && *per->n.on)
 	V_DrawPatch(per->n.x, per->n.y, FG, per->p);
-    
+
     STlib_updateNum(&per->n, refresh);
 }
 

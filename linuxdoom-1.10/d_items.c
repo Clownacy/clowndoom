@@ -1,19 +1,19 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
-  
+
 ******************************************************************************/
 
 /* We are referring to sprite numbers. */
@@ -41,7 +41,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_PUNCH,
 	S_PUNCH1,
 	S_NULL
-    },	
+    },
     {
 	/* pistol */
 	am_clip,
@@ -50,7 +50,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_PISTOL,
 	S_PISTOL1,
 	S_PISTOLFLASH
-    },	
+    },
     {
 	/* shotgun */
 	am_shell,
@@ -113,7 +113,7 @@ weaponinfo_t	weaponinfo[NUMWEAPONS] =
 	S_DSGUN,
 	S_DSGUN1,
 	S_DSGUNFLASH1
-    },	
+    },
 };
 
 

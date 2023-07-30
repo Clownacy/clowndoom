@@ -1,19 +1,19 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:  Heads-up displays
-  
+
 ******************************************************************************/
 
 #include <ctype.h>
@@ -168,7 +168,7 @@ const char* const	mapnames2[] =	/* DOOM 2 map names. */
     HUSTR_9,
     HUSTR_10,
     HUSTR_11,
-	
+
     HUSTR_12,
     HUSTR_13,
     HUSTR_14,
@@ -178,7 +178,7 @@ const char* const	mapnames2[] =	/* DOOM 2 map names. */
     HUSTR_18,
     HUSTR_19,
     HUSTR_20,
-	
+
     HUSTR_21,
     HUSTR_22,
     HUSTR_23,
@@ -207,7 +207,7 @@ const char* const	mapnamesp[] =	/* Plutonia WAD map names. */
     PHUSTR_9,
     PHUSTR_10,
     PHUSTR_11,
-	
+
     PHUSTR_12,
     PHUSTR_13,
     PHUSTR_14,
@@ -217,7 +217,7 @@ const char* const	mapnamesp[] =	/* Plutonia WAD map names. */
     PHUSTR_18,
     PHUSTR_19,
     PHUSTR_20,
-	
+
     PHUSTR_21,
     PHUSTR_22,
     PHUSTR_23,
@@ -246,7 +246,7 @@ const char* const mapnamest[] =	/* TNT WAD map names. */
     THUSTR_9,
     THUSTR_10,
     THUSTR_11,
-	
+
     THUSTR_12,
     THUSTR_13,
     THUSTR_14,
@@ -256,7 +256,7 @@ const char* const mapnamest[] =	/* TNT WAD map names. */
     THUSTR_18,
     THUSTR_19,
     THUSTR_20,
-	
+
     THUSTR_21,
     THUSTR_22,
     THUSTR_23,
@@ -429,7 +429,7 @@ void HU_Start(void)
 		       HU_TITLEX, HU_TITLEY,
 		       hu_font,
 		       HU_FONTSTART);
-    
+
     switch ( gamemode )
     {
       case shareware:
@@ -446,13 +446,13 @@ void HU_Start(void)
 	s = HU_TITLET;
 	break;
 */
-	
+
       case commercial:
       default:
 	 s = HU_TITLE2;
 	 break;
     }
-    
+
     while (*s)
 	HUlib_addCharToTextLine(&w_title, *(s++));
 
@@ -545,7 +545,7 @@ void HU_Ticker(void)
 			    HUlib_addMessageToSText(&w_message,
 						    player_names[i],
 						    w_inputbuffer[i].l.l);
-			    
+
 			    message_nottobefuckedwith = true;
 			    message_on = true;
 			    message_counter = HU_MSGTIMEOUT;
@@ -612,7 +612,7 @@ boolean HU_Responder(const event_t *ev)
     unsigned char 	c;
     int			i;
     int			numplayers;
-    
+
     static const char		destination_keys[MAXPLAYERS] =
     {
 	HUSTR_KEYGREEN,
@@ -620,7 +620,7 @@ boolean HU_Responder(const event_t *ev)
 	HUSTR_KEYBROWN,
 	HUSTR_KEYRED
     };
-    
+
     static int		num_nobrainers = 0;
 
     numplayers = 0;
@@ -697,15 +697,15 @@ boolean HU_Responder(const event_t *ev)
 		return false;
 	    /* fprintf(stderr, "got here\n"); */
 	    macromessage = chat_macros[c];
-	    
+
 	    /* kill last message with a '\n' */
 	    HU_queueChatChar(KEY_ENTER); /* DEBUG!!! */
-	    
+
 	    /* send the macro message */
 	    while (*macromessage)
 		HU_queueChatChar(*macromessage++);
 	    HU_queueChatChar(KEY_ENTER);
-	    
+
 	    /* leave chat mode and notify that it was sent */
 	    chat_on = false;
 	    strcpy(lastmessage, chat_macros[c]);
@@ -723,7 +723,7 @@ boolean HU_Responder(const event_t *ev)
 	    {
 		/*static unsigned char buf[20];*/ /* DEBUG */
 		HU_queueChatChar(c);
-		
+
 		/* sprintf(buf, "KEY: %d => %d", ev->data1, c); */
 		/*      plr->message = buf; */
 	    }

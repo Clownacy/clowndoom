@@ -1,23 +1,23 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	Movement/collision utility functions,
-  	as used by function in p_map.c. 
+  	as used by function in p_map.c.
   	BLOCKMAP Iterator functions,
   	and some PIT_* functions to use for iteration.
-  
+
 ******************************************************************************/
 
 #include <stdlib.h>
@@ -60,28 +60,28 @@ P_PointOnLineSide
     fixed_t	dy;
     fixed_t	left;
     fixed_t	right;
-	
+
     if (!line->dx)
     {
 	if (x <= line->v1->x)
 	    return line->dy > 0;
-	
+
 	return line->dy < 0;
     }
     if (!line->dy)
     {
 	if (y <= line->v1->y)
 	    return line->dx < 0;
-	
+
 	return line->dx > 0;
     }
-	
+
     dx = (x - line->v1->x);
     dy = (y - line->v1->y);
-	
+
     left = FixedMul ( line->dy>>FRACBITS , dx );
     right = FixedMul ( dy , line->dx>>FRACBITS );
-	
+
     if (right < left)
 	return 0;		/* front side */
     return 1;			/* back side */
@@ -99,7 +99,7 @@ P_BoxOnLineSide
 {
     int		p1;
     int		p2;
-	
+
     switch (ld->slopetype)
     {
       default:
@@ -112,7 +112,7 @@ P_BoxOnLineSide
 	    p2 ^= 1;
 	}
 	break;
-	
+
       case ST_VERTICAL:
 	p1 = tmbox[BOXRIGHT] < ld->v1->x;
 	p2 = tmbox[BOXLEFT] < ld->v1->x;
@@ -122,12 +122,12 @@ P_BoxOnLineSide
 	    p2 ^= 1;
 	}
 	break;
-	
+
       case ST_POSITIVE:
 	p1 = P_PointOnLineSide (tmbox[BOXLEFT], tmbox[BOXTOP], ld);
 	p2 = P_PointOnLineSide (tmbox[BOXRIGHT], tmbox[BOXBOTTOM], ld);
 	break;
-	
+
       case ST_NEGATIVE:
 	p1 = P_PointOnLineSide (tmbox[BOXRIGHT], tmbox[BOXTOP], ld);
 	p2 = P_PointOnLineSide (tmbox[BOXLEFT], tmbox[BOXBOTTOM], ld);
@@ -152,12 +152,12 @@ P_PointOnDivlineSide
     fixed_t	dy;
     fixed_t	left;
     fixed_t	right;
-	
+
     if (!line->dx)
     {
 	if (x <= line->x)
 	    return line->dy > 0;
-	
+
 	return line->dy < 0;
     }
     if (!line->dy)
@@ -167,10 +167,10 @@ P_PointOnDivlineSide
 
 	return line->dx > 0;
     }
-	
+
     dx = (x - line->x);
     dy = (y - line->y);
-	
+
     /* try to quickly decide by looking at sign bits */
     if ( (line->dy ^ line->dx ^ dx ^ dy)&0x80000000 )
     {
@@ -178,10 +178,10 @@ P_PointOnDivlineSide
 	    return 1;		/* (left is negative) */
 	return 0;
     }
-	
+
     left = FixedMul ( line->dy>>8, dx>>8 );
     right = FixedMul ( dy>>8 , line->dx>>8 );
-	
+
     if (right < left)
 	return 0;		/* front side */
     return 1;			/* back side */
@@ -217,13 +217,13 @@ P_InterceptVector
     fixed_t	frac;
     fixed_t	num;
     fixed_t	den;
-	
+
     den = FixedMul (v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
     if (den == 0)
 	return 0;
     /*	I_Error ("P_InterceptVector: parallel"); */
-    
+
     num =
 	FixedMul ( (v1->x - v2->x)>>8 ,v1->dy )
 	+FixedMul ( (v2->y - v1->y)>>8, v1->dx );
@@ -252,12 +252,12 @@ P_InterceptVector
     v2y = (float)v2->y/FRACUNIT;
     v2dx = (float)v2->dx/FRACUNIT;
     v2dy = (float)v2->dy/FRACUNIT;
-	
+
     den = v1dy*v2dx - v1dx*v2dy;
 
     if (den == 0)
 	return 0;	/* parallel */
-    
+
     num = (v1x - v2x)*v1dy + (v2y - v1y)*v1dx;
     frac = num / den;
 
@@ -280,17 +280,17 @@ void P_LineOpening (line_t* linedef)
 {
     sector_t*	front;
     sector_t*	back;
-	
+
     if (linedef->sidenum[1] == -1)
     {
 	/* single sided line */
 	openrange = 0;
 	return;
     }
-	 
+
     front = linedef->frontsector;
     back = linedef->backsector;
-	
+
     if (front->ceilingheight < back->ceilingheight)
 	opentop = front->ceilingheight;
     else
@@ -306,7 +306,7 @@ void P_LineOpening (line_t* linedef)
 	openbottom = back->floorheight;
 	lowfloor = front->floorheight;
     }
-	
+
     openrange = opentop - openbottom;
 }
 
@@ -336,14 +336,14 @@ void P_UnsetThingPosition (mobj_t* thing)
 	else
 	    thing->subsector->sector->thinglist = thing->snext;
     }
-	
+
     if ( ! (thing->flags & MF_NOBLOCKMAP) )
     {
 	/* inert things don't need to be in blockmap */
 	/* unlink from block map */
 	if (thing->bnext)
 	    thing->bnext->bprev = thing->bprev;
-	
+
 	if (thing->bprev)
 	    thing->bprev->bnext = thing->bnext;
 	else
@@ -374,16 +374,16 @@ P_SetThingPosition (mobj_t* thing)
     int			blocky;
     mobj_t**		link;
 
-    
+
     /* link into subsector */
     ss = R_PointInSubsector (thing->x,thing->y);
     thing->subsector = ss;
-    
+
     if ( ! (thing->flags & MF_NOSECTOR) )
     {
 	/* invisible things don't go into the sector links */
 	sec = ss->sector;
-	
+
 	thing->sprev = NULL;
 	thing->snext = sec->thinglist;
 
@@ -393,7 +393,7 @@ P_SetThingPosition (mobj_t* thing)
 	sec->thinglist = thing;
     }
 
-    
+
     /* link into blockmap */
     if ( ! (thing->flags & MF_NOBLOCKMAP) )
     {
@@ -446,7 +446,7 @@ P_BlockLinesIterator
     int			offset;
     short*		list;
     line_t*		ld;
-	
+
     if (x<0
 	|| y<0
 	|| x>=bmapwidth
@@ -454,9 +454,9 @@ P_BlockLinesIterator
     {
 	return true;
     }
-    
+
     offset = y*bmapwidth+x;
-	
+
     offset = *(blockmap+offset);
 
     for ( list = blockmaplump+offset ; *list != -1 ; list++)
@@ -467,7 +467,7 @@ P_BlockLinesIterator
 	    continue; 	/* line has already been checked */
 
 	ld->validcount = validcount;
-		
+
 	if ( !func(ld) )
 	    return false;
     }
@@ -483,7 +483,7 @@ P_BlockThingsIterator
   boolean(*func)(mobj_t*) )
 {
     mobj_t*		mobj;
-	
+
     if ( x<0
 	 || y<0
 	 || x>=bmapwidth
@@ -491,7 +491,7 @@ P_BlockThingsIterator
     {
 	return true;
     }
-    
+
 
     for (mobj = blocklinks[y*bmapwidth+x] ;
 	 mobj ;
@@ -545,17 +545,17 @@ PIT_AddLineIntercepts (line_t* ld)
 	s1 = P_PointOnLineSide (trace.x, trace.y, ld);
 	s2 = P_PointOnLineSide (trace.x+trace.dx, trace.y+trace.dy, ld);
     }
-    
+
     if (s1 == s2)
 	return true;	/* line isn't crossed */
-    
+
     /* hit the line */
     P_MakeDivline (ld, &dl);
     frac = P_InterceptVector (&trace, &dl);
 
     if (frac < 0)
 	return true;	/* behind source */
-	
+
     /* try to early out the check */
     if (earlyout
 	&& frac < FRACUNIT
@@ -563,8 +563,8 @@ PIT_AddLineIntercepts (line_t* ld)
     {
 	return false;	/* stop checking */
     }
-    
-	
+
+
     intercept_p->frac = frac;
     intercept_p->isaline = true;
     intercept_p->d.line = ld;
@@ -582,50 +582,50 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
     fixed_t		y1;
     fixed_t		x2;
     fixed_t		y2;
-    
+
     int			s1;
     int			s2;
-    
+
     boolean		tracepositive;
 
     divline_t		dl;
-    
+
     fixed_t		frac;
 
     if (intercept_p == intercepts + MAXINTERCEPTS)
 	return true;		/* intercept array full */
 
     tracepositive = (trace.dx ^ trace.dy)>0;
-		
+
     /* check a corner to corner crossection for hit */
     if (tracepositive)
     {
 	x1 = thing->x - thing->radius;
 	y1 = thing->y + thing->radius;
-		
+
 	x2 = thing->x + thing->radius;
-	y2 = thing->y - thing->radius;			
+	y2 = thing->y - thing->radius;
     }
     else
     {
 	x1 = thing->x - thing->radius;
 	y1 = thing->y - thing->radius;
-		
+
 	x2 = thing->x + thing->radius;
-	y2 = thing->y + thing->radius;			
+	y2 = thing->y + thing->radius;
     }
-    
+
     s1 = P_PointOnDivlineSide (x1, y1, &trace);
     s2 = P_PointOnDivlineSide (x2, y2, &trace);
 
     if (s1 == s2)
 	return true;		/* line isn't crossed */
-	
+
     dl.x = x1;
     dl.y = y1;
     dl.dx = x2-x1;
     dl.dy = y2-y1;
-    
+
     frac = P_InterceptVector (&trace, &dl);
 
     if (frac < 0)
@@ -652,11 +652,11 @@ P_TraverseIntercepts
     fixed_t		dist;
     intercept_t*	scan;
     intercept_t*	in;
-	
+
     count = intercept_p - intercepts;
-    
+
     in = 0;			/* shut up compiler warning */
-	
+
     while (count--)
     {
 	dist = MAXINT;
@@ -668,7 +668,7 @@ P_TraverseIntercepts
 		in = scan;
 	    }
 	}
-	
+
 	if (dist > maxfrac)
 	    return true;	/* checked everything in range */
 
@@ -689,7 +689,7 @@ P_TraverseIntercepts
 
 	in->frac = MAXINT;
     }
-	
+
     return true;		/* everything was traversed */
 }
 
@@ -714,31 +714,31 @@ P_PathTraverse
     fixed_t	yt1;
     fixed_t	xt2;
     fixed_t	yt2;
-    
+
     fixed_t	xstep;
     fixed_t	ystep;
-    
+
     fixed_t	partial;
-    
+
     fixed_t	xintercept;
     fixed_t	yintercept;
-    
+
     int		mapx;
     int		mapy;
-    
+
     int		mapxstep;
     int		mapystep;
 
     int		count;
-		
+
     earlyout = flags & PT_EARLYOUT;
-		
+
     validcount++;
     intercept_p = intercepts;
-	
+
     if ( ((x1-bmaporgx)&(MAPBLOCKSIZE-1)) == 0)
 	x1 += FRACUNIT;	/* don't side exactly on a line */
-    
+
     if ( ((y1-bmaporgy)&(MAPBLOCKSIZE-1)) == 0)
 	y1 += FRACUNIT;	/* don't side exactly on a line */
 
@@ -774,11 +774,11 @@ P_PathTraverse
 	mapxstep = 0;
 	partial = FRACUNIT;
 	ystep = 256*FRACUNIT;
-    }	
+    }
 
     yintercept = (y1>>MAPBTOFRAC) + FixedMul (partial, ystep);
 
-	
+
     if (yt2 > yt1)
     {
 	mapystep = 1;
@@ -796,15 +796,15 @@ P_PathTraverse
 	mapystep = 0;
 	partial = FRACUNIT;
 	xstep = 256*FRACUNIT;
-    }	
+    }
     xintercept = (x1>>MAPBTOFRAC) + FixedMul (partial, xstep);
-    
+
     /* Step through map blocks. */
     /* Count is present to prevent a round off error */
     /* from skipping the break. */
     mapx = xt1;
     mapy = yt1;
-	
+
     for (count = 0 ; count < 64 ; count++)
     {
 	if (flags & PT_ADDLINES)
@@ -812,19 +812,19 @@ P_PathTraverse
 	    if (!P_BlockLinesIterator (mapx, mapy,PIT_AddLineIntercepts))
 		return false;	/* early out */
 	}
-	
+
 	if (flags & PT_ADDTHINGS)
 	{
 	    if (!P_BlockThingsIterator (mapx, mapy,PIT_AddThingIntercepts))
 		return false;	/* early out */
 	}
-		
+
 	if (mapx == xt2
 	    && mapy == yt2)
 	{
 	    break;
 	}
-	
+
 	if ( (yintercept >> FRACBITS) == mapy)
 	{
 	    yintercept += ystep;
@@ -835,7 +835,7 @@ P_PathTraverse
 	    xintercept += xstep;
 	    mapy += mapystep;
 	}
-		
+
     }
     /* go through the sorted list */
     return P_TraverseIntercepts ( trav, FRACUNIT );

@@ -1,21 +1,21 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	Archiving: SaveGame I/O.
   	Thinker, Ticker.
-  
+
 ******************************************************************************/
 
 #include "z_zone.h"
@@ -110,11 +110,11 @@ void P_RunThinkers (void)
 void P_Ticker (void)
 {
     int		i;
-    
+
     /* run the tic */
     if (paused)
 	return;
-		
+
     /* pause if in menu and at least one tic has been run */
     if ( !netgame
 	 && menuactive
@@ -123,16 +123,16 @@ void P_Ticker (void)
     {
 	return;
     }
-    
-		
+
+
     for (i=0 ; i<MAXPLAYERS ; i++)
 	if (playeringame[i])
 	    P_PlayerThink (&players[i]);
-			
+
     P_RunThinkers ();
     P_UpdateSpecials ();
     P_RespawnSpecials ();
 
     /* for par times */
-    leveltime++;	
+    leveltime++;
 }

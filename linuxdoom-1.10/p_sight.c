@@ -1,20 +1,20 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	LineOfSight/Visibility checks, uses REJECT Lookup Table.
-  
+
 ******************************************************************************/
 
 #include "doomdef.h"
@@ -54,13 +54,13 @@ P_DivlineSide
     {
 	if (x==node->x)
 	    return 2;
-	
+
 	if (x <= node->x)
 	    return node->dy > 0;
 
 	return node->dy < 0;
     }
-    
+
     if (!node->dy)
     {
 	if (x==node->y)
@@ -71,16 +71,16 @@ P_DivlineSide
 
 	return node->dx > 0;
     }
-	
+
     dx = (x - node->x);
     dy = (y - node->y);
 
     left =  (node->dy>>FRACBITS) * (dx>>FRACBITS);
     right = (dy>>FRACBITS) * (node->dx>>FRACBITS);
-	
+
     if (right < left)
 	return 0;	/* front side */
-    
+
     if (left == right)
 	return 2;
     return 1;		/* back side */
@@ -99,14 +99,14 @@ P_InterceptVector2
     fixed_t	frac;
     fixed_t	num;
     fixed_t	den;
-	
+
     den = FixedMul (v1->dy>>8,v2->dx) - FixedMul(v1->dx>>8,v2->dy);
 
     if (den == 0)
 	return 0;
     /*	I_Error ("P_InterceptVector: parallel"); */
-    
-    num = FixedMul ( (v1->x - v2->x)>>8 ,v1->dy) + 
+
+    num = FixedMul ( (v1->x - v2->x)>>8 ,v1->dy) +
 	FixedMul ( (v2->y - v1->y)>>8 , v1->dx);
     frac = FixedDiv (num , den);
 
@@ -133,7 +133,7 @@ boolean P_CrossSubsector (int num)
     vertex_t*		v2;
     fixed_t		frac;
     fixed_t		slope;
-	
+
 #ifdef RANGECHECK
     if (num>=numsubsectors)
 	I_Error ("P_CrossSubsector: ss %i with numss = %i",
@@ -142,7 +142,7 @@ boolean P_CrossSubsector (int num)
 #endif
 
     sub = &subsectors[num];
-    
+
     /* check lines */
     count = sub->numlines;
     seg = &segs[sub->firstline];
@@ -154,9 +154,9 @@ boolean P_CrossSubsector (int num)
 	/* allready checked other side? */
 	if (line->validcount == validcount)
 	    continue;
-	
+
 	line->validcount = validcount;
-		
+
 	v1 = line->v1;
 	v2 = line->v2;
 	s1 = P_DivlineSide (v1->x,v1->y, &strace);
@@ -165,7 +165,7 @@ boolean P_CrossSubsector (int num)
 	/* line isn't crossed? */
 	if (s1 == s2)
 	    continue;
-	
+
 	divl.x = v1->x;
 	divl.y = v1->y;
 	divl.dx = v2->x - v1->x;
@@ -175,13 +175,13 @@ boolean P_CrossSubsector (int num)
 
 	/* line isn't crossed? */
 	if (s1 == s2)
-	    continue;	
+	    continue;
 
 	/* stop because it is not two sided anyway */
 	/* might do this after updating validcount? */
 	if ( !(line->flags & ML_TWOSIDED) )
 	    return false;
-	
+
 	/* crosses a two sided line */
 	front = seg->frontsector;
 	back = seg->backsector;
@@ -189,7 +189,7 @@ boolean P_CrossSubsector (int num)
 	/* no wall to block sight with? */
 	if (front->floorheight == back->floorheight
 	    && front->ceilingheight == back->ceilingheight)
-	    continue;	
+	    continue;
 
 	/* possible occluder */
 	/* because of ceiling height differences */
@@ -203,32 +203,32 @@ boolean P_CrossSubsector (int num)
 	    openbottom = front->floorheight;
 	else
 	    openbottom = back->floorheight;
-		
+
 	/* quick test for totally closed doors */
-	if (openbottom >= opentop)	
+	if (openbottom >= opentop)
 	    return false;		/* stop */
-	
+
 	frac = P_InterceptVector2 (&strace, &divl);
-		
+
 	if (front->floorheight != back->floorheight)
 	{
 	    slope = FixedDiv (openbottom - sightzstart , frac);
 	    if (slope > bottomslope)
 		bottomslope = slope;
 	}
-		
+
 	if (front->ceilingheight != back->ceilingheight)
 	{
 	    slope = FixedDiv (opentop - sightzstart , frac);
 	    if (slope < topslope)
 		topslope = slope;
 	}
-		
+
 	if (topslope <= bottomslope)
 	    return false;		/* stop */
     }
     /* passed the subsector ok */
-    return true;		
+    return true;
 }
 
 
@@ -248,9 +248,9 @@ boolean P_CrossBSPNode (int bspnum)
 	else
 	    return P_CrossSubsector (bspnum&(~NF_SUBSECTOR));
     }
-		
+
     bsp = &nodes[bspnum];
-    
+
     /* decide which side the start point is on */
     side = P_DivlineSide (strace.x, strace.y, (divline_t *)bsp);
     if (side == 2)
@@ -259,14 +259,14 @@ boolean P_CrossBSPNode (int bspnum)
     /* cross the starting side */
     if (!P_CrossBSPNode (bsp->children[side]) )
 	return false;
-	
+
     /* the partition plane is crossed here */
     if (side == P_DivlineSide (t2x, t2y,(divline_t *)bsp))
     {
 	/* the line doesn't touch the other side */
 	return true;
     }
-    
+
     /* cross the ending side */
     return P_CrossBSPNode (bsp->children[side^1]);
 }
@@ -286,7 +286,7 @@ P_CheckSight
     int		pnum;
     int		bytenum;
     int		bitnum;
-    
+
     /* First check for trivial rejection. */
 
     /* Determine subsector entries in REJECT table. */
@@ -302,7 +302,7 @@ P_CheckSight
 	sightcounts[0]++;
 
 	/* can't possibly be connected */
-	return false;	
+	return false;
     }
 
     /* An unobstructed LOS is possible. */
@@ -310,11 +310,11 @@ P_CheckSight
     sightcounts[1]++;
 
     validcount++;
-	
+
     sightzstart = t1->z + t1->height - (t1->height>>2);
     topslope = (t2->z+t2->height) - sightzstart;
     bottomslope = (t2->z) - sightzstart;
-	
+
     strace.x = t1->x;
     strace.y = t1->y;
     t2x = t2->x;
@@ -323,7 +323,7 @@ P_CheckSight
     strace.dy = t2->y - t1->y;
 
     /* the head node is the last node output */
-    return P_CrossBSPNode (numnodes-1);	
+    return P_CrossBSPNode (numnodes-1);
 }
 
 

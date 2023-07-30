@@ -1,21 +1,21 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
     Internally used data structures for virtually everything,
      key definitions, lots of other stuff.
-  
+
 ******************************************************************************/
 
 #ifndef __DOOMDEF__
@@ -39,7 +39,7 @@ typedef enum
   /* DOOM 2 german edition not handled */
   retail,	/* DOOM 1 retail, E4, M36 */
   indetermined	/* Well, no IWAD found. */
-  
+
 } GameMode_t;
 
 
@@ -148,9 +148,9 @@ typedef enum
     it_blueskull,
     it_yellowskull,
     it_redskull,
-    
+
     NUMCARDS
-    
+
 } card_t;
 
 
@@ -171,7 +171,7 @@ typedef enum
     wp_supershotgun,
 
     NUMWEAPONS,
-    
+
     /* No pending weapon change. */
     wp_nochange
 
@@ -201,7 +201,7 @@ typedef enum
     pw_allmap,
     pw_infrared,
     NUMPOWERS
-    
+
 } powertype_t;
 
 
@@ -215,7 +215,7 @@ typedef enum
     INVISTICS	= (60*TICRATE),
     INFRATICS	= (120*TICRATE),
     IRONTICS	= (60*TICRATE)
-    
+
 } powerduration_t;
 
 

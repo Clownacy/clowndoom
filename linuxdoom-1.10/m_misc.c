@@ -1,23 +1,23 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
-  
+
+
    DESCRIPTION:
   	Main loop menu stuff.
   	Default Config File.
   	PCX Screenshots.
-  
+
 ******************************************************************************/
 
 #include <stdlib.h>
@@ -72,7 +72,7 @@ M_DrawText
 	    x += 4;
 	    continue;
 	}
-		
+
 	w = SHORT (hu_font[c]->width);
 	if (x+w > SCREENWIDTH)
 	    break;
@@ -98,7 +98,7 @@ M_WriteFile
 {
     FILE*	handle;
     int		count;
-	
+
     handle = fopen ( name, "wb");
 
     if (handle == NULL)
@@ -106,10 +106,10 @@ M_WriteFile
 
     count = fwrite (source, 1, length, handle);
     fclose (handle);
-	
+
     if (count < length)
 	return false;
-		
+
     return true;
 }
 
@@ -123,7 +123,7 @@ M_ReadFile
     FILE*	handle;
     long	count, length;
     byte		*buf;
-	
+
     handle = fopen (name, "rb");
     if (handle != NULL)
     {
@@ -283,11 +283,11 @@ void M_SaveDefaults (void)
     int		i;
     int		v;
     FILE*	f;
-	
+
     f = fopen (defaultfile, "w");
     if (!f)
 	return; /* can't write the file, but don't complain */
-		
+
     for (i=0 ; i<numdefaults ; i++)
     {
 	if (!defaults[i].is_string)
@@ -299,7 +299,7 @@ void M_SaveDefaults (void)
 		     * (const char **) (defaults[i].location));
 	}
     }
-	
+
     fclose (f);
 }
 
@@ -317,7 +317,7 @@ void M_LoadDefaults (void)
     char*	newstring;
     int		parm;
     boolean	isstring;
-    
+
     /* set everything to base values */
     numdefaults = sizeof(defaults)/sizeof(defaults[0]);
     for (i=0 ; i<numdefaults ; i++)
@@ -327,7 +327,7 @@ void M_LoadDefaults (void)
 	else
 	    *defaults[i].location = defaults[i].defaultvalue;
     }
-    
+
     /* check for a custom default file */
     i = M_CheckParm ("-config");
     if (i && i<myargc-1)
@@ -337,7 +337,7 @@ void M_LoadDefaults (void)
     }
     else
 	defaultfile = basedefault;
-    
+
     /* read the file in, overriding any set defaults */
     f = fopen (defaultfile, "r");
     if (f)
@@ -370,7 +370,7 @@ void M_LoadDefaults (void)
 		    }
 	    }
 	}
-		
+
 	fclose (f);
     }
 }
@@ -576,16 +576,16 @@ void M_ScreenShot (void)
     int		i;
     byte*	linear;
     char	lbmname[12];
-    
+
     /* munge planar buffer to linear */
     linear = screens[2];
     I_ReadScreen (linear);
-    
+
     /* find a file name to save it to */
     strcpy(lbmname,"DOOM00.pcx");
     if (bmp_screenshots)
         strcpy(&lbmname[7],"bmp");
-		
+
     for (i=0 ; i<=99 ; i++)
     {
 	lbmname[4] = i/10 + '0';
@@ -595,12 +595,12 @@ void M_ScreenShot (void)
     }
     if (i==100)
 	I_Error ("M_ScreenShot: Couldn't create a screenshot");
-    
+
     /* save the screenshot file */
     (bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
 		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
-	
+
     players[consoleplayer].message = "screen shot";
 }
 

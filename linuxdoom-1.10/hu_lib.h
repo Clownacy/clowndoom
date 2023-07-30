@@ -1,19 +1,19 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:  none
-  
+
 ******************************************************************************/
 
 #ifndef __HULIB__
@@ -43,14 +43,14 @@ typedef struct
     /* left-justified position of scrolling text window */
     int		x;
     int		y;
-    
+
     patch_t**	f;			/* font */
     int		sc;			/* start character */
     char	l[HU_MAXLINELENGTH+1];	/* line of text */
     int		len;		      	/* current line length */
 
     /* whether this line needs to be udpated */
-    int		needsupdate;	      
+    int		needsupdate;
 
 } hu_textline_t;
 
@@ -82,7 +82,7 @@ typedef struct
     int			lm;
 
     /* pointer to boolean stating whether to update window */
-    boolean*		on; 
+    boolean*		on;
     boolean		laston; /* last value of *->on; */
 
 } hu_itext_t;
@@ -110,7 +110,7 @@ boolean HUlib_delCharFromTextLine(hu_textline_t *t);
 void	HUlib_drawTextLine(hu_textline_t *l, boolean drawcursor);
 
 /* erases text line */
-void	HUlib_eraseTextLine(hu_textline_t *l); 
+void	HUlib_eraseTextLine(hu_textline_t *l);
 
 
 /* Scrolling Text window widget routines */
@@ -127,7 +127,7 @@ HUlib_initSText
   boolean*	on );
 
 /* add a new line */
-void HUlib_addLineToSText(hu_stext_t* s);  
+void HUlib_addLineToSText(hu_stext_t* s);
 
 /* ? */
 void
@@ -140,7 +140,7 @@ HUlib_addMessageToSText
 void HUlib_drawSText(hu_stext_t* s);
 
 /* erases all stext lines */
-void HUlib_eraseSText(hu_stext_t* s); 
+void HUlib_eraseSText(hu_stext_t* s);
 
 /* Input Text Line widget routines */
 void
@@ -176,6 +176,6 @@ HUlib_keyInIText
 void HUlib_drawIText(hu_itext_t* it);
 
 /* erases all itext lines */
-void HUlib_eraseIText(hu_itext_t* it); 
+void HUlib_eraseIText(hu_itext_t* it);
 
 #endif

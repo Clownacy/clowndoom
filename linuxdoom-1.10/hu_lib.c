@@ -1,19 +1,19 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:  heads-up text and input code
-  
+
 ******************************************************************************/
 
 #include <ctype.h>
@@ -232,7 +232,7 @@ void HUlib_drawSText(hu_stext_t* s)
 	idx = s->cl - i;
 	if (idx < 0)
 	    idx += s->h; /* handle queue of lines */
-	
+
 	l = &s->l[idx];
 
 	/* need a decision made here on whether to skip the draw */
@@ -310,13 +310,13 @@ HUlib_keyInIText
   unsigned char ch )
 {
 
-    if (ch >= ' ' && ch <= '_') 
+    if (ch >= ' ' && ch <= '_')
   	HUlib_addCharToTextLine(&it->l, (char) ch);
-    else 
-	if (ch == KEY_BACKSPACE) 
+    else
+	if (ch == KEY_BACKSPACE)
 	    HUlib_delCharFromIText(it);
-	else 
-	    if (ch != KEY_ENTER) 
+	else
+	    if (ch != KEY_ENTER)
 		return false; /* did not eat key */
 
     return true; /* ate the key */

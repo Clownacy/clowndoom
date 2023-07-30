@@ -1,20 +1,20 @@
 /******************************************************************************
-  
+
    Copyright (C) 1993-1996 by id Software, Inc.
-  
+
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
    as published by the Free Software Foundation; either version 2
    of the License, or (at your option) any later version.
-  
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-  
+
    DESCRIPTION:
   	Printed strings, french translation.
-  
+
 ******************************************************************************/
 
 
@@ -212,8 +212,8 @@
 #define HUSTR_PLRRED		"ROUGE: "
 
 #define HUSTR_KEYGREEN	'g'	/* french key should be "V" */
-#define HUSTR_KEYINDIGO	'i'	
-#define HUSTR_KEYBROWN	'b'	
+#define HUSTR_KEYINDIGO	'i'
+#define HUSTR_KEYBROWN	'b'
 #define HUSTR_KEYRED		'r'
 
 /*	AM_map.C */
@@ -262,7 +262,7 @@
 "POUR VIVRE LA SUITE DE DOOM, JOUEZ\n"\
 "A 'AUX PORTES DE L'ENFER' ET A\n"\
 "L'EPISODE SUIVANT, 'L'ENFER'!\n"
-				
+
 #define E2TEXT	"VOUS AVEZ REUSSI. L'INFAME DEMON\n"\
 "QUI CONTROLAIT LA BASE LUNAIRE DE\n"\
 "DEIMOS EST MORT, ET VOUS AVEZ\n"\
