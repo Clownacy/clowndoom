@@ -84,9 +84,6 @@ typedef enum
 /*  by the graphics. */
 #define SCREEN_MUL              1
 
-/* Defines suck. C sucks. */
-/* C++ might sucks for OOP, but it sure is a better C. */
-/* So there. */
 #define SCREENWIDTH  320
 #define SCREENHEIGHT 200
 
