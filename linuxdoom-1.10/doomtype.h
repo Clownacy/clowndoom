@@ -24,9 +24,8 @@
 
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
-enum {b_false, b_true};
-typedef unsigned int bool32;
-typedef unsigned char byte;
+enum {d_false, d_true};
+typedef unsigned int d_bool;
 #endif
 
 #define D_MIN(a, b) ((a) < (b) ? (a) : (b))

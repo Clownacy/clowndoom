@@ -275,7 +275,7 @@ void IB_ShutdownGraphics(void)
 }
 
 
-void IB_GrabMouse(bool32 grab)
+void IB_GrabMouse(d_bool grab)
 {
 #if SDL_MAJOR_VERSION >= 2
 	SDL_SetRelativeMouseMode(grab ? SDL_TRUE : SDL_FALSE);

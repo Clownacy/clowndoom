@@ -27,7 +27,7 @@
 
 
 /* Called by main loop. */
-bool32 AM_Responder (const event_t* ev);
+d_bool AM_Responder (const event_t* ev);
 
 /* Called by main loop. */
 void AM_Ticker (void);

@@ -34,7 +34,7 @@ void I_InitGraphics (void);
 void I_ShutdownGraphics(void);
 
 /* Takes full 8 bit values. */
-void I_SetPalette (const byte* palette);
+void I_SetPalette (const unsigned char* palette);
 
 void I_UpdateNoBlit (void);
 void I_FinishUpdate (void);
@@ -42,7 +42,7 @@ void I_FinishUpdate (void);
 /* Wait for vertical retrace or pause a bit. */
 void I_WaitVBL(int count);
 
-void I_ReadScreen (byte* scr);
+void I_ReadScreen (unsigned char* scr);
 
 /* Called by D_DoomLoop, */
 /* called before processing any tics in a frame */
@@ -59,7 +59,7 @@ void I_StartFrame (void);
 /* Can call D_PostEvent. */
 void I_StartTic (void);
 
-void I_GrabMouse(bool32 grab);
+void I_GrabMouse(d_bool grab);
 
 
 #endif

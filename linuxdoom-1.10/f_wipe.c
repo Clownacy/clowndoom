@@ -30,11 +30,11 @@
 /*                       SCREEN WIPE PACKAGE */
 
 /* when zero, stop the wipe */
-static bool32  go = 0;
+static d_bool  go = 0;
 
-static byte*    wipe_scr_start;
-static byte*    wipe_scr_end;
-static byte*    wipe_scr;
+static unsigned char*    wipe_scr_start;
+static unsigned char*    wipe_scr_end;
+static unsigned char*    wipe_scr;
 
 
 void
@@ -77,12 +77,12 @@ wipe_doColorXForm
   int   height,
   int   ticks )
 {
-	bool32     changed;
-	byte*       w;
-	byte*       e;
+	d_bool     changed;
+	unsigned char*       w;
+	unsigned char*       e;
 	int         newval;
 
-	changed = b_false;
+	changed = d_false;
 	w = wipe_scr;
 	e = wipe_scr_end;
 
@@ -97,7 +97,7 @@ wipe_doColorXForm
 					*w = *e;
 				else
 					*w = newval;
-				changed = b_true;
+				changed = d_true;
 			}
 			else if (*w < *e)
 			{
@@ -106,7 +106,7 @@ wipe_doColorXForm
 					*w = *e;
 				else
 					*w = newval;
-				changed = b_true;
+				changed = d_true;
 			}
 		}
 		w++;
@@ -179,7 +179,7 @@ wipe_doMelt
 
 	short*      s;
 	short*      d;
-	bool32     done = b_true;
+	d_bool     done = d_true;
 
 	width/=2;
 
@@ -189,7 +189,7 @@ wipe_doMelt
 		{
 			if (y[i]<0)
 			{
-				y[i]++; done = b_false;
+				y[i]++; done = d_false;
 			}
 			else if (y[i] < height)
 			{
@@ -212,7 +212,7 @@ wipe_doMelt
 					d[idx] = *(s++);
 					idx += width;
 				}
-				done = b_false;
+				done = d_false;
 			}
 		}
 	}

@@ -27,7 +27,7 @@
 /* FINALE */
 
 /* Called by main loop. */
-bool32 F_Responder (const event_t* ev);
+d_bool F_Responder (const event_t* ev);
 
 /* Called by main loop. */
 void F_Ticker (void);

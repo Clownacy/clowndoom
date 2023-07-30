@@ -57,7 +57,7 @@ int
 M_DrawText
 ( int           x,
   int           y,
-  bool32       direct,
+  d_bool       direct,
   char*         string )
 {
 	int         c;
@@ -90,7 +90,7 @@ M_DrawText
 
 
 /* M_WriteFile */
-bool32
+d_bool
 M_WriteFile
 ( char const*   name,
   void*         source,
@@ -102,15 +102,15 @@ M_WriteFile
 	handle = fopen ( name, "wb");
 
 	if (handle == NULL)
-		return b_false;
+		return d_false;
 
 	count = fwrite (source, 1, length, handle);
 	fclose (handle);
 
 	if (count < length)
-		return b_false;
+		return d_false;
 
-	return b_true;
+	return d_true;
 }
 
 
@@ -118,11 +118,11 @@ M_WriteFile
 int
 M_ReadFile
 ( char const*   name,
-  byte**        buffer )
+  unsigned char**        buffer )
 {
 	FILE*       handle;
 	long        count, length;
-	byte                *buf;
+	unsigned char                *buf;
 
 	handle = fopen (name, "rb");
 	if (handle != NULL)
@@ -131,7 +131,7 @@ M_ReadFile
 		length = ftell(handle);
 		if (length != -1)
 		{
-			buf = (byte*)Z_Malloc (length, PU_STATIC, NULL);
+			buf = (unsigned char*)Z_Malloc (length, PU_STATIC, NULL);
 			rewind(handle);
 			count = fread (buf, 1, length, handle);
 			fclose (handle);
@@ -207,7 +207,7 @@ typedef struct
 	const char* name;
 	int*        location;
 	size_t      defaultvalue;
-	bool32     is_string;
+	d_bool     is_string;
 	/*int               scantranslate;*/        /* PC scan code hack */
 	/*int               untranslated;*/         /* lousy hack */
 } default_t;
@@ -215,62 +215,62 @@ typedef struct
 default_t       defaults[] =
 {
 	/* General */
-	{"show_messages",&showMessages, 1, b_false},
-	{"novert",&novert, 1, b_false},
-	{"always_run",&always_run, 1, b_false},
-	{"bmp_screenshots",&bmp_screenshots, 1, b_false},
+	{"show_messages",&showMessages, 1, d_false},
+	{"novert",&novert, 1, d_false},
+	{"always_run",&always_run, 1, d_false},
+	{"bmp_screenshots",&bmp_screenshots, 1, d_false},
 
 	/* Keyboard */
 	/* Movement */
-	{"key_right",&key_right, ',', b_false},
-	{"key_left",&key_left, '.', b_false},
-	{"key_up",&key_up, 'w', b_false},
-	{"key_down",&key_down, 's', b_false},
-	{"key_strafeleft",&key_strafeleft, 'a', b_false},
-	{"key_straferight",&key_straferight, 'd', b_false},
+	{"key_right",&key_right, ',', d_false},
+	{"key_left",&key_left, '.', d_false},
+	{"key_up",&key_up, 'w', d_false},
+	{"key_down",&key_down, 's', d_false},
+	{"key_strafeleft",&key_strafeleft, 'a', d_false},
+	{"key_straferight",&key_straferight, 'd', d_false},
 	/* Actions */
-	{"key_fire",&key_fire, KEY_RCTRL, b_false},
-	{"key_use",&key_use, ' ', b_false},
-	{"key_strafe",&key_strafe, KEY_RALT, b_false},
-	{"key_speed",&key_speed, KEY_RSHIFT, b_false},
+	{"key_fire",&key_fire, KEY_RCTRL, d_false},
+	{"key_use",&key_use, ' ', d_false},
+	{"key_strafe",&key_strafe, KEY_RALT, d_false},
+	{"key_speed",&key_speed, KEY_RSHIFT, d_false},
 
 	/* Mouse */
-	{"use_mouse",&usemouse, 1, b_false},
-	{"mouseb_fire",&mousebfire,0, b_false},
-	{"mouseb_strafe",&mousebstrafe,1, b_false},
-	{"mouseb_forward",&mousebforward,2, b_false},
-	{"mouse_sensitivity",&mouseSensitivity, 5, b_false},
+	{"use_mouse",&usemouse, 1, d_false},
+	{"mouseb_fire",&mousebfire,0, d_false},
+	{"mouseb_strafe",&mousebstrafe,1, d_false},
+	{"mouseb_forward",&mousebforward,2, d_false},
+	{"mouse_sensitivity",&mouseSensitivity, 5, d_false},
 
 	/* Joystick */
-	{"use_joystick",&usejoystick, 0, b_false},
-	{"joyb_fire",&joybfire,0, b_false},
-	{"joyb_strafe",&joybstrafe,1, b_false},
-	{"joyb_use",&joybuse,3, b_false},
-	{"joyb_speed",&joybspeed,2, b_false},
+	{"use_joystick",&usejoystick, 0, d_false},
+	{"joyb_fire",&joybfire,0, d_false},
+	{"joyb_strafe",&joybstrafe,1, d_false},
+	{"joyb_use",&joybuse,3, d_false},
+	{"joyb_speed",&joybspeed,2, d_false},
 
 	/* Video */
-	{"screenblocks",&screenblocks, 10, b_false},
-	{"detaillevel",&detailLevel, 0, b_false},
-	{"usegamma",&usegamma, 0, b_false},
-	{"aspect_ratio_correction",&aspect_ratio_correction, 1, b_false},
+	{"screenblocks",&screenblocks, 10, d_false},
+	{"detaillevel",&detailLevel, 0, d_false},
+	{"usegamma",&usegamma, 0, d_false},
+	{"aspect_ratio_correction",&aspect_ratio_correction, 1, d_false},
 
 	/* Audio */
-	{"music_volume",&musicVolume, 8, b_false},
-	{"sfx_volume",&sfxVolume, 8, b_false},
-	{"snd_channels",&numChannels, 8, b_false},
-	{"wildmidi_config_path", (int*)&wildmidi_config_path, (size_t)"wildmidi.cfg", b_true },
+	{"music_volume",&musicVolume, 8, d_false},
+	{"sfx_volume",&sfxVolume, 8, d_false},
+	{"snd_channels",&numChannels, 8, d_false},
+	{"wildmidi_config_path", (int*)&wildmidi_config_path, (size_t)"wildmidi.cfg", d_true },
 
 	/* Chat macros */
-	{"chatmacro0", (int *) &chat_macros[0], (size_t) HUSTR_CHATMACRO0, b_true },
-	{"chatmacro1", (int *) &chat_macros[1], (size_t) HUSTR_CHATMACRO1, b_true },
-	{"chatmacro2", (int *) &chat_macros[2], (size_t) HUSTR_CHATMACRO2, b_true },
-	{"chatmacro3", (int *) &chat_macros[3], (size_t) HUSTR_CHATMACRO3, b_true },
-	{"chatmacro4", (int *) &chat_macros[4], (size_t) HUSTR_CHATMACRO4, b_true },
-	{"chatmacro5", (int *) &chat_macros[5], (size_t) HUSTR_CHATMACRO5, b_true },
-	{"chatmacro6", (int *) &chat_macros[6], (size_t) HUSTR_CHATMACRO6, b_true },
-	{"chatmacro7", (int *) &chat_macros[7], (size_t) HUSTR_CHATMACRO7, b_true },
-	{"chatmacro8", (int *) &chat_macros[8], (size_t) HUSTR_CHATMACRO8, b_true },
-	{"chatmacro9", (int *) &chat_macros[9], (size_t) HUSTR_CHATMACRO9, b_true }
+	{"chatmacro0", (int *) &chat_macros[0], (size_t) HUSTR_CHATMACRO0, d_true },
+	{"chatmacro1", (int *) &chat_macros[1], (size_t) HUSTR_CHATMACRO1, d_true },
+	{"chatmacro2", (int *) &chat_macros[2], (size_t) HUSTR_CHATMACRO2, d_true },
+	{"chatmacro3", (int *) &chat_macros[3], (size_t) HUSTR_CHATMACRO3, d_true },
+	{"chatmacro4", (int *) &chat_macros[4], (size_t) HUSTR_CHATMACRO4, d_true },
+	{"chatmacro5", (int *) &chat_macros[5], (size_t) HUSTR_CHATMACRO5, d_true },
+	{"chatmacro6", (int *) &chat_macros[6], (size_t) HUSTR_CHATMACRO6, d_true },
+	{"chatmacro7", (int *) &chat_macros[7], (size_t) HUSTR_CHATMACRO7, d_true },
+	{"chatmacro8", (int *) &chat_macros[8], (size_t) HUSTR_CHATMACRO8, d_true },
+	{"chatmacro9", (int *) &chat_macros[9], (size_t) HUSTR_CHATMACRO9, d_true }
 };
 
 int     numdefaults;
@@ -305,7 +305,7 @@ void M_SaveDefaults (void)
 
 
 /* M_LoadDefaults */
-extern byte     scantokey[128];
+extern unsigned char     scantokey[128];
 
 void M_LoadDefaults (void)
 {
@@ -316,7 +316,7 @@ void M_LoadDefaults (void)
 	char        strparm[100];
 	char*       newstring;
 	int         parm;
-	bool32     isstring;
+	d_bool     isstring;
 
 	/* set everything to base values */
 	numdefaults = sizeof(defaults)/sizeof(defaults[0]);
@@ -344,13 +344,13 @@ void M_LoadDefaults (void)
 	{
 		while (!feof(f))
 		{
-			isstring = b_false;
+			isstring = d_false;
 			if (fscanf (f, "%79s %[^\n]\n", def, strparm) == 2)
 			{
 				if (strparm[0] == '"')
 				{
 					/* get a string default */
-					isstring = b_true;
+					isstring = d_true;
 					len = strlen(strparm);
 					newstring = (char *) malloc(len);
 					strparm[len-1] = 0;
@@ -395,19 +395,19 @@ static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int to
 void
 WritePCXfile
 ( char*         filename,
-  byte*         data,
+  unsigned char*         data,
   unsigned int  width,
   unsigned int  height,
-  byte*         palette )
+  unsigned char*         palette )
 {
 	size_t      bytes_remaining;
 	size_t      length;
-	byte*       pcx;
-	byte*       pack;
+	unsigned char*       pcx;
+	unsigned char*       pack;
 
 	length = 0x80 + 1 + (1 << 8) * 3;
 
-	pcx = (byte*)Z_Malloc(length + width * height * 2, PU_STATIC, NULL);
+	pcx = (unsigned char*)Z_Malloc(length + width * height * 2, PU_STATIC, NULL);
 
 	/* Manufacturer */
 	pcx[0] = 0x0A;      /* PCX ID */
@@ -452,7 +452,7 @@ WritePCXfile
 		size_t run_length;
 
 		const size_t run_length_limit = bytes_remaining < 0x3F ? bytes_remaining : 0x3F;
-		const byte run_length_value = *data++;
+		const unsigned char run_length_value = *data++;
 
 		run_length = 1;
 
@@ -489,19 +489,19 @@ WritePCXfile
 void
 WriteBMPfile
 ( char*         filename,
-  byte*         data,
+  unsigned char*         data,
   unsigned int  width,
   unsigned int  height,
-  byte*         palette )
+  unsigned char*         palette )
 {
 	unsigned int i;
-	byte *bmp, *bmp_pointer;
+	unsigned char *bmp, *bmp_pointer;
 
 	const unsigned long rounded_width = (width + (4 - 1)) / 4 * 4; /* Pad width to a multiple of 4, as required by the BMP file format. */
 	const unsigned long bitmap_offset = 0x1A + 0x100 * 3;
 	const unsigned long length = bitmap_offset + rounded_width * height;
 
-	bmp = (byte*)Z_Malloc(length, PU_STATIC, NULL);
+	bmp = (unsigned char*)Z_Malloc(length, PU_STATIC, NULL);
 
 	/* BMP file header */
 
@@ -544,9 +544,9 @@ WriteBMPfile
 
 	for (i = 0; i < 1 << 8; ++i)
 	{
-		const byte blue  = *palette++;
-		const byte green = *palette++;
-		const byte red   = *palette++;
+		const unsigned char blue  = *palette++;
+		const unsigned char green = *palette++;
+		const unsigned char red   = *palette++;
 
 		*bmp_pointer++ = red;
 		*bmp_pointer++ = green;
@@ -574,7 +574,7 @@ WriteBMPfile
 void M_ScreenShot (void)
 {
 	int         i;
-	byte*       linear;
+	unsigned char*       linear;
 	char        lbmname[12];
 
 	/* munge planar buffer to linear */
@@ -599,7 +599,7 @@ void M_ScreenShot (void)
 	/* save the screenshot file */
 	(bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
 				  SCREENWIDTH, SCREENHEIGHT,
-				  (byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+				  (unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
 	players[consoleplayer].message = "screen shot";
 }
@@ -622,18 +622,18 @@ int M_strncasecmp(const char *s1, const char *s2, size_t n)
 	return delta;
 }
 
-bool32 M_FileExists(const char* const filename)
+d_bool M_FileExists(const char* const filename)
 {
 	FILE* const file = fopen(filename, "rb");
 
 	if (file != NULL)
 	{
 		fclose(file);
-		return b_true;
+		return d_true;
 	}
 	else
 	{
-		return b_false;
+		return d_false;
 	}
 }
 
@@ -641,7 +641,7 @@ bool32 M_FileExists(const char* const filename)
 #define SIGN_EXTEND_SHORT(value) SIGN_EXTEND(unsigned int,  16 - 1, value)
 #define SIGN_EXTEND_LONG(value)  SIGN_EXTEND(unsigned long, 32 - 1, value)
 
-int M_BytesToShort(const byte * const data)
+int M_BytesToShort(const unsigned char * const data)
 {
 	unsigned int result;
 	unsigned int i;
@@ -654,7 +654,7 @@ int M_BytesToShort(const byte * const data)
 	return (int)SIGN_EXTEND_SHORT(result);
 }
 
-long M_BytesToLong(const byte * const data)
+long M_BytesToLong(const unsigned char * const data)
 {
 	unsigned long result;
 	unsigned int i;

@@ -27,7 +27,7 @@
 
 
 
-bool32
+d_bool
 M_WriteFile
 ( char const*   name,
   void*         source,
@@ -36,7 +36,7 @@ M_WriteFile
 int
 M_ReadFile
 ( char const*   name,
-  byte**        buffer );
+  unsigned char**        buffer );
 
 void M_ScreenShot (void);
 
@@ -49,15 +49,15 @@ int
 M_DrawText
 ( int           x,
   int           y,
-  bool32       direct,
+  d_bool       direct,
   char*         string );
 
 int M_strncasecmp(const char *s1, const char *s2, size_t n);
 #define M_strcasecmp(s1, s2) M_strncasecmp(s1, s2, (size_t)-1)
 
-bool32 M_FileExists(const char* const filename);
+d_bool M_FileExists(const char* const filename);
 
-int M_BytesToShort(const byte * const data);
-long M_BytesToLong(const byte * const data);
+int M_BytesToShort(const unsigned char * const data);
+long M_BytesToLong(const unsigned char * const data);
 
 #endif

@@ -91,7 +91,7 @@ mobj_t**        blocklinks;
 /*  LineOf Sight calculation. */
 /* Without special effect, this could be */
 /*  used as a PVS lookup as well. */
-byte*           rejectmatrix;
+unsigned char*           rejectmatrix;
 
 
 /* Maintain single and multi player starting spots. */
@@ -108,7 +108,7 @@ mapthing_t      playerstarts[MAXPLAYERS];
 /* P_LoadVertexes */
 void P_LoadVertexes (int lump)
 {
-	byte*               data;
+	unsigned char*               data;
 	int                 i;
 	mapvertex_t*        ml;
 	vertex_t*           li;
@@ -121,7 +121,7 @@ void P_LoadVertexes (int lump)
 	vertexes = (vertex_t*)Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);
 
 	/* Load data into cache. */
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	ml = (mapvertex_t *)data;
 	li = vertexes;
@@ -143,7 +143,7 @@ void P_LoadVertexes (int lump)
 /* P_LoadSegs */
 void P_LoadSegs (int lump)
 {
-	byte*               data;
+	unsigned char*               data;
 	int                 i;
 	mapseg_t*           ml;
 	seg_t*              li;
@@ -154,7 +154,7 @@ void P_LoadSegs (int lump)
 	numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
 	segs = (seg_t*)Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);
 	memset (segs, 0, numsegs*sizeof(seg_t));
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	ml = (mapseg_t *)data;
 	li = segs;
@@ -184,14 +184,14 @@ void P_LoadSegs (int lump)
 /* P_LoadSubsectors */
 void P_LoadSubsectors (int lump)
 {
-	byte*               data;
+	unsigned char*               data;
 	int                 i;
 	mapsubsector_t*     ms;
 	subsector_t*        ss;
 
 	numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
 	subsectors = (subsector_t*)Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	ms = (mapsubsector_t *)data;
 	memset (subsectors,0, numsubsectors*sizeof(subsector_t));
@@ -211,7 +211,7 @@ void P_LoadSubsectors (int lump)
 /* P_LoadSectors */
 void P_LoadSectors (int lump)
 {
-	byte*               data;
+	unsigned char*               data;
 	int                 i;
 	mapsector_t*        ms;
 	sector_t*           ss;
@@ -219,7 +219,7 @@ void P_LoadSectors (int lump)
 	numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
 	sectors = (sector_t*)Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);
 	memset (sectors, 0, numsectors*sizeof(sector_t));
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	ms = (mapsector_t *)data;
 	ss = sectors;
@@ -242,7 +242,7 @@ void P_LoadSectors (int lump)
 /* P_LoadNodes */
 void P_LoadNodes (int lump)
 {
-	byte*       data;
+	unsigned char*       data;
 	int         i;
 	int         j;
 	int         k;
@@ -251,7 +251,7 @@ void P_LoadNodes (int lump)
 
 	numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
 	nodes = (node_t*)Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,0);
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	mn = (mapnode_t *)data;
 	no = nodes;
@@ -277,19 +277,19 @@ void P_LoadNodes (int lump)
 /* P_LoadThings */
 void P_LoadThings (int lump)
 {
-	byte*               data;
+	unsigned char*               data;
 	int                 i;
 	mapthing_t*         mt;
 	int                 numthings;
-	bool32             spawn;
+	d_bool             spawn;
 
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 	numthings = W_LumpLength (lump) / sizeof(mapthing_t);
 
 	mt = (mapthing_t *)data;
 	for (i=0 ; i<numthings ; i++, mt++)
 	{
-		spawn = b_true;
+		spawn = d_true;
 
 		/* Do not spawn cool, new monsters if !commercial */
 		if ( gamemode != commercial)
@@ -306,11 +306,11 @@ void P_LoadThings (int lump)
 			  case 65:  /* Former Human Commando */
 			  case 66:  /* Revenant */
 			  case 84:  /* Wolf SS */
-				spawn = b_false;
+				spawn = d_false;
 				break;
 			}
 		}
-		if (spawn == b_false)
+		if (spawn == d_false)
 			break;
 
 		/* Do spawn all other stuff. */
@@ -331,7 +331,7 @@ void P_LoadThings (int lump)
 /* Also counts secret lines for intermissions. */
 void P_LoadLineDefs (int lump)
 {
-	byte*               data;
+	unsigned char*               data;
 	int                 i;
 	maplinedef_t*       mld;
 	line_t*             ld;
@@ -341,7 +341,7 @@ void P_LoadLineDefs (int lump)
 	numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
 	lines = (line_t*)Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);
 	memset (lines, 0, numlines*sizeof(line_t));
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	mld = (maplinedef_t *)data;
 	ld = lines;
@@ -410,7 +410,7 @@ void P_LoadLineDefs (int lump)
 /* P_LoadSideDefs */
 void P_LoadSideDefs (int lump)
 {
-	byte*               data;
+	unsigned char*               data;
 	int                 i;
 	mapsidedef_t*       msd;
 	side_t*             sd;
@@ -418,7 +418,7 @@ void P_LoadSideDefs (int lump)
 	numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
 	sides = (side_t*)Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);
 	memset (sides, 0, numsides*sizeof(side_t));
-	data = (byte*)W_CacheLumpNum (lump,PU_STATIC);
+	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	msd = (mapsidedef_t *)data;
 	sd = sides;
@@ -623,7 +623,7 @@ P_SetupLevel
 	P_LoadNodes (lumpnum+ML_NODES);
 	P_LoadSegs (lumpnum+ML_SEGS);
 
-	rejectmatrix = (byte*)W_CacheLumpNum (lumpnum+ML_REJECT,PU_LEVEL);
+	rejectmatrix = (unsigned char*)W_CacheLumpNum (lumpnum+ML_REJECT,PU_LEVEL);
 	P_GroupLines ();
 
 	bodyqueslot = 0;

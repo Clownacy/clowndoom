@@ -33,14 +33,14 @@
 
 
 /* Each screen is [SCREENWIDTH*SCREENHEIGHT]; */
-byte*                           screens[5];
+unsigned char*                           screens[5];
 
 fixed_t                         dirtybox[4];
 
 
 
 /* Now where did these came from? */
-const byte gammatable[5][256] =
+const unsigned char gammatable[5][256] =
 {
 	{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,
 	 17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,
@@ -153,8 +153,8 @@ V_CopyRect
   int           desty,
   int           destscrn )
 {
-	const byte* src;
-	byte*       dest;
+	const unsigned char* src;
+	unsigned char*       dest;
 
 #ifdef RANGECHECK
 	if (srcx<0
@@ -197,9 +197,9 @@ V_DrawPatch
 	int         count;
 	int         col;
 	column_t*   column;
-	byte*       desttop;
-	byte*       dest;
-	byte*       source;
+	unsigned char*       desttop;
+	unsigned char*       dest;
+	unsigned char*       source;
 	int         w;
 
 	y -= SHORT(patch->topoffset);
@@ -228,12 +228,12 @@ V_DrawPatch
 
 	for ( ; col<w ; x++, col++, desttop++)
 	{
-		column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
+		column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
 
 		/* step through the posts in a column */
 		while (column->topdelta != 0xff )
 		{
-			source = (byte *)column + 3;
+			source = (unsigned char *)column + 3;
 			dest = desttop + column->topdelta*SCREENWIDTH;
 			count = column->length;
 
@@ -242,7 +242,7 @@ V_DrawPatch
 				*dest = *source++;
 				dest += SCREENWIDTH;
 			}
-			column = (column_t *)(  (byte *)column + column->length
+			column = (column_t *)(  (unsigned char *)column + column->length
 									+ 4 );
 		}
 	}
@@ -262,9 +262,9 @@ V_DrawPatchFlipped
 	int         count;
 	int         col;
 	column_t*   column;
-	byte*       desttop;
-	byte*       dest;
-	const byte* source;
+	unsigned char*       desttop;
+	unsigned char*       dest;
+	const unsigned char* source;
 	int         w;
 
 	y -= SHORT(patch->topoffset);
@@ -291,12 +291,12 @@ V_DrawPatchFlipped
 
 	for ( ; col<w ; x++, col++, desttop++)
 	{
-		column = (column_t *)((byte *)patch + LONG(patch->columnofs[w-1-col]));
+		column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[w-1-col]));
 
 		/* step through the posts in a column */
 		while (column->topdelta != 0xff )
 		{
-			source = (byte *)column + 3;
+			source = (unsigned char *)column + 3;
 			dest = desttop + column->topdelta*SCREENWIDTH;
 			count = column->length;
 
@@ -305,7 +305,7 @@ V_DrawPatchFlipped
 				*dest = *source++;
 				dest += SCREENWIDTH;
 			}
-			column = (column_t *)(  (byte *)column + column->length
+			column = (column_t *)(  (unsigned char *)column + column->length
 									+ 4 );
 		}
 	}
@@ -389,9 +389,9 @@ V_DrawBlock
   int           scrn,
   int           width,
   int           height,
-  const byte*           src )
+  const unsigned char*           src )
 {
-	byte*       dest;
+	unsigned char*       dest;
 
 #ifdef RANGECHECK
 	if (x<0
@@ -427,9 +427,9 @@ V_GetBlock
   int           scrn,
   int           width,
   int           height,
-  byte*         dest )
+  unsigned char*         dest )
 {
-	const byte* src;
+	const unsigned char* src;
 
 #ifdef RANGECHECK
 	if (x<0
@@ -459,7 +459,7 @@ V_GetBlock
 void V_Init (void)
 {
 	int         i;
-	byte*       base;
+	unsigned char*       base;
 
 	/* stick these in low dos memory on PCs */
 

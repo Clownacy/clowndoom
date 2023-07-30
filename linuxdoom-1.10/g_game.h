@@ -54,7 +54,7 @@ void G_BeginRecording (void);
 
 void G_PlayDemo (const char* name);
 void G_TimeDemo (const char* name);
-bool32 G_CheckDemoStatus (void);
+d_bool G_CheckDemoStatus (void);
 
 void G_ExitLevel (void);
 void G_SecretExitLevel (void);
@@ -62,7 +62,7 @@ void G_SecretExitLevel (void);
 void G_WorldDone (void);
 
 void G_Ticker (void);
-bool32 G_Responder (const event_t*     ev);
+d_bool G_Responder (const event_t*     ev);
 
 void G_ScreenShot (void);
 

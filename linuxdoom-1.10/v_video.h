@@ -40,11 +40,11 @@
 
 
 
-extern  byte*           screens[5];
+extern  unsigned char*           screens[5];
 
 extern  fixed_t dirtybox[4];
 
-extern  const byte      gammatable[5][256];
+extern  const unsigned char      gammatable[5][256];
 extern  int     usegamma;
 
 
@@ -87,7 +87,7 @@ V_DrawBlock
   int           scrn,
   int           width,
   int           height,
-  const byte*           src );
+  const unsigned char*           src );
 
 /* Reads a linear block of pixels into the view buffer. */
 void
@@ -97,7 +97,7 @@ V_GetBlock
   int           scrn,
   int           width,
   int           height,
-  byte*         dest );
+  unsigned char*         dest );
 
 
 void

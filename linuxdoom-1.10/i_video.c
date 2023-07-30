@@ -142,14 +142,14 @@ void I_FinishUpdate (void)
 
 
 /* I_ReadScreen */
-void I_ReadScreen (byte* scr)
+void I_ReadScreen (unsigned char* scr)
 {
 	memcpy(scr, screens[0], SCREENWIDTH*SCREENHEIGHT);
 }
 
 
 /* I_SetPalette */
-void I_SetPalette (const byte* palette)
+void I_SetPalette (const unsigned char* palette)
 {
 	register int        i;
 	const unsigned char* gamma = gammatable[usegamma];
@@ -194,7 +194,7 @@ void I_InitGraphics(void)
 
 	IB_InitGraphics("clowndoom", output_width, output_height, &bytes_per_pixel);
 
-	I_GrabMouse(b_true);
+	I_GrabMouse(d_true);
 
 	/* TODO - handle failed allocations */
 	colors = (unsigned char*)malloc(256 * bytes_per_pixel);
@@ -238,7 +238,7 @@ void I_ShutdownGraphics(void)
 }
 
 
-void I_GrabMouse(bool32 grab)
+void I_GrabMouse(d_bool grab)
 {
 	IB_GrabMouse(grab);
 }

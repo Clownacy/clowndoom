@@ -205,7 +205,7 @@ void I_InitNetwork (void)
 #elif defined(_WIN32)
 	u_long
 #endif
-	                    trueval = b_true;
+	                    trueval = d_true;
 	int                 i;
 	int                 p;
 	struct hostent*     hostentry;      /* host information entry */
@@ -244,10 +244,10 @@ void I_InitNetwork (void)
 	if (!i)
 	{
 		/* single player game */
-		netgame = b_false;
+		netgame = d_false;
 		doomcom->id = DOOMCOM_ID;
 		doomcom->numplayers = doomcom->numnodes = 1;
-		doomcom->deathmatch = b_false;
+		doomcom->deathmatch = d_false;
 		doomcom->consoleplayer = 0;
 		return;
 	}
@@ -265,7 +265,7 @@ void I_InitNetwork (void)
 	}
 #endif
 
-	netgame = b_true;
+	netgame = d_true;
 
 	/* parse player number and host list */
 	doomcom->consoleplayer = myargv[i+1][0]-'1';

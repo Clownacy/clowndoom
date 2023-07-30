@@ -88,7 +88,7 @@ const char*     finaleflat;
 
 void    F_StartCast (void);
 void    F_CastTicker (void);
-bool32 F_CastResponder (const event_t *ev);
+d_bool F_CastResponder (const event_t *ev);
 void    F_CastDrawer (void);
 
 /* F_StartFinale */
@@ -98,8 +98,8 @@ void F_StartFinale (void)
 
 	gameaction = ga_nothing;
 	gamestate = GS_FINALE;
-	viewactive = b_false;
-	automapactive = b_false;
+	viewactive = d_false;
+	automapactive = d_false;
 
 	/* Okay - IWAD dependend stuff. */
 	/* This has been changed severly, and */
@@ -112,7 +112,7 @@ void F_StartFinale (void)
 	  case registered:
 	  case retail:
 	  {
-		S_ChangeMusic(mus_victor, b_true);
+		S_ChangeMusic(mus_victor, d_true);
 
 		switch (gameepisode)
 		{
@@ -142,7 +142,7 @@ void F_StartFinale (void)
 	  /* DOOM II and missions packs with E1, M34 */
 	  case commercial:
 	  {
-		  S_ChangeMusic(mus_read_m, b_true);
+		  S_ChangeMusic(mus_read_m, d_true);
 
 		  switch (gamemap)
 		  {
@@ -197,7 +197,7 @@ void F_StartFinale (void)
 
 	  /* Indeterminate. */
 	  default:
-		S_ChangeMusic(mus_read_m, b_true);
+		S_ChangeMusic(mus_read_m, d_true);
 		finaleflat = "F_SKY1"; /* Not used anywhere else. */
 		finaletext = ctext[0];  /* FIXME - other text, music? */
 		break;
@@ -210,12 +210,12 @@ void F_StartFinale (void)
 
 
 
-bool32 F_Responder (const event_t *event)
+d_bool F_Responder (const event_t *event)
 {
 	if (finalestage == 2)
 		return F_CastResponder (event);
 
-	return b_false;
+	return d_false;
 }
 
 
@@ -274,8 +274,8 @@ extern  patch_t *hu_font[HU_FONTSIZE];
 
 void F_TextWrite (void)
 {
-	byte*       src;
-	byte*       dest;
+	unsigned char*       src;
+	unsigned char*       dest;
 
 	int         x,y,w;
 	int         count;
@@ -285,7 +285,7 @@ void F_TextWrite (void)
 	int         cy;
 
 	/* erase the entire screen to a tiled background */
-	src = (byte*)W_CacheLumpName ( finaleflat , PU_CACHE);
+	src = (unsigned char*)W_CacheLumpName ( finaleflat , PU_CACHE);
 	dest = screens[0];
 
 	for (y=0 ; y<SCREENHEIGHT ; y++)
@@ -374,10 +374,10 @@ castinfo_t      castorder[] = {
 int             castnum;
 int             casttics;
 state_t*        caststate;
-bool32         castdeath;
+d_bool         castdeath;
 int             castframes;
 int             castonmelee;
-bool32         castattacking;
+d_bool         castattacking;
 
 
 /* F_StartCast */
@@ -390,12 +390,12 @@ void F_StartCast (void)
 	castnum = 0;
 	caststate = &states[mobjinfo[castorder[castnum].type].seestate];
 	casttics = caststate->tics;
-	castdeath = b_false;
+	castdeath = d_false;
 	finalestage = 2;
 	castframes = 0;
 	castonmelee = 0;
-	castattacking = b_false;
-	S_ChangeMusic(mus_evil, b_true);
+	castattacking = d_false;
+	S_ChangeMusic(mus_evil, d_true);
 }
 
 
@@ -412,7 +412,7 @@ void F_CastTicker (void)
 	{
 		/* switch from deathstate to next monster */
 		castnum++;
-		castdeath = b_false;
+		castdeath = d_false;
 		if (castorder[castnum].name == NULL)
 			castnum = 0;
 		if (mobjinfo[castorder[castnum].type].seesound)
@@ -468,7 +468,7 @@ void F_CastTicker (void)
 	if (castframes == 12)
 	{
 		/* go into attack frame */
-		castattacking = b_true;
+		castattacking = d_true;
 		if (castonmelee)
 			caststate=&states[mobjinfo[castorder[castnum].type].meleestate];
 		else
@@ -491,7 +491,7 @@ void F_CastTicker (void)
 			||  caststate == &states[mobjinfo[castorder[castnum].type].seestate] )
 		{
 		  stopattack:
-			castattacking = b_false;
+			castattacking = d_false;
 			castframes = 0;
 			caststate = &states[mobjinfo[castorder[castnum].type].seestate];
 		}
@@ -505,24 +505,24 @@ void F_CastTicker (void)
 
 /* F_CastResponder */
 
-bool32 F_CastResponder (const event_t* ev)
+d_bool F_CastResponder (const event_t* ev)
 {
 	if (ev->type != ev_keydown)
-		return b_false;
+		return d_false;
 
 	if (castdeath)
-		return b_true;                    /* already in dying frames */
+		return d_true;                    /* already in dying frames */
 
 	/* go into death frame */
-	castdeath = b_true;
+	castdeath = d_true;
 	caststate = &states[mobjinfo[castorder[castnum].type].deathstate];
 	casttics = caststate->tics;
 	castframes = 0;
-	castattacking = b_false;
+	castattacking = d_false;
 	if (mobjinfo[castorder[castnum].type].deathsound)
 		S_StartSound (NULL, mobjinfo[castorder[castnum].type].deathsound);
 
-	return b_true;
+	return d_true;
 }
 
 
@@ -585,7 +585,7 @@ void F_CastDrawer (void)
 	spritedef_t*        sprdef;
 	spriteframe_t*      sprframe;
 	int                 lump;
-	bool32             flip;
+	d_bool             flip;
 	patch_t*            patch;
 
 	/* erase the entire screen to a background */
@@ -597,7 +597,7 @@ void F_CastDrawer (void)
 	sprdef = &sprites[caststate->sprite];
 	sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
 	lump = sprframe->lump[0];
-	flip = (bool32)sprframe->flip[0];
+	flip = (d_bool)sprframe->flip[0];
 
 	patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
 	if (flip)
@@ -615,18 +615,18 @@ F_DrawPatchCol
   int           col )
 {
 	column_t*   column;
-	byte*       source;
-	byte*       dest;
-	byte*       desttop;
+	unsigned char*       source;
+	unsigned char*       dest;
+	unsigned char*       desttop;
 	int         count;
 
-	column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
+	column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
 	desttop = screens[0]+x;
 
 	/* step through the posts in a column */
 	while (column->topdelta != 0xff )
 	{
-		source = (byte *)column + 3;
+		source = (unsigned char *)column + 3;
 		dest = desttop + column->topdelta*SCREENWIDTH;
 		count = column->length;
 
@@ -635,7 +635,7 @@ F_DrawPatchCol
 			*dest = *source++;
 			dest += SCREENWIDTH;
 		}
-		column = (column_t *)(  (byte *)column + column->length + 4 );
+		column = (column_t *)(  (unsigned char *)column + column->length + 4 );
 	}
 }
 

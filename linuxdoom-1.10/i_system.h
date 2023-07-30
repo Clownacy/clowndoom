@@ -33,7 +33,7 @@ void I_Init (void);
 /* Called by startup code */
 /* to get the ammount of memory to malloc */
 /* for the zone management. */
-byte*   I_ZoneBase (size_t *size);
+unsigned char*   I_ZoneBase (size_t *size);
 
 
 /* Called by D_DoomLoop, */
@@ -59,7 +59,7 @@ void I_Quit (void);
 
 /* Allocates from low memory under dos, */
 /* just mallocs under unix */
-byte* I_AllocLow (size_t length);
+unsigned char* I_AllocLow (size_t length);
 
 void I_Tactile (int on, int off, int total);
 

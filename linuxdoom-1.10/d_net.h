@@ -53,11 +53,11 @@ typedef struct
 	/* High bit is retransmit request. */
 	unsigned            checksum;
 	/* Only valid if NCMD_RETRANSMIT. */
-	byte                retransmitfrom;
+	unsigned char                retransmitfrom;
 
-	byte                starttic;
-	byte                player;
-	byte                numtics;
+	unsigned char                starttic;
+	unsigned char                player;
+	unsigned char                numtics;
 	ticcmd_t            cmds[BACKUPTICS];
 
 } doomdata_t;

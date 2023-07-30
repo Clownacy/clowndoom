@@ -87,14 +87,14 @@ void D_DoomLoop (void);
 const char*     wadfiles[MAXWADFILES];
 
 
-bool32         devparm;        /* started game with -devparm */
-bool32         nomonsters;     /* checkparm of -nomonsters */
-bool32         respawnparm;    /* checkparm of -respawn */
-bool32         fastparm;       /* checkparm of -fast */
+d_bool         devparm;        /* started game with -devparm */
+d_bool         nomonsters;     /* checkparm of -nomonsters */
+d_bool         respawnparm;    /* checkparm of -respawn */
+d_bool         fastparm;       /* checkparm of -fast */
 
-bool32         drone;
+d_bool         drone;
 
-bool32         singletics = b_false; /* debug flag to cancel adaptiveness */
+d_bool         singletics = d_false; /* debug flag to cancel adaptiveness */
 
 
 
@@ -102,16 +102,16 @@ bool32         singletics = b_false; /* debug flag to cancel adaptiveness */
 /* extern  int  sfxVolume; */
 /* extern  int  musicVolume; */
 
-extern  bool32 inhelpscreens;
+extern  d_bool inhelpscreens;
 
 skill_t         startskill;
 int             startepisode;
 int             startmap;
-bool32         autostart;
+d_bool         autostart;
 
 FILE*           debugfile;
 
-bool32         advancedemo;
+d_bool         advancedemo;
 
 
 
@@ -172,30 +172,30 @@ void D_ProcessEvents (void)
 
 /* wipegamestate can be set to -1 to force a wipe on the next draw */
 gamestate_t     wipegamestate = GS_DEMOSCREEN;
-extern  bool32 setsizeneeded;
+extern  d_bool setsizeneeded;
 extern  int             showMessages;
 void R_ExecuteSetViewSize (void);
 
 void D_Display (void)
 {
-	static  bool32             viewactivestate = b_false;
-	static  bool32             menuactivestate = b_false;
-	static  bool32             inhelpscreensstate = b_false;
-	static  bool32             fullscreen = b_false;
+	static  d_bool             viewactivestate = d_false;
+	static  d_bool             menuactivestate = d_false;
+	static  d_bool             inhelpscreensstate = d_false;
+	static  d_bool             fullscreen = d_false;
 	static  gamestate_t         oldgamestate = GS_FORCEWIPE;
 	static  int                 borderdrawcount;
 	int                         nowtime;
 	int                         tics;
 	int                         wipestart;
 	int                         y;
-	bool32                     done;
-	bool32                     wipe;
-	bool32                     redrawsbar;
+	d_bool                     done;
+	d_bool                     wipe;
+	d_bool                     redrawsbar;
 
 	if (nodrawers)
 		return;                    /* for comparative timing / profiling */
 
-	redrawsbar = b_false;
+	redrawsbar = d_false;
 
 	/* change the view size if needed */
 	if (setsizeneeded)
@@ -208,11 +208,11 @@ void D_Display (void)
 	/* save the current screen if about to wipe */
 	if (gamestate != wipegamestate)
 	{
-		wipe = b_true;
+		wipe = d_true;
 		wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
 	}
 	else
-		wipe = b_false;
+		wipe = d_false;
 
 	if (gamestate == GS_LEVEL && gametic)
 		HU_Erase();
@@ -226,9 +226,9 @@ void D_Display (void)
 		if (automapactive)
 			AM_Drawer ();
 		if (wipe || (viewheight != 200 && fullscreen) )
-			redrawsbar = b_true;
+			redrawsbar = d_true;
 		if (inhelpscreensstate && !inhelpscreens)
-			redrawsbar = b_true;              /* just put away the help screen */
+			redrawsbar = d_true;              /* just put away the help screen */
 		ST_Drawer (viewheight == 200, redrawsbar );
 		fullscreen = viewheight == 200;
 		break;
@@ -261,12 +261,12 @@ void D_Display (void)
 
 	/* clean up border stuff */
 	if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-		I_SetPalette ((byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		I_SetPalette ((unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
 	/* see if the border needs to be initially drawn */
 	if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
 	{
-		viewactivestate = b_false;        /* view was not active */
+		viewactivestate = d_false;        /* view was not active */
 		R_FillBackScreen ();    /* draw the pattern into the back screen */
 	}
 
@@ -336,7 +336,7 @@ void D_Display (void)
 
 
 /*  D_DoomLoop */
-extern  bool32         demorecording;
+extern  d_bool         demorecording;
 
 void D_DoomLoop (void)
 {
@@ -412,7 +412,7 @@ void D_PageDrawer (void)
 /* Called after each demo or intro demosequence finishes */
 void D_AdvanceDemo (void)
 {
-	advancedemo = b_true;
+	advancedemo = d_true;
 }
 
 
@@ -421,9 +421,9 @@ void D_AdvanceDemo (void)
  void D_DoAdvanceDemo (void)
 {
 	players[consoleplayer].playerstate = PST_LIVE;  /* not reborn */
-	advancedemo = b_false;
-	usergame = b_false;               /* no save / end game here */
-	paused = b_false;
+	advancedemo = d_false;
+	usergame = d_false;               /* no save / end game here */
+	paused = d_false;
 	gameaction = ga_nothing;
 
 	if ( gamemode == retail )
@@ -554,7 +554,7 @@ void IdentifyVersion (void)
 	{
 		gamemode = shareware;
 		gamemission = doom;
-		devparm = b_true;
+		devparm = d_true;
 		D_AddFile (DEVDATA"doom1.wad");
 		D_AddFile (DEVMAPS"data_se/texture1.lmp");
 		D_AddFile (DEVMAPS"data_se/pnames.lmp");
@@ -564,7 +564,7 @@ void IdentifyVersion (void)
 	{
 		gamemode = registered;
 		gamemission = doom;
-		devparm = b_true;
+		devparm = d_true;
 		D_AddFile (DEVDATA"doom.wad");
 		D_AddFile (DEVMAPS"data_se/texture1.lmp");
 		D_AddFile (DEVMAPS"data_se/texture2.lmp");
@@ -575,7 +575,7 @@ void IdentifyVersion (void)
 	{
 		gamemode = commercial;
 		gamemission = doom2;
-		devparm = b_true;
+		devparm = d_true;
 		/* I don't bother
 		if(plutonia)
 			D_AddFile (DEVDATA"plutonia.wad");
@@ -734,7 +734,7 @@ void D_DoomMain (void)
 	IdentifyVersion ();
 
 	setbuf (stdout, NULL);
-	modifiedgame = b_false;
+	modifiedgame = d_false;
 
 	nomonsters = M_CheckParm ("-nomonsters");
 	respawnparm = M_CheckParm ("-respawn");
@@ -877,7 +877,7 @@ void D_DoomMain (void)
 	{
 		/* the parms after p are wadfile/lump names, */
 		/* until end of parms or another - preceded parm */
-		modifiedgame = b_true;            /* homebrew levels */
+		modifiedgame = d_true;            /* homebrew levels */
 		while (++p != myargc && myargv[p][0] != '-')
 			D_AddFile (myargv[p]);
 	}
@@ -898,14 +898,14 @@ void D_DoomMain (void)
 	startskill = sk_medium;
 	startepisode = 1;
 	startmap = 1;
-	autostart = b_false;
+	autostart = d_false;
 
 
 	p = M_CheckParm ("-skill");
 	if (p && p < myargc-1)
 	{
 		startskill = (skill_t)(myargv[p+1][0]-'1');
-		autostart = b_true;
+		autostart = d_true;
 	}
 
 	p = M_CheckParm ("-episode");
@@ -913,7 +913,7 @@ void D_DoomMain (void)
 	{
 		startepisode = myargv[p+1][0]-'0';
 		startmap = 1;
-		autostart = b_true;
+		autostart = d_true;
 	}
 
 	p = M_CheckParm ("-timer");
@@ -941,7 +941,7 @@ void D_DoomMain (void)
 			startepisode = myargv[p+1][0]-'0';
 			startmap = myargv[p+2][0]-'0';
 		}
-		autostart = b_true;
+		autostart = d_true;
 	}
 
 	/* init subsystems */
@@ -1066,13 +1066,13 @@ void D_DoomMain (void)
 	if (p && p < myargc-1)
 	{
 		G_RecordDemo (myargv[p+1]);
-		autostart = b_true;
+		autostart = d_true;
 	}
 
 	p = M_CheckParm ("-playdemo");
 	if (p && p < myargc-1)
 	{
-		singledemo = b_true;              /* quit after one demo */
+		singledemo = d_true;              /* quit after one demo */
 		G_DeferedPlayDemo (myargv[p+1]);
 		D_DoomLoop ();  /* never returns */
 	}

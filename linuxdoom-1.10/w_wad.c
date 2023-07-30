@@ -141,7 +141,7 @@ void W_AddFile (const char *filename)
 	size_t              startlump;
 	lumpinfo_t          singleinfo;
 	FILE*               storehandle;
-	bool32             singlelump;
+	d_bool             singlelump;
 
 	/* open the file and add to directory */
 
@@ -496,7 +496,7 @@ void W_Profile (void)
 		}
 		else
 		{
-			block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
+			block = (memblock_t *) ( (unsigned char *)ptr - sizeof(memblock_t));
 			if (block->tag < PU_PURGELEVEL)
 				ch = 'S';
 			else

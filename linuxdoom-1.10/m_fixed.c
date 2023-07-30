@@ -51,19 +51,19 @@ static void Subtract(SplitInteger * const minuend, const SplitInteger * const su
 	}
 }
 
-static bool32 GreaterThan(const SplitInteger * const a, const SplitInteger * const b)
+static d_bool GreaterThan(const SplitInteger * const a, const SplitInteger * const b)
 {
 	unsigned int i;
 
 	for (i = 0; i < 3; ++i)
 	{
 		if (a->splits[i] > b->splits[i])
-			return b_true;
+			return d_true;
 		else if (a->splits[i] < b->splits[i])
-			return b_false;
+			return d_false;
 	}
 
-	return b_false;
+	return d_false;
 }
 
 static void LeftShift(SplitInteger * const value)

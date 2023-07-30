@@ -212,7 +212,7 @@ static int      grid = 0;
 
 static int      leveljuststarted = 1;   /* kluge until AM_LevelInit() is called */
 
-bool32         automapactive = b_false;
+d_bool         automapactive = d_false;
 static int      finit_width = SCREENWIDTH;
 static int      finit_height = SCREENHEIGHT - 32;
 
@@ -225,7 +225,7 @@ static int      f_w;
 static int      f_h;
 
 static int      lightlev;               /* used for funky strobing effect */
-static byte*    fb;                     /* pseudo-frame buffer */
+static unsigned char*    fb;                     /* pseudo-frame buffer */
 static int      amclock;
 
 static mpoint_t m_paninc; /* how far the window pans each tic (map coords) */
@@ -279,9 +279,9 @@ static int followplayer = 1; /* specifies whether to follow the player around */
 static unsigned char cheat_amap_seq[] = { 0xb2, 0x26, 0x26, 0x2e, 0xff };
 static cheatseq_t cheat_amap = { cheat_amap_seq, 0 };
 
-static bool32 stopped = b_true;
+static d_bool stopped = d_true;
 
-extern bool32 viewactive;
+extern d_bool viewactive;
 /* extern byte screens[][SCREENWIDTH*SCREENHEIGHT]; */
 
 
@@ -433,7 +433,7 @@ void AM_initVariables(void)
 	int pnum;
 	static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
 
-	automapactive = b_true;
+	automapactive = d_true;
 	fb = screens[0];
 
 	f_oldloc.x = INT_MAX;
@@ -527,9 +527,9 @@ void AM_Stop (void)
 	static event_t st_notify = { ev_keyup, AM_MSGEXITED, 0, 0 };
 
 	AM_unloadPics();
-	automapactive = b_false;
+	automapactive = d_false;
 	ST_Responder(&st_notify);
-	stopped = b_true;
+	stopped = d_true;
 }
 
 void AM_Start (void)
@@ -537,7 +537,7 @@ void AM_Start (void)
 	static int lastlevel = -1, lastepisode = -1;
 
 	if (!stopped) AM_Stop();
-	stopped = b_false;
+	stopped = d_false;
 	if (lastlevel != gamemap || lastepisode != gameepisode)
 	{
 		AM_LevelInit();
@@ -566,7 +566,7 @@ void AM_maxOutWindowScale(void)
 
 
 /* Handle events (user inputs) in automap mode */
-bool32
+d_bool
 AM_Responder
 ( const event_t*        ev )
 {
@@ -575,39 +575,39 @@ AM_Responder
 	static int bigstate=0;
 	static char buffer[20];
 
-	rc = b_false;
+	rc = d_false;
 
 	if (!automapactive)
 	{
 		if (ev->type == ev_keydown && ev->data1 == AM_STARTKEY)
 		{
 			AM_Start ();
-			viewactive = b_false;
-			rc = b_true;
+			viewactive = d_false;
+			rc = d_true;
 		}
 	}
 
 	else if (ev->type == ev_keydown)
 	{
 
-		rc = b_true;
+		rc = d_true;
 		switch(ev->data1)
 		{
 		  case AM_PANRIGHTKEY: /* pan right */
 			if (!followplayer) m_paninc.x = FTOM(F_PANINC);
-			else rc = b_false;
+			else rc = d_false;
 			break;
 		  case AM_PANLEFTKEY: /* pan left */
 			if (!followplayer) m_paninc.x = -FTOM(F_PANINC);
-			else rc = b_false;
+			else rc = d_false;
 			break;
 		  case AM_PANUPKEY: /* pan up */
 			if (!followplayer) m_paninc.y = FTOM(F_PANINC);
-			else rc = b_false;
+			else rc = d_false;
 			break;
 		  case AM_PANDOWNKEY: /* pan down */
 			if (!followplayer) m_paninc.y = -FTOM(F_PANINC);
-			else rc = b_false;
+			else rc = d_false;
 			break;
 		  case AM_ZOOMOUTKEY: /* zoom out */
 			mtof_zoommul = M_ZOOMOUT;
@@ -619,7 +619,7 @@ AM_Responder
 			break;
 		  case AM_ENDKEY:
 			bigstate = 0;
-			viewactive = b_true;
+			viewactive = d_true;
 			AM_Stop ();
 			break;
 		  case AM_GOBIGKEY:
@@ -650,18 +650,18 @@ AM_Responder
 			plr->message = AMSTR_MARKSCLEARED;
 			break;
 		  default:
-			rc = b_false;
+			rc = d_false;
 		}
 		if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data1))
 		{
-			rc = b_false;
+			rc = d_false;
 			cheating = (cheating+1) % 3;
 		}
 	}
 
 	else if (ev->type == ev_keyup)
 	{
-		rc = b_false;
+		rc = d_false;
 		switch (ev->data1)
 		{
 		  case AM_PANRIGHTKEY:
@@ -782,7 +782,7 @@ void AM_clearFB(int color)
 /* Based on Cohen-Sutherland clipping algorithm but with a slightly */
 /* faster reject and precalculated slopes.  If the speed is needed, */
 /* use a hash algorithm to handle  the common cases. */
-bool32
+d_bool
 AM_clipMline
 ( mline_t*      ml,
   fline_t*      fl )
@@ -824,7 +824,7 @@ AM_clipMline
 		outcode2 = BOTTOM;
 
 	if (outcode1 & outcode2)
-		return b_false; /* trivially outside */
+		return d_false; /* trivially outside */
 
 	if (ml->a.x < m_x)
 		outcode1 |= LEFT;
@@ -837,7 +837,7 @@ AM_clipMline
 		outcode2 |= RIGHT;
 
 	if (outcode1 & outcode2)
-		return b_false; /* trivially outside */
+		return d_false; /* trivially outside */
 
 	/* transform to frame-buffer coordinates. */
 	fl->a.x = CXMTOF(ml->a.x);
@@ -849,7 +849,7 @@ AM_clipMline
 	DOOUTCODE(outcode2, fl->b.x, fl->b.y);
 
 	if (outcode1 & outcode2)
-		return b_false;
+		return d_false;
 
 	while (outcode1 | outcode2)
 	{
@@ -902,10 +902,10 @@ AM_clipMline
 		}
 
 		if (outcode1 & outcode2)
-			return b_false; /* trivially outside */
+			return d_false; /* trivially outside */
 	}
 
-	return b_true;
+	return d_true;
 }
 #undef DOOUTCODE
 

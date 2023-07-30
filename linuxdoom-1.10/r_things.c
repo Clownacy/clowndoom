@@ -94,7 +94,7 @@ R_InstallSpriteLump
 ( int           lump,
   unsigned      frame,
   unsigned      rotation,
-  bool32       flipped )
+  d_bool       flipped )
 {
 	int         r;
 
@@ -108,29 +108,29 @@ R_InstallSpriteLump
 	if (rotation == 0)
 	{
 		/* the lump should be used for all rotations */
-		if (sprtemp[frame].rotate == b_false)
+		if (sprtemp[frame].rotate == d_false)
 			I_Error ("R_InitSprites: Sprite %s frame %c has "
 					 "multip rot=0 lump", spritename, 'A'+frame);
 
-		if (sprtemp[frame].rotate == b_true)
+		if (sprtemp[frame].rotate == d_true)
 			I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 					 "and a rot=0 lump", spritename, 'A'+frame);
 
-		sprtemp[frame].rotate = b_false;
+		sprtemp[frame].rotate = d_false;
 		for (r=0 ; r<8 ; r++)
 		{
 			sprtemp[frame].lump[r] = lump - firstspritelump;
-			sprtemp[frame].flip[r] = (byte)flipped;
+			sprtemp[frame].flip[r] = (unsigned char)flipped;
 		}
 		return;
 	}
 
 	/* the lump is only used for one rotation */
-	if (sprtemp[frame].rotate == b_false)
+	if (sprtemp[frame].rotate == d_false)
 		I_Error ("R_InitSprites: Sprite %s frame %c has rotations "
 				 "and a rot=0 lump", spritename, 'A'+frame);
 
-	sprtemp[frame].rotate = b_true;
+	sprtemp[frame].rotate = d_true;
 
 	/* make 0 based */
 	rotation--;
@@ -140,7 +140,7 @@ R_InstallSpriteLump
 				 spritename, 'A'+frame, '1'+rotation);
 
 	sprtemp[frame].lump[rotation] = lump - firstspritelump;
-	sprtemp[frame].flip[rotation] = (byte)flipped;
+	sprtemp[frame].flip[rotation] = (unsigned char)flipped;
 }
 
 
@@ -210,13 +210,13 @@ void R_InitSpriteDefs (const char* const *namelist)
 				else
 					patched = l;
 
-				R_InstallSpriteLump (patched, frame, rotation, b_false);
+				R_InstallSpriteLump (patched, frame, rotation, d_false);
 
 				if (lumpinfo[l].name[6])
 				{
 					frame = lumpinfo[l].name[6] - 'A';
 					rotation = lumpinfo[l].name[7] - '0';
-					R_InstallSpriteLump (l, frame, rotation, b_true);
+					R_InstallSpriteLump (l, frame, rotation, d_true);
 				}
 			}
 		}
@@ -347,7 +347,7 @@ void R_DrawMaskedColumn (column_t* column)
 
 		if (dc_yl <= dc_yh)
 		{
-			dc_source = (byte *)column + 3;
+			dc_source = (unsigned char *)column + 3;
 			dc_texturemid = basetexturemid - (column->topdelta<<FRACBITS);
 			/* dc_source = (byte *)column + 3 - column->topdelta; */
 
@@ -355,7 +355,7 @@ void R_DrawMaskedColumn (column_t* column)
 			/*  or (SHADOW) R_DrawFuzzColumn. */
 			colfunc ();
 		}
-		column = (column_t *)(  (byte *)column + column->length + 4);
+		column = (column_t *)(  (unsigned char *)column + column->length + 4);
 	}
 
 	dc_texturemid = basetexturemid;
@@ -404,7 +404,7 @@ R_DrawVisSprite
 		if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
 			I_Error ("R_DrawSpriteRange: bad texturecolumn");
 #endif
-		column = (column_t *) ((byte *)patch +
+		column = (column_t *) ((unsigned char *)patch +
 							   LONG(patch->columnofs[texturecolumn]));
 		R_DrawMaskedColumn (column);
 	}
@@ -438,7 +438,7 @@ void R_ProjectSprite (mobj_t* thing)
 	int                 lump;
 
 	unsigned            rot;
-	bool32             flip;
+	d_bool             flip;
 
 	int                 index;
 
@@ -490,13 +490,13 @@ void R_ProjectSprite (mobj_t* thing)
 		ang = R_PointToAngle (thing->x, thing->y);
 		rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
 		lump = sprframe->lump[rot];
-		flip = (bool32)sprframe->flip[rot];
+		flip = (d_bool)sprframe->flip[rot];
 	}
 	else
 	{
 		/* use single rotation for all views */
 		lump = sprframe->lump[0];
-		flip = (bool32)sprframe->flip[0];
+		flip = (d_bool)sprframe->flip[0];
 	}
 
 	/* calculate edges of the shape */
@@ -615,7 +615,7 @@ void R_DrawPSprite (pspdef_t* psp)
 	spritedef_t*        sprdef;
 	spriteframe_t*      sprframe;
 	int                 lump;
-	bool32             flip;
+	d_bool             flip;
 	vissprite_t*        vis;
 	vissprite_t         avis;
 
@@ -634,7 +634,7 @@ void R_DrawPSprite (pspdef_t* psp)
 	sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
 
 	lump = sprframe->lump[0];
-	flip = (bool32)sprframe->flip[0];
+	flip = (d_bool)sprframe->flip[0];
 
 	/* calculate edges of the shape */
 	tx = psp->sx-160*FRACUNIT;

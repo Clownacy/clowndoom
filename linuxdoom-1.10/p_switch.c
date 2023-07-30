@@ -257,7 +257,7 @@ P_ChangeSwitchTexture
 /* P_UseSpecialLine */
 /* Called when a thing uses a special line. */
 /* Only the front sides of lines are usable. */
-bool32
+d_bool
 P_UseSpecialLine
 ( mobj_t*       thing,
   line_t*       line,
@@ -276,7 +276,7 @@ P_UseSpecialLine
 			break;
 
 		  default:
-			return b_false;
+			return d_false;
 			break;
 		}
 	}
@@ -287,7 +287,7 @@ P_UseSpecialLine
 	{
 		/* never open secret doors */
 		if (line->flags & ML_SECRET)
-			return b_false;
+			return d_false;
 
 		switch(line->special)
 		{
@@ -298,7 +298,7 @@ P_UseSpecialLine
 			break;
 
 		  default:
-			return b_false;
+			return d_false;
 			break;
 		}
 	}
@@ -634,6 +634,6 @@ P_UseSpecialLine
 
 	}
 
-	return b_true;
+	return d_true;
 }
 

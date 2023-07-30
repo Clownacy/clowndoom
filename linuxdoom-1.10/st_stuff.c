@@ -260,7 +260,7 @@
 static player_t*        plyr;
 
 /* ST_Start() has just been called */
-static bool32          st_firsttime;
+static d_bool          st_firsttime;
 
 /* used to execute ST_Init() only once */
 static int              veryfirsttime = 1;
@@ -281,25 +281,25 @@ static st_chatstateenum_t       st_chatstate;
 static st_stateenum_t   st_gamestate;
 
 /* whether left-side main status bar is active */
-static bool32          st_statusbaron;
+static d_bool          st_statusbaron;
 
 /* whether status bar chat is active */
-static bool32          st_chat;
+static d_bool          st_chat;
 
 /* value of st_chat before message popped up */
-static bool32          st_oldchat;
+static d_bool          st_oldchat;
 
 /* whether chat window has the cursor on */
-static bool32          st_cursoron;
+static d_bool          st_cursoron;
 
 /* !deathmatch */
-static bool32          st_notdeathmatch;
+static d_bool          st_notdeathmatch;
 
 /* !deathmatch && st_statusbaron */
-static bool32          st_armson;
+static d_bool          st_armson;
 
 /* !deathmatch */
-static bool32          st_fragson;
+static d_bool          st_fragson;
 
 /* main bar left */
 static patch_t*         sbar;
@@ -368,7 +368,7 @@ static int      st_fragscount;
 static int      st_oldhealth = -1;
 
 /* used for evil grin */
-static bool32  oldweaponsowned[NUMWEAPONS];
+static d_bool  oldweaponsowned[NUMWEAPONS];
 
  /* count until face changes */
 static int      st_facecount = 0;
@@ -500,7 +500,7 @@ void ST_refreshBackground(void)
 
 /* Respond to keyboard input events, */
 /*  intercept cheats. */
-bool32
+d_bool
 ST_Responder (const event_t* ev)
 {
   int           i;
@@ -513,7 +513,7 @@ ST_Responder (const event_t* ev)
 	{
 	  case AM_MSGENTERED:
 		st_gamestate = AutomapState;
-		st_firsttime = b_true;
+		st_firsttime = d_true;
 		break;
 
 	  case AM_MSGEXITED:
@@ -553,7 +553,7 @@ ST_Responder (const event_t* ev)
 		plyr->armortype = 2;
 
 		for (i=0;i<NUMWEAPONS;i++)
-		  plyr->weaponowned[i] = b_true;
+		  plyr->weaponowned[i] = d_true;
 
 		for (i=0;i<NUMAMMO;i++)
 		  plyr->ammo[i] = plyr->maxammo[i];
@@ -567,13 +567,13 @@ ST_Responder (const event_t* ev)
 		plyr->armortype = 2;
 
 		for (i=0;i<NUMWEAPONS;i++)
-		  plyr->weaponowned[i] = b_true;
+		  plyr->weaponowned[i] = d_true;
 
 		for (i=0;i<NUMAMMO;i++)
 		  plyr->ammo[i] = plyr->maxammo[i];
 
 		for (i=0;i<NUMCARDS;i++)
-		  plyr->cards[i] = b_true;
+		  plyr->cards[i] = d_true;
 
 		plyr->message = STSTR_KFAADDED;
 	  }
@@ -594,7 +594,7 @@ ST_Responder (const event_t* ev)
 		  if (((buf[0]-'0')*10 + buf[1]-'0') > 35)
 			plyr->message = STSTR_NOMUS;
 		  else
-			S_ChangeMusic(musnum, b_true);
+			S_ChangeMusic(musnum, d_true);
 		}
 		else
 		{
@@ -603,7 +603,7 @@ ST_Responder (const event_t* ev)
 		  if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
 			plyr->message = STSTR_NOMUS;
 		  else
-			S_ChangeMusic(musnum, b_true);
+			S_ChangeMusic(musnum, d_true);
 		}
 	  }
 	  /* Simplified, accepting both "noclip" and "idspispopd". */
@@ -642,8 +642,8 @@ ST_Responder (const event_t* ev)
 	  /* 'choppers' invulnerability & chainsaw */
 	  else if (cht_CheckCheat(&cheat_choppers, ev->data1))
 	  {
-		plyr->weaponowned[wp_chainsaw] = b_true;
-		plyr->powers[pw_invulnerability] = b_true;
+		plyr->weaponowned[wp_chainsaw] = d_true;
+		plyr->powers[pw_invulnerability] = d_true;
 		plyr->message = STSTR_CHOPPERS;
 	  }
 	  /* 'mypos' for player position */
@@ -680,34 +680,34 @@ ST_Responder (const event_t* ev)
 
 	  /* Catch invalid maps. */
 	  if (epsd < 1)
-		return b_false;
+		return d_false;
 
 	  if (map < 1)
-		return b_false;
+		return d_false;
 
 	  /* Ohmygod - this is not going to work. */
 	  if ((gamemode == retail)
 		  && ((epsd > 4) || (map > 9)))
-		return b_false;
+		return d_false;
 
 	  if ((gamemode == registered)
 		  && ((epsd > 3) || (map > 9)))
-		return b_false;
+		return d_false;
 
 	  if ((gamemode == shareware)
 		  && ((epsd > 1) || (map > 9)))
-		return b_false;
+		return d_false;
 
 	  if ((gamemode == commercial)
 		&& (( epsd > 1) || (map > 34)))
-		return b_false;
+		return d_false;
 
 	  /* So be it. */
 	  plyr->message = STSTR_CLEV;
 	  G_DeferedInitNew(gameskill, epsd, map);
 	}
   }
-  return b_false;
+  return d_false;
 }
 
 
@@ -740,7 +740,7 @@ void ST_updateFaceWidget(void)
 	angle_t     diffang;
 	static int  lastattackdown = -1;
 	static int  priority = 0;
-	bool32     doevilgrin;
+	d_bool     doevilgrin;
 
 	if (priority < 10)
 	{
@@ -758,13 +758,13 @@ void ST_updateFaceWidget(void)
 		if (plyr->bonuscount)
 		{
 			/* picking up bonus */
-			doevilgrin = b_false;
+			doevilgrin = d_false;
 
 			for (i=0;i<NUMWEAPONS;i++)
 			{
 				if (oldweaponsowned[i] != plyr->weaponowned[i])
 				{
-					doevilgrin = b_true;
+					doevilgrin = d_true;
 					oldweaponsowned[i] = plyr->weaponowned[i];
 				}
 			}
@@ -995,7 +995,7 @@ void ST_doPaletteStuff(void)
 {
 
 	int         palette;
-	byte*       pal;
+	unsigned char*       pal;
 	int         cnt;
 	int         bzc;
 
@@ -1039,13 +1039,13 @@ void ST_doPaletteStuff(void)
 	if (palette != st_palette)
 	{
 		st_palette = palette;
-		pal = (byte *) W_CacheLumpNum (lu_palette, PU_CACHE)+palette*768;
+		pal = (unsigned char *) W_CacheLumpNum (lu_palette, PU_CACHE)+palette*768;
 		I_SetPalette (pal);
 	}
 
 }
 
-void ST_drawWidgets(bool32 refresh)
+void ST_drawWidgets(d_bool refresh)
 {
 	int         i;
 
@@ -1083,23 +1083,23 @@ void ST_drawWidgets(bool32 refresh)
 void ST_doRefresh(void)
 {
 
-	st_firsttime = b_false;
+	st_firsttime = d_false;
 
 	/* draw status bar background to off-screen buff */
 	ST_refreshBackground();
 
 	/* and refresh all widgets */
-	ST_drawWidgets(b_true);
+	ST_drawWidgets(d_true);
 
 }
 
 void ST_diffDraw(void)
 {
 	/* update all widgets */
-	ST_drawWidgets(b_false);
+	ST_drawWidgets(d_false);
 }
 
-void ST_Drawer (bool32 fullscreen, bool32 refresh)
+void ST_Drawer (d_bool fullscreen, d_bool refresh)
 {
 
 	st_statusbaron = (!fullscreen) || automapactive;
@@ -1245,16 +1245,16 @@ void ST_initData(void)
 
 	int         i;
 
-	st_firsttime = b_true;
+	st_firsttime = d_true;
 	plyr = &players[consoleplayer];
 
 	st_clock = 0;
 	st_chatstate = StartChatState;
 	st_gamestate = FirstPersonState;
 
-	st_statusbaron = b_true;
-	st_oldchat = st_chat = b_false;
-	st_cursoron = b_false;
+	st_statusbaron = d_true;
+	st_oldchat = st_chat = d_false;
+	st_cursoron = d_false;
 
 	st_faceindex = 0;
 	st_palette = -1;
@@ -1432,7 +1432,7 @@ void ST_createWidgets(void)
 
 }
 
-static bool32  st_stopped = b_true;
+static d_bool  st_stopped = d_true;
 
 
 void ST_Start (void)
@@ -1443,7 +1443,7 @@ void ST_Start (void)
 
 	ST_initData();
 	ST_createWidgets();
-	st_stopped = b_false;
+	st_stopped = d_false;
 
 }
 
@@ -1452,14 +1452,14 @@ void ST_Stop (void)
 	if (st_stopped)
 		return;
 
-	I_SetPalette ((byte*)W_CacheLumpNum (lu_palette, PU_CACHE));
+	I_SetPalette ((unsigned char*)W_CacheLumpNum (lu_palette, PU_CACHE));
 
-	st_stopped = b_true;
+	st_stopped = d_true;
 }
 
 void ST_Init (void)
 {
 	veryfirsttime = 0;
 	ST_loadData();
-	screens[4] = (byte *) Z_Malloc(ST_WIDTH*ST_HEIGHT, PU_STATIC, 0);
+	screens[4] = (unsigned char *) Z_Malloc(ST_WIDTH*ST_HEIGHT, PU_STATIC, 0);
 }

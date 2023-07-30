@@ -25,7 +25,7 @@
 #include "doomstat.h"
 #include "r_state.h"
 
-byte*           save_p;
+unsigned char*           save_p;
 
 
 /* Pads save_p to a 4-byte boundary */
@@ -143,7 +143,7 @@ void P_ArchiveWorld (void)
 		}
 	}
 
-	save_p = (byte *)put;
+	save_p = (unsigned char *)put;
 }
 
 
@@ -192,7 +192,7 @@ void P_UnArchiveWorld (void)
 			si->midtexture = *get++;
 		}
 	}
-	save_p = (byte *)get;
+	save_p = (unsigned char *)get;
 }
 
 

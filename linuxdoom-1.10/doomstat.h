@@ -37,11 +37,11 @@
 
 /* ------------------------ */
 /* Command line parameters. */
-extern  bool32 nomonsters;     /* checkparm of -nomonsters */
-extern  bool32 respawnparm;    /* checkparm of -respawn */
-extern  bool32 fastparm;       /* checkparm of -fast */
+extern  d_bool nomonsters;     /* checkparm of -nomonsters */
+extern  d_bool respawnparm;    /* checkparm of -respawn */
+extern  d_bool fastparm;       /* checkparm of -fast */
 
-extern  bool32 devparm;        /* DEBUG: launched with -devparm */
+extern  d_bool devparm;        /* DEBUG: launched with -devparm */
 
 
 
@@ -51,7 +51,7 @@ extern GameMode_t       gamemode;
 extern GameMission_t    gamemission;
 
 /* Set if homebrew PWAD stuff has been added. */
-extern  bool32 modifiedgame;
+extern  d_bool modifiedgame;
 
 
 /* ------------------------------------------- */
@@ -67,7 +67,7 @@ extern  skill_t         startskill;
 extern  int             startepisode;
 extern  int             startmap;
 
-extern  bool32         autostart;
+extern  d_bool         autostart;
 
 /* Selected by user. */
 extern  skill_t         gameskill;
@@ -75,14 +75,14 @@ extern  int             gameepisode;
 extern  int             gamemap;
 
 /* Nightmare mode flag, single player. */
-extern  bool32         respawnmonsters;
+extern  d_bool         respawnmonsters;
 
 /* Netgame? Only true if >1 player. */
-extern  bool32 netgame;
+extern  d_bool netgame;
 
 /* Flag: true only if started as net deathmatch. */
 /* An enum might handle altdeath/cooperative better. */
-extern  bool32 deathmatch;
+extern  d_bool deathmatch;
 
 /* ------------------------- */
 /* Internal parameters for sound rendering. */
@@ -114,17 +114,17 @@ extern int musicVolume;    /* maximum volume for music */
 /* Depending on view size - no status bar? */
 /* Note that there is no way to disable the */
 /*  status bar explicitely. */
-extern  bool32 statusbaractive;
+extern  d_bool statusbaractive;
 
-extern  bool32 automapactive;  /* In AutoMap mode? */
-extern  bool32 menuactive;     /* Menu overlayed? */
-extern  bool32 paused;         /* Game Pause? */
+extern  d_bool automapactive;  /* In AutoMap mode? */
+extern  d_bool menuactive;     /* Menu overlayed? */
+extern  d_bool paused;         /* Game Pause? */
 
 
-extern  bool32         viewactive;
+extern  d_bool         viewactive;
 
-extern  bool32         nodrawers;
-extern  bool32         noblit;
+extern  d_bool         nodrawers;
+extern  d_bool         noblit;
 
 extern  int             viewwindowx;
 extern  int             viewwindowy;
@@ -163,14 +163,14 @@ extern  int     leveltime;      /* tics in game play for par */
 /* DEMO playback/recording related stuff. */
 /* No demo, there is a human player in charge? */
 /* Disable save/end game? */
-extern  bool32 usergame;
+extern  d_bool usergame;
 
 /* ? */
-extern  bool32 demoplayback;
-extern  bool32 demorecording;
+extern  d_bool demoplayback;
+extern  d_bool demorecording;
 
 /* Quit after playing a demo from cmdline. */
-extern  bool32         singledemo;
+extern  d_bool         singledemo;
 
 
 
@@ -198,7 +198,7 @@ extern  int             gametic;
 extern  player_t        players[MAXPLAYERS];
 
 /* Alive? Disconnected? */
-extern  bool32         playeringame[MAXPLAYERS];
+extern  d_bool         playeringame[MAXPLAYERS];
 
 
 /* Player spawn spots for deathmatch. */
@@ -230,7 +230,7 @@ extern  char            basedefault[1024];
 extern  FILE*           debugfile;
 
 /* if true, load all graphics at level load */
-extern  bool32         precache;
+extern  d_bool         precache;
 
 
 /* wipegamestate can be set to -1 */
@@ -240,7 +240,7 @@ extern  gamestate_t     wipegamestate;
 extern  int             mouseSensitivity;
 /* ? */
 /* debug flag to cancel adaptiveness */
-extern  bool32         singletics;
+extern  d_bool         singletics;
 
 extern  int             bodyqueslot;
 

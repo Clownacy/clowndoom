@@ -53,7 +53,7 @@ typedef struct
 
 	/* pointer to boolean stating */
 	/*  whether to update number */
-	bool32*    on;
+	d_bool*    on;
 
 	/* list of patches for 0-9 */
 	patch_t**   p;
@@ -94,7 +94,7 @@ typedef struct
 
 	/* pointer to boolean stating */
 	/*  whether to update icon */
-	bool32*            on;
+	d_bool*            on;
 
 	/* list of icons */
 	patch_t**           p;
@@ -116,14 +116,14 @@ typedef struct
 	int                 y;
 
 	/* last icon value */
-	bool32                     oldval;
+	d_bool                     oldval;
 
 	/* pointer to current icon status */
-	bool32*            val;
+	d_bool*            val;
 
 	/* pointer to boolean */
 	/*  stating whether to update icon */
-	bool32*            on;
+	d_bool*            on;
 
 
 	patch_t*            p;      /* icon */
@@ -150,13 +150,13 @@ STlib_initNum
   int                   y,
   patch_t**             pl,
   int*                  num,
-  bool32*              on,
+  d_bool*              on,
   int                   width );
 
 void
 STlib_updateNum
 ( st_number_t*          n,
-  bool32               refresh );
+  d_bool               refresh );
 
 
 /* Percent widget routines */
@@ -167,7 +167,7 @@ STlib_initPercent
   int                   y,
   patch_t**             pl,
   int*                  num,
-  bool32*              on,
+  d_bool*              on,
   patch_t*              percent );
 
 
@@ -185,13 +185,13 @@ STlib_initMultIcon
   int                   y,
   patch_t**             il,
   int*                  inum,
-  bool32*              on );
+  d_bool*              on );
 
 
 void
 STlib_updateMultIcon
 ( st_multicon_t*        mi,
-  bool32               refresh );
+  d_bool               refresh );
 
 /* Binary Icon widget routines */
 
@@ -201,12 +201,12 @@ STlib_initBinIcon
   int                   x,
   int                   y,
   patch_t*              i,
-  bool32*              val,
-  bool32*              on );
+  d_bool*              val,
+  d_bool*              on );
 
 void
 STlib_updateBinIcon
 ( st_binicon_t*         bi,
-  bool32               refresh );
+  d_bool               refresh );
 
 #endif
