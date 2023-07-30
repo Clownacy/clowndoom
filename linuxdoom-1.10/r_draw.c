@@ -847,8 +847,6 @@ R_InitBuffer
 /* Also draws a beveled edge. */
 void R_FillBackScreen (void)
 {
-	unsigned char*       src;
-	unsigned char*       dest;
 	int         x;
 	int         y;
 	patch_t*    patch;

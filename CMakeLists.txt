@@ -24,7 +24,6 @@ add_executable(clowndoom WIN32
 	"linuxdoom-1.10/doomstat.h"
 	"linuxdoom-1.10/doomtype.h"
 	"linuxdoom-1.10/d_player.h"
-	"linuxdoom-1.10/dstrings.c"
 	"linuxdoom-1.10/dstrings.h"
 	"linuxdoom-1.10/d_textur.h"
 	"linuxdoom-1.10/d_think.h"

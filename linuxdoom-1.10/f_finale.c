@@ -54,9 +54,11 @@ const char*     e2text = E2TEXT;
 const char*     e3text = E3TEXT;
 const char*     e4text = E4TEXT;
 
+static const char c2text[] = C2TEXT;
+
 const char* ctext[] = {
 	C1TEXT,
-	C2TEXT,
+	c2text,
 	C3TEXT,
 	C4TEXT,
 	C5TEXT,
@@ -271,10 +273,7 @@ extern  patch_t *hu_font[HU_FONTSIZE];
 
 void F_TextWrite (void)
 {
-	unsigned char*       src;
-	unsigned char*       dest;
-
-	int         x,y,w;
+	int         w;
 	int         count;
 	const char* ch;
 	int         c;

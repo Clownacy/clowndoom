@@ -509,7 +509,7 @@ V_FillScreenWithPattern
 	const unsigned char* const src = (unsigned char*)W_CacheLumpName ( lump_name , PU_CACHE);
 	unsigned char *dest = screens[screen];
 
-	for (y=0 ; y<(SCREENHEIGHT+(SCREEN_MUL-1))/SCREEN_MUL ; y++)
+	for (y=0 ; y<(height+(SCREEN_MUL-1))/SCREEN_MUL ; y++)
 	{
 		static unsigned char line_buffer[BG_TILE_DST_SIZE];
 
@@ -519,7 +519,7 @@ V_FillScreenWithPattern
 				line_buffer[x*SCREEN_MUL+w] = src[((y%BG_TILE_SRC_SIZE)*BG_TILE_SRC_SIZE)+x];
 
 		/* Repeatedly copy the upscaled row to the screen. */
-		for (w=0 ; w<D_MIN(SCREEN_MUL,SCREENHEIGHT-y*SCREEN_MUL); w++)
+		for (w=0 ; w<D_MIN(SCREEN_MUL,height-y*SCREEN_MUL); w++)
 		{
 			for (x=0 ; x<SCREENWIDTH ; x+=BG_TILE_DST_SIZE)
 			{
