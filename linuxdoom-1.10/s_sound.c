@@ -112,7 +112,7 @@ static musicinfo_t*     mus_playing=0;
 /* number of channels available */
 int                     numChannels;
 
-/* static int           nextcleanup; */
+static int              nextcleanup;
 
 
 
@@ -219,7 +219,7 @@ void S_Start(void)
 
   S_ChangeMusic(mnum, d_true);
 
- /* nextcleanup = 15; */
+  nextcleanup = 15;
 }
 
 
@@ -334,12 +334,9 @@ S_StartSoundAtVolume
 
 #ifndef SNDSRV
   /* cache data if necessary */
-  if (!sfx->data)
+  if (sfx->data == NULL)
   {
-	  I_Info("S_StartSoundAtVolume: 16bit and not pre-cached - wtf?\n");
-
-	/* DOS remains, 8bit handling */
-   /* sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC); */
+    sfx->data = (void *) W_CacheLumpNum(sfx->lumpnum, PU_MUSIC);
 	/* I_Info(*/
 	/*       "S_StartSoundAtVolume: loading %d (lump %d) : 0x%x\n", */
 	/*       sfx_id, sfx->lumpnum, (int)sfx->data ); */
@@ -354,7 +351,7 @@ S_StartSoundAtVolume
   /* Assigns the handle to one of the channels in the */
   /*  mix/output buffer. */
   channels[cnum].handle = I_StartSound(sfx_id,
-									   /*sfx->data,*/
+									   sfx->data,
 									   volume,
 									   sep,
 									   pitch);
@@ -484,15 +481,11 @@ void S_UpdateSounds(const mobj_t* listener)
 	int         volume;
 	int         sep;
 	int         pitch;
+	int         i;
 	const sfxinfo_t*    sfx;
 	const channel_t*    c;
 
-
-
-	/* Clean up unused data. */
-	/* This is currently not done for 16bit (sounds cached static). */
-	/* DOS 8bit remains. */
-	/*if (gametic > nextcleanup)
+	if (gametic > nextcleanup)
 	{
 		for (i=1 ; i<NUMSFX ; i++)
 		{
@@ -502,12 +495,12 @@ void S_UpdateSounds(const mobj_t* listener)
 				if (--S_sfx[i].usefulness == -1)
 				{
 					Z_ChangeTag(S_sfx[i].data, PU_CACHE);
-					S_sfx[i].data = 0;
+					S_sfx[i].data = NULL;
 				}
 			}
 		}
 		nextcleanup = gametic + 15;
-	}*/
+	}
 
 	for (cnum=0 ; cnum<numChannels ; cnum++)
 	{

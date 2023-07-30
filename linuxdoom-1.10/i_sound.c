@@ -42,10 +42,7 @@
 static unsigned int     output_sample_rate;
 
 
-/* The actual lengths of all sound effects. */
-static size_t           lengths[NUMSFX];
-
-
+static unsigned short   samplerate[NUM_CHANNELS];
 /* The channel step amount... */
 static unsigned long    channelstep[NUM_CHANNELS];
 /* ... and a 0.16 bit remainder of last step. */
@@ -205,7 +202,7 @@ static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 	int leftvol;
 
 	/* Set stepping */
-	channelstep[slot] = S_sfx[channelids[slot]].sample_rate * steptable[pitch] / output_sample_rate;
+	channelstep[slot] = samplerate[slot] * steptable[pitch] / output_sample_rate;
 	channelstepremainder[slot] = 0;
 
 	/* Separation, that is, orientation/stereo. */
@@ -234,48 +231,6 @@ static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 	/*  for this volume level */
 	channelleftvol_lookup[slot] = vol_lookup[leftvol];
 	channelrightvol_lookup[slot] = vol_lookup[rightvol];
-}
-
-
-
-
-/* This function loads the sound data from the WAD lump, */
-/*  for a single sound. */
-static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
-{
-	unsigned char* sfx;
-	size_t         size;
-	char           name[20];
-	int            sfxlump;
-
-	/* Get the sound data from the WAD, allocate lump */
-	/*  in zone memory. */
-	sprintf(name, "ds%s", sfxinfo->name);
-
-	/* Now, there is a severe problem with the */
-	/*  sound handling, in it is not (yet/anymore) */
-	/*  gamemode aware. That means, sounds from */
-	/*  DOOM II will be requested even with DOOM */
-	/*  shareware. */
-	/* The sound list is wired into sounds.c, */
-	/*  which sets the external variable. */
-	/* I do not do runtime patches to that */
-	/*  variable. Instead, we will use a */
-	/*  default sound for replacement. */
-	if (W_CheckNumForName(name) == -1)
-	  sfxlump = W_GetNumForName("dspistol");
-	else
-	  sfxlump = W_GetNumForName(name);
-
-	size = W_LumpLength(sfxlump);
-
-	sfx = (unsigned char*)W_CacheLumpNum(sfxlump, PU_STATIC);
-
-	*len = size-8-16-16;
-
-	sfxinfo->data = (void*)(sfx+8+16);
-
-	sfxinfo->sample_rate = sfx[2] | (sfx[3] << 8);
 }
 
 
@@ -313,7 +268,7 @@ int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 /*  it is ignored. */
 /* As our sound handling does not handle */
 /*  priority, it is ignored. */
-int I_StartSound(int id, int vol, int sep, int pitch)
+int I_StartSound(int id, const unsigned char* data, int vol, int sep, int pitch)
 {
 	static unsigned short handlenums = 0;
 
@@ -370,9 +325,11 @@ int I_StartSound(int id, int vol, int sep, int pitch)
 	/* Okay, in the less recent channel, */
 	/*  we will handle the new SFX. */
 	/* Set pointer to raw data. */
-	channels[slot] = (unsigned char*)S_sfx[id].data;
+	channels[slot] = &data[0x18];
 	/* Set pointer to end of raw data. */
-	channelsend[slot] = channels[slot] + lengths[id];
+	channelsend[slot] = channels[slot] + (((data[4 + 0] << (8 * 0)) | (data[4 + 1] << (8 * 1)) | (data[4 + 2] << (8 * 2)) | (data[4 + 3] << (8 * 3))) - 0x20);
+
+	samplerate[slot] = (data[2 + 0] << (8 * 0)) | (data[2 + 1] << (8 * 1));
 
 	/* Disable handle numbers 0-99 (were they error values in DMX?). */
 	if (handlenums == 0)
@@ -500,26 +457,6 @@ void I_StartupSound(void)
 
 	if (!IB_StartupSound(StartupCallback, AudioCallback, NULL))
 		I_Error("I_StartupSound: Failed to initialize backend");
-
-	 /* Cache sounds. */
-
-	/* Initialize external data (all sounds) at start, keep static. */
-
-	for (i=1 ; i<NUMSFX ; ++i)
-	{
-		/* Alias? Example is the chaingun sound linked to pistol. */
-		if (S_sfx[i].link == NULL)
-		{
-			/* Load data from WAD file. */
-			getsfx(&S_sfx[i], &lengths[i]);
-		}
-		else
-		{
-			/* Previously loaded already? */
-			S_sfx[i].data = S_sfx[i].link->data;
-			lengths[i] = lengths[(S_sfx[i].link - S_sfx)/sizeof(sfxinfo_t)];
-		}
-	}
 }
 
 
