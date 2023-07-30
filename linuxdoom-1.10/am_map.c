@@ -1248,7 +1248,10 @@ void AM_drawMarks(void)
 
 void AM_drawCrosshair(int color)
 {
-	fb[f_w/2*SCREENHEIGHT+f_h/2] = color; /* single point for now */
+	int x, y;
+	for (x = -HUD_SCALE / 2; x < 1 + HUD_SCALE / 2; ++x)
+		for (y = -HUD_SCALE / 2; y < 1 + HUD_SCALE / 2; ++y)
+			fb[(f_w / 2 + x) * SCREENHEIGHT + f_h / 2 + y] = color;
 
 }
 
