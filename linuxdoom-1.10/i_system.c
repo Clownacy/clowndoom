@@ -36,9 +36,6 @@
 
 
 
-static size_t   mb_used = 6;
-
-
 void
 I_Tactile
 ( int   on,
@@ -58,15 +55,13 @@ ticcmd_t*       I_BaseTiccmd(void)
 }
 
 
-size_t  I_GetHeapSize (void)
+unsigned char* I_ZoneBase (size_t* size)
 {
-	return mb_used*1024*1024;
-}
+	/* According to PCDOOM, the DOS version of Doom would use between 1.5MiB and 8MiB of zone memory, depending on what was available. */
+	static unsigned char buffer[6 * 1024 * 1024]; /* 6MiB of zone memory! */
 
-unsigned char* I_ZoneBase (size_t*       size)
-{
-	*size = mb_used*1024*1024;
-	return (unsigned char *) malloc (*size);
+	*size = sizeof(buffer);
+	return buffer;
 }
 
 
