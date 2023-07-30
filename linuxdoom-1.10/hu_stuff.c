@@ -28,6 +28,7 @@
 #include "hu_stuff.h"
 #include "hu_lib.h"
 #include "w_wad.h"
+#include "v_video.h"
 
 #include "s_sound.h"
 #include "st_stuff.h"
@@ -43,13 +44,16 @@
 #define HU_TITLE2       (mapnames2[gamemap-1])
 #define HU_TITLEP       (mapnamesp[gamemap-1])
 #define HU_TITLET       (mapnamest[gamemap-1])
+#define HU_YSPACING     ((1 + SHORT(hu_font[0]->height)) * HUD_SCALE)
 #define HU_TITLEHEIGHT  1
 #define HU_TITLEX       0
-#define HU_TITLEY       (SCREENHEIGHT - ST_HEIGHT - (1 + SHORT(hu_font[0]->height)) * HUD_SCALE)
+#define HU_TITLEY       (SCREENHEIGHT - ST_HEIGHT - HU_YSPACING)
+#define HU_TOTALSX      (SCREENWIDTH - (1 + 6 * 8) * HUD_SCALE)
+#define HU_TOTALSY      (SCREENHEIGHT - ST_HEIGHT - HU_YSPACING * 3)
 
 #define HU_INPUTTOGGLE  't'
 #define HU_INPUTX       HU_MSGX
-#define HU_INPUTY       (HU_MSGY + (HU_MSGHEIGHT*(SHORT(hu_font[0]->height) +1)) * HUD_SCALE)
+#define HU_INPUTY       (HU_MSGY + (HU_MSGHEIGHT * HU_YSPACING))
 #define HU_INPUTWIDTH   64
 #define HU_INPUTHEIGHT  1
 
@@ -466,13 +470,67 @@ void HU_Start(void)
 
 }
 
+static void
+DrawMonospaceText
+( int         x,
+  int         y,
+  const char* s )
+{
+
+	int                 i;
+	int                 w;
+	unsigned char       c;
+
+	for (i=0;s[i]!='\0'; i++)
+	{
+		w = 8 * HUD_SCALE;
+		if (x + w > SCREENWIDTH)
+			break;
+
+		c = toupper(s[i]);
+		if (c != ' '
+			&& c >= HU_FONTSTART
+			&& c <= '_')
+		{
+			const patch_t* const patch = hu_font[c - HU_FONTSTART];
+			V_DrawPatch(x + (8 - patch->width) / 2 * HUD_SCALE, y, FG, patch);
+		}
+
+		x += w;
+	}
+}
+
+static void DoTotal(const char letter, const int y, const int current, const int max)
+{
+	char buffer[2 + 3 + 1 + 1];
+	sprintf(buffer, "%c %3d%%", letter, max == 0 ? 100 : 100 * current / max);
+	DrawMonospaceText(HU_TOTALSX, y, buffer);
+}
+
 void HU_Drawer(void)
 {
 
 	HUlib_drawSText(&w_message);
 	HUlib_drawIText(&w_chat);
 	if (automapactive)
+	{
+		int i, kills, items, secrets;
+
 		HUlib_drawTextLine(&w_title, d_false);
+
+		kills = items = secrets = 0;
+
+		for (i = 0; i < MAXPLAYERS; ++i)
+		{
+			kills += players[i].killcount;
+			items += players[i].itemcount;
+			secrets += players[i].secretcount;
+		}
+
+		DoTotal('K', HU_TOTALSY + HU_YSPACING * 0, kills, totalkills);
+		DoTotal('I', HU_TOTALSY + HU_YSPACING * 1, items, totalitems);
+		DoTotal('S', HU_TOTALSY + HU_YSPACING * 2, secrets, totalsecret);
+	}
 
 }
 
