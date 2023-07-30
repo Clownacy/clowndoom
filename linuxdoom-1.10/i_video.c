@@ -170,8 +170,8 @@ static void OutputSizeChanged(const size_t width, const size_t height)
 {
 	size_t last, i;
 
-	const size_t aspect_ratio_w = aspect_ratio_correction ? 4 : 8;
-	const size_t aspect_ratio_h = aspect_ratio_correction ? 3 : 5;
+	const size_t aspect_ratio_w = SCREENWIDTH;
+	const size_t aspect_ratio_h = aspect_ratio_correction ? SCREENHEIGHT * 6 / 5 : SCREENHEIGHT;
 	const size_t alternate_width = height * aspect_ratio_w / aspect_ratio_h;
 	const size_t alternate_height = width * aspect_ratio_h / aspect_ratio_w;
 
