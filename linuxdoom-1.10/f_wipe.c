@@ -47,7 +47,7 @@ wipe_shittyColMajorXform
   int            width,
   int            height )
 {
-	int x,y,i;
+	int x,y;
 	static unsigned char dest[SCREENWIDTH*SCREENHEIGHT];
 
 	for(y=0;y<height;y++)
@@ -245,7 +245,7 @@ wipe_ScreenWipe
   int   ticks )
 {
 	int rc;
-	static const int (*wipes[][2])(int, int, int) =
+	static int (* const wipes[][2])(int, int, int) =
 	{
 		{wipe_initColorXForm, wipe_doColorXForm},
 		{wipe_initMelt, wipe_doMelt}
