@@ -78,7 +78,7 @@ static short*           channelrightvol_lookup[NUM_CHANNELS];
 static long             steptable[256];
 
 /* Volume lookups. */
-static short            vol_lookup[128][256];
+static short            vol_lookup[S_TOTAL_VOLUMES][0x100];
 
 
 /* Music stuff */
@@ -221,10 +221,10 @@ static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 
 #ifdef RANGECHECK
 	/* Sanity check, clamp volume. */
-	if (rightvol < 0 || rightvol > 127)
+	if (rightvol < 0 || rightvol > S_MAX_VOLUME)
 		I_Error("rightvol out of bounds");
 
-	if (leftvol < 0 || leftvol > 127)
+	if (leftvol < 0 || leftvol > S_MAX_VOLUME)
 		I_Error("leftvol out of bounds");
 #endif
 
@@ -492,9 +492,9 @@ void I_StartupSound(void)
 	/* Generates volume lookup tables */
 	/*  which also turn the unsigned samples */
 	/*  into signed samples. */
-	for (i=0 ; i<128 ; ++i)
-		for (j=0 ; j<256 ; ++j)
-			vol_lookup[i][j] = (i*(j-128)*256)/127;
+	for (i=0 ; i<=S_MAX_VOLUME ; ++i)
+		for (j=0 ; j<0x100 ; ++j)
+			vol_lookup[i][j] = (i*(j-(0x100/2))*0x100)/S_MAX_VOLUME;
 
 	if (!IB_StartupSound(StartupCallback, AudioCallback, NULL))
 		I_Error("I_StartupSound: Failed to initialize backend");

@@ -26,6 +26,9 @@
 #include "doomstat.h"
 #include "sounds.h"
 
+#define S_TOTAL_VOLUMES (1 << 7)
+#define S_MAX_VOLUME (S_TOTAL_VOLUMES - 1)
+
 
 /* Init at program start... */
 void I_StartupSound(void);

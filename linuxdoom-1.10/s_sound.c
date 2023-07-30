@@ -39,8 +39,6 @@
 /* const char snd_prefixen[] */
 /* = { 'P', 'P', 'A', 'S', 'S', 'S', 'M', 'M', 'M', 'S', 'S', 'S' }; */
 
-/* #define S_MAX_VOLUME         127 */
-
 /* when to clip out sounds */
 /* Does not fit the large outdoor areas. */
 #define S_CLIPPING_DIST         (1200*0x10000)
@@ -579,11 +577,11 @@ void S_UpdateSounds(const mobj_t* listener)
 void S_SetMusicVolume(int volume)
 {
 #ifdef RANGECHECK
-	if (volume < 0 || volume > 127)
+	if (volume < 0 || volume > 15)
 		I_Error("Attempt to set music volume at %d", volume);
 #endif
 
-	I_SetMusicVolume(volume);
+	I_SetMusicVolume((volume * 127) / 15);
 }
 
 
@@ -591,11 +589,11 @@ void S_SetMusicVolume(int volume)
 void S_SetSfxVolume(int volume)
 {
 #ifdef RANGECHECK
-	if (volume < 0 || volume > 127)
+	if (volume < 0 || volume > 15)
 		I_Error("Attempt to set sfx volume at %d", volume);
 #endif
 
-	snd_SfxVolume = volume;
+	snd_SfxVolume = (volume * S_MAX_VOLUME) / 15;
 }
 
 /* Starts some music with the music id found in sounds.h. */
@@ -752,22 +750,17 @@ S_AdjustSoundParams
 	{
 		*vol = snd_SfxVolume;
 	}
-	else if (gamemode != commercial && gamemap == 8)
+	else if (gamemode != commercial && gamemap == 8) /* This originally didn't check the game mode. */
 	{
-		/* See https://doomwiki.org/wiki/Sound_effects_behave_differently_on_level_8 */
-		if (snd_SfxVolume <= 15)
-		{
-			*vol = snd_SfxVolume;
-		}
-		else
-		{
-			if (approx_dist > S_CLIPPING_DIST)
-				approx_dist = S_CLIPPING_DIST;
+		const int minimum = (S_MAX_VOLUME * 15) / 127;
 
-			*vol = 15+ ((snd_SfxVolume-15)
-						*((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
-				/ S_ATTENUATOR;
-		}
+		/* See https://doomwiki.org/wiki/Sound_effects_behave_differently_on_level_8 */
+		if (approx_dist > S_CLIPPING_DIST)
+			approx_dist = S_CLIPPING_DIST;
+
+		*vol = minimum + ((snd_SfxVolume-minimum > 0 ? snd_SfxVolume-minimum : 0)
+					*((S_CLIPPING_DIST - approx_dist)>>FRACBITS))
+			/ S_ATTENUATOR;
 	}
 	else
 	{
