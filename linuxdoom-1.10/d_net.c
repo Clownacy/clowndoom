@@ -340,9 +340,9 @@ void NetUpdate (void)
 {
 	int             nowtime;
 	int             newtics;
-	int                         i,j;
-	int                         realstart;
-	int                         gameticdiv;
+	int             i,j;
+	int             realstart;
+	int             gameticdiv;
 
 	/* check time */
 	nowtime = I_GetTime ()/ticdup;
@@ -421,7 +421,7 @@ void NetUpdate (void)
 /* CheckAbort */
 void CheckAbort (void)
 {
-	event_t *ev;
+	event_t    *ev;
 	int         stoptic;
 
 	stoptic = I_GetTime () + 2;
