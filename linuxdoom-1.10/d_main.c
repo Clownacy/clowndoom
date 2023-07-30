@@ -295,7 +295,7 @@ void D_Display (void)
 			y = 4*SCREEN_MUL;
 		else
 			y = viewwindowy+4*SCREEN_MUL;
-		V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68*SCREEN_MUL)/2,
+		V_DrawPatch(viewwindowx+(scaledviewwidth-68*SCREEN_MUL)/2,
 						  y,0,(patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
 	}
 

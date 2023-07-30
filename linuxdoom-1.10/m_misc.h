@@ -49,7 +49,6 @@ int
 M_DrawText
 ( int           x,
   int           y,
-  d_bool       direct,
   char*         string );
 
 int M_strncasecmp(const char *s1, const char *s2, size_t n);
