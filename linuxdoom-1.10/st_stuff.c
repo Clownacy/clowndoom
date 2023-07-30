@@ -310,7 +310,7 @@ static int      st_fragscount;
 static int      st_oldhealth = -1;
 
 /* used for evil grin */
-static d_bool  oldweaponsowned[NUMWEAPONS];
+static int      oldweaponsowned[NUMWEAPONS];
 
  /* count until face changes */
 static int      st_facecount = 0;
@@ -1253,7 +1253,7 @@ void ST_createWidgets(void)
 		STlib_initMultIcon(&w_arms[i],
 						   ST_ARMSX+(i%3)*ST_ARMSXSPACE,
 						   ST_ARMSY+(i/3)*ST_ARMSYSPACE,
-						   arms[i], (int *) &plyr->weaponowned[i+1],
+						   arms[i], &plyr->weaponowned[i+1],
 						   &st_armson);
 	}
 
