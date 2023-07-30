@@ -16,9 +16,9 @@
 
 ******************************************************************************/
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 /* TODO: Abstract this away. */
 #if defined(__unix__)
@@ -44,51 +44,18 @@
 #include "i_net.h"
 
 
-
-
-
-/* For some odd reason... */
-#ifndef ntohl
-#define ntohl(x) \
-		((unsigned long int)((((unsigned long int)(x) & 0x000000ffU) << 24) | \
-							 (((unsigned long int)(x) & 0x0000ff00U) <<  8) | \
-							 (((unsigned long int)(x) & 0x00ff0000U) >>  8) | \
-							 (((unsigned long int)(x) & 0xff000000U) >> 24)))
-#endif
-
-#ifndef ntohs
-#define ntohs(x) \
-		((unsigned short int)((((unsigned short int)(x) & 0x00ff) << 8) | \
-							  (((unsigned short int)(x) & 0xff00) >> 8)))
-#endif
-
-#ifndef htonl
-#define htonl(x) ntohl(x)
-#endif
-
-#ifndef htons
-#define htons(x) ntohs(x)
-#endif
-
-void    NetSend (void);
-bool32 NetListen (void);
-
-
 /* NETWORKING */
 
-int     DOOMPORT =      666;
+static int     DOOMPORT =      666;
 
-int                     sendsocket;
-int                     insocket;
+static int                     sendsocket;
+static int                     insocket;
 
-struct  sockaddr_in     sendaddress[MAXNETNODES];
-
-void    (*netget) (void);
-void    (*netsend) (void);
+static struct  sockaddr_in     sendaddress[MAXNETNODES];
 
 
 /* UDPsocket */
-int UDPsocket (void)
+static int UDPsocket (void)
 {
 	int s;
 
@@ -105,7 +72,7 @@ int UDPsocket (void)
 }
 
 /* BindToLocalPort */
-void
+static void
 BindToLocalPort
 ( int   s,
   int   port )
@@ -129,7 +96,7 @@ BindToLocalPort
 
 
 /* PacketSend */
-void PacketSend (void)
+static void PacketSend (void)
 {
 	int         c;
 	doomdata_t  sw;
@@ -165,7 +132,7 @@ void PacketSend (void)
 
 
 /* PacketGet */
-void PacketGet (void)
+static void PacketGet (void)
 {
 	int                 i;
 	int                 c;
@@ -227,30 +194,6 @@ void PacketGet (void)
 		netbuffer->cmds[c].chatchar = sw.cmds[c].chatchar;
 		netbuffer->cmds[c].buttons = sw.cmds[c].buttons;
 	}
-}
-
-
-
-int GetLocalAddress (void)
-{
-	char                hostname[1024];
-	struct hostent*     hostentry;      /* host information entry */
-	int                 v;
-
-	/* get local address */
-	v = gethostname (hostname, sizeof(hostname));
-	if (v == -1)
-#if defined(__unix__)
-		I_Error ("GetLocalAddress : gethostname: %s",strerror(errno));
-#elif defined(_WIN32)
-		I_Error ("GetLocalAddress : gethostname: error code %d",WSAGetLastError());
-#endif
-
-	hostentry = gethostbyname (hostname);
-	if (!hostentry)
-		I_Error ("GetLocalAddress : gethostbyname: couldn't get local host");
-
-	return *(int *)hostentry->h_addr_list[0];
 }
 
 
@@ -322,8 +265,6 @@ void I_InitNetwork (void)
 	}
 #endif
 
-	netsend = PacketSend;
-	netget = PacketGet;
 	netgame = b_true;
 
 	/* parse player number and host list */
@@ -380,15 +321,20 @@ void I_DeinitNetwork(void)
 
 void I_NetCmd (void)
 {
-	if (doomcom->command == CMD_SEND)
+	switch (doomcom->command)
 	{
-		netsend ();
+		case CMD_SEND:
+			PacketSend ();
+			break;
+
+		case CMD_GET:
+			PacketGet ();
+			break;
+
+		default:
+			I_Error ("Bad net cmd: %i",doomcom->command);
+			break;
+
 	}
-	else if (doomcom->command == CMD_GET)
-	{
-		netget ();
-	}
-	else
-		I_Error ("Bad net cmd: %i\n",doomcom->command);
 }
 
