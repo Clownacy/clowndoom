@@ -31,7 +31,8 @@
 
 /*                       SCREEN WIPE PACKAGE */
 
-#define PIXELS_PER_COLUMN (2 * SCREEN_MUL)
+#define FACE_SCALE (SCREENHEIGHT / ORIGINAL_SCREEN_HEIGHT)
+#define PIXELS_PER_COLUMN (2 * FACE_SCALE)
 
 /* when zero, stop the wipe */
 static d_bool  go = 0;
@@ -147,7 +148,7 @@ wipe_initMelt
 		else if (y[i] == -16) y[i] = -(16-1);
 	}
 	for (i=0;i<width;i++)
-		y[i] *= SCREEN_MUL;
+		y[i] *= FACE_SCALE;
 
 	return 0;
 }
@@ -173,11 +174,11 @@ wipe_doMelt
 		{
 			if (y[i]<0)
 			{
-				y[i] += 1*SCREEN_MUL; done = d_false;
+				y[i] += 1*FACE_SCALE; done = d_false;
 			}
 			else if (y[i] < height)
 			{
-				dy = (y[i] < 16*SCREEN_MUL) ? y[i]+1*SCREEN_MUL : 8*SCREEN_MUL;
+				dy = (y[i] < 16*FACE_SCALE) ? y[i]+1*FACE_SCALE : 8*FACE_SCALE;
 				if (y[i]+dy >= height) dy = height - y[i];
 				s = &wipe_scr_end[(i*height+y[i])*PIXELS_PER_COLUMN];
 				d = &wipe_scr[(y[i]*width+i)*PIXELS_PER_COLUMN];
