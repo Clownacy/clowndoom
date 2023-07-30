@@ -618,7 +618,7 @@ void R_InitLightTables (void)
 /* Do not really change anything here, */
 /*  because it might be in the middle of a refresh. */
 /* The change will take effect next refresh. */
-boolean         setsizeneeded;
+bool32         setsizeneeded;
 int             setblocks;
 int             setdetail;
 
@@ -628,7 +628,7 @@ R_SetViewSize
 ( int           blocks,
   int           detail )
 {
-	setsizeneeded = true;
+	setsizeneeded = b_true;
 	setblocks = blocks;
 	setdetail = detail;
 }
@@ -644,7 +644,7 @@ void R_ExecuteSetViewSize (void)
 	int         level;
 	int         startmap;
 
-	setsizeneeded = false;
+	setsizeneeded = b_false;
 
 	if (setblocks == 11)
 	{

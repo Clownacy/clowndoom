@@ -211,7 +211,7 @@ static int      grid = 0;
 
 static int      leveljuststarted = 1;   /* kluge until AM_LevelInit() is called */
 
-boolean         automapactive = false;
+bool32         automapactive = b_false;
 static int      finit_width = SCREENWIDTH;
 static int      finit_height = SCREENHEIGHT - 32;
 
@@ -278,9 +278,9 @@ static int followplayer = 1; /* specifies whether to follow the player around */
 static unsigned char cheat_amap_seq[] = { 0xb2, 0x26, 0x26, 0x2e, 0xff };
 static cheatseq_t cheat_amap = { cheat_amap_seq, 0 };
 
-static boolean stopped = true;
+static bool32 stopped = b_true;
 
-extern boolean viewactive;
+extern bool32 viewactive;
 /* extern byte screens[][SCREENWIDTH*SCREENHEIGHT]; */
 
 
@@ -432,7 +432,7 @@ void AM_initVariables(void)
 	int pnum;
 	static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0 };
 
-	automapactive = true;
+	automapactive = b_true;
 	fb = screens[0];
 
 	f_oldloc.x = MAXINT;
@@ -526,9 +526,9 @@ void AM_Stop (void)
 	static event_t st_notify = { ev_keyup, AM_MSGEXITED, 0, 0 };
 
 	AM_unloadPics();
-	automapactive = false;
+	automapactive = b_false;
 	ST_Responder(&st_notify);
-	stopped = true;
+	stopped = b_true;
 }
 
 void AM_Start (void)
@@ -536,7 +536,7 @@ void AM_Start (void)
 	static int lastlevel = -1, lastepisode = -1;
 
 	if (!stopped) AM_Stop();
-	stopped = false;
+	stopped = b_false;
 	if (lastlevel != gamemap || lastepisode != gameepisode)
 	{
 		AM_LevelInit();
@@ -565,7 +565,7 @@ void AM_maxOutWindowScale(void)
 
 
 /* Handle events (user inputs) in automap mode */
-boolean
+bool32
 AM_Responder
 ( const event_t*        ev )
 {
@@ -574,39 +574,39 @@ AM_Responder
 	static int bigstate=0;
 	static char buffer[20];
 
-	rc = false;
+	rc = b_false;
 
 	if (!automapactive)
 	{
 		if (ev->type == ev_keydown && ev->data1 == AM_STARTKEY)
 		{
 			AM_Start ();
-			viewactive = false;
-			rc = true;
+			viewactive = b_false;
+			rc = b_true;
 		}
 	}
 
 	else if (ev->type == ev_keydown)
 	{
 
-		rc = true;
+		rc = b_true;
 		switch(ev->data1)
 		{
 		  case AM_PANRIGHTKEY: /* pan right */
 			if (!followplayer) m_paninc.x = FTOM(F_PANINC);
-			else rc = false;
+			else rc = b_false;
 			break;
 		  case AM_PANLEFTKEY: /* pan left */
 			if (!followplayer) m_paninc.x = -FTOM(F_PANINC);
-			else rc = false;
+			else rc = b_false;
 			break;
 		  case AM_PANUPKEY: /* pan up */
 			if (!followplayer) m_paninc.y = FTOM(F_PANINC);
-			else rc = false;
+			else rc = b_false;
 			break;
 		  case AM_PANDOWNKEY: /* pan down */
 			if (!followplayer) m_paninc.y = -FTOM(F_PANINC);
-			else rc = false;
+			else rc = b_false;
 			break;
 		  case AM_ZOOMOUTKEY: /* zoom out */
 			mtof_zoommul = M_ZOOMOUT;
@@ -618,7 +618,7 @@ AM_Responder
 			break;
 		  case AM_ENDKEY:
 			bigstate = 0;
-			viewactive = true;
+			viewactive = b_true;
 			AM_Stop ();
 			break;
 		  case AM_GOBIGKEY:
@@ -649,18 +649,18 @@ AM_Responder
 			plr->message = AMSTR_MARKSCLEARED;
 			break;
 		  default:
-			rc = false;
+			rc = b_false;
 		}
 		if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data1))
 		{
-			rc = false;
+			rc = b_false;
 			cheating = (cheating+1) % 3;
 		}
 	}
 
 	else if (ev->type == ev_keyup)
 	{
-		rc = false;
+		rc = b_false;
 		switch (ev->data1)
 		{
 		  case AM_PANRIGHTKEY:
@@ -781,7 +781,7 @@ void AM_clearFB(int color)
 /* Based on Cohen-Sutherland clipping algorithm but with a slightly */
 /* faster reject and precalculated slopes.  If the speed is needed, */
 /* use a hash algorithm to handle  the common cases. */
-boolean
+bool32
 AM_clipMline
 ( mline_t*      ml,
   fline_t*      fl )
@@ -823,7 +823,7 @@ AM_clipMline
 		outcode2 = BOTTOM;
 
 	if (outcode1 & outcode2)
-		return false; /* trivially outside */
+		return b_false; /* trivially outside */
 
 	if (ml->a.x < m_x)
 		outcode1 |= LEFT;
@@ -836,7 +836,7 @@ AM_clipMline
 		outcode2 |= RIGHT;
 
 	if (outcode1 & outcode2)
-		return false; /* trivially outside */
+		return b_false; /* trivially outside */
 
 	/* transform to frame-buffer coordinates. */
 	fl->a.x = CXMTOF(ml->a.x);
@@ -848,7 +848,7 @@ AM_clipMline
 	DOOUTCODE(outcode2, fl->b.x, fl->b.y);
 
 	if (outcode1 & outcode2)
-		return false;
+		return b_false;
 
 	while (outcode1 | outcode2)
 	{
@@ -901,10 +901,10 @@ AM_clipMline
 		}
 
 		if (outcode1 & outcode2)
-			return false; /* trivially outside */
+			return b_false; /* trivially outside */
 	}
 
-	return true;
+	return b_true;
 }
 #undef DOOUTCODE
 

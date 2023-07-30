@@ -22,7 +22,7 @@
 #define __P_INTER__
 
 
-boolean P_GivePower(player_t*, int);
+bool32 P_GivePower(player_t*, int);
 
 
 

@@ -437,11 +437,11 @@ P_SetThingPosition (mobj_t* thing)
 /* so increment validcount before the first call */
 /* to P_BlockLinesIterator, then make one or more calls */
 /* to it. */
-boolean
+bool32
 P_BlockLinesIterator
 ( int                   x,
   int                   y,
-  boolean(*func)(line_t*) )
+  bool32(*func)(line_t*) )
 {
 	int                 offset;
 	short*              list;
@@ -452,7 +452,7 @@ P_BlockLinesIterator
 		|| x>=bmapwidth
 		|| y>=bmapheight)
 	{
-		return true;
+		return b_true;
 	}
 
 	offset = y*bmapwidth+x;
@@ -469,18 +469,18 @@ P_BlockLinesIterator
 		ld->validcount = validcount;
 
 		if ( !func(ld) )
-			return false;
+			return b_false;
 	}
-	return true;        /* everything was checked */
+	return b_true;        /* everything was checked */
 }
 
 
 /* P_BlockThingsIterator */
-boolean
+bool32
 P_BlockThingsIterator
 ( int                   x,
   int                   y,
-  boolean(*func)(mobj_t*) )
+  bool32(*func)(mobj_t*) )
 {
 	mobj_t*             mobj;
 
@@ -489,7 +489,7 @@ P_BlockThingsIterator
 		 || x>=bmapwidth
 		 || y>=bmapheight)
 	{
-		return true;
+		return b_true;
 	}
 
 
@@ -498,9 +498,9 @@ P_BlockThingsIterator
 		 mobj = mobj->bnext)
 	{
 		if (!func( mobj ) )
-			return false;
+			return b_false;
 	}
-	return true;
+	return b_true;
 }
 
 
@@ -510,7 +510,7 @@ intercept_t     intercepts[MAXINTERCEPTS];
 intercept_t*    intercept_p;
 
 divline_t       trace;
-boolean         earlyout;
+bool32         earlyout;
 int             ptflags;
 
 /* PIT_AddLineIntercepts. */
@@ -520,7 +520,7 @@ int             ptflags;
 /* A line is crossed if its endpoints */
 /* are on opposite sides of the trace. */
 /* Returns true if earlyout and a solid line hit. */
-boolean
+bool32
 PIT_AddLineIntercepts (line_t* ld)
 {
 	int                 s1;
@@ -529,7 +529,7 @@ PIT_AddLineIntercepts (line_t* ld)
 	divline_t           dl;
 
 	if (intercept_p == intercepts + MAXINTERCEPTS)
-		return true;    /* intercept array full */
+		return b_true;    /* intercept array full */
 
 	/* avoid precision problems with two routines */
 	if ( trace.dx > FRACUNIT*16
@@ -547,36 +547,36 @@ PIT_AddLineIntercepts (line_t* ld)
 	}
 
 	if (s1 == s2)
-		return true;    /* line isn't crossed */
+		return b_true;    /* line isn't crossed */
 
 	/* hit the line */
 	P_MakeDivline (ld, &dl);
 	frac = P_InterceptVector (&trace, &dl);
 
 	if (frac < 0)
-		return true;    /* behind source */
+		return b_true;    /* behind source */
 
 	/* try to early out the check */
 	if (earlyout
 		&& frac < FRACUNIT
 		&& !ld->backsector)
 	{
-		return false;   /* stop checking */
+		return b_false;   /* stop checking */
 	}
 
 
 	intercept_p->frac = frac;
-	intercept_p->isaline = true;
+	intercept_p->isaline = b_true;
 	intercept_p->d.line = ld;
 	intercept_p++;
 
-	return true;        /* continue */
+	return b_true;        /* continue */
 }
 
 
 
 /* PIT_AddThingIntercepts */
-boolean PIT_AddThingIntercepts (mobj_t* thing)
+bool32 PIT_AddThingIntercepts (mobj_t* thing)
 {
 	fixed_t             x1;
 	fixed_t             y1;
@@ -586,14 +586,14 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
 	int                 s1;
 	int                 s2;
 
-	boolean             tracepositive;
+	bool32             tracepositive;
 
 	divline_t           dl;
 
 	fixed_t             frac;
 
 	if (intercept_p == intercepts + MAXINTERCEPTS)
-		return true;            /* intercept array full */
+		return b_true;            /* intercept array full */
 
 	tracepositive = (trace.dx ^ trace.dy)>0;
 
@@ -619,7 +619,7 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
 	s2 = P_PointOnDivlineSide (x2, y2, &trace);
 
 	if (s1 == s2)
-		return true;            /* line isn't crossed */
+		return b_true;            /* line isn't crossed */
 
 	dl.x = x1;
 	dl.y = y1;
@@ -629,21 +629,21 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
 	frac = P_InterceptVector (&trace, &dl);
 
 	if (frac < 0)
-		return true;            /* behind source */
+		return b_true;            /* behind source */
 
 	intercept_p->frac = frac;
-	intercept_p->isaline = false;
+	intercept_p->isaline = b_false;
 	intercept_p->d.thing = thing;
 	intercept_p++;
 
-	return true;                /* keep going */
+	return b_true;                /* keep going */
 }
 
 
 /* P_TraverseIntercepts */
-/* Returns true if the traverser function returns true */
+/* Returns b_true if the traverser function returns true */
 /* for all lines. */
-boolean
+bool32
 P_TraverseIntercepts
 ( traverser_t   func,
   fixed_t       maxfrac )
@@ -670,7 +670,7 @@ P_TraverseIntercepts
 		}
 
 		if (dist > maxfrac)
-			return true;        /* checked everything in range */
+			return b_true;        /* checked everything in range */
 
 #if 0  /* UNUSED */
 	{
@@ -680,17 +680,17 @@ P_TraverseIntercepts
 			if (scan->frac > maxfrac)
 				*in++ = *scan;
 		intercept_p = in;
-		return false;
+		return b_false;
 	}
 #endif
 
 		if ( !func (in) )
-			return false;       /* don't bother going farther */
+			return b_false;       /* don't bother going farther */
 
 		in->frac = MAXINT;
 	}
 
-	return true;                /* everything was traversed */
+	return b_true;                /* everything was traversed */
 }
 
 
@@ -699,16 +699,16 @@ P_TraverseIntercepts
 /* P_PathTraverse */
 /* Traces a line from x1,y1 to x2,y2, */
 /* calling the traverser function for each. */
-/* Returns true if the traverser function returns true */
+/* Returns b_true if the traverser function returns true */
 /* for all lines. */
-boolean
+bool32
 P_PathTraverse
 ( fixed_t               x1,
   fixed_t               y1,
   fixed_t               x2,
   fixed_t               y2,
   int                   flags,
-  boolean (*trav) (intercept_t *))
+  bool32 (*trav) (intercept_t *))
 {
 	fixed_t     xt1;
 	fixed_t     yt1;
@@ -810,13 +810,13 @@ P_PathTraverse
 		if (flags & PT_ADDLINES)
 		{
 			if (!P_BlockLinesIterator (mapx, mapy,PIT_AddLineIntercepts))
-				return false;   /* early out */
+				return b_false;   /* early out */
 		}
 
 		if (flags & PT_ADDTHINGS)
 		{
 			if (!P_BlockThingsIterator (mapx, mapy,PIT_AddThingIntercepts))
-				return false;   /* early out */
+				return b_false;   /* early out */
 		}
 
 		if (mapx == xt2

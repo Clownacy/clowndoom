@@ -50,7 +50,7 @@
 /* There is another anim_t used in wi_stuff, unrelated. */
 typedef struct
 {
-	boolean     istexture;
+	bool32     istexture;
 	int         picnum;
 	int         basepic;
 	int         numpics;
@@ -61,7 +61,7 @@ typedef struct
 /*      source animation definition */
 typedef struct
 {
-	boolean     istexture;      /* if false, it is a flat */
+	bool32     istexture;      /* if false, it is a flat */
 	char        endname[9];
 	char        startname[9];
 	int         speed;
@@ -86,35 +86,35 @@ extern anim_t*  lastanim;
 /*  the WAD file. */
 animdef_t               animdefs[] =
 {
-	{false,     "NUKAGE3",      "NUKAGE1",      8},
-	{false,     "FWATER4",      "FWATER1",      8},
-	{false,     "SWATER4",      "SWATER1",      8},
-	{false,     "LAVA4",        "LAVA1",        8},
-	{false,     "BLOOD3",       "BLOOD1",       8},
+	{b_false,     "NUKAGE3",      "NUKAGE1",      8},
+	{b_false,     "FWATER4",      "FWATER1",      8},
+	{b_false,     "SWATER4",      "SWATER1",      8},
+	{b_false,     "LAVA4",        "LAVA1",        8},
+	{b_false,     "BLOOD3",       "BLOOD1",       8},
 
 	/* DOOM II flat animations. */
-	{false,     "RROCK08",      "RROCK05",      8},
-	{false,     "SLIME04",      "SLIME01",      8},
-	{false,     "SLIME08",      "SLIME05",      8},
-	{false,     "SLIME12",      "SLIME09",      8},
+	{b_false,     "RROCK08",      "RROCK05",      8},
+	{b_false,     "SLIME04",      "SLIME01",      8},
+	{b_false,     "SLIME08",      "SLIME05",      8},
+	{b_false,     "SLIME12",      "SLIME09",      8},
 
-	{true,      "BLODGR4",      "BLODGR1",      8},
-	{true,      "SLADRIP3",     "SLADRIP1",     8},
+	{b_true,      "BLODGR4",      "BLODGR1",      8},
+	{b_true,      "SLADRIP3",     "SLADRIP1",     8},
 
-	{true,      "BLODRIP4",     "BLODRIP1",     8},
-	{true,      "FIREWALL",     "FIREWALA",     8},
-	{true,      "GSTFONT3",     "GSTFONT1",     8},
-	{true,      "FIRELAVA",     "FIRELAV3",     8},
-	{true,      "FIREMAG3",     "FIREMAG1",     8},
-	{true,      "FIREBLU2",     "FIREBLU1",     8},
-	{true,      "ROCKRED3",     "ROCKRED1",     8},
+	{b_true,      "BLODRIP4",     "BLODRIP1",     8},
+	{b_true,      "FIREWALL",     "FIREWALA",     8},
+	{b_true,      "GSTFONT3",     "GSTFONT1",     8},
+	{b_true,      "FIRELAVA",     "FIRELAV3",     8},
+	{b_true,      "FIREMAG3",     "FIREMAG1",     8},
+	{b_true,      "FIREBLU2",     "FIREBLU1",     8},
+	{b_true,      "ROCKRED3",     "ROCKRED1",     8},
 
-	{true,      "BFALL4",       "BFALL1",       8},
-	{true,      "SFALL4",       "SFALL1",       8},
-	{true,      "WFALL4",       "WFALL1",       8},
-	{true,      "DBRAIN4",      "DBRAIN1",      8},
+	{b_true,      "BFALL4",       "BFALL1",       8},
+	{b_true,      "SFALL4",       "SFALL1",       8},
+	{b_true,      "WFALL4",       "WFALL1",       8},
+	{b_true,      "DBRAIN4",      "DBRAIN1",      8},
 
-	{false, "", "", -1}
+	{b_false, "", "", -1}
 };
 
 anim_t          anims[MAXANIMS];
@@ -1028,7 +1028,7 @@ void P_PlayerInSpecialSector (player_t* player)
 
 /* P_UpdateSpecials */
 /* Animate planes, scroll walls, etc. */
-boolean         levelTimer;
+bool32         levelTimer;
 int             levelTimeCount;
 
 void P_UpdateSpecials (void)
@@ -1040,7 +1040,7 @@ void P_UpdateSpecials (void)
 
 
 	/*  LEVEL TIMER */
-	if (levelTimer == true)
+	if (levelTimer == b_true)
 	{
 		levelTimeCount--;
 		if (!levelTimeCount)
@@ -1144,7 +1144,7 @@ int EV_DoDonut(line_t*  line)
 			s2->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 			floor->type = donutRaise;
-			floor->crush = false;
+			floor->crush = b_false;
 			floor->direction = 1;
 			floor->sector = s2;
 			floor->speed = FLOORSPEED / 2;
@@ -1158,7 +1158,7 @@ int EV_DoDonut(line_t*  line)
 			s1->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 			floor->type = lowerFloor;
-			floor->crush = false;
+			floor->crush = b_false;
 			floor->direction = -1;
 			floor->sector = s1;
 			floor->speed = FLOORSPEED / 2;
@@ -1187,12 +1187,12 @@ void P_SpawnSpecials (void)
 	int         i;
 
 	/* See if -TIMER needs to be used. */
-	levelTimer = false;
+	levelTimer = b_false;
 
 	i = M_CheckParm("-avg");
 	if (i && deathmatch)
 	{
-		levelTimer = true;
+		levelTimer = b_true;
 		levelTimeCount = 20 * 60 * 35;
 	}
 
@@ -1201,7 +1201,7 @@ void P_SpawnSpecials (void)
 	{
 		int     time;
 		time = atoi(myargv[i+1]) * 60 * 35;
-		levelTimer = true;
+		levelTimer = b_true;
 		levelTimeCount = time;
 	}
 

@@ -127,7 +127,7 @@ byte*   I_AllocLow(size_t length)
 
 
 /* I_Error */
-extern boolean demorecording;
+extern bool32 demorecording;
 
 void I_Error (const char *error, ...)
 {

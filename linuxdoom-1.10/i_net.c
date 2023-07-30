@@ -69,7 +69,7 @@
 #endif
 
 void    NetSend (void);
-boolean NetListen (void);
+bool32 NetListen (void);
 
 
 /* NETWORKING */
@@ -236,7 +236,7 @@ int GetLocalAddress (void)
 void I_InitNetwork (void)
 {
 #ifdef __unix__
-	boolean             trueval = true;
+	bool32             trueval = b_true;
 #endif
 	int                 i;
 #ifdef __unix__
@@ -280,10 +280,10 @@ void I_InitNetwork (void)
 	{
 #endif
 		/* single player game */
-		netgame = false;
+		netgame = b_false;
 		doomcom->id = DOOMCOM_ID;
 		doomcom->numplayers = doomcom->numnodes = 1;
-		doomcom->deathmatch = false;
+		doomcom->deathmatch = b_false;
 		doomcom->consoleplayer = 0;
 #ifdef __unix__
 		return;
@@ -291,7 +291,7 @@ void I_InitNetwork (void)
 
 	netsend = PacketSend;
 	netget = PacketGet;
-	netgame = true;
+	netgame = b_true;
 
 	/* parse player number and host list */
 	doomcom->consoleplayer = myargv[i+1][0]-'1';

@@ -356,7 +356,7 @@ int     checkcoord[12][4] =
 };
 
 
-boolean R_CheckBBox (fixed_t*   bspcoord)
+bool32 R_CheckBBox (fixed_t*   bspcoord)
 {
 	int                 boxx;
 	int                 boxy;
@@ -395,7 +395,7 @@ boolean R_CheckBBox (fixed_t*   bspcoord)
 
 	boxpos = (boxy<<2)+boxx;
 	if (boxpos == 5)
-		return true;
+		return b_true;
 
 	x1 = bspcoord[checkcoord[boxpos][0]];
 	y1 = bspcoord[checkcoord[boxpos][1]];
@@ -410,7 +410,7 @@ boolean R_CheckBBox (fixed_t*   bspcoord)
 
 	/* Sitting on a line? */
 	if (span >= ANG180)
-		return true;
+		return b_true;
 
 	tspan = angle1 + clipangle;
 
@@ -420,7 +420,7 @@ boolean R_CheckBBox (fixed_t*   bspcoord)
 
 		/* Totally off the left edge? */
 		if (tspan >= span)
-			return false;
+			return b_false;
 
 		angle1 = clipangle;
 	}
@@ -431,7 +431,7 @@ boolean R_CheckBBox (fixed_t*   bspcoord)
 
 		/* Totally off the left edge? */
 		if (tspan >= span)
-			return false;
+			return b_false;
 
 		angle2 = -clipangle;
 	}
@@ -447,7 +447,7 @@ boolean R_CheckBBox (fixed_t*   bspcoord)
 
 	/* Does not cross a pixel. */
 	if (sx1 == sx2)
-		return false;
+		return b_false;
 	sx2--;
 
 	start = solidsegs;
@@ -458,10 +458,10 @@ boolean R_CheckBBox (fixed_t*   bspcoord)
 		&& sx2 <= start->last)
 	{
 		/* The clippost contains the new span. */
-		return false;
+		return b_false;
 	}
 
-	return true;
+	return b_true;
 }
 
 

@@ -39,7 +39,7 @@ void HUlib_clearTextLine(hu_textline_t* t)
 {
 	t->len = 0;
 	t->l[0] = 0;
-	t->needsupdate = true;
+	t->needsupdate = b_true;
 }
 
 void
@@ -57,33 +57,33 @@ HUlib_initTextLine
 	HUlib_clearTextLine(t);
 }
 
-boolean
+bool32
 HUlib_addCharToTextLine
 ( hu_textline_t*        t,
   char                  ch )
 {
 
 	if (t->len == HU_MAXLINELENGTH)
-		return false;
+		return b_false;
 	else
 	{
 		t->l[t->len++] = ch;
 		t->l[t->len] = 0;
 		t->needsupdate = 4;
-		return true;
+		return b_true;
 	}
 
 }
 
-boolean HUlib_delCharFromTextLine(hu_textline_t* t)
+bool32 HUlib_delCharFromTextLine(hu_textline_t* t)
 {
 
-	if (!t->len) return false;
+	if (!t->len) return b_false;
 	else
 	{
 		t->l[--t->len] = 0;
 		t->needsupdate = 4;
-		return true;
+		return b_true;
 	}
 
 }
@@ -91,7 +91,7 @@ boolean HUlib_delCharFromTextLine(hu_textline_t* t)
 void
 HUlib_drawTextLine
 ( hu_textline_t*        l,
-  boolean               drawcursor )
+  bool32               drawcursor )
 {
 
 	int                 i;
@@ -171,14 +171,14 @@ HUlib_initSText
   int           h,
   patch_t**     font,
   int           startchar,
-  boolean*      on )
+  bool32*      on )
 {
 
 	int i;
 
 	s->h = h;
 	s->on = on;
-	s->laston = true;
+	s->laston = b_true;
 	s->cl = 0;
 	for (i=0;i<h;i++)
 		HUlib_initTextLine(&s->l[i],
@@ -236,7 +236,7 @@ void HUlib_drawSText(hu_stext_t* s)
 		l = &s->l[idx];
 
 		/* need a decision made here on whether to skip the draw */
-		HUlib_drawTextLine(l, false); /* no cursor, please */
+		HUlib_drawTextLine(l, b_false); /* no cursor, please */
 	}
 
 }
@@ -263,11 +263,11 @@ HUlib_initIText
   int           y,
   patch_t**     font,
   int           startchar,
-  boolean*      on )
+  bool32*      on )
 {
 	it->lm = 0; /* default left margin is start of text */
 	it->on = on;
-	it->laston = true;
+	it->laston = b_true;
 	HUlib_initTextLine(&it->l, x, y, font, startchar);
 }
 
@@ -304,7 +304,7 @@ HUlib_addPrefixToIText
 
 /* wrapper function for handling general keyed input. */
 /* returns true if it ate the key */
-boolean
+bool32
 HUlib_keyInIText
 ( hu_itext_t*   it,
   unsigned char ch )
@@ -317,9 +317,9 @@ HUlib_keyInIText
 			HUlib_delCharFromIText(it);
 		else
 			if (ch != KEY_ENTER)
-				return false; /* did not eat key */
+				return b_false; /* did not eat key */
 
-	return true; /* ate the key */
+	return b_true; /* ate the key */
 
 }
 
@@ -330,7 +330,7 @@ void HUlib_drawIText(hu_itext_t* it)
 
 	if (!*it->on)
 		return;
-	HUlib_drawTextLine(l, true); /* draw the line w/ cursor */
+	HUlib_drawTextLine(l, b_true); /* draw the line w/ cursor */
 
 }
 

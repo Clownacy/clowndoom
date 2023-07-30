@@ -88,7 +88,7 @@ const char*     finaleflat;
 
 void    F_StartCast (void);
 void    F_CastTicker (void);
-boolean F_CastResponder (const event_t *ev);
+bool32 F_CastResponder (const event_t *ev);
 void    F_CastDrawer (void);
 
 /* F_StartFinale */
@@ -98,8 +98,8 @@ void F_StartFinale (void)
 
 	gameaction = ga_nothing;
 	gamestate = GS_FINALE;
-	viewactive = false;
-	automapactive = false;
+	viewactive = b_false;
+	automapactive = b_false;
 
 	/* Okay - IWAD dependend stuff. */
 	/* This has been changed severly, and */
@@ -112,7 +112,7 @@ void F_StartFinale (void)
 	  case registered:
 	  case retail:
 	  {
-		S_ChangeMusic(mus_victor, true);
+		S_ChangeMusic(mus_victor, b_true);
 
 		switch (gameepisode)
 		{
@@ -142,7 +142,7 @@ void F_StartFinale (void)
 	  /* DOOM II and missions packs with E1, M34 */
 	  case commercial:
 	  {
-		  S_ChangeMusic(mus_read_m, true);
+		  S_ChangeMusic(mus_read_m, b_true);
 
 		  switch (gamemap)
 		  {
@@ -197,7 +197,7 @@ void F_StartFinale (void)
 
 	  /* Indeterminate. */
 	  default:
-		S_ChangeMusic(mus_read_m, true);
+		S_ChangeMusic(mus_read_m, b_true);
 		finaleflat = "F_SKY1"; /* Not used anywhere else. */
 		finaletext = ctext[0];  /* FIXME - other text, music? */
 		break;
@@ -210,12 +210,12 @@ void F_StartFinale (void)
 
 
 
-boolean F_Responder (const event_t *event)
+bool32 F_Responder (const event_t *event)
 {
 	if (finalestage == 2)
 		return F_CastResponder (event);
 
-	return false;
+	return b_false;
 }
 
 
@@ -374,10 +374,10 @@ castinfo_t      castorder[] = {
 int             castnum;
 int             casttics;
 state_t*        caststate;
-boolean         castdeath;
+bool32         castdeath;
 int             castframes;
 int             castonmelee;
-boolean         castattacking;
+bool32         castattacking;
 
 
 /* F_StartCast */
@@ -390,12 +390,12 @@ void F_StartCast (void)
 	castnum = 0;
 	caststate = &states[mobjinfo[castorder[castnum].type].seestate];
 	casttics = caststate->tics;
-	castdeath = false;
+	castdeath = b_false;
 	finalestage = 2;
 	castframes = 0;
 	castonmelee = 0;
-	castattacking = false;
-	S_ChangeMusic(mus_evil, true);
+	castattacking = b_false;
+	S_ChangeMusic(mus_evil, b_true);
 }
 
 
@@ -412,7 +412,7 @@ void F_CastTicker (void)
 	{
 		/* switch from deathstate to next monster */
 		castnum++;
-		castdeath = false;
+		castdeath = b_false;
 		if (castorder[castnum].name == NULL)
 			castnum = 0;
 		if (mobjinfo[castorder[castnum].type].seesound)
@@ -468,7 +468,7 @@ void F_CastTicker (void)
 	if (castframes == 12)
 	{
 		/* go into attack frame */
-		castattacking = true;
+		castattacking = b_true;
 		if (castonmelee)
 			caststate=&states[mobjinfo[castorder[castnum].type].meleestate];
 		else
@@ -491,7 +491,7 @@ void F_CastTicker (void)
 			||  caststate == &states[mobjinfo[castorder[castnum].type].seestate] )
 		{
 		  stopattack:
-			castattacking = false;
+			castattacking = b_false;
 			castframes = 0;
 			caststate = &states[mobjinfo[castorder[castnum].type].seestate];
 		}
@@ -505,24 +505,24 @@ void F_CastTicker (void)
 
 /* F_CastResponder */
 
-boolean F_CastResponder (const event_t* ev)
+bool32 F_CastResponder (const event_t* ev)
 {
 	if (ev->type != ev_keydown)
-		return false;
+		return b_false;
 
 	if (castdeath)
-		return true;                    /* already in dying frames */
+		return b_true;                    /* already in dying frames */
 
 	/* go into death frame */
-	castdeath = true;
+	castdeath = b_true;
 	caststate = &states[mobjinfo[castorder[castnum].type].deathstate];
 	casttics = caststate->tics;
 	castframes = 0;
-	castattacking = false;
+	castattacking = b_false;
 	if (mobjinfo[castorder[castnum].type].deathsound)
 		S_StartSound (NULL, mobjinfo[castorder[castnum].type].deathsound);
 
-	return true;
+	return b_true;
 }
 
 
@@ -585,7 +585,7 @@ void F_CastDrawer (void)
 	spritedef_t*        sprdef;
 	spriteframe_t*      sprframe;
 	int                 lump;
-	boolean             flip;
+	bool32             flip;
 	patch_t*            patch;
 
 	/* erase the entire screen to a background */
@@ -597,7 +597,7 @@ void F_CastDrawer (void)
 	sprdef = &sprites[caststate->sprite];
 	sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
 	lump = sprframe->lump[0];
-	flip = (boolean)sprframe->flip[0];
+	flip = (bool32)sprframe->flip[0];
 
 	patch = W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
 	if (flip)

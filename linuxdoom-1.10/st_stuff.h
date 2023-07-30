@@ -35,13 +35,13 @@
 /* STATUS BAR */
 
 /* Called by main loop. */
-boolean ST_Responder (const event_t* ev);
+bool32 ST_Responder (const event_t* ev);
 
 /* Called by main loop. */
 void ST_Ticker (void);
 
 /* Called by main loop. */
-void ST_Drawer (boolean fullscreen, boolean refresh);
+void ST_Drawer (bool32 fullscreen, bool32 refresh);
 
 /* Called when the console player is spawned on each level. */
 void ST_Start (void);

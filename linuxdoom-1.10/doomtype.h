@@ -22,14 +22,10 @@
 #ifndef __DOOMTYPE__
 #define __DOOMTYPE__
 
-
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
-#ifdef __cplusplus
-typedef unsigned int boolean;
-#else
-typedef enum {false, true} boolean;
-#endif
+enum {b_false, b_true};
+typedef unsigned int bool32;
 typedef unsigned char byte;
 #endif
 

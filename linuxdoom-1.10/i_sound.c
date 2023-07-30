@@ -89,9 +89,9 @@ static short            vol_lookup[128][256];
 const char*             wildmidi_config_path;
 
 #ifdef WILDMIDI
-static boolean          music_initialised;
+static bool32          music_initialised;
 static midi*            music_midi;
-static boolean          music_playing;
+static bool32          music_playing;
 #endif
 
 
@@ -128,7 +128,7 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
 		bytes_done = (size_t)WildMidi_GetOutput(music_midi, (int8_t*)output_buffer, bytes_to_do);
 
 		if (bytes_done < bytes_to_do)
-			music_playing = false;
+			music_playing = b_false;
 	}
 #endif
 
@@ -418,7 +418,7 @@ void I_StopSound(int handle)
 
 
 
-boolean I_SoundIsPlaying(int handle)
+bool32 I_SoundIsPlaying(int handle)
 {
 	int i;
 
@@ -426,7 +426,7 @@ boolean I_SoundIsPlaying(int handle)
 	{
 		if (channelhandles[i] == handle)
 		{
-			boolean playing;
+			bool32 playing;
 
 			IB_LockSound();
 
@@ -474,7 +474,7 @@ static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 
 #ifdef WILDMIDI
 	if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
-		music_initialised = true;
+		music_initialised = b_true;
 #endif
 }
 
@@ -531,7 +531,7 @@ void I_ShutdownSound(void)
 	if (music_initialised)
 	{
 		WildMidi_Shutdown();
-		music_initialised = false;
+		music_initialised = b_false;
 	}
 #endif
 }
@@ -541,7 +541,7 @@ void I_ShutdownSound(void)
 
 /* MUSIC API. */
 
-void I_PlaySong(int handle, boolean looping)
+void I_PlaySong(int handle, bool32 looping)
 {
 	/* UNUSED. */
 	(void)handle;
@@ -553,7 +553,7 @@ void I_PlaySong(int handle, boolean looping)
 	{
 		IB_LockSound();
 
-		music_playing = true;
+		music_playing = b_true;
 		WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
 
 		IB_UnlockSound();
@@ -574,7 +574,7 @@ void I_PauseSong (int handle)
 	{
 		IB_LockSound();
 
-		music_playing = false;
+		music_playing = b_false;
 
 		IB_UnlockSound();
 	}
@@ -594,7 +594,7 @@ void I_ResumeSong (int handle)
 	{
 		IB_LockSound();
 
-		music_playing = true;
+		music_playing = b_true;
 
 		IB_UnlockSound();
 	}
@@ -614,7 +614,7 @@ void I_StopSong(int handle)
 	{
 		IB_LockSound();
 
-		music_playing = false;
+		music_playing = b_false;
 		WildMidi_FastSeek(music_midi, 0);
 
 		IB_UnlockSound();
@@ -671,7 +671,7 @@ int I_RegisterSong(const void* data, size_t size)
 int I_QrySongPlaying(int handle)
 {
 #ifdef WILDMIDI
-	boolean playing;
+	bool32 playing;
 #endif
 
 	/* UNUSED. */

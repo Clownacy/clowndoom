@@ -38,7 +38,7 @@
 /* 16 pixels of bob */
 #define MAXBOB  0x100000
 
-boolean         onground;
+bool32         onground;
 
 
 /* P_Thrust */
@@ -304,11 +304,11 @@ void P_PlayerThink (player_t* player)
 		if (!player->usedown)
 		{
 			P_UseLines (player);
-			player->usedown = true;
+			player->usedown = b_true;
 		}
 	}
 	else
-		player->usedown = false;
+		player->usedown = b_false;
 
 	/* cycle psprites */
 	P_MovePsprites (player);

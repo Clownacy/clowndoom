@@ -45,7 +45,7 @@ fixed_t         tmy;
 
 /* If "floatok" true, move would be ok */
 /* if within "tmfloorz - tmceilingz". */
-boolean         floatok;
+bool32         floatok;
 
 fixed_t         tmfloorz;
 fixed_t         tmceilingz;
@@ -67,12 +67,12 @@ int             numspechit;
 /* TELEPORT MOVE */
 
 /* PIT_StompThing */
-boolean PIT_StompThing (mobj_t* thing)
+bool32 PIT_StompThing (mobj_t* thing)
 {
 	fixed_t     blockdist;
 
 	if (!(thing->flags & MF_SHOOTABLE) )
-		return true;
+		return b_true;
 
 	blockdist = thing->radius + tmthing->radius;
 
@@ -80,25 +80,25 @@ boolean PIT_StompThing (mobj_t* thing)
 		 || abs(thing->y - tmy) >= blockdist )
 	{
 		/* didn't hit it */
-		return true;
+		return b_true;
 	}
 
 	/* don't clip against self */
 	if (thing == tmthing)
-		return true;
+		return b_true;
 
 	/* monsters don't stomp things except on boss level */
 	if ( !tmthing->player && gamemap != 30)
-		return false;
+		return b_false;
 
 	P_DamageMobj (thing, tmthing, tmthing, 10000);
 
-	return true;
+	return b_true;
 }
 
 
 /* P_TeleportMove */
-boolean
+bool32
 P_TeleportMove
 ( mobj_t*       thing,
   fixed_t       x,
@@ -147,7 +147,7 @@ P_TeleportMove
 	for (bx=xl ; bx<=xh ; bx++)
 		for (by=yl ; by<=yh ; by++)
 			if (!P_BlockThingsIterator(bx,by,PIT_StompThing))
-				return false;
+				return b_false;
 
 	/* the move is ok, */
 	/* so link the thing into its new position */
@@ -160,7 +160,7 @@ P_TeleportMove
 
 	P_SetThingPosition (thing);
 
-	return true;
+	return b_true;
 }
 
 
@@ -169,16 +169,16 @@ P_TeleportMove
 
 /* PIT_CheckLine */
 /* Adjusts tmfloorz and tmceilingz as lines are contacted */
-boolean PIT_CheckLine (line_t* ld)
+bool32 PIT_CheckLine (line_t* ld)
 {
 	if (tmbbox[BOXRIGHT] <= ld->bbox[BOXLEFT]
 		|| tmbbox[BOXLEFT] >= ld->bbox[BOXRIGHT]
 		|| tmbbox[BOXTOP] <= ld->bbox[BOXBOTTOM]
 		|| tmbbox[BOXBOTTOM] >= ld->bbox[BOXTOP] )
-		return true;
+		return b_true;
 
 	if (P_BoxOnLineSide (tmbbox, ld) != -1)
-		return true;
+		return b_true;
 
 	/* A line has been hit */
 
@@ -192,15 +192,15 @@ boolean PIT_CheckLine (line_t* ld)
 	/* could be crossed in either order. */
 
 	if (!ld->backsector)
-		return false;           /* one sided line */
+		return b_false;           /* one sided line */
 
 	if (!(tmthing->flags & MF_MISSILE) )
 	{
 		if ( ld->flags & ML_BLOCKING )
-			return false;       /* explicitly blocking everything */
+			return b_false;       /* explicitly blocking everything */
 
 		if ( !tmthing->player && ld->flags & ML_BLOCKMONSTERS )
-			return false;       /* block monsters only */
+			return b_false;       /* block monsters only */
 	}
 
 	/* set openrange, opentop, openbottom */
@@ -226,18 +226,18 @@ boolean PIT_CheckLine (line_t* ld)
 		numspechit++;
 	}
 
-	return true;
+	return b_true;
 }
 
 /* PIT_CheckThing */
-boolean PIT_CheckThing (mobj_t* thing)
+bool32 PIT_CheckThing (mobj_t* thing)
 {
 	fixed_t             blockdist;
-	boolean             solid;
+	bool32             solid;
 	int                 damage;
 
 	if (!(thing->flags & (MF_SOLID|MF_SPECIAL|MF_SHOOTABLE) ))
-		return true;
+		return b_true;
 
 	blockdist = thing->radius + tmthing->radius;
 
@@ -245,12 +245,12 @@ boolean PIT_CheckThing (mobj_t* thing)
 		 || abs(thing->y - tmy) >= blockdist )
 	{
 		/* didn't hit it */
-		return true;
+		return b_true;
 	}
 
 	/* don't clip against self */
 	if (thing == tmthing)
-		return true;
+		return b_true;
 
 	/* check for skulls slamming into things */
 	if (tmthing->flags & MF_SKULLFLY)
@@ -264,7 +264,7 @@ boolean PIT_CheckThing (mobj_t* thing)
 
 		P_SetMobjState (tmthing, tmthing->info->spawnstate);
 
-		return false;           /* stop moving */
+		return b_false;           /* stop moving */
 	}
 
 
@@ -273,9 +273,9 @@ boolean PIT_CheckThing (mobj_t* thing)
 	{
 		/* see if it went over / under */
 		if (tmthing->z > thing->z + thing->height)
-			return true;                /* overhead */
+			return b_true;                /* overhead */
 		if (tmthing->z+tmthing->height < thing->z)
-			return true;                /* underneath */
+			return b_true;                /* underneath */
 
 		if (tmthing->target && (
 			tmthing->target->type == thing->type ||
@@ -284,13 +284,13 @@ boolean PIT_CheckThing (mobj_t* thing)
 		{
 			/* Don't hit same species as originator. */
 			if (thing == tmthing->target)
-				return true;
+				return b_true;
 
 			if (thing->type != MT_PLAYER)
 			{
 				/* Explode, but do no damage. */
 				/* Let players missile other players. */
-				return false;
+				return b_false;
 			}
 		}
 
@@ -305,7 +305,7 @@ boolean PIT_CheckThing (mobj_t* thing)
 		P_DamageMobj (thing, tmthing, tmthing->target, damage);
 
 		/* don't traverse any more */
-		return false;
+		return b_false;
 	}
 
 	/* check for special pickup */
@@ -345,7 +345,7 @@ boolean PIT_CheckThing (mobj_t* thing)
 /*   (monsters won't move to a dropoff) */
 /*  speciallines[] */
 /*  numspeciallines */
-boolean
+bool32
 P_CheckPosition
 ( mobj_t*       thing,
   fixed_t       x,
@@ -384,7 +384,7 @@ P_CheckPosition
 	numspechit = 0;
 
 	if ( tmflags & MF_NOCLIP )
-		return true;
+		return b_true;
 
 	/* Check things first, possibly picking things up. */
 	/* The bounding box is extended by MAXRADIUS */
@@ -399,7 +399,7 @@ P_CheckPosition
 	for (bx=xl ; bx<=xh ; bx++)
 		for (by=yl ; by<=yh ; by++)
 			if (!P_BlockThingsIterator(bx,by,PIT_CheckThing))
-				return false;
+				return b_false;
 
 	/* check lines */
 	xl = (tmbbox[BOXLEFT] - bmaporgx)>>MAPBLOCKSHIFT;
@@ -410,16 +410,16 @@ P_CheckPosition
 	for (bx=xl ; bx<=xh ; bx++)
 		for (by=yl ; by<=yh ; by++)
 			if (!P_BlockLinesIterator (bx,by,PIT_CheckLine))
-				return false;
+				return b_false;
 
-	return true;
+	return b_true;
 }
 
 
 /* P_TryMove */
 /* Attempt to move to a new position, */
 /* crossing special lines unless MF_TELEPORT is set. */
-boolean
+bool32
 P_TryMove
 ( mobj_t*       thing,
   fixed_t       x,
@@ -431,28 +431,28 @@ P_TryMove
 	int         oldside;
 	line_t*     ld;
 
-	floatok = false;
+	floatok = b_false;
 	if (!P_CheckPosition (thing, x, y))
-		return false;           /* solid wall or thing */
+		return b_false;           /* solid wall or thing */
 
 	if ( !(thing->flags & MF_NOCLIP) )
 	{
 		if (tmceilingz - tmfloorz < thing->height)
-			return false;       /* doesn't fit */
+			return b_false;       /* doesn't fit */
 
-		floatok = true;
+		floatok = b_true;
 
 		if ( !(thing->flags&MF_TELEPORT)
 			 &&tmceilingz - thing->z < thing->height)
-			return false;       /* mobj must lower itself to fit */
+			return b_false;       /* mobj must lower itself to fit */
 
 		if ( !(thing->flags&MF_TELEPORT)
 			 && tmfloorz - thing->z > 24*FRACUNIT )
-			return false;       /* too big a step up */
+			return b_false;       /* too big a step up */
 
 		if ( !(thing->flags&(MF_DROPOFF|MF_FLOAT))
 			 && tmfloorz - tmdropoffz > 24*FRACUNIT )
-			return false;       /* don't stand over a dropoff */
+			return b_false;       /* don't stand over a dropoff */
 	}
 
 	/* the move is ok, */
@@ -485,7 +485,7 @@ P_TryMove
 		}
 	}
 
-	return true;
+	return b_true;
 }
 
 
@@ -497,9 +497,9 @@ P_TryMove
 /* If the thing doesn't fit, */
 /* the z will be set to the lowest value */
 /* and false will be returned. */
-boolean P_ThingHeightClip (mobj_t* thing)
+bool32 P_ThingHeightClip (mobj_t* thing)
 {
-	boolean             onfloor;
+	bool32             onfloor;
 
 	onfloor = (thing->z == thing->floorz);
 
@@ -522,9 +522,9 @@ boolean P_ThingHeightClip (mobj_t* thing)
 	}
 
 	if (thing->ceilingz - thing->floorz < thing->height)
-		return false;
+		return b_false;
 
-	return true;
+	return b_true;
 }
 
 
@@ -597,7 +597,7 @@ void P_HitSlideLine (line_t* ld)
 
 
 /* PTR_SlideTraverse */
-boolean PTR_SlideTraverse (intercept_t* in)
+bool32 PTR_SlideTraverse (intercept_t* in)
 {
 	line_t*     li;
 
@@ -611,7 +611,7 @@ boolean PTR_SlideTraverse (intercept_t* in)
 		if (P_PointOnLineSide (slidemo->x, slidemo->y, li))
 		{
 			/* don't hit the back side */
-			return true;
+			return b_true;
 		}
 		goto isblocking;
 	}
@@ -629,7 +629,7 @@ boolean PTR_SlideTraverse (intercept_t* in)
 		goto isblocking;                /* too big a step up */
 
 	/* this line doesn't block movement */
-	return true;
+	return b_true;
 
 	/* the line does block movement, */
 	/* see if it is closer than best so far */
@@ -642,7 +642,7 @@ boolean PTR_SlideTraverse (intercept_t* in)
 		bestslideline = li;
 	}
 
-	return false;       /* stop */
+	return b_false;       /* stop */
 }
 
 
@@ -769,7 +769,7 @@ extern fixed_t  bottomslope;
 
 /* PTR_AimTraverse */
 /* Sets linetaget and aimslope when a target is aimed at. */
-boolean
+bool32
 PTR_AimTraverse (intercept_t* in)
 {
 	line_t*             li;
@@ -784,7 +784,7 @@ PTR_AimTraverse (intercept_t* in)
 		li = in->d.line;
 
 		if ( !(li->flags & ML_TWOSIDED) )
-			return false;               /* stop */
+			return b_false;               /* stop */
 
 		/* Crosses a two sided line. */
 		/* A two sided line will restrict */
@@ -792,7 +792,7 @@ PTR_AimTraverse (intercept_t* in)
 		P_LineOpening (li);
 
 		if (openbottom >= opentop)
-			return false;               /* stop */
+			return b_false;               /* stop */
 
 		dist = FixedMul (attackrange, in->frac);
 
@@ -811,30 +811,30 @@ PTR_AimTraverse (intercept_t* in)
 		}
 
 		if (topslope <= bottomslope)
-			return false;               /* stop */
+			return b_false;               /* stop */
 
-		return true;                    /* shot continues */
+		return b_true;                    /* shot continues */
 	}
 
 	/* shoot a thing */
 	th = in->d.thing;
 	if (th == shootthing)
-		return true;                    /* can't shoot self */
+		return b_true;                    /* can't shoot self */
 
 	if (!(th->flags&MF_SHOOTABLE))
-		return true;                    /* corpse or something */
+		return b_true;                    /* corpse or something */
 
 	/* check angles to see if the thing can be aimed at */
 	dist = FixedMul (attackrange, in->frac);
 	thingtopslope = FixedDiv (th->z+th->height - shootz , dist);
 
 	if (thingtopslope < bottomslope)
-		return true;                    /* shot over the thing */
+		return b_true;                    /* shot over the thing */
 
 	thingbottomslope = FixedDiv (th->z - shootz, dist);
 
 	if (thingbottomslope > topslope)
-		return true;                    /* shot under the thing */
+		return b_true;                    /* shot under the thing */
 
 	/* this thing can be hit! */
 	if (thingtopslope > topslope)
@@ -846,12 +846,12 @@ PTR_AimTraverse (intercept_t* in)
 	aimslope = (thingtopslope+thingbottomslope)/2;
 	linetarget = th;
 
-	return false;                       /* don't go any farther */
+	return b_false;                       /* don't go any farther */
 }
 
 
 /* PTR_ShootTraverse */
-boolean PTR_ShootTraverse (intercept_t* in)
+bool32 PTR_ShootTraverse (intercept_t* in)
 {
 	fixed_t             x;
 	fixed_t             y;
@@ -897,7 +897,7 @@ boolean PTR_ShootTraverse (intercept_t* in)
 		}
 
 		/* shot continues */
-		return true;
+		return b_true;
 
 
 		/* hit line */
@@ -912,39 +912,39 @@ boolean PTR_ShootTraverse (intercept_t* in)
 		{
 			/* don't shoot the sky! */
 			if (z > li->frontsector->ceilingheight)
-				return false;
+				return b_false;
 
 			/* it's a sky hack wall */
 			if  (li->backsector && li->backsector->ceilingpic == skyflatnum)
-				return false;
+				return b_false;
 		}
 
 		/* Spawn bullet puffs. */
 		P_SpawnPuff (x,y,z);
 
 		/* don't go any farther */
-		return false;
+		return b_false;
 	}
 
 	/* shoot a thing */
 	th = in->d.thing;
 	if (th == shootthing)
-		return true;            /* can't shoot self */
+		return b_true;            /* can't shoot self */
 
 	if (!(th->flags&MF_SHOOTABLE))
-		return true;            /* corpse or something */
+		return b_true;            /* corpse or something */
 
 	/* check angles to see if the thing can be aimed at */
 	dist = FixedMul (attackrange, in->frac);
 	thingtopslope = FixedDiv (th->z+th->height - shootz , dist);
 
 	if (thingtopslope < aimslope)
-		return true;            /* shot over the thing */
+		return b_true;            /* shot over the thing */
 
 	thingbottomslope = FixedDiv (th->z - shootz, dist);
 
 	if (thingbottomslope > aimslope)
-		return true;            /* shot under the thing */
+		return b_true;            /* shot under the thing */
 
 
 	/* hit thing */
@@ -966,7 +966,7 @@ boolean PTR_ShootTraverse (intercept_t* in)
 		P_DamageMobj (th, shootthing, shootthing, la_damage);
 
 	/* don't go any farther */
-	return false;
+	return b_false;
 
 }
 
@@ -1041,7 +1041,7 @@ P_LineAttack
 /* USE LINES */
 mobj_t*         usething;
 
-boolean PTR_UseTraverse (intercept_t* in)
+bool32 PTR_UseTraverse (intercept_t* in)
 {
 	int         side;
 
@@ -1053,10 +1053,10 @@ boolean PTR_UseTraverse (intercept_t* in)
 			S_StartSound (usething, sfx_noway);
 
 			/* can't use through a wall */
-			return false;
+			return b_false;
 		}
 		/* not a special line, but keep checking */
-		return true ;
+		return b_true ;
 	}
 
 	side = 0;
@@ -1068,7 +1068,7 @@ boolean PTR_UseTraverse (intercept_t* in)
 	P_UseSpecialLine (usething, in->d.line, side);
 
 	/* can't use for than one special line in a row */
-	return false;
+	return b_false;
 }
 
 
@@ -1104,20 +1104,20 @@ int             bombdamage;
 /* PIT_RadiusAttack */
 /* "bombsource" is the creature */
 /* that caused the explosion at "bombspot". */
-boolean PIT_RadiusAttack (mobj_t* thing)
+bool32 PIT_RadiusAttack (mobj_t* thing)
 {
 	fixed_t     dx;
 	fixed_t     dy;
 	fixed_t     dist;
 
 	if (!(thing->flags & MF_SHOOTABLE) )
-		return true;
+		return b_true;
 
 	/* Boss spider and cyborg */
 	/* take no damage from concussion. */
 	if (thing->type == MT_CYBORG
 		|| thing->type == MT_SPIDER)
-		return true;
+		return b_true;
 
 	dx = abs(thing->x - bombspot->x);
 	dy = abs(thing->y - bombspot->y);
@@ -1129,7 +1129,7 @@ boolean PIT_RadiusAttack (mobj_t* thing)
 		dist = 0;
 
 	if (dist >= bombdamage)
-		return true;    /* out of range */
+		return b_true;    /* out of range */
 
 	if ( P_CheckSight (thing, bombspot) )
 	{
@@ -1137,7 +1137,7 @@ boolean PIT_RadiusAttack (mobj_t* thing)
 		P_DamageMobj (thing, bombspot, bombsource, bombdamage - dist);
 	}
 
-	return true;
+	return b_true;
 }
 
 
@@ -1185,19 +1185,19 @@ P_RadiusAttack
 /* If Crunch is false, you should set the sector height back */
 /*  the way it was and call P_ChangeSector again */
 /*  to undo the changes. */
-boolean         crushchange;
-boolean         nofit;
+bool32         crushchange;
+bool32         nofit;
 
 
 /* PIT_ChangeSector */
-boolean PIT_ChangeSector (mobj_t*       thing)
+bool32 PIT_ChangeSector (mobj_t*       thing)
 {
 	mobj_t*     mo;
 
 	if (P_ThingHeightClip (thing))
 	{
 		/* keep checking */
-		return true;
+		return b_true;
 	}
 
 
@@ -1211,7 +1211,7 @@ boolean PIT_ChangeSector (mobj_t*       thing)
 		thing->radius = 0;
 
 		/* keep checking */
-		return true;
+		return b_true;
 	}
 
 	/* crunch dropped items */
@@ -1220,16 +1220,16 @@ boolean PIT_ChangeSector (mobj_t*       thing)
 		P_RemoveMobj (thing);
 
 		/* keep checking */
-		return true;
+		return b_true;
 	}
 
 	if (! (thing->flags & MF_SHOOTABLE) )
 	{
 		/* assume it is bloody gibs or something */
-		return true;
+		return b_true;
 	}
 
-	nofit = true;
+	nofit = b_true;
 
 	if (crushchange && !(leveltime&3) )
 	{
@@ -1245,21 +1245,21 @@ boolean PIT_ChangeSector (mobj_t*       thing)
 	}
 
 	/* keep checking (crush other things) */
-	return true;
+	return b_true;
 }
 
 
 
 /* P_ChangeSector */
-boolean
+bool32
 P_ChangeSector
 ( sector_t*     sector,
-  boolean       crunch )
+  bool32       crunch )
 {
 	int         x;
 	int         y;
 
-	nofit = false;
+	nofit = b_false;
 	crushchange = crunch;
 
 	/* re-check heights for all things near the moving sector */

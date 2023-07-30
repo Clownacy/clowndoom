@@ -69,7 +69,7 @@
 
 
 
-boolean G_CheckDemoStatus (void);
+bool32 G_CheckDemoStatus (void);
 void    G_ReadDemoTiccmd (ticcmd_t* cmd);
 void    G_WriteDemoTiccmd (ticcmd_t* cmd);
 void    G_PlayerReborn (int player);
@@ -90,25 +90,25 @@ void    G_DoSaveGame (void);
 gameaction_t    gameaction;
 gamestate_t     gamestate;
 skill_t         gameskill;
-boolean         respawnmonsters;
+bool32         respawnmonsters;
 int             gameepisode;
 int             gamemap;
 
-boolean         paused;
-boolean         sendpause;              /* send a pause event next tic */
-boolean         sendsave;               /* send a save event next tic */
-boolean         usergame;               /* ok to save / end game */
+bool32         paused;
+bool32         sendpause;              /* send a pause event next tic */
+bool32         sendsave;               /* send a save event next tic */
+bool32         usergame;               /* ok to save / end game */
 
-boolean         timingdemo;             /* if true, exit with report on completion */
-boolean         nodrawers;              /* for comparative timing purposes */
-boolean         noblit;                 /* for comparative timing purposes */
+bool32         timingdemo;             /* if true, exit with report on completion */
+bool32         nodrawers;              /* for comparative timing purposes */
+bool32         noblit;                 /* for comparative timing purposes */
 int             starttime;              /* for comparative timing purposes */
 
-boolean         viewactive;
+bool32         viewactive;
 
-boolean         deathmatch;             /* only if started as net death */
-boolean         netgame;                /* only true if packets are broadcast */
-boolean         playeringame[MAXPLAYERS];
+bool32         deathmatch;             /* only if started as net death */
+bool32         netgame;                /* only true if packets are broadcast */
+bool32         playeringame[MAXPLAYERS];
 player_t        players[MAXPLAYERS];
 
 int             consoleplayer;          /* player taking events and displaying */
@@ -118,15 +118,15 @@ int             levelstarttic;          /* gametic at level start */
 int             totalkills, totalitems, totalsecret;    /* for intermission */
 
 char            demoname[32];
-boolean         demorecording;
-boolean         demoplayback;
-boolean         netdemo;
+bool32         demorecording;
+bool32         demoplayback;
+bool32         netdemo;
 byte*           demobuffer;
 byte*           demo_p;
 byte*           demoend;
-boolean         singledemo;             /* quit after playing a demo from cmdline */
+bool32         singledemo;             /* quit after playing a demo from cmdline */
 
-boolean         precache = true;        /* if true, load all graphics at start */
+bool32         precache = b_true;        /* if true, load all graphics at start */
 
 wbstartstruct_t wminfo;                 /* parms for world map / intermission */
 
@@ -173,28 +173,28 @@ fixed_t         angleturn[3] = {640, 1280, 320};        /* + slow turn */
 
 #define NUMKEYS         256
 
-boolean         gamekeydown[NUMKEYS];
+bool32         gamekeydown[NUMKEYS];
 int             turnheld;                               /* for accelerative turning */
 
-boolean         mousearray[4];
-boolean*        mousebuttons = &mousearray[1];          /* allow [-1] */
+bool32         mousearray[4];
+bool32*        mousebuttons = &mousearray[1];          /* allow [-1] */
 
 /* mouse values are used once */
 int             mousex;
 int             mousey;
 
 int             dclicktime;
-boolean         dclickstate;
+bool32         dclickstate;
 int             dclicks;
 int             dclicktime2;
-boolean         dclickstate2;
+bool32         dclickstate2;
 int             dclicks2;
 
 /* joystick values are repeated */
 int             joyxmove;
 int             joyymove;
-boolean         joyarray[5];
-boolean*        joybuttons = &joyarray[1];              /* allow [-1] */
+bool32         joyarray[5];
+bool32*        joybuttons = &joyarray[1];              /* allow [-1] */
 
 int             savegameslot;
 char            savedescription[32];
@@ -232,8 +232,8 @@ int G_CmdChecksum (ticcmd_t* cmd)
 void G_BuildTiccmd (ticcmd_t* cmd)
 {
 	int         i;
-	boolean     strafe;
-	boolean     bstrafe;
+	bool32     strafe;
+	bool32     bstrafe;
 	int         speed;
 	int         tspeed;
 	int         forward;
@@ -422,13 +422,13 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	/* special buttons */
 	if (sendpause)
 	{
-		sendpause = false;
+		sendpause = b_false;
 		cmd->buttons = BT_SPECIAL | BTS_PAUSE;
 	}
 
 	if (sendsave)
 	{
-		sendsave = false;
+		sendsave = b_false;
 		cmd->buttons = BT_SPECIAL | BTS_SAVEGAME | (savegameslot<<BTS_SAVESHIFT);
 	}
 }
@@ -484,7 +484,7 @@ void G_DoLoadLevel (void)
 	memset (gamekeydown, 0, sizeof(gamekeydown));
 	joyxmove = joyymove = 0;
 	mousex = mousey = 0;
-	sendpause = sendsave = paused = false;
+	sendpause = sendsave = paused = b_false;
 	memset (mousearray, 0, sizeof(mousearray));
 	memset (joyarray, 0, sizeof(joyarray));
 }
@@ -492,7 +492,7 @@ void G_DoLoadLevel (void)
 
 /* G_Responder */
 /* Get info needed to make ticcmd_ts for the players. */
-boolean G_Responder (const event_t* ev)
+bool32 G_Responder (const event_t* ev)
 {
 	/* allow spy mode changes even during the demo */
 	if (gamestate == GS_LEVEL && ev->type == ev_keydown
@@ -505,7 +505,7 @@ boolean G_Responder (const event_t* ev)
 			if (displayplayer == MAXPLAYERS)
 				displayplayer = 0;
 		} while (!playeringame[displayplayer] && displayplayer != consoleplayer);
-		return true;
+		return b_true;
 	}
 
 	/* any other key pops up menu if in demos */
@@ -518,9 +518,9 @@ boolean G_Responder (const event_t* ev)
 			(ev->type == ev_joystick && ev->data1) )
 		{
 			M_StartControlPanel ();
-			return true;
+			return b_true;
 		}
-		return false;
+		return b_false;
 	}
 
 	if (gamestate == GS_LEVEL)
@@ -529,21 +529,21 @@ boolean G_Responder (const event_t* ev)
 		if (devparm && ev->type == ev_keydown && ev->data1 == ';')
 		{
 			G_DeathMatchSpawnPlayer (0);
-			return true;
+			return b_true;
 		}
 #endif
 		if (HU_Responder (ev))
-			return true;        /* chat ate the event */
+			return b_true;        /* chat ate the event */
 		if (ST_Responder (ev))
-			return true;        /* status window ate it */
+			return b_true;        /* status window ate it */
 		if (AM_Responder (ev))
-			return true;        /* automap ate it */
+			return b_true;        /* automap ate it */
 	}
 
 	if (gamestate == GS_FINALE)
 	{
 		if (F_Responder (ev))
-			return true;        /* finale ate the event */
+			return b_true;        /* finale ate the event */
 	}
 
 	switch (ev->type)
@@ -551,17 +551,17 @@ boolean G_Responder (const event_t* ev)
 	  case ev_keydown:
 		if (ev->data1 == KEY_PAUSE)
 		{
-			sendpause = true;
-			return true;
+			sendpause = b_true;
+			return b_true;
 		}
 		if (ev->data1 <NUMKEYS)
-			gamekeydown[ev->data1] = true;
-		return true;    /* eat key down events */
+			gamekeydown[ev->data1] = b_true;
+		return b_true;    /* eat key down events */
 
 	  case ev_keyup:
 		if (ev->data1 <NUMKEYS)
-			gamekeydown[ev->data1] = false;
-		return false;   /* always let key up events filter down */
+			gamekeydown[ev->data1] = b_false;
+		return b_false;   /* always let key up events filter down */
 
 	  case ev_mouse:
 		mousebuttons[0] = ev->data1 & 1;
@@ -569,7 +569,7 @@ boolean G_Responder (const event_t* ev)
 		mousebuttons[2] = ev->data1 & 4;
 		mousex = ev->data2*(mouseSensitivity+5)/10;
 		mousey = ev->data3*(mouseSensitivity+5)/10;
-		return true;    /* eat events */
+		return b_true;    /* eat events */
 
 	  case ev_joystick:
 		joybuttons[0] = ev->data1 & 1;
@@ -578,13 +578,13 @@ boolean G_Responder (const event_t* ev)
 		joybuttons[3] = ev->data1 & 8;
 		joyxmove = ev->data2;
 		joyymove = ev->data3;
-		return true;    /* eat events */
+		return b_true;    /* eat events */
 
 	  default:
 		break;
 	}
 
-	return false;
+	return b_false;
 }
 
 
@@ -795,12 +795,12 @@ void G_PlayerReborn (int player)
 	players[player].itemcount = itemcount;
 	players[player].secretcount = secretcount;
 
-	p->usedown = p->attackdown = true;  /* don't do anything immediately */
+	p->usedown = p->attackdown = b_true;  /* don't do anything immediately */
 	p->playerstate = PST_LIVE;
 	p->health = MAXHEALTH;
 	p->readyweapon = p->pendingweapon = wp_pistol;
-	p->weaponowned[wp_fist] = true;
-	p->weaponowned[wp_pistol] = true;
+	p->weaponowned[wp_fist] = b_true;
+	p->weaponowned[wp_pistol] = b_true;
 	p->ammo[am_clip] = 50;
 
 	for (i=0 ; i<NUMAMMO ; i++)
@@ -814,7 +814,7 @@ void G_PlayerReborn (int player)
 /* because something is occupying it */
 void P_SpawnPlayer (mapthing_t* mthing);
 
-boolean
+bool32
 G_CheckSpot
 ( int           playernum,
   mapthing_t*   mthing )
@@ -832,15 +832,15 @@ G_CheckSpot
 		for (i=0 ; i<playernum ; i++)
 			if (players[i].mo->x == mthing->x << FRACBITS
 				&& players[i].mo->y == mthing->y << FRACBITS)
-				return false;
-		return true;
+				return b_false;
+		return b_true;
 	}
 
 	x = mthing->x << FRACBITS;
 	y = mthing->y << FRACBITS;
 
 	if (!P_CheckPosition (players[playernum].mo, x, y) )
-		return false;
+		return b_false;
 
 	/* flush an old corpse if needed */
 	if (bodyqueslot >= BODYQUESIZE)
@@ -859,7 +859,7 @@ G_CheckSpot
 	if (players[consoleplayer].viewz != 1)
 		S_StartSound (mo, sfx_telept);  /* don't start sound on first frame */
 
-	return true;
+	return b_true;
 }
 
 
@@ -964,11 +964,11 @@ int cpars[32] =
 
 
 /* G_DoCompleted */
-boolean         secretexit;
+bool32         secretexit;
 
 void G_ExitLevel (void)
 {
-	secretexit = false;
+	secretexit = b_false;
 	gameaction = ga_completed;
 }
 
@@ -978,9 +978,9 @@ void G_SecretExitLevel (void)
 	/* IF NO WOLF3D LEVELS, NO SECRET EXIT! */
 	if ( (gamemode == commercial)
 	  && (W_CheckNumForName("map31")<0))
-		secretexit = false;
+		secretexit = b_false;
 	else
-		secretexit = true;
+		secretexit = b_true;
 	gameaction = ga_completed;
 }
 
@@ -1005,7 +1005,7 @@ void G_DoCompleted (void)
 			return;
 		  case 9:
 			for (i=0 ; i<MAXPLAYERS ; i++)
-				players[i].didsecret = true;
+				players[i].didsecret = b_true;
 			break;
 		}
 
@@ -1023,7 +1023,7 @@ void G_DoCompleted (void)
 	{
 		/* exit secret level */
 		for (i=0 ; i<MAXPLAYERS ; i++)
-			players[i].didsecret = true;
+			players[i].didsecret = b_true;
 	}
 /* #endif */
 
@@ -1098,8 +1098,8 @@ void G_DoCompleted (void)
 	}
 
 	gamestate = GS_INTERMISSION;
-	viewactive = false;
-	automapactive = false;
+	viewactive = b_false;
+	automapactive = b_false;
 /*
 	if (statcopy)
 		memcpy (statcopy, &wminfo, sizeof(wminfo));
@@ -1114,7 +1114,7 @@ void G_WorldDone (void)
 	gameaction = ga_worlddone;
 
 	if (secretexit)
-		players[consoleplayer].didsecret = true;
+		players[consoleplayer].didsecret = b_true;
 
 	if ( gamemode == commercial )
 	{
@@ -1141,14 +1141,14 @@ void G_DoWorldDone (void)
 	gamemap = wminfo.next+1;
 	G_DoLoadLevel ();
 	gameaction = ga_nothing;
-	viewactive = true;
+	viewactive = b_true;
 }
 
 
 
 /* G_InitFromSavegame */
 /* Can be called by the startup code or the menu task. */
-extern boolean setsizeneeded;
+extern bool32 setsizeneeded;
 void R_ExecuteSetViewSize (void);
 
 char    savename[256];
@@ -1225,7 +1225,7 @@ G_SaveGame
 {
 	savegameslot = slot;
 	strcpy (savedescription, description);
-	sendsave = true;
+	sendsave = b_true;
 }
 
 void G_DoSaveGame (void)
@@ -1303,14 +1303,14 @@ G_DeferedInitNew
 
 void G_DoNewGame (void)
 {
-	demoplayback = false;
-	netdemo = false;
-	netgame = false;
-	deathmatch = false;
+	demoplayback = b_false;
+	netdemo = b_false;
+	netgame = b_false;
+	deathmatch = b_false;
 	playeringame[1] = playeringame[2] = playeringame[3] = 0;
-	respawnparm = false;
-	fastparm = false;
-	nomonsters = false;
+	respawnparm = b_false;
+	fastparm = b_false;
+	nomonsters = b_false;
 	consoleplayer = 0;
 	G_InitNew (d_skill, d_episode, d_map);
 	gameaction = ga_nothing;
@@ -1330,7 +1330,7 @@ G_InitNew
 
 	if (paused)
 	{
-		paused = false;
+		paused = b_false;
 		S_ResumeSound ();
 	}
 
@@ -1373,9 +1373,9 @@ G_InitNew
 	M_ClearRandom ();
 
 	if (skill == sk_nightmare || respawnparm )
-		respawnmonsters = true;
+		respawnmonsters = b_true;
 	else
-		respawnmonsters = false;
+		respawnmonsters = b_false;
 
 	if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare) )
 	{
@@ -1399,16 +1399,16 @@ G_InitNew
 	for (i=0 ; i<MAXPLAYERS ; i++)
 		players[i].playerstate = PST_REBORN;
 
-	usergame = true;                /* will be set false if a demo */
-	paused = false;
-	demoplayback = false;
-	automapactive = false;
-	viewactive = true;
+	usergame = b_true;                /* will be set false if a demo */
+	paused = b_false;
+	demoplayback = b_false;
+	automapactive = b_false;
+	viewactive = b_true;
 	gameepisode = episode;
 	gamemap = map;
 	gameskill = skill;
 
-	viewactive = true;
+	viewactive = b_true;
 
 	/* set the sky map for the episode */
 	if ( gamemode == commercial)
@@ -1487,7 +1487,7 @@ void G_RecordDemo (const char* name)
 	int             i;
 	int                         maxsize;
 
-	usergame = false;
+	usergame = b_false;
 	strcpy (demoname, name);
 	strcat (demoname, ".lmp");
 	maxsize = 0x20000;
@@ -1497,7 +1497,7 @@ void G_RecordDemo (const char* name)
 	demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL);
 	demoend = demobuffer + maxsize;
 
-	demorecording = true;
+	demorecording = b_true;
 }
 
 
@@ -1559,17 +1559,17 @@ void G_DoPlayDemo (void)
 		playeringame[i] = *demo_p++;
 	if (playeringame[1])
 	{
-		netgame = true;
-		netdemo = true;
+		netgame = b_true;
+		netdemo = b_true;
 	}
 
 	/* don't spend a lot of time in loadlevel */
-	precache = false;
+	precache = b_false;
 	G_InitNew (skill, episode, map);
-	precache = true;
+	precache = b_true;
 
-	usergame = false;
-	demoplayback = true;
+	usergame = b_false;
+	demoplayback = b_true;
 }
 
 /* G_TimeDemo */
@@ -1577,8 +1577,8 @@ void G_TimeDemo (const char* name)
 {
 	nodrawers = M_CheckParm ("-nodraw");
 	noblit = M_CheckParm ("-noblit");
-	timingdemo = true;
-	singletics = true;
+	timingdemo = b_true;
+	singletics = b_true;
 
 	defdemoname = name;
 	gameaction = ga_playdemo;
@@ -1595,7 +1595,7 @@ void G_TimeDemo (const char* name)
 ===================
 */
 
-boolean G_CheckDemoStatus (void)
+bool32 G_CheckDemoStatus (void)
 {
 	int             endtime;
 
@@ -1612,17 +1612,17 @@ boolean G_CheckDemoStatus (void)
 			I_Quit ();
 
 		Z_ChangeTag (demobuffer, PU_CACHE);
-		demoplayback = false;
-		netdemo = false;
-		netgame = false;
-		deathmatch = false;
+		demoplayback = b_false;
+		netdemo = b_false;
+		netgame = b_false;
+		deathmatch = b_false;
 		playeringame[1] = playeringame[2] = playeringame[3] = 0;
-		respawnparm = false;
-		fastparm = false;
-		nomonsters = false;
+		respawnparm = b_false;
+		fastparm = b_false;
+		nomonsters = b_false;
 		consoleplayer = 0;
 		D_AdvanceDemo ();
-		return true;
+		return b_true;
 	}
 
 	if (demorecording)
@@ -1630,11 +1630,11 @@ boolean G_CheckDemoStatus (void)
 		*demo_p++ = DEMOMARKER;
 		M_WriteFile (demoname, demobuffer, demo_p - demobuffer);
 		Z_Free (demobuffer);
-		demorecording = false;
+		demorecording = b_false;
 		I_Error ("Demo %s recorded",demoname);
 	}
 
-	return false;
+	return b_false;
 }
 
 

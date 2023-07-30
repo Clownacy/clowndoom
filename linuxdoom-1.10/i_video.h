@@ -59,7 +59,7 @@ void I_StartFrame (void);
 /* Can call D_PostEvent. */
 void I_StartTic (void);
 
-void I_GrabMouse(boolean grab);
+void I_GrabMouse(bool32 grab);
 
 
 #endif

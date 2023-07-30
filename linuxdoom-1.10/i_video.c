@@ -194,7 +194,7 @@ void I_InitGraphics(void)
 
 	IB_InitGraphics("clowndoom", output_width, output_height, &bytes_per_pixel);
 
-	I_GrabMouse(true);
+	I_GrabMouse(b_true);
 
 	/* TODO - handle failed allocations */
 	colors = malloc(256 * bytes_per_pixel);
@@ -238,7 +238,7 @@ void I_ShutdownGraphics(void)
 }
 
 
-void I_GrabMouse(boolean grab)
+void I_GrabMouse(bool32 grab)
 {
 	IB_GrabMouse(grab);
 }

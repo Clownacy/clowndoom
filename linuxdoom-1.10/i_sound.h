@@ -51,7 +51,7 @@ void I_StopSound(int handle);
 /* Called by S_*() functions */
 /*  to see if a channel is still playing. */
 /* Returns 0 if no longer playing, 1 if playing. */
-boolean I_SoundIsPlaying(int handle);
+bool32 I_SoundIsPlaying(int handle);
 
 /* Updates the volume, separation, */
 /*  and pitch of a sound channel. */
@@ -75,7 +75,7 @@ int I_RegisterSong(const void* data, size_t size);
 /*  plays a song, and when the song is done, */
 /*  starts playing it again in an endless loop. */
 /* Horrible thing to do, considering. */
-void I_PlaySong(int handle, boolean looping);
+void I_PlaySong(int handle, bool32 looping);
 
 /* Stops a song over 3 seconds. */
 void I_StopSong(int handle);

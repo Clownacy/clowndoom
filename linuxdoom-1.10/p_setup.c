@@ -280,7 +280,7 @@ void P_LoadThings (int lump)
 	int                 i;
 	mapthing_t*         mt;
 	int                 numthings;
-	boolean             spawn;
+	bool32             spawn;
 
 	data = W_CacheLumpNum (lump,PU_STATIC);
 	numthings = W_LumpLength (lump) / sizeof(mapthing_t);
@@ -288,7 +288,7 @@ void P_LoadThings (int lump)
 	mt = (mapthing_t *)data;
 	for (i=0 ; i<numthings ; i++, mt++)
 	{
-		spawn = true;
+		spawn = b_true;
 
 		/* Do not spawn cool, new monsters if !commercial */
 		if ( gamemode != commercial)
@@ -305,11 +305,11 @@ void P_LoadThings (int lump)
 			  case 65:  /* Former Human Commando */
 			  case 66:  /* Revenant */
 			  case 84:  /* Wolf SS */
-				spawn = false;
+				spawn = b_false;
 				break;
 			}
 		}
-		if (spawn == false)
+		if (spawn == b_false)
 			break;
 
 		/* Do spawn all other stuff. */
