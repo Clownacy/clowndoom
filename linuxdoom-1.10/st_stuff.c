@@ -1401,10 +1401,5 @@ void ST_Init (void)
 {
 	veryfirsttime = 0;
 	ST_loadData();
-	/* Technically, this should only be `ST_WIDTH * ST_HEIGHT`, but every screen needs to be `SCREENWIDTH` wide due to hardcoded assumptions. */
-	/* TODO: Fix this. */
-	/* Also, this used to be a `Z_Malloc` call, but at higher resolutions this exhausts the memory pool.
-	   This is inconsistent with the other screens anyway, which use `I_AllocLow`. */
-	/* TODO: FIX ME NOW THAT I'VE BEEN CHANGED FOR COLUMN-MAJOR */
-	screens[SCREEN_STATUS_BAR] = (unsigned char *) I_AllocLow(SCREENWIDTH*SCREENHEIGHT);
+	/* The status bar framebuffer used to be allocated here. */
 }

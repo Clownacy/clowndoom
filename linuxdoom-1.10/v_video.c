@@ -34,8 +34,9 @@
 #include "v_video.h"
 
 
-/* Each screen is [SCREENWIDTH*SCREENHEIGHT]; */
-unsigned char*                           screens[5];
+/* Technically, the status bar buffer should only be `ST_WIDTH * ST_HEIGHT`, but every screen needs to be `SCREENHEIGHT` tall due to hardcoded assumptions. */
+/* TODO: Fix this. */
+unsigned char screens[5][SCREENWIDTH * SCREENHEIGHT];
 
 
 
@@ -382,13 +383,5 @@ V_FillScreenWithPattern
 /* V_Init */
 void V_Init (void)
 {
-	int         i;
-	unsigned char*       base;
-
-	/* stick these in low dos memory on PCs */
-
-	base = I_AllocLow (SCREENWIDTH*SCREENHEIGHT*4);
-
-	for (i=0 ; i<4 ; i++)
-		screens[i] = base + i*SCREENWIDTH*SCREENHEIGHT;
+	/* The first four framebuffers used to be allocated here. */
 }

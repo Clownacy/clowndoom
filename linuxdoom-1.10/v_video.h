@@ -49,7 +49,7 @@ typedef enum screen_t
     SCREEN_STATUS_BAR
 } screen_t;
 
-extern  unsigned char*           screens[5];
+extern  unsigned char screens[5][SCREENWIDTH * SCREENHEIGHT];
 
 extern  const unsigned char      gammatable[5][256];
 extern  int     usegamma;
