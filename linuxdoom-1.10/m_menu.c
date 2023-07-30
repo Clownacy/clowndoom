@@ -1817,11 +1817,11 @@ void M_Init (void)
 		/*  kept this hack for educational purposes. */
 		MainMenu[readthis] = MainMenu[quitdoom];
 		MainDef.numitems--;
-		MainDef.y += 8;
+		MainDef.y += 8*SCREEN_MUL;
 		NewDef.prevMenu = &MainDef;
 		ReadDef1.routine = M_DrawReadThis1;
-		ReadDef1.x = 330;
-		ReadDef1.y = 165;
+		ReadDef1.x = X_CENTRE(330);
+		ReadDef1.y = Y_CENTRE(165);
 		ReadMenu1[0].routine = M_FinishReadThis;
 		break;
 	  case shareware:
