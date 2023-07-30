@@ -364,7 +364,7 @@ void IB_ToggleFullscreen(void)
 	static d_bool fullscreen;
 
 	fullscreen = !fullscreen;
-	SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+	SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 #else
 	SDL_WM_ToggleFullScreen(surface);
 #endif
