@@ -33,20 +33,22 @@ static void Callback(ma_device* device, void* output_buffer, const void* input_b
 
 int IB_StartupSound(void (*initial_callback)(unsigned int output_sample_rate, void *user_data), void (*_audio_callback)(short* output_buffer, size_t frames_to_do, void *user_data), void *user_data)
 {
+	ma_device_config config;
+
 	audio_callback = _audio_callback;
 
 	ma_context_init(NULL, 0, NULL, &context);
 
 	ma_mutex_init(&mutex);
 
-	ma_device_config config = ma_device_config_init(ma_device_type_playback);
+	config = ma_device_config_init(ma_device_type_playback);
 	config.playback.pDeviceID = NULL;
 	config.playback.format = ma_format_s16;
 	config.playback.channels = 2;
 	config.sampleRate = 0; /* Let miniaudio decide what sample rate to use */
 	config.dataCallback = Callback;
 	config.pUserData = user_data;
-	config.noPreZeroedOutputBuffer = ma_true;
+	config.noPreSilencedOutputBuffer = MA_TRUE;
 
 	ma_device_init(&context, &config, &audio_device);
 
