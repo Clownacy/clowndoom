@@ -135,9 +135,9 @@ void I_Error (const char *error, ...)
 
 	/* Message first. */
 	va_start (argptr,error);
-	fprintf (stderr, "Error: ");
+	fputs ("Error: ", stderr);
 	vfprintf (stderr,error,argptr);
-	fprintf (stderr, "\n");
+	fputc ('\n', stderr);
 	va_end (argptr);
 
 	fflush( stderr );
