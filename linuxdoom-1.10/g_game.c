@@ -1293,11 +1293,14 @@ G_DeferedInitNew
 
 void G_DoNewGame (void)
 {
+	int i;
+
 	demoplayback = d_false;
 	netdemo = d_false;
 	netgame = d_false;
 	deathmatch = d_false;
-	playeringame[1] = playeringame[2] = playeringame[3] = 0;
+	for (i = 1; i < MAXPLAYERS; ++i)
+		playeringame[i] = d_false;
 	respawnparm = d_false;
 	fastparm = d_false;
 	nomonsters = d_false;
@@ -1626,6 +1629,8 @@ d_bool G_CheckDemoStatus (void)
 
 	if (demoplayback)
 	{
+		int i;
+
 		if (singledemo)
 			I_Quit ();
 
@@ -1634,7 +1639,8 @@ d_bool G_CheckDemoStatus (void)
 		netdemo = d_false;
 		netgame = d_false;
 		deathmatch = d_false;
-		playeringame[1] = playeringame[2] = playeringame[3] = 0;
+		for (i = 1; i < MAXPLAYERS; ++i)
+			playeringame[i] = d_false;
 		respawnparm = d_false;
 		fastparm = d_false;
 		nomonsters = d_false;
