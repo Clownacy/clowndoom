@@ -584,37 +584,6 @@ void F_CastDrawer (void)
 }
 
 
-/* F_DrawPatchCol */
-void
-F_DrawPatchCol
-( int           x,
-  patch_t*      patch,
-  int           col )
-{
-	column_t*   column;
-	unsigned char*       source;
-	unsigned char*       dest;
-	unsigned char*       desttop;
-	int         count;
-
-	column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
-	desttop = screens[0]+x;
-
-	/* step through the posts in a column */
-	while (column->topdelta != 0xff )
-	{
-		source = (unsigned char *)column + 3;
-		dest = desttop + column->topdelta*SCREENWIDTH;
-		count = column->length;
-
-		while (count--)
-		{
-			*dest = *source++;
-			dest += SCREENWIDTH;
-		}
-		column = (column_t *)(  (unsigned char *)column + column->length + 4 );
-	}
-}
 
 
 /* F_BunnyScroll */
@@ -637,20 +606,20 @@ void F_BunnyScroll (void)
 	if (scrolled < 0)
 		scrolled = 0;
 
-	for ( x=0 ; x<SCREENWIDTH ; x++)
+	for ( x=0 ; x<320 ; x++)
 	{
 		if (x+scrolled < 320)
-			F_DrawPatchCol (x, p1, x+scrolled);
+			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p1, SCREEN_MUL, x+scrolled);
 		else
-			F_DrawPatchCol (x, p2, x+scrolled - 320);
+			V_DrawPatchColumn (X_CENTRE(x), Y_CENTRE(0), 0, p2, SCREEN_MUL, x+scrolled - 320);
 	}
 
 	if (finalecount < 1130)
 		return;
 	if (finalecount < 1180)
 	{
-		V_DrawPatch ((SCREENWIDTH-13*8)/2,
-					 (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
+		V_DrawPatchScaled (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2),
+					 Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2),0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
 		laststage = 0;
 		return;
 	}
@@ -669,7 +638,7 @@ void F_BunnyScroll (void)
 	name[2] = 'D';
 	name[3] = '0' + stage;
 	name[4] = '\0';
-	V_DrawPatch ((SCREENWIDTH-13*8)/2, (SCREENHEIGHT-8*8)/2,0, (patch_t*)W_CacheLumpName (name,PU_CACHE));
+	V_DrawPatchScaled (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2), Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2),0, (patch_t*)W_CacheLumpName (name,PU_CACHE));
 }
 
 

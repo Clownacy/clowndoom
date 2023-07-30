@@ -105,6 +105,15 @@ V_DrawPatchDirectScaled
   const patch_t*        patch );
 
 void
+V_DrawPatchColumn
+( int           x,
+  int           y,
+  int           scrn,
+  patch_t*      patch,
+  int           scale,
+  int           col );
+
+void
 V_FillScreenWithPattern
 ( const char* const lump_name,
   const int screen,

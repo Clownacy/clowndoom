@@ -172,6 +172,48 @@ V_CopyRect
 
 
 static void
+V_DrawPatchColumnInternal
+( unsigned char* desttop,
+  patch_t*       patch,
+  int            scale,
+  int            col )
+{
+	column_t*      column;
+	unsigned char* source;
+	unsigned char* dest;
+	int            count;
+
+	column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
+
+	/* step through the posts in a column */
+	while (column->topdelta != 0xff )
+	{
+		source = (unsigned char *)column + 3;
+		dest = desttop + column->topdelta*SCREENWIDTH*scale;
+		count = column->length;
+
+		while (count--)
+		{
+			int y;
+
+			const unsigned char pixel = *source++;
+
+			for (y = 0; y < scale; ++y)
+			{
+				int x;
+
+				for (x = 0; x < scale; ++x)
+					dest[x] = pixel;
+
+				dest += SCREENWIDTH;
+			}
+		}
+		column = (column_t *)((unsigned char *)column + column->length + 4);
+	}
+}
+
+
+static void
 V_DrawPatchInternal
 ( int           x,
   int           y,
@@ -216,36 +258,7 @@ V_DrawPatchInternal
 	w = SHORT(patch->width);
 
 	for ( ; col<w ; col++, desttop += scale)
-	{
-		column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[flip ? w-1-col : col]));
-
-		/* step through the posts in a column */
-		while (column->topdelta != 0xff )
-		{
-			source = (unsigned char *)column + 3;
-			dest = desttop + column->topdelta*SCREENWIDTH*scale;
-			count = column->length;
-
-			while (count--)
-			{
-				int y;
-
-				const unsigned char pixel = *source++;
-
-				for (y = 0; y < scale; ++y)
-				{
-					int x;
-
-					for (x = 0; x < scale; ++x)
-						dest[x] = pixel;
-
-					dest += SCREENWIDTH;
-				}
-			}
-			column = (column_t *)(  (unsigned char *)column + column->length
-									+ 4 );
-		}
-	}
+		V_DrawPatchColumnInternal(desttop, patch, scale, flip ? w - 1 - col : col);
 }
 
 
@@ -423,6 +436,20 @@ V_DrawPatchDirectScaled
   const patch_t*        patch )
 {
 	V_DrawPatchScaled (x,y,scrn, patch);
+}
+
+
+
+void
+V_DrawPatchColumn
+( int           x,
+  int           y,
+  int           scrn,
+  patch_t*      patch,
+  int           scale,
+  int           col )
+{
+	V_DrawPatchColumnInternal(screens[scrn]+y*SCREENWIDTH+x, patch, scale, col);
 }
 
 
