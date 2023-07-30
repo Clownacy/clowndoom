@@ -59,6 +59,7 @@ typedef struct memblock_s
 	struct memblock_s*  prev;
 } memblock_t;
 
+#ifdef RANGECHECK
 /* This is used to get the local FILE:LINE info from CPP */
 /* prior to really call the function in question. */
 #define Z_ChangeTag(p,t) \
@@ -67,6 +68,9 @@ typedef struct memblock_s
 		I_Error("Z_CT at "__FILE__":%i",__LINE__); \
 	Z_ChangeTag2(p,t); \
 };
+#else
+#define Z_ChangeTag(p,t) Z_ChangeTag2(p,t)
+#endif
 
 
 
