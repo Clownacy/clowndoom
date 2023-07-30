@@ -87,7 +87,12 @@ typedef enum
 #define SCREENHEIGHT (ORIGINAL_SCREEN_HEIGHT*SCREEN_MUL)
 
 #define X_CENTRE(x) ((SCREENWIDTH / 2) - ((ORIGINAL_SCREEN_WIDTH / 2 - (x)) * SCREEN_MUL))
+#define X_LEFT(x) (x)
+#define X_RIGHT(x) (SCREENWIDTH - ((ORIGINAL_SCREEN_WIDTH - (x)) * SCREEN_MUL))
+
 #define Y_CENTRE(x) ((SCREENHEIGHT / 2) - ((ORIGINAL_SCREEN_HEIGHT / 2 - (x)) * SCREEN_MUL))
+#define Y_TOP(x) (x)
+#define Y_BOTTOM(x) (SCREENHEIGHT - ((ORIGINAL_SCREEN_HEIGHT - (x)) * SCREEN_MUL))
 
 
 

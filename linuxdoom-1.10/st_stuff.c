@@ -75,15 +75,8 @@
 /* Location of status bar */
 #define ST_X                            ((SCREENWIDTH - ST_WIDTH) / 2)
 
-#define ST_X_MAGIC(x) (SCREENWIDTH/2-(320/2-(x))*SCREEN_MUL)
-#define ST_Y_MAGIC(x) (SCREENHEIGHT-(x)*SCREEN_MUL)
-
-#define ST_FX                   ST_X_MAGIC(143)
-#define ST_FY                   ST_Y_MAGIC(31)
-
-/* Should be set to patch width */
-/*  for tall numbers later on */
-#define ST_TALLNUMWIDTH         (tallnum[0]->width)
+#define ST_FX                   X_CENTRE(143)
+#define ST_FY                   Y_BOTTOM(169)
 
 /* Number of status faces. */
 #define ST_NUMPAINFACES         5
@@ -106,8 +99,8 @@
 #define ST_GODFACE                      (ST_NUMPAINFACES*ST_FACESTRIDE)
 #define ST_DEADFACE                     (ST_GODFACE+1)
 
-#define ST_FACESX                       ST_X_MAGIC(143)
-#define ST_FACESY                       ST_Y_MAGIC(32)
+#define ST_FACESX                       X_CENTRE(143)
+#define ST_FACESY                       Y_BOTTOM(168)
 
 #define ST_EVILGRINCOUNT                (2*TICRATE)
 #define ST_STRAIGHTFACECOUNT    (TICRATE/2)
@@ -128,134 +121,83 @@
 
 /* AMMO number pos. */
 #define ST_AMMOWIDTH            3
-#define ST_AMMOX                        ST_X_MAGIC(44)
-#define ST_AMMOY                        ST_Y_MAGIC(29)
+#define ST_AMMOX                        X_CENTRE(44)
+#define ST_AMMOY                        Y_BOTTOM(171)
 
 /* HEALTH number pos. */
 #define ST_HEALTHWIDTH          3
-#define ST_HEALTHX                      ST_X_MAGIC(90)
-#define ST_HEALTHY                      ST_Y_MAGIC(29)
+#define ST_HEALTHX                      X_CENTRE(90)
+#define ST_HEALTHY                      Y_BOTTOM(171)
 
 /* Weapon pos. */
-#define ST_ARMSX                        ST_X_MAGIC(111)
-#define ST_ARMSY                        ST_Y_MAGIC(28)
-#define ST_ARMSBGX                      ST_X_MAGIC(104)
-#define ST_ARMSBGY                      ST_Y_MAGIC(32)
+#define ST_ARMSX                        X_CENTRE(111)
+#define ST_ARMSY                        Y_BOTTOM(172)
+#define ST_ARMSBGX                      X_CENTRE(104)
+#define ST_ARMSBGY                      Y_BOTTOM(168)
 #define ST_ARMSXSPACE           (12*SCREEN_MUL)
 #define ST_ARMSYSPACE           (10*SCREEN_MUL)
 
 /* Frags pos. */
-#define ST_FRAGSX                       ST_X_MAGIC(138)
-#define ST_FRAGSY                       ST_Y_MAGIC(29)
+#define ST_FRAGSX                       X_CENTRE(138)
+#define ST_FRAGSY                       Y_BOTTOM(171)
 #define ST_FRAGSWIDTH           2
 
 /* ARMOR number pos. */
 #define ST_ARMORWIDTH           3
-#define ST_ARMORX                       ST_X_MAGIC(221)
-#define ST_ARMORY                       ST_Y_MAGIC(29)
+#define ST_ARMORX                       X_CENTRE(221)
+#define ST_ARMORY                       Y_BOTTOM(171)
 
 /* Key icon positions. */
 #define ST_KEY0WIDTH            8
 #define ST_KEY0HEIGHT           5
-#define ST_KEY0X                        ST_X_MAGIC(239)
-#define ST_KEY0Y                        ST_Y_MAGIC(29)
+#define ST_KEY0X                        X_CENTRE(239)
+#define ST_KEY0Y                        Y_BOTTOM(171)
 #define ST_KEY1WIDTH            ST_KEY0WIDTH
-#define ST_KEY1X                        ST_X_MAGIC(239)
-#define ST_KEY1Y                        ST_Y_MAGIC(19)
+#define ST_KEY1X                        X_CENTRE(239)
+#define ST_KEY1Y                        Y_BOTTOM(181)
 #define ST_KEY2WIDTH            ST_KEY0WIDTH
-#define ST_KEY2X                        ST_X_MAGIC(239)
-#define ST_KEY2Y                        ST_Y_MAGIC(9)
+#define ST_KEY2X                        X_CENTRE(239)
+#define ST_KEY2Y                        Y_BOTTOM(191)
 
 /* Ammunition counter. */
 #define ST_AMMO0WIDTH           3
 #define ST_AMMO0HEIGHT          6
-#define ST_AMMO0X                       ST_X_MAGIC(288)
-#define ST_AMMO0Y                       ST_Y_MAGIC(27)
+#define ST_AMMO0X                       X_CENTRE(288)
+#define ST_AMMO0Y                       Y_BOTTOM(173)
 #define ST_AMMO1WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO1X                       ST_X_MAGIC(288)
-#define ST_AMMO1Y                       ST_Y_MAGIC(21)
+#define ST_AMMO1X                       X_CENTRE(288)
+#define ST_AMMO1Y                       Y_BOTTOM(179)
 #define ST_AMMO2WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO2X                       ST_X_MAGIC(288)
-#define ST_AMMO2Y                       ST_Y_MAGIC(9)
+#define ST_AMMO2X                       X_CENTRE(288)
+#define ST_AMMO2Y                       Y_BOTTOM(191)
 #define ST_AMMO3WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO3X                       ST_X_MAGIC(288)
-#define ST_AMMO3Y                       ST_Y_MAGIC(15)
+#define ST_AMMO3X                       X_CENTRE(288)
+#define ST_AMMO3Y                       Y_BOTTOM(185)
 
 /* Indicate maximum ammunition. */
 /* Only needed because backpack exists. */
 #define ST_MAXAMMO0WIDTH                3
 #define ST_MAXAMMO0HEIGHT               5
-#define ST_MAXAMMO0X            ST_X_MAGIC(314)
-#define ST_MAXAMMO0Y            ST_Y_MAGIC(27)
+#define ST_MAXAMMO0X            X_CENTRE(314)
+#define ST_MAXAMMO0Y            Y_BOTTOM(173)
 #define ST_MAXAMMO1WIDTH                ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO1X            ST_X_MAGIC(314)
-#define ST_MAXAMMO1Y            ST_Y_MAGIC(21)
+#define ST_MAXAMMO1X            X_CENTRE(314)
+#define ST_MAXAMMO1Y            Y_BOTTOM(179)
 #define ST_MAXAMMO2WIDTH                ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO2X            ST_X_MAGIC(314)
-#define ST_MAXAMMO2Y            ST_Y_MAGIC(9)
+#define ST_MAXAMMO2X            X_CENTRE(314)
+#define ST_MAXAMMO2Y            Y_BOTTOM(191)
 #define ST_MAXAMMO3WIDTH                ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO3X            ST_X_MAGIC(314)
-#define ST_MAXAMMO3Y            ST_Y_MAGIC(15)
-
-/* pistol */
-#define ST_WEAPON0X                     ST_X_MAGIC(110)
-#define ST_WEAPON0Y                     ST_Y_MAGIC(28)
-
-/* shotgun */
-#define ST_WEAPON1X                     ST_X_MAGIC(122)
-#define ST_WEAPON1Y                     ST_Y_MAGIC(28)
-
-/* chain gun */
-#define ST_WEAPON2X                     ST_X_MAGIC(134)
-#define ST_WEAPON2Y                     ST_Y_MAGIC(28)
-
-/* missile launcher */
-#define ST_WEAPON3X                     ST_X_MAGIC(110)
-#define ST_WEAPON3Y                     ST_Y_MAGIC(19)
-
-/* plasma gun */
-#define ST_WEAPON4X                     ST_X_MAGIC(122)
-#define ST_WEAPON4Y                     ST_Y_MAGIC(19)
-
- /* bfg */
-#define ST_WEAPON5X                     ST_X_MAGIC(134)
-#define ST_WEAPON5Y                     ST_Y_MAGIC(19)
-
-/* WPNS title */
-#define ST_WPNSX                        ST_X_MAGIC(109)
-#define ST_WPNSY                        ST_Y_MAGIC(9)
-
- /* DETH title */
-#define ST_DETHX                        ST_X_MAGIC(109)
-#define ST_DETHY                        ST_Y_MAGIC(9)
+#define ST_MAXAMMO3X            X_CENTRE(314)
+#define ST_MAXAMMO3Y            Y_BOTTOM(185)
 
 /* Incoming messages window location */
 /* UNUSED */
 /* #define ST_MSGTEXTX     (viewwindowx) */
-/* #define ST_MSGTEXTY     (viewwindowy+viewheight-18) */
-#define ST_MSGTEXTX                     0
-#define ST_MSGTEXTY                     0
+/* #define ST_MSGTEXTY     (viewwindowy+viewheight-18*SCREEN_MUL) */
+#define ST_MSGTEXTX                     X_LEFT(0)
+#define ST_MSGTEXTY                     Y_TOP(0)
 /* Dimensions given in characters. */
 #define ST_MSGWIDTH                     52
-/* Or shall I say, in lines? */
-#define ST_MSGHEIGHT            1
-
-#define ST_OUTTEXTX                     0
-#define ST_OUTTEXTY                     6
-
-/* Width, in characters again. */
-#define ST_OUTWIDTH                     52
- /* Height, in lines. */
-#define ST_OUTHEIGHT            1
-
-#define ST_MAPWIDTH     \
-	(strlen(mapnames[(gameepisode-1)*9+(gamemap-1)]))
-
-#define ST_MAPTITLEX \
-	(SCREENWIDTH - ST_MAPWIDTH * ST_CHATFONTWIDTH)
-
-#define ST_MAPTITLEY            0
-#define ST_MAPHEIGHT            1
 
 
 /* main player in game */
