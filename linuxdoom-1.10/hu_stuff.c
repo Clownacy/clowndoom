@@ -431,27 +431,23 @@ void HU_Start(void)
 					   hu_font,
 					   HU_FONTSTART);
 
-	switch ( gamemode )
+	switch ( gamemission )
 	{
-	  case shareware:
-	  case registered:
-	  case retail:
-		s = HU_TITLE;
-		break;
+		case doom:
+			s = HU_TITLE;
+			break;
 
-/* FIXME TODO
-	  case pack_plut:
-		s = HU_TITLEP;
-		break;
-	  case pack_tnt:
-		s = HU_TITLET;
-		break;
-*/
+		case doom2:
+			s = HU_TITLE2;
+			break;
 
-	  case commercial:
-	  default:
-		 s = HU_TITLE2;
-		 break;
+		case pack_plut:
+			s = HU_TITLEP;
+			break;
+
+		case pack_tnt:
+			s = HU_TITLET;
+			break;
 	}
 
 	while (*s)
