@@ -239,9 +239,9 @@ V_DrawPatchInternal
 		|| y+scaled_height>SCREENHEIGHT
 		|| (unsigned)scrn>4)
 	{
-	  fprintf( stderr, "Patch at %d,%d exceeds LFB\n", x,y );
+	  I_Info("Patch at %d,%d exceeds LFB\n", x,y );
 	  /* TODO: No I_Error abort - what is up with TNT.WAD? */
-	  fprintf( stderr, "V_DrawPatch: bad patch (ignored)\n");
+	  I_Info("V_DrawPatch: bad patch (ignored)\n");
 	  return;
 	}
 #endif

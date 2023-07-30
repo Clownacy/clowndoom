@@ -348,7 +348,7 @@ void D_DoomLoop (void)
 	{
 		char    filename[20];
 		sprintf (filename,"debug%i.txt",consoleplayer);
-		printf ("debug output to: %s\n",filename);
+		I_Info ("debug output to: %s\n",filename);
 		debugfile = fopen (filename,"w");
 	}
 
@@ -516,7 +516,7 @@ void D_AddFile (const char *file)
 		}
 	}
 
-	printf("D_AddFile: Too many wads!\n");
+	I_Info("D_AddFile: Too many wads!\n");
 }
 
 /* IdentifyVersion */
@@ -639,12 +639,12 @@ void IdentifyVersion (void)
 			free(path);
 
 			if (language == french)
-				printf("French version\n");
+				I_Info("French version\n");
 		}
 
 		if (gamemode == indetermined)
 		{
-			printf("Game mode indeterminate.\n");
+			I_Info("Game mode indeterminate.\n");
 
 			/* We don't abort. Let's see what the PWAD contains. */
 			/* exit(1); */
@@ -676,10 +676,10 @@ void FindResponseFile (void)
 			handle = fopen (&myargv[i][1],"rb");
 			if (!handle)
 			{
-				printf ("\nNo such response file!");
+				I_Info ("\nNo such response file!");
 				exit(1);
 			}
-			printf("Found response file %s!\n",&myargv[i][1]);
+			I_Info("Found response file %s!\n",&myargv[i][1]);
 			fseek (handle,0,SEEK_END);
 			size = ftell(handle);
 			fseek (handle,0,SEEK_SET);
@@ -716,9 +716,9 @@ void FindResponseFile (void)
 			myargc = indexinfile;
 
 			/* DISPLAY ARGS */
-			printf("%d command-line args:\n",myargc);
+			I_Info("%d command-line args:\n",myargc);
 			for (k=1;k<myargc;k++)
-				printf("%s\n",myargv[k]);
+				I_Info("%s\n",myargv[k]);
 
 			break;
 		}
@@ -806,16 +806,16 @@ void D_DoomMain (void)
 		break;
 	}
 
-	printf ("%s\n",title);
+	I_Info ("%s\n",title);
 
 	if (devparm)
-		printf(D_DEVSTR);
+		I_Info(D_DEVSTR);
 
 #if 0
 	/* Strange old junk. */
 	if (M_CheckParm("-cdrom"))
 	{
-		printf(D_CDROM);
+		I_Info(D_CDROM);
 		mkdir("c:\\doomdata",0);
 		strcpy (basedefault,"c:/doomdata/default.cfg");
 	}
@@ -834,7 +834,7 @@ void D_DoomMain (void)
 			scale = 10;
 		if (scale > 400)
 			scale = 400;
-		printf ("turbo scale: %i%%\n",scale);
+		I_Info ("turbo scale: %i%%\n",scale);
 		forwardmove[0] = forwardmove[0]*scale/100;
 		forwardmove[1] = forwardmove[1]*scale/100;
 		sidemove[0] = sidemove[0]*scale/100;
@@ -858,7 +858,7 @@ void D_DoomMain (void)
 		  case registered:
 			sprintf (file,"~"DEVMAPS"E%cM%c.wad",
 					 myargv[p+1][0], myargv[p+2][0]);
-			printf("Warping to Episode %s, Map %s.\n",
+			I_Info("Warping to Episode %s, Map %s.\n",
 				   myargv[p+1],myargv[p+2]);
 			break;
 
@@ -893,7 +893,7 @@ void D_DoomMain (void)
 	{
 		sprintf (file,"%s.lmp", myargv[p+1]);
 		D_AddFile (file);
-		printf("Playing demo %s.lmp.\n",myargv[p+1]);
+		I_Info("Playing demo %s.lmp.\n",myargv[p+1]);
 	}
 
 	/* get skill / episode / map from parms */
@@ -923,15 +923,15 @@ void D_DoomMain (void)
 	{
 		int     time;
 		time = atoi(myargv[p+1]);
-		printf("Levels will end after %d minute",time);
+		I_Info("Levels will end after %d minute",time);
 		if (time>1)
-			printf("s");
-		printf(".\n");
+			I_Info("s");
+		I_Info(".\n");
 	}
 
 	p = M_CheckParm ("-avg");
 	if (p && p < myargc-1 && deathmatch != DM_OFF)
-		printf("Austin Virtual Gaming: Levels will end after 20 minutes\n");
+		I_Info("Austin Virtual Gaming: Levels will end after 20 minutes\n");
 
 	p = M_CheckParm ("-warp");
 	if (p && p < myargc-1)
@@ -947,16 +947,16 @@ void D_DoomMain (void)
 	}
 
 	/* init subsystems */
-	printf ("V_Init: allocate screens.\n");
+	I_Info ("V_Init: allocate screens.\n");
 	V_Init ();
 
-	printf ("M_LoadDefaults: Load system defaults.\n");
+	I_Info ("M_LoadDefaults: Load system defaults.\n");
 	M_LoadDefaults ();              /* load before initing other systems */
 
-	printf ("Z_Init: Init zone memory allocation daemon. \n");
+	I_Info ("Z_Init: Init zone memory allocation daemon. \n");
 	Z_Init ();
 
-	printf ("W_Init: Init WADfiles.\n");
+	I_Info ("W_Init: Init WADfiles.\n");
 	W_InitMultipleFiles (wadfiles);
 
 
@@ -988,7 +988,7 @@ void D_DoomMain (void)
 	/* Iff additonal PWAD files are used, print modified banner */
 	if (modifiedgame)
 	{
-		/*m*/printf (
+		/*m*/I_Info (
 			"===========================================================================\n"
 			"ATTENTION:  This version of DOOM has been modified.  If you would like to\n"
 			"get a copy of the original game, call 1-800-IDGAMES or see the readme file.\n"
@@ -1005,7 +1005,7 @@ void D_DoomMain (void)
 	{
 	  case shareware:
 	  case indetermined:
-		printf (
+		I_Info (
 			"===========================================================================\n"
 			"                                Shareware!\n"
 			"===========================================================================\n"
@@ -1014,7 +1014,7 @@ void D_DoomMain (void)
 	  case registered:
 	  case retail:
 	  case commercial:
-		printf (
+		I_Info (
 			"===========================================================================\n"
 			"                 Commercial product - do not distribute!\n"
 			"         Please report software piracy to the SPA: 1-800-388-PIR8\n"
@@ -1027,28 +1027,28 @@ void D_DoomMain (void)
 		break;
 	}
 
-	printf ("M_Init: Init miscellaneous info.\n");
+	I_Info ("M_Init: Init miscellaneous info.\n");
 	M_Init ();
 
-	printf ("R_Init: Init DOOM refresh daemon - ");
+	I_Info ("R_Init: Init DOOM refresh daemon - ");
 	R_Init ();
 
-	printf ("\nP_Init: Init Playloop state.\n");
+	I_Info ("\nP_Init: Init Playloop state.\n");
 	P_Init ();
 
-	printf ("I_Init: Setting up machine state.\n");
+	I_Info ("I_Init: Setting up machine state.\n");
 	I_Init ();
 
-	printf ("D_CheckNetGame: Checking network game status.\n");
+	I_Info ("D_CheckNetGame: Checking network game status.\n");
 	D_CheckNetGame ();
 
-	printf ("S_Init: Setting up sound.\n");
+	I_Info ("S_Init: Setting up sound.\n");
 	S_Init (sfxVolume, musicVolume);
 
-	printf ("HU_Init: Setting up heads up display.\n");
+	I_Info ("HU_Init: Setting up heads up display.\n");
 	HU_Init ();
 
-	printf ("ST_Init: Init status bar.\n");
+	I_Info ("ST_Init: Init status bar.\n");
 	ST_Init ();
 #if 0
 	/* check for a driver that wants intermission stats */
@@ -1059,7 +1059,7 @@ void D_DoomMain (void)
 		extern  void*   statcopy;
 
 		statcopy = (void*)atoi(myargv[p+1]);
-		printf ("External statistics registered.\n");
+		I_Info ("External statistics registered.\n");
 	}
 #endif
 	/* start the apropriate game based on parms */

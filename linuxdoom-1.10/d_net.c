@@ -375,7 +375,7 @@ void NetUpdate (void)
 		if (maketic - gameticdiv >= BACKUPTICS/2-1)
 			break;          /* can't hold any more */
 
-/* printf ("mk:%i ",maketic); */
+/* I_Info ("mk:%i ",maketic); */
 		G_BuildTiccmd (&localcmds[maketic%BACKUPTICS]);
 		maketic++;
 	}
@@ -451,7 +451,7 @@ void D_ArbitrateNetStart (void)
 	if (doomcom->consoleplayer)
 	{
 		/* listen for setup info from key player */
-		printf ("listening for network start info...\n");
+		I_Info ("listening for network start info...\n");
 		while (1)
 		{
 			CheckAbort ();
@@ -474,7 +474,7 @@ void D_ArbitrateNetStart (void)
 	else
 	{
 		/* key player, send the setup info */
-		printf ("sending network start info...\n");
+		I_Info ("sending network start info...\n");
 		do
 		{
 			CheckAbort ();
@@ -539,7 +539,7 @@ void D_CheckNetGame (void)
 	if (netgame)
 		D_ArbitrateNetStart ();
 
-	printf ("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",
+	I_Info ("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",
 			startskill, deathmatch, startmap, startepisode);
 
 	/* read values out of doomcom */
@@ -553,7 +553,7 @@ void D_CheckNetGame (void)
 	for (i=0 ; i<doomcom->numnodes ; i++)
 		nodeingame[i] = d_true;
 
-	printf ("player %i of %i (%i nodes)\n",
+	I_Info ("player %i of %i (%i nodes)\n",
 			consoleplayer+1, doomcom->numplayers, doomcom->numnodes);
 
 }
@@ -662,14 +662,14 @@ void TryRunTics (void)
 			if (nettics[0] <= nettics[nodeforplayer[i]])
 			{
 				gametime--;
-				/* printf ("-"); */
+				/* I_Info ("-"); */
 			}
 			frameskip[frameon&3] = (oldnettics > nettics[nodeforplayer[i]]);
 			oldnettics = nettics[0];
 			if (frameskip[0] && frameskip[1] && frameskip[2] && frameskip[3])
 			{
 				skiptics = 1;
-				/* printf ("+"); */
+				/* I_Info ("+"); */
 			}
 		}
 	}/* demoplayback */

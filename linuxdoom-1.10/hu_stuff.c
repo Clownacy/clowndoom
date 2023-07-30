@@ -754,7 +754,7 @@ d_bool HU_Responder(const event_t *ev)
 			c = c - '0';
 			if (c > 9)
 				return d_false;
-			/* fprintf(stderr, "got here\n"); */
+			/* I_Info("got here\n"); */
 			macromessage = chat_macros[c];
 
 			/* kill last message with a '\n' */

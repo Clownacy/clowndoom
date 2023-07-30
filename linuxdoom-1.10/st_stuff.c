@@ -459,7 +459,7 @@ ST_Responder (const event_t* ev)
 		break;
 
 	  case AM_MSGEXITED:
-		/*      fprintf(stderr, "AM exited\n"); */
+		/*      I_Info("AM exited\n"); */
 		st_gamestate = FirstPersonState;
 		break;
 	}

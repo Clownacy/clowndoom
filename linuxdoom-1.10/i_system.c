@@ -152,6 +152,17 @@ void I_Error (const char *error, ...)
 	exit(-1);
 }
 
+void I_Info (const char *error, ...)
+{
+	va_list     argptr;
+
+	va_start (argptr,error);
+	vfprintf (stderr,error,argptr);
+	va_end (argptr);
+
+	fflush( stderr );
+}
+
 void I_Sleep(void)
 {
 	IB_Sleep();

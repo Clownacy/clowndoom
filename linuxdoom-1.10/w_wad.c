@@ -149,11 +149,11 @@ void W_AddFile (const char *filename)
 
 	if ((handle = fopen (filename,"rb")) == NULL)
 	{
-		printf(" couldn't open %s\n",filename);
+		I_Info(" couldn't open %s\n",filename);
 		return;
 	}
 
-	printf(" adding %s\n",filename);
+	I_Info(" adding %s\n",filename);
 	startlump = numlumps;
 
 	singlelump = M_strcasecmp(filename+strlen(filename)-3 , "wad" );
@@ -440,13 +440,13 @@ W_CacheLumpNum
 	{
 		/* read the lump in */
 
-/* printf ("cache miss on lump %i\n",lump); */
+/* I_Info ("cache miss on lump %i\n",lump); */
 		Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
 		W_ReadLump (lump, lumpcache[lump]);
 	}
 	else
 	{
-/* printf ("cache hit on lump %i\n",lump); */
+/* I_Info ("cache hit on lump %i\n",lump); */
 		Z_ChangeTag (lumpcache[lump],tag);
 	}
 

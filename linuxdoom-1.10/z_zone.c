@@ -307,16 +307,16 @@ Z_DumpHeap
 {
 	memblock_t* block;
 
-	printf ("zone size: %i  location: %p\n",
+	I_Info ("zone size: %i  location: %p\n",
 			(unsigned int)mainzone->size,(void*)mainzone);
 
-	printf ("tag range: %i to %i\n",
+	I_Info ("tag range: %i to %i\n",
 			lowtag, hightag);
 
 	for (block = mainzone->blocklist.next ; ; block = block->next)
 	{
 		if (block->tag >= lowtag && block->tag <= hightag)
-			printf ("block:%p    size:%7i    user:%p    tag:%3i\n",
+			I_Info ("block:%p    size:%7i    user:%p    tag:%3i\n",
 					(void*)block, (unsigned int)block->size, (void*)block->user, block->tag);
 
 		if (block->next == &mainzone->blocklist)
@@ -326,13 +326,13 @@ Z_DumpHeap
 		}
 
 		if ( (unsigned char *)block + block->size != (unsigned char *)block->next)
-			printf ("ERROR: block size does not touch the next block\n");
+			I_Info ("ERROR: block size does not touch the next block\n");
 
 		if ( block->next->prev != block)
-			printf ("ERROR: next block doesn't have proper back link\n");
+			I_Info ("ERROR: next block doesn't have proper back link\n");
 
 		if (!block->user && !block->next->user)
-			printf ("ERROR: two consecutive free blocks\n");
+			I_Info ("ERROR: two consecutive free blocks\n");
 	}
 }
 

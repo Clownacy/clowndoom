@@ -879,8 +879,7 @@ void M_Episode(int choice)
 	if ( (gamemode == registered)
 		 && (choice > 2))
 	{
-	  fprintf( stderr,
-			   "M_Episode: 4th episode requires UltimateDOOM\n");
+	  I_Info("M_Episode: 4th episode requires UltimateDOOM\n");
 	  choice = 0;
 	}
 

@@ -68,6 +68,10 @@ void I_Tactile (int on, int off, int total);
 __attribute__((format(printf, 1, 2)))
 #endif
 void I_Error (const char *error, ...);
+#if defined(__GNUC__) && defined(__GNUC_MINOR__) && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 2))
+__attribute__((format(printf, 1, 2)))
+#endif
+void I_Info(const char *error, ...);
 
 
 void I_Sleep(void);

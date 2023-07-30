@@ -117,7 +117,7 @@ static void PacketSend (void)
 		sw.cmds[c].buttons = netbuffer->cmds[c].buttons;
 	}
 
-   /* printf ("sending %i\n",gametic); */
+   /* I_Info ("sending %i\n",gametic); */
 	c = sendto (sendsocket , (const char*)&sw, doomcom->datalength
 				,0,(struct sockaddr *)&sendaddress[doomcom->remotenode]
 				,sizeof(sendaddress[doomcom->remotenode]));
@@ -159,7 +159,7 @@ static void PacketGet (void)
 	{
 		static int first=1;
 		if (first)
-			printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
+			I_Info("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
 		first = 0;
 	}
 
@@ -239,7 +239,7 @@ void I_InitNetwork (void)
 	if (p && p<myargc-1)
 	{
 		DOOMPORT = atoi (myargv[p+1]);
-		printf ("using alternate port %i\n",DOOMPORT);
+		I_Info ("using alternate port %i\n",DOOMPORT);
 	}
 
 	/* parse network game options, */

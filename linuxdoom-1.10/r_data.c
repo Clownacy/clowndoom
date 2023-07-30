@@ -327,7 +327,7 @@ void R_GenerateLookup (int texnum)
 	{
 		if (!patchcount[x])
 		{
-			printf ("R_GenerateLookup: column without a patch (%s)\n",
+			I_Info ("R_GenerateLookup: column without a patch (%s)\n",
 					texture->name);
 			break;
 		}
@@ -468,18 +468,18 @@ void R_InitTextures (void)
 	temp1 = W_GetNumForName ("S_START");  /* P_??????? */
 	temp2 = W_GetNumForName ("S_END") - 1;
 	temp3 = ((temp2-temp1+63)/64) + ((numtextures+63)/64);
-	printf("[");
+	I_Info("[");
 	for (i = 0; i < temp3; i++)
-		printf(" ");
-	printf("         ]");
+		I_Info(" ");
+	I_Info("         ]");
 	for (i = 0; i < temp3; i++)
-		printf("\x8");
-	printf("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");
+		I_Info("\x8");
+	I_Info("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");
 
 	for (i=0 ; i<numtextures ; i++, directory += 4)
 	{
 		if (!(i&63))
-			printf (".");
+			I_Info (".");
 
 		if (i == numtextures1)
 		{
@@ -589,7 +589,7 @@ void R_InitSpriteLumps (void)
 	for (i=0 ; i< numspritelumps ; i++)
 	{
 		if (!(i&63))
-			printf (".");
+			I_Info (".");
 
 		patch = (patch_t*)W_CacheLumpNum (firstspritelump+i, PU_CACHE);
 		spritewidth[i] = SHORT(patch->width)<<FRACBITS;
@@ -623,13 +623,13 @@ void R_InitColormaps (void)
 void R_InitData (void)
 {
 	R_InitTextures ();
-	printf ("\nInitTextures");
+	I_Info ("\nInitTextures");
 	R_InitFlats ();
-	printf ("\nInitFlats");
+	I_Info ("\nInitFlats");
 	R_InitSpriteLumps ();
-	printf ("\nInitSprites");
+	I_Info ("\nInitSprites");
 	R_InitColormaps ();
-	printf ("\nInitColormaps");
+	I_Info ("\nInitColormaps");
 }
 
 

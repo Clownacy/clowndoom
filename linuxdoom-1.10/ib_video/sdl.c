@@ -187,14 +187,14 @@ void IB_StartTic (void)
 				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
 				if (event.data1 != -1)
 					D_PostEvent(&event);
-				/* fprintf(stderr, "k"); */
+				/* I_Info("k"); */
 				break;
 			case SDL_KEYUP:
 				event.type = ev_keyup;
 				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
 				if (event.data1 != -1)
 					D_PostEvent(&event);
-				/* fprintf(stderr, "ku"); */
+				/* I_Info("ku"); */
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				switch (sdl_event.button.button)
@@ -213,7 +213,7 @@ void IB_StartTic (void)
 				event.data1 = button_state;
 				event.data2 = event.data3 = 0;
 				D_PostEvent(&event);
-				/* fprintf(stderr, "b"); */
+				/* I_Info("b"); */
 				break;
 			case SDL_MOUSEBUTTONUP:
 				switch (sdl_event.button.button)
@@ -232,7 +232,7 @@ void IB_StartTic (void)
 				event.data1 = button_state;
 				event.data2 = event.data3 = 0;
 				D_PostEvent(&event);
-				/* fprintf(stderr, "bu"); */
+				/* I_Info("bu"); */
 				break;
 			case SDL_MOUSEMOTION:
 				event.type = ev_mouse;
@@ -243,7 +243,7 @@ void IB_StartTic (void)
 				if (event.data2 || event.data3)
 				{
 					D_PostEvent(&event);
-					/* fprintf(stderr, "m"); */
+					/* I_Info("m"); */
 				}
 				break;
 			#if SDL_MAJOR_VERSION >= 2

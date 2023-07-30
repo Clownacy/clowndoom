@@ -258,12 +258,12 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	{
 		if (gamekeydown[key_right])
 		{
-			/* fprintf(stderr, "strafe right\n"); */
+			/* I_Info("strafe right\n"); */
 			side += sidemove[speed];
 		}
 		if (gamekeydown[key_left])
 		{
-			/*  fprintf(stderr, "strafe left\n"); */
+			/*  I_Info("strafe left\n"); */
 			side -= sidemove[speed];
 		}
 		if (joyxmove > 0)
@@ -286,12 +286,12 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 
 	if (gamekeydown[key_up])
 	{
-		/* fprintf(stderr, "up\n"); */
+		/* I_Info("up\n"); */
 		forward += forwardmove[speed];
 	}
 	if (gamekeydown[key_down])
 	{
-		/* fprintf(stderr, "down\n"); */
+		/* I_Info("down\n"); */
 		forward -= forwardmove[speed];
 	}
 	if (joyymove < 0)
@@ -1593,7 +1593,7 @@ void G_DoPlayDemo (void)
 	/* TODO: Proper demo backwards-compatibility would be nice. */
 	if ( *demo_p++ > VERSION)
 	{
-		fprintf( stderr, "Demo is from a newer game version!\n");
+		I_Info("Demo is from a newer game version!\n");
 		return;
 	}
 
