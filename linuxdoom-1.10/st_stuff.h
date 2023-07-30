@@ -14,7 +14,7 @@
 
    DESCRIPTION:
         Status bar code.
-        Does the face/direction indicator animatin.
+        Does the face/direction indicator animation.
         Does palette indicators as well (red pain/berserk, bright pickup)
 
 ******************************************************************************/
@@ -27,7 +27,7 @@
 
 /* Size of statusbar. */
 /* Now sensitive for scaling. */
-#define ST_HEIGHT       32*SCREEN_MUL
+#define ST_HEIGHT       (32*SCREEN_MUL)
 #define ST_WIDTH        SCREENWIDTH
 #define ST_Y            (SCREENHEIGHT - ST_HEIGHT)
 

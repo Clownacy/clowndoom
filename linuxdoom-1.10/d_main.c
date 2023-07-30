@@ -225,12 +225,12 @@ void D_Display (void)
 			break;
 		if (automapactive)
 			AM_Drawer ();
-		if (wipe || (viewheight != 200 && fullscreen) )
+		if (wipe || (viewheight != SCREENHEIGHT && fullscreen) )
 			redrawsbar = d_true;
 		if (inhelpscreensstate && !inhelpscreens)
 			redrawsbar = d_true;              /* just put away the help screen */
-		ST_Drawer (viewheight == 200, redrawsbar );
-		fullscreen = viewheight == 200;
+		ST_Drawer (viewheight == SCREENHEIGHT, redrawsbar );
+		fullscreen = viewheight == SCREENHEIGHT;
 		break;
 
 	  case GS_INTERMISSION:
