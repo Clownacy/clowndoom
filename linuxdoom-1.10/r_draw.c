@@ -872,38 +872,38 @@ void R_FillBackScreen (void)
 	patch = (patch_t*)W_CacheLumpName ("brdr_t",PU_CACHE);
 
 	for (x=0 ; x<scaledviewwidth ; x+=BEVEL_SIZE)
-		V_DrawPatchScaled (viewwindowx+x,viewwindowy-BEVEL_SIZE,1,patch);
+		V_DrawPatch (viewwindowx+x,viewwindowy-BEVEL_SIZE,1,patch);
 	patch = (patch_t*)W_CacheLumpName ("brdr_b",PU_CACHE);
 
 	for (x=0 ; x<scaledviewwidth ; x+=BEVEL_SIZE)
-		V_DrawPatchScaled(viewwindowx+x,viewwindowy+viewheight,1,patch);
+		V_DrawPatch(viewwindowx+x,viewwindowy+viewheight,1,patch);
 	patch = (patch_t*)W_CacheLumpName ("brdr_l",PU_CACHE);
 
 	for (y=0 ; y<viewheight ; y+=BEVEL_SIZE)
-		V_DrawPatchScaled(viewwindowx-BEVEL_SIZE,viewwindowy+y,1,patch);
+		V_DrawPatch(viewwindowx-BEVEL_SIZE,viewwindowy+y,1,patch);
 	patch = (patch_t*)W_CacheLumpName ("brdr_r",PU_CACHE);
 
 	for (y=0 ; y<viewheight ; y+=BEVEL_SIZE)
-		V_DrawPatchScaled(viewwindowx+scaledviewwidth,viewwindowy+y,1,patch);
+		V_DrawPatch(viewwindowx+scaledviewwidth,viewwindowy+y,1,patch);
 
 
 	/* Draw beveled edge. */
-	V_DrawPatchScaled (viewwindowx-BEVEL_SIZE,
+	V_DrawPatch (viewwindowx-BEVEL_SIZE,
 				 viewwindowy-BEVEL_SIZE,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_tl",PU_CACHE));
 
-	V_DrawPatchScaled(viewwindowx+scaledviewwidth,
+	V_DrawPatch(viewwindowx+scaledviewwidth,
 				 viewwindowy-BEVEL_SIZE,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_tr",PU_CACHE));
 
-	V_DrawPatchScaled(viewwindowx-BEVEL_SIZE,
+	V_DrawPatch(viewwindowx-BEVEL_SIZE,
 				 viewwindowy+viewheight,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_bl",PU_CACHE));
 
-	V_DrawPatchScaled(viewwindowx+scaledviewwidth,
+	V_DrawPatch(viewwindowx+scaledviewwidth,
 				 viewwindowy+viewheight,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_br",PU_CACHE));

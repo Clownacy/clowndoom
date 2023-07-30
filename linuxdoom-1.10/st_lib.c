@@ -118,19 +118,19 @@ STlib_drawNum
 
 	/* in the special case of 0, you draw 0 */
 	if (!num)
-		V_DrawPatchScaled(x - w, n->y, FG, n->p[ 0 ]);
+		V_DrawPatch(x - w, n->y, FG, n->p[ 0 ]);
 
 	/* draw the new number */
 	while (num && numdigits--)
 	{
 		x -= w;
-		V_DrawPatchScaled(x, n->y, FG, n->p[ num % 10 ]);
+		V_DrawPatch(x, n->y, FG, n->p[ num % 10 ]);
 		num /= 10;
 	}
 
 	/* draw a minus sign if necessary */
 	if (neg)
-		V_DrawPatchScaled(x - 8, n->y, FG, sttminus);
+		V_DrawPatch(x - 8, n->y, FG, sttminus);
 }
 
 
@@ -166,7 +166,7 @@ STlib_updatePercent
   int                   refresh )
 {
 	if (refresh && *per->n.on)
-		V_DrawPatchScaled(per->n.x, per->n.y, FG, per->p);
+		V_DrawPatch(per->n.x, per->n.y, FG, per->p);
 
 	STlib_updateNum(&per->n, refresh);
 }
@@ -218,7 +218,7 @@ STlib_updateMultIcon
 
 			V_CopyRect(x, y-ST_Y, BG, w, h, x, y, FG);
 		}
-		V_DrawPatchScaled(mi->x, mi->y, FG, mi->p[*mi->inum]);
+		V_DrawPatch(mi->x, mi->y, FG, mi->p[*mi->inum]);
 		mi->oldinum = *mi->inum;
 	}
 }
@@ -266,7 +266,7 @@ STlib_updateBinIcon
 			I_Error("updateBinIcon: y - ST_Y < 0");
 
 		if (*bi->val)
-			V_DrawPatchScaled(bi->x, bi->y, FG, bi->p);
+			V_DrawPatch(bi->x, bi->y, FG, bi->p);
 		else
 			V_CopyRect(x, y-ST_Y, BG, w, h, x, y, FG);
 

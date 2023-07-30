@@ -295,7 +295,7 @@ void D_Display (void)
 			y = 4*SCREEN_MUL;
 		else
 			y = viewwindowy+4*SCREEN_MUL;
-		V_DrawPatchDirectScaled(viewwindowx+(scaledviewwidth-68*SCREEN_MUL)/2,
+		V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68*SCREEN_MUL)/2,
 						  y,0,(patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
 	}
 
@@ -402,7 +402,7 @@ void D_PageTicker (void)
 /* D_PageDrawer */
 void D_PageDrawer (void)
 {
-	V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0), 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
+	V_DrawPatch (X_CENTRE(0),Y_CENTRE(0), 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
 }
 
 

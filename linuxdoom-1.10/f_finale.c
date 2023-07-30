@@ -313,7 +313,7 @@ void F_TextWrite (void)
 		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
 		if (cx+w > SCREENWIDTH)
 			break;
-		V_DrawPatchScaled(cx, cy, 0, hu_font[c]);
+		V_DrawPatch(cx, cy, 0, hu_font[c]);
 		cx+=w;
 	}
 
@@ -549,7 +549,7 @@ void F_CastPrint (const char* text)
 		}
 
 		w = SHORT (hu_font[c]->width)*SCREEN_MUL;
-		V_DrawPatchScaled(cx, Y_CENTRE(180), 0, hu_font[c]);
+		V_DrawPatch(cx, Y_CENTRE(180), 0, hu_font[c]);
 		cx+=w;
 	}
 
@@ -566,7 +566,7 @@ void F_CastDrawer (void)
 	patch_t*            patch;
 
 	/* erase the entire screen to a background */
-	V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0),0, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
+	V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0, (patch_t*)W_CacheLumpName ("BOSSBACK", PU_CACHE));
 
 	F_CastPrint (castorder[castnum].name);
 
@@ -578,9 +578,9 @@ void F_CastDrawer (void)
 
 	patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
 	if (flip)
-		V_DrawPatchFlippedScaled (X_CENTRE(160),Y_CENTRE(170),0,patch);
+		V_DrawPatchFlipped (X_CENTRE(160),Y_CENTRE(170),0,patch);
 	else
-		V_DrawPatchScaled (X_CENTRE(160),Y_CENTRE(170),0,patch);
+		V_DrawPatch (X_CENTRE(160),Y_CENTRE(170),0,patch);
 }
 
 
@@ -618,7 +618,7 @@ void F_BunnyScroll (void)
 		return;
 	if (finalecount < 1180)
 	{
-		V_DrawPatchScaled (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2),
+		V_DrawPatch (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2),
 					 Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2),0, (patch_t*)W_CacheLumpName ("END0",PU_CACHE));
 		laststage = 0;
 		return;
@@ -638,7 +638,7 @@ void F_BunnyScroll (void)
 	name[2] = 'D';
 	name[3] = '0' + stage;
 	name[4] = '\0';
-	V_DrawPatchScaled (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2), Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2),0, (patch_t*)W_CacheLumpName (name,PU_CACHE));
+	V_DrawPatch (X_CENTRE((ORIGINAL_SCREEN_WIDTH-13*8)/2), Y_CENTRE((ORIGINAL_SCREEN_HEIGHT-8*8)/2),0, (patch_t*)W_CacheLumpName (name,PU_CACHE));
 }
 
 
@@ -659,21 +659,21 @@ void F_Drawer (void)
 		{
 		  case 1:
 			if ( gamemode == retail )
-			  V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0),0,
+			  V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,
 						 (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
 			else
-			  V_DrawPatchScaled(X_CENTRE(0),Y_CENTRE(0),0,
+			  V_DrawPatch(X_CENTRE(0),Y_CENTRE(0),0,
 						 (patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
 			break;
 		  case 2:
-			V_DrawPatchScaled(X_CENTRE(0),Y_CENTRE(0),0,
+			V_DrawPatch(X_CENTRE(0),Y_CENTRE(0),0,
 						(patch_t*)W_CacheLumpName("VICTORY2",PU_CACHE));
 			break;
 		  case 3:
 			F_BunnyScroll ();
 			break;
 		  case 4:
-			V_DrawPatchScaled (X_CENTRE(0),Y_CENTRE(0),0,
+			V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),0,
 						 (patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
 			break;
 		}

@@ -73,19 +73,16 @@ V_DrawPatchInternal
 
 /* V_DrawPatch */
 /* Masks a column based masked pic to the screen. */
-#define V_DrawPatch(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, 1, d_false)
-#define V_DrawPatchScaled(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_false)
+#define V_DrawPatch(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_false)
 
 /* V_DrawPatchFlipped */
 /* Masks a column based masked pic to the screen. */
 /* Flips horizontally, e.g. to mirror face. */
-#define V_DrawPatchFlipped(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, 1, d_true)
-#define V_DrawPatchFlippedScaled(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_true)
+#define V_DrawPatchFlipped(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_true)
 
 /* V_DrawPatchDirect */
 /* Draws directly to the screen on the pc. */
 #define V_DrawPatchDirect(x, y, scrn, patch) V_DrawPatch(x, y, scrn, patch)
-#define V_DrawPatchDirectScaled(x, y, scrn, patch) V_DrawPatchScaled(x, y, scrn, patch)
 
 void
 V_DrawPatchColumn
