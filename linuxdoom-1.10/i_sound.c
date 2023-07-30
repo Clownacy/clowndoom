@@ -107,12 +107,12 @@ static d_bool          music_playing;
 /*  contents of the mixbuffer to the (two) */
 /*  hardware channels (left and right, that is). */
 /* This function currently supports only 16bit. */
-static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_data)
+static void AudioCallback(short* const output_buffer, const size_t frames_to_do, void* const user_data)
 {
 	/* Mix current sound data. */
 
 	/* Pointers in mixbuffer. */
-	short* output_buffer_end;
+	short *output_buffer_pointer, *output_buffer_end;
 
 	size_t bytes_done;
 
@@ -132,19 +132,21 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
 	}
 #endif
 
-	memset((char*)output_buffer + bytes_done, 0, bytes_to_do - bytes_done);
+	memset(output_buffer + bytes_done, 0, bytes_to_do - bytes_done);
+
+	output_buffer_pointer = output_buffer;
 
 	/* Determine where the sample ends */
 	output_buffer_end = output_buffer + frames_to_do * 2;
 
 	/* Mix sounds into the mix buffer */
-	while (output_buffer != output_buffer_end)
+	while (output_buffer_pointer != output_buffer_end)
 	{
 		size_t chan;
 
 		/* Obtain base values for mixing */
-		long dl = output_buffer[0];
-		long dr = output_buffer[1];
+		long dl = output_buffer_pointer[0];
+		long dr = output_buffer_pointer[1];
 
 		for (chan = 0; chan < NUM_CHANNELS; ++chan)
 		{
@@ -176,19 +178,19 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
 
 		/* Left channel */
 		if (dl > CAP)
-			*output_buffer++ = CAP;
+			*output_buffer_pointer++ = CAP;
 		else if (dl < -CAP)
-			*output_buffer++ = -CAP;
+			*output_buffer_pointer++ = -CAP;
 		else
-			*output_buffer++ = dl;
+			*output_buffer_pointer++ = dl;
 
 		/* Right channel */
 		if (dr > CAP)
-			*output_buffer++ = CAP;
+			*output_buffer_pointer++ = CAP;
 		else if (dr < -CAP)
-			*output_buffer++ = -CAP;
+			*output_buffer_pointer++ = -CAP;
 		else
-			*output_buffer++ = dr;
+			*output_buffer_pointer++ = dr;
 
 #undef CAP
 	}
