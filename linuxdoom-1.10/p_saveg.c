@@ -27,19 +27,16 @@
 
 /* Pads save_p to a 4-byte boundary */
 /*  so that the load/save works on SGI&Gecko. */
-#define PADSAVEP()      index += (4 - ((size_t) &buffer[index] & 3)) & 3
+#define PADSAVEP()      index += (4 - (index & 3)) & 3
 
 
 
 /* P_ArchivePlayers */
-size_t P_ArchivePlayers (unsigned char* const buffer)
+size_t P_ArchivePlayers (unsigned char* const buffer, size_t index)
 {
-	size_t      index;
 	int         i;
 	int         j;
 	player_t*   dest;
-
-	index = 0;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -71,13 +68,10 @@ size_t P_ArchivePlayers (unsigned char* const buffer)
 
 
 /* P_UnArchivePlayers */
-size_t P_UnArchivePlayers (const unsigned char* const buffer)
+size_t P_UnArchivePlayers (const unsigned char* const buffer, size_t index)
 {
-	size_t      index;
 	int         i;
 	int         j;
-
-	index = 0;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
@@ -109,9 +103,8 @@ size_t P_UnArchivePlayers (const unsigned char* const buffer)
 
 
 /* P_ArchiveWorld */
-size_t P_ArchiveWorld (unsigned char* const buffer)
+size_t P_ArchiveWorld (unsigned char* const buffer, size_t index)
 {
-	size_t              index;
 	int                 i;
 	int                 j;
 	sector_t*           sec;
@@ -119,9 +112,7 @@ size_t P_ArchiveWorld (unsigned char* const buffer)
 	side_t*             si;
 	short*              put;
 
-	index = 0;
-
-	put = (short *)buffer;
+	put = (short *)&buffer[index];
 
 	/* do sectors */
 	for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
@@ -137,7 +128,7 @@ size_t P_ArchiveWorld (unsigned char* const buffer)
 			*put++ = sec->tag;              /* needed? */
 		}
 
-		index += 7;
+		index += 7 * sizeof(short);
 	}
 
 
@@ -151,7 +142,7 @@ size_t P_ArchiveWorld (unsigned char* const buffer)
 			*put++ = li->tag;
 		}
 
-		index += 3;
+		index += 3 * sizeof(short);
 
 		for (j=0 ; j<2 ; j++)
 		{
@@ -169,19 +160,18 @@ size_t P_ArchiveWorld (unsigned char* const buffer)
 				*put++ = si->midtexture;
 			}
 
-			index += 5;
+			index += 5 * sizeof(short);
 		}
 	}
 
-	return index * sizeof(short);
+	return index;
 }
 
 
 
 /* P_UnArchiveWorld */
-size_t P_UnArchiveWorld (const unsigned char* const buffer)
+size_t P_UnArchiveWorld (const unsigned char* const buffer, size_t index)
 {
-	size_t              index;
 	int                 i;
 	int                 j;
 	sector_t*           sec;
@@ -189,9 +179,7 @@ size_t P_UnArchiveWorld (const unsigned char* const buffer)
 	side_t*             si;
 	short*              get;
 
-	index = 0;
-
-	get = (short *)buffer;
+	get = (short *)&buffer[index];
 
 	/* do sectors */
 	for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
@@ -206,7 +194,7 @@ size_t P_UnArchiveWorld (const unsigned char* const buffer)
 		sec->specialdata = 0;
 		sec->soundtarget = 0;
 
-		index += 7;
+		index += 7 * sizeof(short);
 	}
 
 	/* do lines */
@@ -215,7 +203,7 @@ size_t P_UnArchiveWorld (const unsigned char* const buffer)
 		li->flags = *get++;
 		li->special = *get++;
 		li->tag = *get++;
-		index += 3;
+		index += 3 * sizeof(short);
 		for (j=0 ; j<2 ; j++)
 		{
 			if (li->sidenum[j] == -1)
@@ -226,10 +214,10 @@ size_t P_UnArchiveWorld (const unsigned char* const buffer)
 			si->toptexture = *get++;
 			si->bottomtexture = *get++;
 			si->midtexture = *get++;
-			index += 5;
+			index += 5 * sizeof(short);
 		}
 	}
-	return index * sizeof(short);
+	return index;
 }
 
 
@@ -247,13 +235,10 @@ typedef enum
 
 
 /* P_ArchiveThinkers */
-size_t P_ArchiveThinkers (unsigned char* const buffer)
+size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 {
-	size_t              index;
 	thinker_t*          th;
 	mobj_t*             mobj;
-
-	index = 0;
 
 	/* save off the current thinkers */
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
@@ -290,15 +275,12 @@ size_t P_ArchiveThinkers (unsigned char* const buffer)
 
 
 /* P_UnArchiveThinkers */
-size_t P_UnArchiveThinkers (const unsigned char* const buffer)
+size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 {
-	size_t              index;
 	thinkerclass_t      tclass;
 	thinker_t*          currentthinker;
 	thinker_t*          next;
 	mobj_t*             mobj;
-
-	index = 0;
 
 	/* remove all the current thinkers */
 	currentthinker = thinkercap.next;
@@ -378,9 +360,8 @@ typedef enum
 /* T_StrobeFlash, (strobe_t: sector_t *), */
 /* T_Glow, (glow_t: sector_t *), */
 /* T_PlatRaise, (plat_t: sector_t *), - active list */
-size_t P_ArchiveSpecials (unsigned char* const buffer)
+size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 {
-	size_t              index;
 	thinker_t*          th;
 	ceiling_t*          ceiling;
 	vldoor_t*           door;
@@ -390,8 +371,6 @@ size_t P_ArchiveSpecials (unsigned char* const buffer)
 	strobe_t*           strobe;
 	glow_t*             glow;
 	int                 i;
-
-	index = 0;
 
 	/* save off the current thinkers */
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
@@ -541,9 +520,8 @@ size_t P_ArchiveSpecials (unsigned char* const buffer)
 
 
 /* P_UnArchiveSpecials */
-size_t P_UnArchiveSpecials (const unsigned char* const buffer)
+size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 {
-	size_t              index;
 	specials_e          tclass;
 	ceiling_t*          ceiling;
 	vldoor_t*           door;
@@ -552,8 +530,6 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer)
 	lightflash_t*       flash;
 	strobe_t*           strobe;
 	glow_t*             glow;
-
-	index = 0;
 
 	/* read in saved thinkers */
 	while (1)

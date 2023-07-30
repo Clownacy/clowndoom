@@ -1190,10 +1190,10 @@ void G_DoLoadGame (void)
 	leveltime = (a<<16) + (b<<8) + c;
 
 	/* dearchive all the modifications */
-	index += P_UnArchivePlayers (&savebuffer[index]);
-	index += P_UnArchiveWorld (&savebuffer[index]);
-	index += P_UnArchiveThinkers (&savebuffer[index]);
-	index += P_UnArchiveSpecials (&savebuffer[index]);
+	index = P_UnArchivePlayers (savebuffer, index);
+	index = P_UnArchiveWorld (savebuffer, index);
+	index = P_UnArchiveThinkers (savebuffer, index);
+	index = P_UnArchiveSpecials (savebuffer, index);
 
 	if (savebuffer[index] != 0x1d)
 		I_Error ("Bad savegame");
@@ -1257,10 +1257,10 @@ static size_t ArchiveToBuffer(unsigned char* const buffer)
 		index += 3 + MAXPLAYERS + 3;
 	}
 
-	index += P_ArchivePlayers(&buffer[index]);
-	index += P_ArchiveWorld(&buffer[index]);
-	index += P_ArchiveThinkers(&buffer[index]);
-	index += P_ArchiveSpecials(&buffer[index]);
+	index = P_ArchivePlayers(buffer, index);
+	index = P_ArchiveWorld(buffer, index);
+	index = P_ArchiveThinkers(buffer, index);
+	index = P_ArchiveSpecials(buffer, index);
 
 	if (buffer != NULL)
 		buffer[index] = 0x1d;           /* consistancy marker */

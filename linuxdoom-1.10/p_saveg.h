@@ -25,13 +25,13 @@
 
 /* Persistent storage/archiving. */
 /* These are the load / save game routines. */
-size_t P_ArchivePlayers (unsigned char* const buffer);
-size_t P_UnArchivePlayers (const unsigned char* const buffer);
-size_t P_ArchiveWorld (unsigned char* const buffer);
-size_t P_UnArchiveWorld (const unsigned char* const buffer);
-size_t P_ArchiveThinkers (unsigned char* const buffer);
-size_t P_UnArchiveThinkers (const unsigned char* const buffer);
-size_t P_ArchiveSpecials (unsigned char* const buffer);
-size_t P_UnArchiveSpecials (const unsigned char* const buffer);
+size_t P_ArchivePlayers (unsigned char* const buffer, size_t index);
+size_t P_UnArchivePlayers (const unsigned char* const buffer, size_t index);
+size_t P_ArchiveWorld (unsigned char* const buffer, size_t index);
+size_t P_UnArchiveWorld (const unsigned char* const buffer, size_t index);
+size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index);
+size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index);
+size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index);
+size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index);
 
 #endif
