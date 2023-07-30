@@ -18,7 +18,7 @@
 ******************************************************************************/
 
 
-#include "stdlib.h"
+#include <stdlib.h>
 
 #include "doomtype.h"
 #include "i_system.h"
@@ -27,7 +27,7 @@
 
 typedef struct SplitInteger
 {
-		unsigned long splits[3];
+	unsigned long splits[3];
 } SplitInteger;
 
 static void Subtract(SplitInteger * const minuend, const SplitInteger * const subtrahend)
