@@ -286,13 +286,6 @@ extern d_bool viewactive;
 
 
 
-void
-V_MarkRect
-( int   x,
-  int   y,
-  int   width,
-  int   height );
-
 /* Calculates the slope and slope according to the x-axis of a line */
 /* segment in map coordinates (with the upright y-axis n' all) so */
 /* that it can be used with the brain-dead drawing stuff. */
@@ -1271,7 +1264,5 @@ void AM_Drawer (void)
 	AM_drawCrosshair(XHAIRCOLORS);
 
 	AM_drawMarks();
-
-	V_MarkRect(f_x, f_y, f_w, f_h);
 
 }

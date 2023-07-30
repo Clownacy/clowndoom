@@ -35,8 +35,6 @@
 /* Each screen is [SCREENWIDTH*SCREENHEIGHT]; */
 unsigned char*                           screens[5];
 
-fixed_t                         dirtybox[4];
-
 
 
 /* Now where did these came from? */
@@ -128,18 +126,6 @@ const unsigned char gammatable[5][256] =
 
 int     usegamma;
 
-/* V_MarkRect */
-void
-V_MarkRect
-( int           x,
-  int           y,
-  int           width,
-  int           height )
-{
-	M_AddToBox (dirtybox, x, y);
-	M_AddToBox (dirtybox, x+width-1, y+height-1);
-}
-
 
 /* V_CopyRect */
 void
@@ -170,7 +156,6 @@ V_CopyRect
 		I_Error ("Bad V_CopyRect");
 	}
 #endif
-	V_MarkRect (destx, desty, width, height);
 
 	src = screens[srcscrn]+SCREENWIDTH*srcy+srcx;
 	dest = screens[destscrn]+SCREENWIDTH*desty+destx;
@@ -219,9 +204,6 @@ V_DrawPatchInternal
 	  return;
 	}
 #endif
-
-	if (!scrn)
-		V_MarkRect (x, y, scaled_width, scaled_height);
 
 	col = 0;
 	desttop = screens[scrn]+y*SCREENWIDTH+x;
@@ -319,9 +301,6 @@ V_DrawPatchFlipped
 	}
 #endif
 
-	if (!scrn)
-		V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height));
-
 	col = 0;
 	desttop = screens[scrn]+y*SCREENWIDTH+x;
 
@@ -385,7 +364,6 @@ V_DrawPatchDirect
 	}
 #endif
 
-	/*  V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height)); */
 	desttop = destscreen + y*SCREENWIDTH/4 + (x>>2);
 
 	w = SHORT(patch->width);
@@ -453,8 +431,6 @@ V_DrawBlock
 		I_Error ("Bad V_DrawBlock");
 	}
 #endif
-
-	V_MarkRect (x, y, width, height);
 
 	dest = screens[scrn] + y*SCREENWIDTH+x;
 

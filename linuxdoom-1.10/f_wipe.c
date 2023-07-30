@@ -251,8 +251,6 @@ wipe_ScreenWipe
 		{wipe_initMelt, wipe_doMelt}
 	};
 
-	void V_MarkRect(int, int, int, int);
-
 	(void)x;
 	(void)y;
 
@@ -266,7 +264,6 @@ wipe_ScreenWipe
 	}
 
 	/* do a piece of wipe-in */
-	V_MarkRect(0, 0, width, height);
 	rc = wipes[wipeno][1](width, height, ticks);
 	/*V_DrawBlock(x, y, 0, width, height, wipe_scr);*/ /* DEBUG */
 

@@ -42,8 +42,6 @@
 
 extern  unsigned char*           screens[5];
 
-extern  fixed_t dirtybox[4];
-
 extern  const unsigned char      gammatable[5][256];
 extern  int     usegamma;
 
@@ -112,13 +110,5 @@ V_GetBlock
   int           width,
   int           height,
   unsigned char*         dest );
-
-
-void
-V_MarkRect
-( int           x,
-  int           y,
-  int           width,
-  int           height );
 
 #endif
