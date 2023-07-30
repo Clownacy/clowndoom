@@ -60,20 +60,20 @@
 /* For damage/bonus red-/gold-shifts */
 #define STARTREDPALS            1
 #define STARTBONUSPALS          9
-#define NUMREDPALS                      8
+#define NUMREDPALS              8
 #define NUMBONUSPALS            4
 /* Radiation suit, green shift. */
 #define RADIATIONPAL            13
 
 /* N/256*100% probability */
 /*  that the normal face state will change */
-#define ST_FACEPROBABILITY              96
+#define ST_FACEPROBABILITY      96
 
 /* For Responder */
 #define ST_TOGGLECHAT           KEY_ENTER
 
 /* Location of status bar */
-#define ST_X                            ((SCREENWIDTH - ST_WIDTH) / 2)
+#define ST_X                    ((SCREENWIDTH - ST_WIDTH) / 2)
 
 #define ST_FX                   X_CENTRE(143)
 #define ST_FY                   Y_BOTTOM(169)
@@ -82,33 +82,31 @@
 #define ST_NUMPAINFACES         5
 #define ST_NUMSTRAIGHTFACES     3
 #define ST_NUMTURNFACES         2
-#define ST_NUMSPECIALFACES              3
+#define ST_NUMSPECIALFACES      3
 
-#define ST_FACESTRIDE \
-		  (ST_NUMSTRAIGHTFACES+ST_NUMTURNFACES+ST_NUMSPECIALFACES)
+#define ST_FACESTRIDE           (ST_NUMSTRAIGHTFACES+ST_NUMTURNFACES+ST_NUMSPECIALFACES)
 
-#define ST_NUMEXTRAFACES                2
+#define ST_NUMEXTRAFACES        2
 
-#define ST_NUMFACES \
-		  (ST_FACESTRIDE*ST_NUMPAINFACES+ST_NUMEXTRAFACES)
+#define ST_NUMFACES             (ST_FACESTRIDE*ST_NUMPAINFACES+ST_NUMEXTRAFACES)
 
 #define ST_TURNOFFSET           (ST_NUMSTRAIGHTFACES)
 #define ST_OUCHOFFSET           (ST_TURNOFFSET + ST_NUMTURNFACES)
-#define ST_EVILGRINOFFSET               (ST_OUCHOFFSET + 1)
-#define ST_RAMPAGEOFFSET                (ST_EVILGRINOFFSET + 1)
-#define ST_GODFACE                      (ST_NUMPAINFACES*ST_FACESTRIDE)
-#define ST_DEADFACE                     (ST_GODFACE+1)
+#define ST_EVILGRINOFFSET       (ST_OUCHOFFSET + 1)
+#define ST_RAMPAGEOFFSET        (ST_EVILGRINOFFSET + 1)
+#define ST_GODFACE              (ST_NUMPAINFACES*ST_FACESTRIDE)
+#define ST_DEADFACE             (ST_GODFACE+1)
 
-#define ST_FACESX                       X_CENTRE(143)
-#define ST_FACESY                       Y_BOTTOM(168)
+#define ST_FACESX               X_CENTRE(143)
+#define ST_FACESY               Y_BOTTOM(168)
 
-#define ST_EVILGRINCOUNT                (2*TICRATE)
+#define ST_EVILGRINCOUNT        (2*TICRATE)
 #define ST_STRAIGHTFACECOUNT    (TICRATE/2)
 #define ST_TURNCOUNT            (1*TICRATE)
 #define ST_OUCHCOUNT            (1*TICRATE)
 #define ST_RAMPAGEDELAY         (2*TICRATE)
 
-#define ST_MUCHPAIN                     20
+#define ST_MUCHPAIN             20
 
 
 /* Location and size of statistics, */
@@ -121,72 +119,72 @@
 
 /* AMMO number pos. */
 #define ST_AMMOWIDTH            3
-#define ST_AMMOX                        X_CENTRE(44)
-#define ST_AMMOY                        Y_BOTTOM(171)
+#define ST_AMMOX                X_CENTRE(44)
+#define ST_AMMOY                Y_BOTTOM(171)
 
 /* HEALTH number pos. */
 #define ST_HEALTHWIDTH          3
-#define ST_HEALTHX                      X_CENTRE(90)
-#define ST_HEALTHY                      Y_BOTTOM(171)
+#define ST_HEALTHX              X_CENTRE(90)
+#define ST_HEALTHY              Y_BOTTOM(171)
 
 /* Weapon pos. */
-#define ST_ARMSX                        X_CENTRE(111)
-#define ST_ARMSY                        Y_BOTTOM(172)
-#define ST_ARMSBGX                      X_CENTRE(104)
-#define ST_ARMSBGY                      Y_BOTTOM(168)
+#define ST_ARMSX                X_CENTRE(111)
+#define ST_ARMSY                Y_BOTTOM(172)
+#define ST_ARMSBGX              X_CENTRE(104)
+#define ST_ARMSBGY              Y_BOTTOM(168)
 #define ST_ARMSXSPACE           (12*HUD_SCALE)
 #define ST_ARMSYSPACE           (10*HUD_SCALE)
 
 /* Frags pos. */
-#define ST_FRAGSX                       X_CENTRE(138)
-#define ST_FRAGSY                       Y_BOTTOM(171)
+#define ST_FRAGSX               X_CENTRE(138)
+#define ST_FRAGSY               Y_BOTTOM(171)
 #define ST_FRAGSWIDTH           2
 
 /* ARMOR number pos. */
 #define ST_ARMORWIDTH           3
-#define ST_ARMORX                       X_CENTRE(221)
-#define ST_ARMORY                       Y_BOTTOM(171)
+#define ST_ARMORX               X_CENTRE(221)
+#define ST_ARMORY               Y_BOTTOM(171)
 
 /* Key icon positions. */
 #define ST_KEY0WIDTH            8
 #define ST_KEY0HEIGHT           5
-#define ST_KEY0X                        X_CENTRE(239)
-#define ST_KEY0Y                        Y_BOTTOM(171)
+#define ST_KEY0X                X_CENTRE(239)
+#define ST_KEY0Y                Y_BOTTOM(171)
 #define ST_KEY1WIDTH            ST_KEY0WIDTH
-#define ST_KEY1X                        X_CENTRE(239)
-#define ST_KEY1Y                        Y_BOTTOM(181)
+#define ST_KEY1X                X_CENTRE(239)
+#define ST_KEY1Y                Y_BOTTOM(181)
 #define ST_KEY2WIDTH            ST_KEY0WIDTH
-#define ST_KEY2X                        X_CENTRE(239)
-#define ST_KEY2Y                        Y_BOTTOM(191)
+#define ST_KEY2X                X_CENTRE(239)
+#define ST_KEY2Y                Y_BOTTOM(191)
 
 /* Ammunition counter. */
 #define ST_AMMO0WIDTH           3
 #define ST_AMMO0HEIGHT          6
-#define ST_AMMO0X                       X_CENTRE(288)
-#define ST_AMMO0Y                       Y_BOTTOM(173)
+#define ST_AMMO0X               X_CENTRE(288)
+#define ST_AMMO0Y               Y_BOTTOM(173)
 #define ST_AMMO1WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO1X                       X_CENTRE(288)
-#define ST_AMMO1Y                       Y_BOTTOM(179)
+#define ST_AMMO1X               X_CENTRE(288)
+#define ST_AMMO1Y               Y_BOTTOM(179)
 #define ST_AMMO2WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO2X                       X_CENTRE(288)
-#define ST_AMMO2Y                       Y_BOTTOM(191)
+#define ST_AMMO2X               X_CENTRE(288)
+#define ST_AMMO2Y               Y_BOTTOM(191)
 #define ST_AMMO3WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO3X                       X_CENTRE(288)
-#define ST_AMMO3Y                       Y_BOTTOM(185)
+#define ST_AMMO3X               X_CENTRE(288)
+#define ST_AMMO3Y               Y_BOTTOM(185)
 
 /* Indicate maximum ammunition. */
 /* Only needed because backpack exists. */
-#define ST_MAXAMMO0WIDTH                3
-#define ST_MAXAMMO0HEIGHT               5
+#define ST_MAXAMMO0WIDTH        3
+#define ST_MAXAMMO0HEIGHT       5
 #define ST_MAXAMMO0X            X_CENTRE(314)
 #define ST_MAXAMMO0Y            Y_BOTTOM(173)
-#define ST_MAXAMMO1WIDTH                ST_MAXAMMO0WIDTH
+#define ST_MAXAMMO1WIDTH        ST_MAXAMMO0WIDTH
 #define ST_MAXAMMO1X            X_CENTRE(314)
 #define ST_MAXAMMO1Y            Y_BOTTOM(179)
-#define ST_MAXAMMO2WIDTH                ST_MAXAMMO0WIDTH
+#define ST_MAXAMMO2WIDTH        ST_MAXAMMO0WIDTH
 #define ST_MAXAMMO2X            X_CENTRE(314)
 #define ST_MAXAMMO2Y            Y_BOTTOM(191)
-#define ST_MAXAMMO3WIDTH                ST_MAXAMMO0WIDTH
+#define ST_MAXAMMO3WIDTH        ST_MAXAMMO0WIDTH
 #define ST_MAXAMMO3X            X_CENTRE(314)
 #define ST_MAXAMMO3Y            Y_BOTTOM(185)
 
@@ -194,10 +192,10 @@
 /* UNUSED */
 /* #define ST_MSGTEXTX     (viewwindowx) */
 /* #define ST_MSGTEXTY     (viewwindowy+viewheight-18*SCREEN_MUL) */
-#define ST_MSGTEXTX                     X_LEFT(0)
-#define ST_MSGTEXTY                     Y_TOP(0)
+#define ST_MSGTEXTX             X_LEFT(0)
+#define ST_MSGTEXTY             Y_TOP(0)
 /* Dimensions given in characters. */
-#define ST_MSGWIDTH                     52
+#define ST_MSGWIDTH             52
 
 
 /* main player in game */
