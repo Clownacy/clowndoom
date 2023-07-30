@@ -37,8 +37,8 @@
 
 
 /* ? */
-#define MAXWIDTH                        SCREENWIDTH/*1120*/
-#define MAXHEIGHT                       SCREENHEIGHT/*832*/
+#define MAXWIDTH                SCREENWIDTH/*1120*/
+#define MAXHEIGHT               SCREENHEIGHT/*832*/
 
 /* status bar height at bottom of screen */
 #define SBARHEIGHT              ST_HEIGHT
@@ -51,19 +51,19 @@
 /*  and the total size == width*height*depth/8., */
 
 
-unsigned char*           viewimage;
+unsigned char*  viewimage;
 int             viewwidth;
 int             scaledviewwidth;
 int             viewheight;
 int             viewwindowx;
 int             viewwindowy;
-unsigned char*           ylookup[MAXHEIGHT];
+unsigned char*  ylookup[MAXHEIGHT];
 int             columnofs[MAXWIDTH];
 
 /* Color tables for different players, */
 /*  translate a limited part to another */
 /*  (color ramps used for  suit colors). */
-unsigned char            translations[3][256];
+unsigned char   translations[3][256];
 
 
 
@@ -78,7 +78,7 @@ fixed_t                 dc_iscale;
 fixed_t                 dc_texturemid;
 
 /* first pixel in a column (possibly virtual) */
-unsigned char*                   dc_source;
+unsigned char*         dc_source;
 
 /* just for profiling */
 int                     dccount;
@@ -91,7 +91,7 @@ int                     dccount;
 void R_DrawColumn (void)
 {
 	int                 count;
-	unsigned char*               dest;
+	unsigned char*      dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -134,70 +134,10 @@ void R_DrawColumn (void)
 
 
 
-/* UNUSED. */
-/* Loop unrolled. */
-#if 0
-void R_DrawColumn (void)
-{
-	int                 count;
-	byte*               source;
-	byte*               dest;
-	byte*               colormap;
-
-	unsigned            frac;
-	unsigned            fracstep;
-	unsigned            fracstep2;
-	unsigned            fracstep3;
-	unsigned            fracstep4;
-
-	count = dc_yh - dc_yl + 1;
-
-	source = dc_source;
-	colormap = dc_colormap;
-	dest = ylookup[dc_yl] + columnofs[dc_x];
-
-	fracstep = dc_iscale<<9;
-	frac = (dc_texturemid + (dc_yl-centery)*dc_iscale)<<9;
-
-	fracstep2 = fracstep+fracstep;
-	fracstep3 = fracstep2+fracstep;
-	fracstep4 = fracstep3+fracstep;
-
-	while (count >= 8)
-	{
-		dest[0] = colormap[source[frac>>25]];
-		dest[SCREENWIDTH] = colormap[source[(frac+fracstep)>>25]];
-		dest[SCREENWIDTH*2] = colormap[source[(frac+fracstep2)>>25]];
-		dest[SCREENWIDTH*3] = colormap[source[(frac+fracstep3)>>25]];
-
-		frac += fracstep4;
-
-		dest[SCREENWIDTH*4] = colormap[source[frac>>25]];
-		dest[SCREENWIDTH*5] = colormap[source[(frac+fracstep)>>25]];
-		dest[SCREENWIDTH*6] = colormap[source[(frac+fracstep2)>>25]];
-		dest[SCREENWIDTH*7] = colormap[source[(frac+fracstep3)>>25]];
-
-		frac += fracstep4;
-		dest += SCREENWIDTH*8;
-		count -= 8;
-	}
-
-	while (count > 0)
-	{
-		*dest = colormap[source[frac>>25]];
-		dest += SCREENWIDTH;
-		frac += fracstep;
-		count--;
-	}
-}
-#endif
-
-
 void R_DrawColumnLow (void)
 {
 	int                 count;
-	unsigned char*               dest;
-	unsigned char*               dest2;
+	unsigned char*      dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -218,16 +158,15 @@ void R_DrawColumnLow (void)
 	/*  dccount++; */
 #endif
 	/* Blocky mode, need to multiply by 2. */
-	dest = ylookup[dc_yl] + columnofs[dc_x<<1];
-	dest2 = ylookup[dc_yl] + columnofs[(dc_x<<1)+1];
+	dest[0] = ylookup[dc_yl] + columnofs[dc_x*2];
+	dest[1] = dest[0] + SCREENHEIGHT;
 
 	fracstep = dc_iscale;
 	frac = dc_texturemid + (dc_yl-centery)*fracstep;
 
 	do
 	{
-		/* Hack. Does not work corretly. */
-		*dest2++ = *dest++ = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
+		*dest[0]++ = *dest[1]++ = dc_colormap[dc_source[(frac>>FRACBITS)&127]];
 		frac += fracstep;
 
 	} while (count--);
@@ -235,22 +174,25 @@ void R_DrawColumnLow (void)
 
 
 /* Spectre/Invisibility. */
-#define FUZZTABLE               50
+#define FUZZTABLE 50
 #define FUZZOFF 1
 
 
-int     fuzzoffset[FUZZTABLE] =
+static const int fuzzoffset[FUZZTABLE] =
 {
-	FUZZOFF,-FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,
-	FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,
-	FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,
-	FUZZOFF,-FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,
-	FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,-FUZZOFF,FUZZOFF,
-	FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,
-	FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF,FUZZOFF,-FUZZOFF,FUZZOFF
+	 FUZZOFF,-FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF,
+	 FUZZOFF,-FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF,
+	 FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF,
+	 FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,
+	-FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF, FUZZOFF,
+	 FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF,
+	-FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF,
+	 FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,
+	-FUZZOFF, FUZZOFF, FUZZOFF, FUZZOFF, FUZZOFF,
+	-FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF
 };
 
-int     fuzzpos = 0;
+static int fuzzpos = 0;
 
 
 /* Framebuffer postprocessing. */
@@ -262,12 +204,12 @@ int     fuzzpos = 0;
 void R_DrawFuzzColumn (void)
 {
 	int                 count;
-	unsigned char*               dest;
+	unsigned char*      dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
 	/* Adjust borders. Low... */
-	if (!dc_yl)
+	if (dc_yl == 0)
 		dc_yl = 1;
 
 	/* .. and high. */
@@ -280,7 +222,6 @@ void R_DrawFuzzColumn (void)
 	if (count < 0)
 		return;
 
-
 #ifdef RANGECHECK
 	if ((unsigned)dc_x >= SCREENWIDTH
 		|| dc_yl < 0 || dc_yh >= SCREENHEIGHT)
@@ -289,32 +230,6 @@ void R_DrawFuzzColumn (void)
 				 dc_yl, dc_yh, dc_x);
 	}
 #endif
-
-
-	/* Keep till detailshift bug in blocky mode fixed, */
-	/*  or blocky mode removed. */
-	/* WATCOM code
-	if (detailshift)
-	{
-		if (dc_x & 1)
-		{
-			outpw (GC_INDEX,GC_READMAP+(2<<8) );
-			outp (SC_INDEX+1,12);
-		}
-		else
-		{
-			outpw (GC_INDEX,GC_READMAP);
-			outp (SC_INDEX+1,3);
-		}
-		dest = destview + dc_yl*80 + (dc_x>>1);
-	}
-	else
-	{
-		outpw (GC_INDEX,GC_READMAP+((dc_x&3)<<8) );
-		outp (SC_INDEX+1,1<<(dc_x&3));
-		dest = destview + dc_yl*80 + (dc_x>>2);
-	}*/
-
 
 	/* Does not work with blocky mode. */
 	dest = ylookup[dc_yl] + columnofs[dc_x];
@@ -346,13 +261,12 @@ void R_DrawFuzzColumn (void)
 void R_DrawFuzzColumnLow (void)
 {
 	int                 count;
-	unsigned char*               dest;
-	unsigned char*               dest2;
+	unsigned char*      dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
 	/* Adjust borders. Low... */
-	if (!dc_yl)
+	if (dc_yl == 0)
 		dc_yl = 1;
 
 	/* .. and high. */
@@ -365,7 +279,6 @@ void R_DrawFuzzColumnLow (void)
 	if (count < 0)
 		return;
 
-
 #ifdef RANGECHECK
 	if ((unsigned)dc_x >= SCREENWIDTH
 		|| dc_yl < 0 || dc_yh >= SCREENHEIGHT)
@@ -375,35 +288,8 @@ void R_DrawFuzzColumnLow (void)
 	}
 #endif
 
-
-	/* Keep till detailshift bug in blocky mode fixed, */
-	/*  or blocky mode removed. */
-	/* WATCOM code
-	if (detailshift)
-	{
-		if (dc_x & 1)
-		{
-			outpw (GC_INDEX,GC_READMAP+(2<<8) );
-			outp (SC_INDEX+1,12);
-		}
-		else
-		{
-			outpw (GC_INDEX,GC_READMAP);
-			outp (SC_INDEX+1,3);
-		}
-		dest = destview + dc_yl*80 + (dc_x>>1);
-	}
-	else
-	{
-		outpw (GC_INDEX,GC_READMAP+((dc_x&3)<<8) );
-		outp (SC_INDEX+1,1<<(dc_x&3));
-		dest = destview + dc_yl*80 + (dc_x>>2);
-	}*/
-
-
-	/* Does not work with blocky mode. */
-	dest = ylookup[dc_yl] + columnofs[dc_x<<1];
-	dest2 = ylookup[dc_yl] + columnofs[(dc_x<<1)+1];
+	dest[0] = ylookup[dc_yl] + columnofs[dc_x*2];
+	dest[1] = dest[0] + SCREENHEIGHT;
 
 	/* Looks familiar. */
 	fracstep = dc_iscale;
@@ -418,14 +304,14 @@ void R_DrawFuzzColumnLow (void)
 		/*  a pixel that is either one column */
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
-		*dest2 = *dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
+		*dest[0] = *dest[1] = colormaps[6*256+dest[0][fuzzoffset[fuzzpos]]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
 			fuzzpos = 0;
 
-		++dest;
-		++dest2;
+		++dest[0];
+		++dest[1];
 		frac += fracstep;
 	} while (count--);
 }
@@ -446,7 +332,7 @@ unsigned char*   translationtables;
 void R_DrawTranslatedColumn (void)
 {
 	int                 count;
-	unsigned char*               dest;
+	unsigned char*      dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -462,28 +348,7 @@ void R_DrawTranslatedColumn (void)
 		I_Error ( "R_DrawTranslatedColumn: %i to %i at %i",
 				  dc_yl, dc_yh, dc_x);
 	}
-
 #endif
-
-
-	/* WATCOM VGA specific. */
-	/* Keep for fixing.
-	if (detailshift)
-	{
-		if (dc_x & 1)
-			outp (SC_INDEX+1,12);
-		else
-			outp (SC_INDEX+1,3);
-
-		dest = destview + dc_yl*80 + (dc_x>>1);
-	}
-	else
-	{
-		outp (SC_INDEX+1,1<<(dc_x&3));
-
-		dest = destview + dc_yl*80 + (dc_x>>2);
-	}*/
-
 
 	dest = ylookup[dc_yl] + columnofs[dc_x];
 
@@ -508,8 +373,7 @@ void R_DrawTranslatedColumn (void)
 void R_DrawTranslatedColumnLow (void)
 {
 	int                 count;
-	unsigned char*               dest;
-	unsigned char*               dest2;
+	unsigned char*      dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -528,28 +392,8 @@ void R_DrawTranslatedColumnLow (void)
 
 #endif
 
-
-	/* WATCOM VGA specific. */
-	/* Keep for fixing.
-	if (detailshift)
-	{
-		if (dc_x & 1)
-			outp (SC_INDEX+1,12);
-		else
-			outp (SC_INDEX+1,3);
-
-		dest = destview + dc_yl*80 + (dc_x>>1);
-	}
-	else
-	{
-		outp (SC_INDEX+1,1<<(dc_x&3));
-
-		dest = destview + dc_yl*80 + (dc_x>>2);
-	}*/
-
-
-	dest = ylookup[dc_yl] + columnofs[dc_x<<1];
-	dest2 = ylookup[dc_yl] + columnofs[(dc_x<<1)+1];
+	dest[0] = ylookup[dc_yl] + columnofs[dc_x*2];
+	dest[1] = dest[0] + SCREENHEIGHT;
 
 	/* Looks familiar. */
 	fracstep = dc_iscale;
@@ -563,7 +407,7 @@ void R_DrawTranslatedColumnLow (void)
 		/*  used with PLAY sprites. */
 		/* Thus the "green" ramp of the player 0 sprite */
 		/*  is mapped to gray, red, black/indigo. */
-		*dest2++ = *dest++ = dc_colormap[dc_translation[dc_source[frac>>FRACBITS]]];
+		*dest[0]++ = *dest[1]++ = dc_colormap[dc_translation[dc_source[frac >> FRACBITS]]];
 
 		frac += fracstep;
 	} while (count--);
@@ -628,10 +472,10 @@ fixed_t                 ds_xstep;
 fixed_t                 ds_ystep;
 
 /* start of a 64*64 tile image */
-unsigned char*                   ds_source;
+unsigned char*          ds_source;
 
 /* just for profiling */
-int                     dscount;
+/*int                     dscount;*/
 
 
 /* Draws the actual span. */
@@ -639,7 +483,7 @@ void R_DrawSpan (void)
 {
 	fixed_t             xfrac;
 	fixed_t             yfrac;
-	unsigned char*               dest;
+	unsigned char*      dest;
 	int                 count;
 	int                 spot;
 
@@ -654,7 +498,6 @@ void R_DrawSpan (void)
 	}
 /*      dscount++; */
 #endif
-
 
 	xfrac = ds_xfrac;
 	yfrac = ds_yfrac;
@@ -684,85 +527,12 @@ void R_DrawSpan (void)
 
 
 
-/* UNUSED. */
-/* Loop unrolled by 4. */
-#if 0
-void R_DrawSpan (void)
-{
-	unsigned    position, step;
-
-	byte*       source;
-	byte*       colormap;
-	byte*       dest;
-
-	unsigned    count;
-	usingned    spot;
-	unsigned    value;
-	unsigned    temp;
-	unsigned    xtemp;
-	unsigned    ytemp;
-
-	position = ((ds_xfrac<<10)&0xffff0000) | ((ds_yfrac>>6)&0xffff);
-	step = ((ds_xstep<<10)&0xffff0000) | ((ds_ystep>>6)&0xffff);
-
-	source = ds_source;
-	colormap = ds_colormap;
-	dest = ylookup[ds_y] + columnofs[ds_x1];
-	count = ds_x2 - ds_x1 + 1;
-
-	while (count >= 4)
-	{
-		ytemp = position>>4;
-		ytemp = ytemp & 4032;
-		xtemp = position>>26;
-		spot = xtemp | ytemp;
-		position += step;
-		dest[0] = colormap[source[spot]];
-
-		ytemp = position>>4;
-		ytemp = ytemp & 4032;
-		xtemp = position>>26;
-		spot = xtemp | ytemp;
-		position += step;
-		dest[1] = colormap[source[spot]];
-
-		ytemp = position>>4;
-		ytemp = ytemp & 4032;
-		xtemp = position>>26;
-		spot = xtemp | ytemp;
-		position += step;
-		dest[2] = colormap[source[spot]];
-
-		ytemp = position>>4;
-		ytemp = ytemp & 4032;
-		xtemp = position>>26;
-		spot = xtemp | ytemp;
-		position += step;
-		dest[3] = colormap[source[spot]];
-
-		count -= 4;
-		dest += 4;
-	}
-	while (count > 0)
-	{
-		ytemp = position>>4;
-		ytemp = ytemp & 4032;
-		xtemp = position>>26;
-		spot = xtemp | ytemp;
-		position += step;
-		*dest++ = colormap[source[spot]];
-		count--;
-	}
-}
-#endif
-
-
 /* Again.. */
 void R_DrawSpanLow (void)
 {
 	fixed_t             xfrac;
 	fixed_t             yfrac;
-	unsigned char*               dest;
+	unsigned char*      dest;
 	int                 count;
 	int                 spot;
 
@@ -782,20 +552,24 @@ void R_DrawSpanLow (void)
 	yfrac = ds_yfrac;
 
 	/* Blocky mode, need to multiply by 2. */
-	dest = ylookup[ds_y] + columnofs[ds_x1<<1];
-
+	dest = ylookup[ds_y] + columnofs[ds_x1*2];
 
 	count = ds_x2 - ds_x1;
+
 	do
 	{
+		unsigned char pixel;
+		/* Current texture index in u,v. */
 		spot = ((yfrac>>(16-6))&(63*64)) + ((xfrac>>16)&63);
 		/* Lowres/blocky mode does it twice, */
 		/*  while scale is adjusted appropriately. */
-		*dest = ds_colormap[ds_source[spot]];
+		pixel = ds_colormap[ds_source[spot]];;
+		*dest = pixel;
 		dest += SCREENHEIGHT; /* TODO: Can this be made linear again? */
-		*dest = ds_colormap[ds_source[spot]];
-		dest += SCREENHEIGHT; /* TODO: Can this be made linear again? */
+		*dest = pixel;
+		dest += SCREENHEIGHT;
 
+		/* Next step in u,v. */
 		xfrac += ds_xstep;
 		yfrac += ds_ystep;
 
@@ -899,11 +673,11 @@ R_VideoErase
 ( unsigned      ofs,
   int           count )
 {
-  /* LFB copy. */
-  /* This might not be a good idea if memcpy */
-  /*  is not optiomal, e.g. byte by byte on */
-  /*  a 32bit CPU, as GNU GCC/Linux libc did */
-  /*  at one point. */
+	/* LFB copy. */
+	/* This might not be a good idea if memcpy */
+	/*  is not optiomal, e.g. byte by byte on */
+	/*  a 32bit CPU, as GNU GCC/Linux libc did */
+	/*  at one point. */
 	memcpy (screens[SCREEN_FRAMEBUFFER]+ofs, screens[SCREEN_BACK]+ofs, count);
 }
 
@@ -938,5 +712,3 @@ void R_DrawViewBorder (void)
 	for (i = 0; i < side; ++i)
 		R_VideoErase((side + scaledviewwidth + i) * SCREENHEIGHT, SCREENHEIGHT - SBARHEIGHT);
 }
-
-
