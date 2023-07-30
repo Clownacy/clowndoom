@@ -531,21 +531,21 @@ ST_Responder (const event_t* ev)
 
 		if (gamemode == commercial)
 		{
-		  musnum = mus_runnin + (buf[0]-'0')*10 + buf[1]-'0' - 1;
+		  musnum = (buf[0]-'0')*10 + buf[1]-'0' - 1;
 
-		  if (((buf[0]-'0')*10 + buf[1]-'0') > 35)
+		  if (musnum > 35 || musnum < 0)
 			plyr->message = STSTR_NOMUS;
 		  else
-			S_ChangeMusic(musnum, d_true);
+			S_ChangeMusic(mus_runnin + musnum, d_true);
 		}
 		else
 		{
-		  musnum = mus_e1m1 + (buf[0]-'1')*9 + (buf[1]-'1');
+		  musnum = (buf[0]-'1')*9 + (buf[1]-'1');
 
-		  if (((buf[0]-'1')*9 + buf[1]-'1') > 31)
+		  if (musnum > 31 || musnum < 0)
 			plyr->message = STSTR_NOMUS;
 		  else
-			S_ChangeMusic(musnum, d_true);
+			S_ChangeMusic(mus_e1m1 + musnum, d_true);
 		}
 	  }
 	  /* Simplified, accepting both "noclip" and "idspispopd". */
