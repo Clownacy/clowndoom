@@ -111,6 +111,8 @@
 #define GOTSHOTGUN      "You got the shotgun!"
 #define GOTSHOTGUN2     "You got the super shotgun!"
 
+#define SECRETFOUND     "Secret found!"
+
 /* P_Doors.C */
 #define PD_BLUEO        "You need a blue key to activate this object"
 #define PD_REDO         "You need a red key to activate this object"

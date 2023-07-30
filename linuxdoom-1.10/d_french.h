@@ -99,6 +99,8 @@
 #define GOTSHOTGUN      "VOUS AVEZ UN FUSIL!"
 #define GOTSHOTGUN2     "VOUS AVEZ UN SUPER FUSIL!"
 
+#define SECRETFOUND     "SECRET TROUVE!"
+
 /* P_Doors.C */
 #define PD_BLUEO        "IL VOUS FAUT UNE CLEF BLEUE"
 #define PD_REDO         "IL VOUS FAUT UNE CLEF ROUGE"

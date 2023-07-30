@@ -26,6 +26,7 @@
 
 #include "doomdef.h"
 #include "doomstat.h"
+#include "dstrings.h"
 
 #include "i_system.h"
 #include "z_zone.h"
@@ -1003,6 +1004,8 @@ void P_PlayerInSpecialSector (player_t* player)
 		/* SECRET SECTOR */
 		player->secretcount++;
 		sector->special = 0;
+		players[consoleplayer].message = SECRETFOUND;
+		S_StartSound(NULL, sfx_itmbk);
 		break;
 
 	  case 11:
