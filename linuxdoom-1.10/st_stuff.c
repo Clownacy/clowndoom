@@ -19,6 +19,7 @@
 
 ******************************************************************************/
 
+#include <stddef.h>
 #include <stdio.h>
 
 #include "i_system.h"
@@ -299,93 +300,92 @@ static int      st_randomnumber;
 /* Massive bunches of cheat shit */
 /*  to keep it from being easy to figure them out. */
 /* Yeah, right... */
-unsigned char   cheat_mus_seq[] =
+char   cheat_mus_seq[] =
 {
-	0xb2, 0x26, 0xb6, 0xae, 0xea, 1, 0, 0, 0xff
+	'i', 'd', 'm', 'u', 's', 1, 0, 0, (char)-1
 };
 
-unsigned char   cheat_choppers_seq[] =
+char   cheat_choppers_seq[] =
 {
-	0xb2, 0x26, 0xe2, 0x32, 0xf6, 0x2a, 0x2a, 0xa6, 0x6a, 0xea, 0xff /* id... */
+	'i', 'd', 'c', 'h', 'o', 'p', 'p', 'e', 'r', 's', (char)-1 /* id... */
 };
 
-unsigned char   cheat_god_seq[] =
+char   cheat_god_seq[] =
 {
-	0xb2, 0x26, 0x26, 0xaa, 0x26, 0xff  /* iddqd */
+	'i', 'd', 'd', 'q', 'd', (char)-1  /* iddqd */
 };
 
-unsigned char   cheat_ammo_seq[] =
+char   cheat_ammo_seq[] =
 {
-	0xb2, 0x26, 0xf2, 0x66, 0xa2, 0xff  /* idkfa */
+	'i', 'd', 'k', 'f', 'a', (char)-1  /* idkfa */
 };
 
-unsigned char   cheat_ammonokey_seq[] =
+char   cheat_ammonokey_seq[] =
 {
-	0xb2, 0x26, 0x66, 0xa2, 0xff        /* idfa */
+	'i', 'd', 'f', 'a', (char)-1        /* idfa */
 };
 
 
 /* Smashing Pumpkins Into Samml Piles Of Putried Debris. */
-unsigned char   cheat_noclip_seq[] =
+char   cheat_noclip_seq[] =
 {
-	0xb2, 0x26, 0xea, 0x2a, 0xb2,       /* idspispopd */
-	0xea, 0x2a, 0xf6, 0x2a, 0x26, 0xff
+	'i', 'd', 's', 'p', 'i', 's', 'p', 'o', 'p', 'd', (char)-1       /* idspispopd */
 };
 
-unsigned char   cheat_commercial_noclip_seq[] =
+char   cheat_commercial_noclip_seq[] =
 {
-	0xb2, 0x26, 0xe2, 0x36, 0xb2, 0x2a, 0xff    /* idclip */
-};
-
-
-
-unsigned char   cheat_powerup_seq[7][10] =
-{
-	{ 0xb2, 0x26, 0x62, 0xa6, 0x32, 0xf6, 0x36, 0x26, 0x6e, 0xff },     /* beholdv */
-	{ 0xb2, 0x26, 0x62, 0xa6, 0x32, 0xf6, 0x36, 0x26, 0xea, 0xff },     /* beholds */
-	{ 0xb2, 0x26, 0x62, 0xa6, 0x32, 0xf6, 0x36, 0x26, 0xb2, 0xff },     /* beholdi */
-	{ 0xb2, 0x26, 0x62, 0xa6, 0x32, 0xf6, 0x36, 0x26, 0x6a, 0xff },     /* beholdr */
-	{ 0xb2, 0x26, 0x62, 0xa6, 0x32, 0xf6, 0x36, 0x26, 0xa2, 0xff },     /* beholda */
-	{ 0xb2, 0x26, 0x62, 0xa6, 0x32, 0xf6, 0x36, 0x26, 0x36, 0xff },     /* beholdl */
-	{ 0xb2, 0x26, 0x62, 0xa6, 0x32, 0xf6, 0x36, 0x26, 0xff }            /* behold */
+	'i', 'd', 'c', 'l', 'i', 'p', (char)-1    /* idclip */
 };
 
 
-unsigned char   cheat_clev_seq[] =
+
+char   cheat_powerup_seq[7][10] =
 {
-	0xb2, 0x26,  0xe2, 0x36, 0xa6, 0x6e, 1, 0, 0, 0xff  /* idclev */
+	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 'v', (char)-1 },     /* beholdv */
+	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 's', (char)-1 },     /* beholds */
+	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 'i', (char)-1 },     /* beholdi */
+	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 'r', (char)-1 },     /* beholdr */
+	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 'a', (char)-1 },     /* beholda */
+	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 'l', (char)-1 },     /* beholdl */
+	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', (char)-1 }           /* behold */
+};
+
+
+char   cheat_clev_seq[] =
+{
+	'i', 'd', 'c', 'l', 'e', 'v', 1, 0, 0, (char)-1  /* idclev */
 };
 
 
 /* my position cheat */
-unsigned char   cheat_mypos_seq[] =
+char   cheat_mypos_seq[] =
 {
-	0xb2, 0x26, 0xb6, 0xba, 0x2a, 0xf6, 0xea, 0xff      /* idmypos */
+	'i', 'd', 'm', 'y', 'p', 'o', 's', (char)-1      /* idmypos */
 };
 
 
 /* Now what? */
-cheatseq_t      cheat_mus = { cheat_mus_seq, 0 };
-cheatseq_t      cheat_god = { cheat_god_seq, 0 };
-cheatseq_t      cheat_ammo = { cheat_ammo_seq, 0 };
-cheatseq_t      cheat_ammonokey = { cheat_ammonokey_seq, 0 };
-cheatseq_t      cheat_noclip = { cheat_noclip_seq, 0 };
-cheatseq_t      cheat_commercial_noclip = { cheat_commercial_noclip_seq, 0 };
+cheatseq_t      cheat_mus = { cheat_mus_seq, NULL };
+cheatseq_t      cheat_god = { cheat_god_seq, NULL};
+cheatseq_t      cheat_ammo = { cheat_ammo_seq, NULL};
+cheatseq_t      cheat_ammonokey = { cheat_ammonokey_seq, NULL};
+cheatseq_t      cheat_noclip = { cheat_noclip_seq, NULL};
+cheatseq_t      cheat_commercial_noclip = { cheat_commercial_noclip_seq, NULL};
 
 cheatseq_t      cheat_powerup[7] =
 {
-	{ cheat_powerup_seq[0], 0 },
-	{ cheat_powerup_seq[1], 0 },
-	{ cheat_powerup_seq[2], 0 },
-	{ cheat_powerup_seq[3], 0 },
-	{ cheat_powerup_seq[4], 0 },
-	{ cheat_powerup_seq[5], 0 },
-	{ cheat_powerup_seq[6], 0 }
+	{ cheat_powerup_seq[0], NULL },
+	{ cheat_powerup_seq[1], NULL },
+	{ cheat_powerup_seq[2], NULL },
+	{ cheat_powerup_seq[3], NULL },
+	{ cheat_powerup_seq[4], NULL },
+	{ cheat_powerup_seq[5], NULL },
+	{ cheat_powerup_seq[6], NULL }
 };
 
-cheatseq_t      cheat_choppers = { cheat_choppers_seq, 0 };
-cheatseq_t      cheat_clev = { cheat_clev_seq, 0 };
-cheatseq_t      cheat_mypos = { cheat_mypos_seq, 0 };
+cheatseq_t      cheat_choppers = { cheat_choppers_seq, NULL};
+cheatseq_t      cheat_clev = { cheat_clev_seq, NULL};
+cheatseq_t      cheat_mypos = { cheat_mypos_seq, NULL};
 
 
 extern const char* const        mapnames[];
