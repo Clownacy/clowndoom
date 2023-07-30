@@ -995,7 +995,7 @@ void M_FinishReadThis(int choice)
 
 
 /* M_QuitDOOM */
-int     quitsounds[8] =
+static const int     quitsounds[8] =
 {
 	sfx_pldeth,
 	sfx_dmpain,
@@ -1007,7 +1007,7 @@ int     quitsounds[8] =
 	sfx_sgtatk
 };
 
-int     quitsounds2[8] =
+static const int     quitsounds2[8] =
 {
 	sfx_vilact,
 	sfx_getpow,
@@ -1028,9 +1028,9 @@ void M_QuitResponse(int ch)
 	if (!netgame)
 	{
 		if (gamemode == commercial)
-			S_StartSound(NULL,quitsounds2[(gametic>>2)&7]);
+			S_StartSound(NULL,quitsounds2[(gametic>>2)%D_COUNT_OF(quitsounds2)]);
 		else
-			S_StartSound(NULL,quitsounds[(gametic>>2)&7]);
+			S_StartSound(NULL,quitsounds[(gametic>>2)%D_COUNT_OF(quitsounds)]);
 		I_WaitVBL(105);
 	}
 	I_Quit ();
@@ -1067,19 +1067,10 @@ void M_QuitDOOM(int choice)
 	}
 	else
 	{
-		switch (gamemode)
-		{
-			case shareware:
-			case registered:
-			case retail:
-				message = endmsg[gametic % D_COUNT_OF(endmsg)];
-				break;
-
-			case commercial:
-			case indetermined:
-				message = endmsg2[gametic % D_COUNT_OF(endmsg2)];
-				break;
-		}
+		if (gamemode == commercial)
+			message = endmsg2[gametic % D_COUNT_OF(endmsg2)];
+		else
+			message = endmsg[gametic % D_COUNT_OF(endmsg)];
 	}
 
 	sprintf(endstring,"%s\n\n"DOSY, message);
