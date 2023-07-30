@@ -73,10 +73,10 @@
 #define ST_TOGGLECHAT           KEY_ENTER
 
 /* Location of status bar */
-#define ST_X                            0
-#define ST_X2                           104
+#define ST_X                            (SCREEN_X_OFFSET+0)
+#define ST_X2                           (SCREEN_X_OFFSET+104)
 
-#define ST_FX                   143
+#define ST_FX                   (SCREEN_X_OFFSET+143)
 #define ST_FY                   (SCREENHEIGHT-31)
 
 /* Should be set to patch width */
@@ -104,7 +104,7 @@
 #define ST_GODFACE                      (ST_NUMPAINFACES*ST_FACESTRIDE)
 #define ST_DEADFACE                     (ST_GODFACE+1)
 
-#define ST_FACESX                       143
+#define ST_FACESX                       (SCREEN_X_OFFSET+143)
 #define ST_FACESY                       (SCREENHEIGHT-32)
 
 #define ST_EVILGRINCOUNT                (2*TICRATE)
@@ -126,105 +126,105 @@
 
 /* AMMO number pos. */
 #define ST_AMMOWIDTH            3
-#define ST_AMMOX                        44
+#define ST_AMMOX                        (SCREEN_X_OFFSET+44)
 #define ST_AMMOY                        (SCREENHEIGHT-29)
 
 /* HEALTH number pos. */
 #define ST_HEALTHWIDTH          3
-#define ST_HEALTHX                      90
+#define ST_HEALTHX                      (SCREEN_X_OFFSET+90)
 #define ST_HEALTHY                      (SCREENHEIGHT-29)
 
 /* Weapon pos. */
-#define ST_ARMSX                        111
+#define ST_ARMSX                        (SCREEN_X_OFFSET+111)
 #define ST_ARMSY                        (SCREENHEIGHT-28)
-#define ST_ARMSBGX                      104
+#define ST_ARMSBGX                      (SCREEN_X_OFFSET+104)
 #define ST_ARMSBGY                      (SCREENHEIGHT-32)
 #define ST_ARMSXSPACE           12
 #define ST_ARMSYSPACE           10
 
 /* Frags pos. */
-#define ST_FRAGSX                       138
+#define ST_FRAGSX                       (SCREEN_X_OFFSET+138)
 #define ST_FRAGSY                       (SCREENHEIGHT-29)
 #define ST_FRAGSWIDTH           2
 
 /* ARMOR number pos. */
 #define ST_ARMORWIDTH           3
-#define ST_ARMORX                       221
+#define ST_ARMORX                       (SCREEN_X_OFFSET+221)
 #define ST_ARMORY                       (SCREENHEIGHT-29)
 
 /* Key icon positions. */
 #define ST_KEY0WIDTH            8
 #define ST_KEY0HEIGHT           5
-#define ST_KEY0X                        239
+#define ST_KEY0X                        (SCREEN_X_OFFSET+239)
 #define ST_KEY0Y                        (SCREENHEIGHT-29)
 #define ST_KEY1WIDTH            ST_KEY0WIDTH
-#define ST_KEY1X                        239
+#define ST_KEY1X                        (SCREEN_X_OFFSET+239)
 #define ST_KEY1Y                        (SCREENHEIGHT-19)
 #define ST_KEY2WIDTH            ST_KEY0WIDTH
-#define ST_KEY2X                        239
+#define ST_KEY2X                        (SCREEN_X_OFFSET+239)
 #define ST_KEY2Y                        (SCREENHEIGHT-9)
 
 /* Ammunition counter. */
 #define ST_AMMO0WIDTH           3
 #define ST_AMMO0HEIGHT          6
-#define ST_AMMO0X                       288
+#define ST_AMMO0X                       (SCREEN_X_OFFSET+288)
 #define ST_AMMO0Y                       (SCREENHEIGHT-27)
 #define ST_AMMO1WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO1X                       288
+#define ST_AMMO1X                       (SCREEN_X_OFFSET+288)
 #define ST_AMMO1Y                       (SCREENHEIGHT-21)
 #define ST_AMMO2WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO2X                       288
+#define ST_AMMO2X                       (SCREEN_X_OFFSET+288)
 #define ST_AMMO2Y                       (SCREENHEIGHT-9)
 #define ST_AMMO3WIDTH           ST_AMMO0WIDTH
-#define ST_AMMO3X                       288
+#define ST_AMMO3X                       (SCREEN_X_OFFSET+288)
 #define ST_AMMO3Y                       (SCREENHEIGHT-15)
 
 /* Indicate maximum ammunition. */
 /* Only needed because backpack exists. */
 #define ST_MAXAMMO0WIDTH                3
 #define ST_MAXAMMO0HEIGHT               5
-#define ST_MAXAMMO0X            314
+#define ST_MAXAMMO0X            (SCREEN_X_OFFSET+314)
 #define ST_MAXAMMO0Y            (SCREENHEIGHT-27)
 #define ST_MAXAMMO1WIDTH                ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO1X            314
+#define ST_MAXAMMO1X            (SCREEN_X_OFFSET+314)
 #define ST_MAXAMMO1Y            (SCREENHEIGHT-21)
 #define ST_MAXAMMO2WIDTH                ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO2X            314
+#define ST_MAXAMMO2X            (SCREEN_X_OFFSET+314)
 #define ST_MAXAMMO2Y            (SCREENHEIGHT-9)
 #define ST_MAXAMMO3WIDTH                ST_MAXAMMO0WIDTH
-#define ST_MAXAMMO3X            314
+#define ST_MAXAMMO3X            (SCREEN_X_OFFSET+314)
 #define ST_MAXAMMO3Y            (SCREENHEIGHT-15)
 
 /* pistol */
-#define ST_WEAPON0X                     110
+#define ST_WEAPON0X                     (SCREEN_X_OFFSET+110)
 #define ST_WEAPON0Y                     (SCREENHEIGHT-28)
 
 /* shotgun */
-#define ST_WEAPON1X                     122
+#define ST_WEAPON1X                     (SCREEN_X_OFFSET+122)
 #define ST_WEAPON1Y                     (SCREENHEIGHT-28)
 
 /* chain gun */
-#define ST_WEAPON2X                     134
+#define ST_WEAPON2X                     (SCREEN_X_OFFSET+134)
 #define ST_WEAPON2Y                     (SCREENHEIGHT-28)
 
 /* missile launcher */
-#define ST_WEAPON3X                     110
+#define ST_WEAPON3X                     (SCREEN_X_OFFSET+110)
 #define ST_WEAPON3Y                     (SCREENHEIGHT-19)
 
 /* plasma gun */
-#define ST_WEAPON4X                     122
+#define ST_WEAPON4X                     (SCREEN_X_OFFSET+122)
 #define ST_WEAPON4Y                     (SCREENHEIGHT-19)
 
  /* bfg */
-#define ST_WEAPON5X                     134
+#define ST_WEAPON5X                     (SCREEN_X_OFFSET+134)
 #define ST_WEAPON5Y                     (SCREENHEIGHT-19)
 
 /* WPNS title */
-#define ST_WPNSX                        109
+#define ST_WPNSX                        (SCREEN_X_OFFSET+109)
 #define ST_WPNSY                        (SCREENHEIGHT-9)
 
  /* DETH title */
-#define ST_DETHX                        109
+#define ST_DETHX                        (SCREEN_X_OFFSET+109)
 #define ST_DETHY                        (SCREENHEIGHT-9)
 
 /* Incoming messages window location */
