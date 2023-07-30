@@ -921,6 +921,7 @@ AM_drawFline
 	register int ay;
 	register int d;
 
+#if 0
 	static int fuck = 0;
 
 	/* For debugging only */
@@ -932,6 +933,7 @@ AM_drawFline
 		I_Info("fuck %d \r", fuck++);
 		return;
 	}
+#endif
 
 #define PUTDOT(xx,yy,cc) fb[(yy)+(xx)*SCREENHEIGHT]=(cc)
 
