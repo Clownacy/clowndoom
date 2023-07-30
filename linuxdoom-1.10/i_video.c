@@ -219,13 +219,6 @@ void I_InitGraphics(void)
 {
 	int multiply;
 
-	/* TODO - get rid of this junk */
-	static int          firsttime=1;
-
-	if (!firsttime)
-		return;
-	firsttime = 0;
-
 	multiply = 1;
 
 	if (M_CheckParm("-2"))

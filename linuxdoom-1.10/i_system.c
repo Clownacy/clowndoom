@@ -86,7 +86,7 @@ void I_Init (void)
 	IB_Init();
 
 	I_StartupSound();
-	/*  I_InitGraphics(); */
+	I_InitGraphics();
 }
 
 /* I_Quit */
