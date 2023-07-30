@@ -60,6 +60,7 @@ void I_StartFrame (void);
 void I_StartTic (void);
 
 void I_GrabMouse(d_bool grab);
+void I_ToggleFullscreen(void);
 
 
 #endif

@@ -286,3 +286,8 @@ void I_GrabMouse(d_bool grab)
 {
 	IB_GrabMouse(grab);
 }
+
+void I_ToggleFullscreen(void)
+{
+	IB_ToggleFullscreen();
+}

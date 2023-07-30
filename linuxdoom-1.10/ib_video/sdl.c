@@ -357,3 +357,15 @@ void IB_GrabMouse(d_bool grab)
 	SDL_ShowCursor(!grab);
 #endif
 }
+
+void IB_ToggleFullscreen(void)
+{
+#if SDL_MAJOR_VERSION >= 2
+	static d_bool fullscreen;
+
+	fullscreen = !fullscreen;
+	SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN : 0);
+#else
+	SDL_WM_ToggleFullScreen(surface);
+#endif
+}

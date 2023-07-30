@@ -158,7 +158,52 @@ void D_ProcessEvents (void)
 
 	for ( ; eventtail != eventhead ; eventtail = (eventtail+1)&(MAXEVENTS-1) )
 	{
+		static d_bool altheld;
+
 		ev = &events[eventtail];
+
+		switch (ev->type)
+		{
+			case ev_keydown:
+				switch (ev->data1)
+				{
+					case KEY_LALT:
+						altheld = d_true;
+						break;
+
+					case KEY_ENTER:
+						if (altheld)
+						{
+							I_ToggleFullscreen();
+							continue; /* Eat the event. */
+						}
+
+						break;
+
+					default:
+						break;
+				}
+
+				break;
+
+			case ev_keyup:
+
+				switch (ev->data1)
+				{
+					case KEY_LALT:
+						altheld = d_false;
+						break;
+
+					default:
+						break;
+				}
+
+				break;
+
+			default:
+				break;
+		}
+
 		if (M_Responder (ev))
 			continue;               /* menu ate the event */
 		G_Responder (ev);
