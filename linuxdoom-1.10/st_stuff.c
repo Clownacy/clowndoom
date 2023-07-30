@@ -470,11 +470,9 @@ ST_Responder (const event_t* ev)
   /* if a user keypress... */
   else if (ev->type == ev_keydown)
   {
-	if (!netgame)
+	/* This Nightmare check was removed in the source code release. */
+	if (!netgame && gameskill != sk_nightmare)
 	{
-	  /* b. - enabled for more debug fun. */
-	  /* if (gameskill != sk_nightmare) { */
-
 	  /* 'dqd' cheat for toggleable god mode */
 	  if (cht_CheckCheat(&cheat_god, ev->data1))
 	  {
