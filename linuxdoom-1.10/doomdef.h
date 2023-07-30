@@ -26,7 +26,7 @@
 
 /* Global parameters/defines. */
 /* DOOM version */
-enum { VERSION =  109 };
+enum { VERSION =  110 };
 
 
 /* Game mode handling - identify IWAD version */

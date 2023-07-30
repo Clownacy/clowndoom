@@ -1529,11 +1529,11 @@ void G_DoPlayDemo (void)
 
 	gameaction = ga_nothing;
 	demobuffer = demo_p = (unsigned char*)W_CacheLumpName (defdemoname, PU_STATIC);
-	if ( *demo_p++ != VERSION)
+	/* TODO: Proper demo backwards-compatibility would be nice. */
+	if ( *demo_p++ > VERSION)
 	{
-	  fprintf( stderr, "Demo is from a different game version!\n");
-	  gameaction = ga_nothing;
-	  return;
+		fprintf( stderr, "Demo is from a newer game version!\n");
+		return;
 	}
 
 	skill = (skill_t)*demo_p++;
