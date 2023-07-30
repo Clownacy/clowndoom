@@ -1008,9 +1008,9 @@ void WI_drawDeathmatchStats(void)
 		}
 		else
 		{
-			/* V_DrawPatchScaled(x-SHORT(bp[i]->width)*SCREEN_MUL/2, */
+			/* V_DrawPatch(x-SHORT(bp[i]->width)*SCREEN_MUL/2, */
 			/*   DM_MATRIXY - WI_SPACINGY, FB, bp[i]); */
-			/* V_DrawPatchScaled(DM_MATRIXX-SHORT(bp[i]->width)*SCREEN_MUL/2, */
+			/* V_DrawPatch(DM_MATRIXX-SHORT(bp[i]->width)*SCREEN_MUL/2, */
 			/*   y, FB, bp[i]); */
 		}
 		x += DM_SPACINGX;
@@ -1780,6 +1780,7 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 
 	wbs = wbstartstruct;
 
+	/* TODO: Figure out what to do with this... */
 #ifdef RANGECHECKING
 	if (gamemode != commercial)
 	{
