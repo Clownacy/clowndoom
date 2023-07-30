@@ -36,10 +36,10 @@
 
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
-static void (*output_size_changed_callback)(size_t width, size_t height);
 #endif
 static SDL_Surface *surface;
 
+static void (*output_size_changed_callback)(size_t width, size_t height);
 
 #if SDL_MAJOR_VERSION >= 2
 static int xlatekey(SDL_Keycode keysym)
@@ -205,6 +205,15 @@ void IB_StartTic (void)
 						break;
 				}
 				break;
+			#else
+			case SDL_VIDEORESIZE:
+				surface = SDL_SetVideoMode(sdl_event.resize.w, sdl_event.resize.h, 32, SDL_SWSURFACE | SDL_ANYFORMAT | SDL_RESIZABLE);
+				output_size_changed_callback(sdl_event.resize.w, sdl_event.resize.h);
+
+				if (surface == NULL)
+					I_Error("Could not create SDL window surface");
+
+				break;
 			#endif
 		}
 	}
@@ -246,11 +255,10 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 
 void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback_p)(size_t width, size_t height))
 {
-#if SDL_MAJOR_VERSION >= 2
 	output_size_changed_callback = output_size_changed_callback_p;
+#if SDL_MAJOR_VERSION >= 2
 	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 #else
-	(void)output_size_changed_callback_p;
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 #endif
 
@@ -262,7 +270,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 
 	surface = SDL_GetWindowSurface(window);
 #else
-	surface = SDL_SetVideoMode(screen_width, screen_height, 32, SDL_SWSURFACE | SDL_ANYFORMAT);
+	surface = SDL_SetVideoMode(screen_width, screen_height, 32, SDL_SWSURFACE | SDL_ANYFORMAT | SDL_RESIZABLE);
 
 	if (surface == NULL)
 		I_Error("Could not create SDL window surface");
