@@ -154,13 +154,13 @@ wipe_initMelt
 	/* setup initial column positions */
 	/* (y<0 => not ready to scroll yet) */
 	y = (int *) Z_Malloc(width*sizeof(int), PU_STATIC, 0);
-	y[0] = -(M_Random()%16);
+	y[0] = -((M_Random()%16)*SCREEN_MUL);
 	for (i=1;i<width;i++)
 	{
 		r = (M_Random()%3) - 1;
 		y[i] = y[i-1] + r;
 		if (y[i] > 0) y[i] = 0;
-		else if (y[i] == -16) y[i] = -15;
+		else if (y[i] == -16*SCREEN_MUL) y[i] = (-16*SCREEN_MUL)-1;
 	}
 
 	return 0;
@@ -193,7 +193,7 @@ wipe_doMelt
 			}
 			else if (y[i] < height)
 			{
-				dy = (y[i] < 16) ? y[i]+1 : 8;
+				dy = (y[i] <= 15*SCREEN_MUL) ? y[i]+SCREEN_MUL : 8*SCREEN_MUL;
 				if (y[i]+dy >= height) dy = height - y[i];
 				s = &((short *)wipe_scr_end)[i*height+y[i]];
 				d = &((short *)wipe_scr)[y[i]*width+i];
