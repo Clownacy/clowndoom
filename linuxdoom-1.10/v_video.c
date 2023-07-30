@@ -213,14 +213,14 @@ V_DrawPatchColumnInternal
 }
 
 
-static void
+void
 V_DrawPatchInternal
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch,
-  int           scale,
-  d_bool        flip )
+( int            x,
+  int            y,
+  int            scrn,
+  const patch_t* patch,
+  int            scale,
+  d_bool         flip )
 {
 
 	int         col;
@@ -255,183 +255,6 @@ V_DrawPatchInternal
 
 	for ( ; col<w ; col++, desttop += scale)
 		V_DrawPatchColumnInternal(desttop, patch, scale, flip ? w - 1 - col : col);
-}
-
-
-/* V_DrawPatch */
-/* Masks a column based masked pic to the screen. */
-void
-V_DrawPatch
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch)
-{
-	V_DrawPatchInternal(x, y, scrn, patch, 1, d_false);
-}
-
-
-void
-V_DrawPatchScaled
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch)
-{
-	V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_false);
-}
-
-
-/* V_DrawPatchFlipped */
-/* Masks a column based masked pic to the screen. */
-/* Flips horizontally, e.g. to mirror face. */
-void
-V_DrawPatchFlipped
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch )
-{
-	V_DrawPatchInternal(x, y, scrn, patch, 1, d_true);
-
-#if 0
-	int         count;
-	int         col;
-	column_t*   column;
-	unsigned char*       desttop;
-	unsigned char*       dest;
-	const unsigned char* source;
-	int         w;
-
-	y -= SHORT(patch->topoffset);
-	x -= SHORT(patch->leftoffset);
-#ifdef RANGECHECK
-	if (x<0
-		||x+SHORT(patch->width) >SCREENWIDTH
-		|| y<0
-		|| y+SHORT(patch->height)>SCREENHEIGHT
-		|| (unsigned)scrn>4)
-	{
-	  fprintf( stderr, "Patch origin %d,%d exceeds LFB\n", x,y );
-	  I_Error ("Bad V_DrawPatch in V_DrawPatchFlipped");
-	}
-#endif
-
-	col = 0;
-	desttop = screens[scrn]+y*SCREENWIDTH+x;
-
-	w = SHORT(patch->width);
-
-	for ( ; col<w ; x++, col++, desttop++)
-	{
-		column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[w-1-col]));
-
-		/* step through the posts in a column */
-		while (column->topdelta != 0xff )
-		{
-			source = (unsigned char *)column + 3;
-			dest = desttop + column->topdelta*SCREENWIDTH;
-			count = column->length;
-
-			while (count--)
-			{
-				*dest = *source++;
-				dest += SCREENWIDTH;
-			}
-			column = (column_t *)(  (unsigned char *)column + column->length
-									+ 4 );
-		}
-	}
-#endif
-}
-
-
-void
-V_DrawPatchFlippedScaled
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch )
-{
-	V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_true);
-}
-
-
-
-/* V_DrawPatchDirect */
-/* Draws directly to the screen on the pc. */
-void
-V_DrawPatchDirect
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch )
-{
-	V_DrawPatch (x,y,scrn, patch);
-
-#if 0
-	int         count;
-	int         col;
-	column_t*   column;
-	byte*       desttop;
-	byte*       dest;
-	byte*       source;
-	int         w;
-
-	y -= SHORT(patch->topoffset);
-	x -= SHORT(patch->leftoffset);
-
-#ifdef RANGECHECK
-	if (x<0
-		||x+SHORT(patch->width) >SCREENWIDTH
-		|| y<0
-		|| y+SHORT(patch->height)>SCREENHEIGHT
-		|| (unsigned)scrn>4)
-	{
-		I_Error ("Bad V_DrawPatchDirect");
-	}
-#endif
-
-	desttop = destscreen + y*SCREENWIDTH/4 + (x>>2);
-
-	w = SHORT(patch->width);
-	for ( col = 0 ; col<w ; col++)
-	{
-		outp (SC_INDEX+1,1<<(x&3));
-		column = (column_t *)((byte *)patch + LONG(patch->columnofs[col]));
-
-		/* step through the posts in a column */
-
-		while (column->topdelta != 0xff )
-		{
-			source = (byte *)column + 3;
-			dest = desttop + column->topdelta*SCREENWIDTH/4;
-			count = column->length;
-
-			while (count--)
-			{
-				*dest = *source++;
-				dest += SCREENWIDTH/4;
-			}
-			column = (column_t *)(  (byte *)column + column->length
-									+ 4 );
-		}
-		if ( ((++x)&3) == 0 )
-			desttop++;  /* go to next byte, not next plane */
-	}
-#endif
-}
-
-
-
-void
-V_DrawPatchDirectScaled
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch )
-{
-	V_DrawPatchScaled (x,y,scrn, patch);
 }
 
 

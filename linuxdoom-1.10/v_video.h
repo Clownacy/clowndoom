@@ -63,46 +63,29 @@ V_CopyRect
   int           destscrn );
 
 void
-V_DrawPatch
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch);
+V_DrawPatchInternal
+( int            x,
+  int            y,
+  int            scrn,
+  const patch_t* patch,
+  int            scale,
+  d_bool         flip );
 
-void
-V_DrawPatchScaled
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch);
+/* V_DrawPatch */
+/* Masks a column based masked pic to the screen. */
+#define V_DrawPatch(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, 1, d_false)
+#define V_DrawPatchScaled(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_false)
 
-void
-V_DrawPatchFlipped
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch );
+/* V_DrawPatchFlipped */
+/* Masks a column based masked pic to the screen. */
+/* Flips horizontally, e.g. to mirror face. */
+#define V_DrawPatchFlipped(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, 1, d_true)
+#define V_DrawPatchFlippedScaled(x, y, scrn, patch) V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL, d_true)
 
-void
-V_DrawPatchFlippedScaled
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch );
-
-void
-V_DrawPatchDirect
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch );
-
-void
-V_DrawPatchDirectScaled
-( int           x,
-  int           y,
-  int           scrn,
-  const patch_t*        patch );
+/* V_DrawPatchDirect */
+/* Draws directly to the screen on the pc. */
+#define V_DrawPatchDirect(x, y, scrn, patch) V_DrawPatch(x, y, scrn, patch)
+#define V_DrawPatchDirectScaled(x, y, scrn, patch) V_DrawPatchScaled(x, y, scrn, patch)
 
 void
 V_DrawPatchColumn
