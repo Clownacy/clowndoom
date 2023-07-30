@@ -631,7 +631,7 @@ P_SetupLevel
 	P_LoadThings (lumpnum+ML_THINGS);
 
 	/* if deathmatch, randomly spawn the active players */
-	if (deathmatch)
+	if (deathmatch != DM_OFF)
 	{
 		for (i=0 ; i<MAXPLAYERS ; i++)
 			if (playeringame[i])

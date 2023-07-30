@@ -82,7 +82,7 @@ extern  d_bool netgame;
 
 /* Flag: true only if started as net deathmatch. */
 /* An enum might handle altdeath/cooperative better. */
-extern  d_bool deathmatch;
+extern  deathmatch_t deathmatch;
 
 /* ------------------------- */
 /* Internal parameters for sound rendering. */

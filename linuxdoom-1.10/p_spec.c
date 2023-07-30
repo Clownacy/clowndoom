@@ -1191,14 +1191,14 @@ void P_SpawnSpecials (void)
 	levelTimer = d_false;
 
 	i = M_CheckParm("-avg");
-	if (i && deathmatch)
+	if (i && deathmatch != DM_OFF)
 	{
 		levelTimer = d_true;
 		levelTimeCount = 20 * 60 * 35;
 	}
 
 	i = M_CheckParm("-timer");
-	if (i && deathmatch)
+	if (i && deathmatch != DM_OFF)
 	{
 		int     time;
 		time = atoi(myargv[i+1]) * 60 * 35;

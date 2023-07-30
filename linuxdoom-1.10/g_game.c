@@ -105,7 +105,7 @@ int             starttime;              /* for comparative timing purposes */
 
 d_bool         viewactive;
 
-d_bool         deathmatch;             /* only if started as net death */
+deathmatch_t   deathmatch;             /* only if started as net death */
 d_bool         netgame;                /* only true if packets are broadcast */
 d_bool         playeringame[MAXPLAYERS];
 player_t        players[MAXPLAYERS];
@@ -480,7 +480,7 @@ d_bool G_Responder (const event_t* ev)
 {
 	/* allow spy mode changes even during the demo */
 	if (gamestate == GS_LEVEL && ev->type == ev_keydown
-		&& ev->data1 == KEY_F12 && (singledemo || !deathmatch) )
+		&& ev->data1 == KEY_F12 && (singledemo || deathmatch == DM_OFF) )
 	{
 		/* spy mode */
 		do
@@ -895,7 +895,7 @@ void G_DoReborn (int playernum)
 		players[playernum].mo->player = NULL;
 
 		/* spawn at random spot if in death match */
-		if (deathmatch)
+		if (deathmatch != DM_OFF)
 		{
 			G_DeathMatchSpawnPlayer (playernum);
 			return;
@@ -1328,7 +1328,7 @@ void G_DoNewGame (void)
 	demoplayback = d_false;
 	netdemo = d_false;
 	netgame = d_false;
-	deathmatch = d_false;
+	deathmatch = DM_OFF;
 	for (i = 1; i < MAXPLAYERS; ++i)
 		playeringame[i] = d_false;
 	respawnparm = d_false;
@@ -1600,7 +1600,7 @@ void G_DoPlayDemo (void)
 	skill = (skill_t)*demo_p++;
 	episode = *demo_p++;
 	map = *demo_p++;
-	deathmatch = *demo_p++;
+	deathmatch = (deathmatch_t)*demo_p++;
 	respawnparm = *demo_p++;
 	fastparm = *demo_p++;
 	nomonsters = *demo_p++;
@@ -1668,7 +1668,7 @@ d_bool G_CheckDemoStatus (void)
 		demoplayback = d_false;
 		netdemo = d_false;
 		netgame = d_false;
-		deathmatch = d_false;
+		deathmatch = DM_OFF;
 		for (i = 1; i < MAXPLAYERS; ++i)
 			playeringame[i] = d_false;
 		respawnparm = d_false;

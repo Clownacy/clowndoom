@@ -157,7 +157,7 @@ P_GiveWeapon
 	d_bool     gaveweapon;
 
 	if (netgame
-		&& (deathmatch!=2)
+		&& (deathmatch != DM_ALTERNATE)
 		 && !dropped )
 	{
 		/* leave placed weapons forever on net games */
@@ -167,7 +167,7 @@ P_GiveWeapon
 		player->bonuscount += BONUSADD;
 		player->weaponowned[weapon] = d_true;
 
-		if (deathmatch)
+		if (deathmatch != DM_OFF)
 			P_GiveAmmo (player, weaponinfo[weapon].ammo, 5);
 		else
 			P_GiveAmmo (player, weaponinfo[weapon].ammo, 2);

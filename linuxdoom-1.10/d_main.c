@@ -740,9 +740,9 @@ void D_DoomMain (void)
 	fastparm = M_CheckParm ("-fast");
 	devparm = M_CheckParm ("-devparm");
 	if (M_CheckParm ("-altdeath"))
-		deathmatch = 2;
+		deathmatch = DM_ALTERNATE;
 	else if (M_CheckParm ("-deathmatch"))
-		deathmatch = 1;
+		deathmatch = DM_STANDARD;
 
 	switch ( gamemode )
 	{
@@ -916,7 +916,7 @@ void D_DoomMain (void)
 	}
 
 	p = M_CheckParm ("-timer");
-	if (p && p < myargc-1 && deathmatch)
+	if (p && p < myargc-1 && deathmatch != DM_OFF)
 	{
 		int     time;
 		time = atoi(myargv[p+1]);
@@ -927,7 +927,7 @@ void D_DoomMain (void)
 	}
 
 	p = M_CheckParm ("-avg");
-	if (p && p < myargc-1 && deathmatch)
+	if (p && p < myargc-1 && deathmatch != DM_OFF)
 		printf("Austin Virtual Gaming: Levels will end after 20 minutes\n");
 
 	p = M_CheckParm ("-warp");

@@ -645,7 +645,7 @@ AM_Responder
 		  default:
 			rc = d_false;
 		}
-		if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data1))
+		if (deathmatch == DM_OFF && cht_CheckCheat(&cheat_amap, ev->data1))
 		{
 			rc = d_false;
 			cheating = (cheating+1) % 3;
@@ -1185,7 +1185,7 @@ void AM_drawPlayers(void)
 		their_color++;
 		p = &players[i];
 
-		if ( (deathmatch && !singledemo) && p != plr)
+		if ( (deathmatch != DM_OFF && !singledemo) && p != plr)
 			continue;
 
 		if (!playeringame[i])

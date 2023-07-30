@@ -898,13 +898,13 @@ void ST_updateWidgets(void)
 	ST_updateFaceWidget();
 
 	/* used by the w_armsbg widget */
-	st_notdeathmatch = !deathmatch;
+	st_notdeathmatch = deathmatch == DM_OFF;
 
 	/* used by w_arms[] widgets */
-	st_armson = st_statusbaron && !deathmatch;
+	st_armson = st_statusbaron && deathmatch == DM_OFF;
 
 	/* used by w_frags widget */
-	st_fragson = deathmatch && st_statusbaron;
+	st_fragson = deathmatch != DM_OFF && st_statusbaron;
 	st_fragscount = 0;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
@@ -992,10 +992,10 @@ void ST_drawWidgets(d_bool refresh)
 	int         i;
 
 	/* used by w_arms[] widgets */
-	st_armson = st_statusbaron && !deathmatch;
+	st_armson = st_statusbaron && deathmatch == DM_OFF;
 
 	/* used by w_frags widget */
-	st_fragson = deathmatch && st_statusbaron;
+	st_fragson = deathmatch != DM_OFF && st_statusbaron;
 
 	STlib_updateNum(&w_ready, refresh);
 

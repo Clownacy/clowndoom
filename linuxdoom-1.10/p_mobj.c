@@ -563,7 +563,7 @@ void P_RespawnSpecials (void)
 	int                 i;
 
 	/* only respawn items in deathmatch */
-	if (deathmatch != 2)
+	if (deathmatch != DM_ALTERNATE)
 		return;
 
 	/* nothing left to respawn? */
@@ -659,7 +659,7 @@ void P_SpawnPlayer (mapthing_t* mthing)
 	P_SetupPsprites (p);
 
 	/* give all cards in death match mode */
-	if (deathmatch)
+	if (deathmatch != DM_OFF)
 		for (i=0 ; i<NUMCARDS ; i++)
 			p->cards[i] = d_true;
 
@@ -701,7 +701,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 	{
 		/* save spots for respawning in network games */
 		playerstarts[mthing->type-1] = *mthing;
-		if (!deathmatch)
+		if (deathmatch == DM_OFF)
 			P_SpawnPlayer (mthing);
 
 		return;
@@ -732,7 +732,7 @@ void P_SpawnMapThing (mapthing_t* mthing)
 				 mthing->x, mthing->y);
 
 	/* don't spawn keycards and players in deathmatch */
-	if (deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
+	if (deathmatch != DM_OFF && mobjinfo[i].flags & MF_NOTDMATCH)
 		return;
 
 	/* don't spawn any monsters if -nomonsters */

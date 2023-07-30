@@ -78,13 +78,13 @@ typedef enum
 /* #define X11_DGA              1 */
 
 
-#define SCREEN_MUL              1
+#define SCREEN_MUL              3
 
 #define ORIGINAL_SCREEN_WIDTH 320
 #define ORIGINAL_SCREEN_HEIGHT 200
 
-#define SCREENWIDTH  (ORIGINAL_SCREEN_WIDTH*SCREEN_MUL)
-#define SCREENHEIGHT (ORIGINAL_SCREEN_HEIGHT*SCREEN_MUL)
+#define SCREENWIDTH  (ORIGINAL_SCREEN_WIDTH*SCREEN_MUL*2)
+#define SCREENHEIGHT (ORIGINAL_SCREEN_HEIGHT*SCREEN_MUL*2)
 
 #define X_CENTRE(x) ((SCREENWIDTH / 2) - ((ORIGINAL_SCREEN_WIDTH / 2 - (x)) * SCREEN_MUL))
 #define X_LEFT(x) (x)
@@ -215,6 +215,15 @@ typedef enum
 	IRONTICS    = (60*TICRATE)
 
 } powerduration_t;
+
+
+
+typedef enum
+{
+	DM_OFF,
+	DM_STANDARD,
+	DM_ALTERNATE
+} deathmatch_t;
 
 
 
