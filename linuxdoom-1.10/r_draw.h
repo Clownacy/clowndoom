@@ -26,7 +26,7 @@
 #define BEVEL_SIZE (8*HUD_SCALE)
 
 
-extern lighttable_t*    dc_colormap;
+extern colourindex_t*    dc_colormap;
 extern int              dc_x;
 extern int              dc_yl;
 extern int              dc_yh;
@@ -62,7 +62,7 @@ extern int              ds_y;
 extern int              ds_x1;
 extern int              ds_x2;
 
-extern lighttable_t*    ds_colormap;
+extern colourindex_t*    ds_colormap;
 
 extern fixed_t          ds_xfrac;
 extern fixed_t          ds_yfrac;

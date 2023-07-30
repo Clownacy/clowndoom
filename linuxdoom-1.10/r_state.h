@@ -27,9 +27,6 @@
 
 
 
-/* Index of the special effects (INVUL inverse) map. */
-#define INVERSECOLORMAP         32
-
 /* Refresh internal data structures, */
 /*  for rendering. */
 
@@ -42,7 +39,7 @@ extern fixed_t*         spritewidth;
 extern fixed_t*         spriteoffset;
 extern fixed_t*         spritetopoffset;
 
-extern lighttable_t    (*colormaps)[0x100];
+extern colourindex_t    colormaps[NUMCOLORMAPS+2+NUMCOLORMAPS][0x100];
 
 extern int              viewwidth;
 extern int              scaledviewwidth;

@@ -37,9 +37,9 @@
 /* when zero, stop the wipe */
 static d_bool  go = 0;
 
-static unsigned char*    wipe_scr_start;
-static unsigned char*    wipe_scr_end;
-static unsigned char*    wipe_scr;
+static colourindex_t*    wipe_scr_start;
+static colourindex_t*    wipe_scr_end;
+static colourindex_t*    wipe_scr;
 
 
 static int
@@ -48,7 +48,7 @@ wipe_initColorXForm
 {
 	(void)ticks;
 
-	memcpy(wipe_scr, wipe_scr_start, SCREENWIDTH*SCREENHEIGHT);
+	memcpy(wipe_scr, wipe_scr_start, SCREENWIDTH*SCREENHEIGHT*sizeof(colourindex_t));
 	return 0;
 }
 
@@ -57,8 +57,8 @@ wipe_doColorXForm
 ( int   ticks )
 {
 	d_bool     changed;
-	unsigned char*       w;
-	unsigned char*       e;
+	colourindex_t*       w;
+	colourindex_t*       e;
 	int         newval;
 
 	changed = d_false;
@@ -108,7 +108,7 @@ wipe_initMelt
 	(void)ticks;
 
 	/* copy start screen to main screen */
-	memcpy(wipe_scr, wipe_scr_start, SCREENWIDTH*SCREENHEIGHT);
+	memcpy(wipe_scr, wipe_scr_start, SCREENWIDTH*SCREENHEIGHT*sizeof(colourindex_t));
 
 	/* setup initial column positions */
 	/* (y<0 => not ready to scroll yet) */
@@ -156,8 +156,8 @@ wipe_doMelt
 				{
 					const int x_offset = (i * PIXELS_PER_COLUMN + j) * SCREENHEIGHT;
 
-					memcpy(&wipe_scr[x_offset + y_offset], &wipe_scr_end[x_offset + y_offset], dy);
-					memcpy(&wipe_scr[x_offset + y_offset_incremented], &wipe_scr_start[x_offset], SCREENHEIGHT - y_offset_incremented);
+					memcpy(&wipe_scr[x_offset + y_offset], &wipe_scr_end[x_offset + y_offset], dy * sizeof(colourindex_t));
+					memcpy(&wipe_scr[x_offset + y_offset_incremented], &wipe_scr_start[x_offset], (SCREENHEIGHT - y_offset_incremented) * sizeof(colourindex_t));
 				}
 
 				y[i] += dy;
@@ -180,7 +180,7 @@ void wipe_EndScreen(void)
 {
 	wipe_scr_end = screens[SCREEN_WIPE_END];
 	I_ReadScreen(wipe_scr_end);
-	memcpy(screens[SCREEN_FRAMEBUFFER], wipe_scr_start, SCREENWIDTH*SCREENHEIGHT); /* restore start scr. */
+	memcpy(screens[SCREEN_FRAMEBUFFER], wipe_scr_start, SCREENWIDTH*SCREENHEIGHT*sizeof(colourindex_t)); /* restore start scr. */
 }
 
 int
@@ -199,7 +199,7 @@ wipe_ScreenWipe
 	if (!go)
 	{
 		go = 1;
-		/*wipe_scr = (byte *) Z_Malloc(SCREENWIDTH*SCREENHEIGHT, PU_STATIC, NULL);*/ /* DEBUG */
+		/*wipe_scr = (lighttable_t*) Z_Malloc(SCREENWIDTH*SCREENHEIGHT*sizeof(lighttable_t), PU_STATIC, NULL);*/ /* DEBUG */
 		wipe_scr = screens[SCREEN_FRAMEBUFFER];
 		wipes[wipeno][0](ticks);
 	}

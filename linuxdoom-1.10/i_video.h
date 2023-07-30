@@ -34,7 +34,7 @@ void I_InitGraphics (void);
 void I_ShutdownGraphics(void);
 
 /* Takes full 8 bit values. */
-void I_SetPalette (const unsigned char* palette);
+void I_SetPalette (unsigned char(* const palette)[0x100][3], const size_t total_palettes);
 
 void I_UpdateNoBlit (void);
 void I_FinishUpdate (void);
@@ -42,7 +42,7 @@ void I_FinishUpdate (void);
 /* Wait for vertical retrace or pause a bit. */
 void I_WaitVBL(int count);
 
-void I_ReadScreen (unsigned char* scr);
+void I_ReadScreen (colourindex_t* scr);
 
 /* Called by D_DoomLoop, */
 /* called before processing any tics in a frame */

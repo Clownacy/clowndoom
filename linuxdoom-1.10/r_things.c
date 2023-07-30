@@ -65,7 +65,7 @@ typedef struct
 fixed_t         pspritescale;
 fixed_t         pspriteiscale;
 
-lighttable_t**  spritelights;
+colourindex_t**  spritelights;
 
 /* constant arrays */
 /*  used for psprite clipping and initializing clipping */

@@ -57,7 +57,7 @@ int             scaledviewwidth;
 int             viewheight;
 int             viewwindowx;
 int             viewwindowy;
-unsigned char*  ylookup[MAXHEIGHT];
+colourindex_t*   ylookup[MAXHEIGHT];
 int             columnofs[MAXWIDTH];
 
 /* Color tables for different players, */
@@ -70,7 +70,7 @@ unsigned char   translations[3][256];
 
 /* R_DrawColumn */
 /* Source is the top of the column to scale. */
-lighttable_t*           dc_colormap;
+colourindex_t*           dc_colormap;
 int                     dc_x;
 int                     dc_yl;
 int                     dc_yh;
@@ -91,7 +91,7 @@ int                     dccount;
 void R_DrawColumn (void)
 {
 	int                 count;
-	unsigned char*      dest;
+	colourindex_t*       dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -137,7 +137,7 @@ void R_DrawColumn (void)
 void R_DrawColumnLow (void)
 {
 	int                 count;
-	unsigned char*      dest[2];
+	colourindex_t*       dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -204,7 +204,7 @@ static int fuzzpos = 0;
 void R_DrawFuzzColumn (void)
 {
 	int                 count;
-	unsigned char*      dest;
+	colourindex_t*       dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -247,7 +247,9 @@ void R_DrawFuzzColumn (void)
 		/*  a pixel that is either one column */
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
-		*dest = colormaps[6][dest[fuzzoffset[fuzzpos]]];
+		/* This wacky new logic converts from full-colour back down to 256-colour to authentically recreate the fuzz effect. */
+		const unsigned int pixel = dest[fuzzoffset[fuzzpos]];
+		*dest = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100][pixel % 0x100]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
@@ -261,7 +263,7 @@ void R_DrawFuzzColumn (void)
 void R_DrawFuzzColumnLow (void)
 {
 	int                 count;
-	unsigned char*      dest[2];
+	colourindex_t*       dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -304,7 +306,9 @@ void R_DrawFuzzColumnLow (void)
 		/*  a pixel that is either one column */
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
-		*dest[0] = *dest[1] = colormaps[6][dest[0][fuzzoffset[fuzzpos]]];
+		/* This wacky new logic converts from full-colour back down to 256-colour to authentically recreate the fuzz effect. */
+		const unsigned int pixel = dest[0][fuzzoffset[fuzzpos]];
+		*dest[0] = *dest[1] = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100][pixel % 0x100]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
@@ -332,7 +336,7 @@ unsigned char   translationtables[3][0x100];
 void R_DrawTranslatedColumn (void)
 {
 	int                 count;
-	unsigned char*      dest;
+	colourindex_t*       dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -373,7 +377,7 @@ void R_DrawTranslatedColumn (void)
 void R_DrawTranslatedColumnLow (void)
 {
 	int                 count;
-	unsigned char*      dest[2];
+	colourindex_t*       dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -461,7 +465,7 @@ int                     ds_y;
 int                     ds_x1;
 int                     ds_x2;
 
-lighttable_t*           ds_colormap;
+colourindex_t*           ds_colormap;
 
 fixed_t                 ds_xfrac;
 fixed_t                 ds_yfrac;
@@ -480,7 +484,7 @@ void R_DrawSpan (void)
 {
 	fixed_t             xfrac;
 	fixed_t             yfrac;
-	unsigned char*      dest;
+	colourindex_t*       dest;
 	int                 count;
 	int                 spot;
 
@@ -529,7 +533,7 @@ void R_DrawSpanLow (void)
 {
 	fixed_t             xfrac;
 	fixed_t             yfrac;
-	unsigned char*      dest;
+	colourindex_t*       dest;
 	int                 count;
 	int                 spot;
 
@@ -555,12 +559,12 @@ void R_DrawSpanLow (void)
 
 	do
 	{
-		unsigned char pixel;
+		colourindex_t pixel;
 		/* Current texture index in u,v. */
 		spot = ((yfrac>>(16-6))&(63*64)) + ((xfrac>>16)&63);
 		/* Lowres/blocky mode does it twice, */
 		/*  while scale is adjusted appropriately. */
-		pixel = ds_colormap[ds_source[spot]];;
+		pixel = ds_colormap[ds_source[spot]];
 		*dest = pixel;
 		dest += SCREENHEIGHT; /* TODO: Can this be made linear again? */
 		*dest = pixel;
@@ -675,7 +679,7 @@ R_VideoErase
 	/*  is not optiomal, e.g. byte by byte on */
 	/*  a 32bit CPU, as GNU GCC/Linux libc did */
 	/*  at one point. */
-	memcpy (screens[SCREEN_FRAMEBUFFER]+ofs, screens[SCREEN_BACK]+ofs, count);
+	memcpy (screens[SCREEN_FRAMEBUFFER]+ofs, screens[SCREEN_BACK]+ofs, count*sizeof(colourindex_t));
 }
 
 

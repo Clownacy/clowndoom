@@ -32,11 +32,12 @@
 #include "z_zone.h"
 
 #include "v_video.h"
+#include "i_video.h"
 
 
 /* Technically, the status bar buffer should only be `ST_WIDTH * ST_HEIGHT`, but every screen needs to be `SCREENHEIGHT` tall due to hardcoded assumptions. */
 /* TODO: Fix this. */
-unsigned char screens[5][SCREENWIDTH * SCREENHEIGHT];
+colourindex_t screens[5][SCREENWIDTH * SCREENHEIGHT];
 
 
 
@@ -142,8 +143,8 @@ V_CopyRect
   int           desty,
   screen_t      destscrn )
 {
-	const unsigned char* src;
-	unsigned char*       dest;
+	const colourindex_t* src;
+	colourindex_t*       dest;
 
 #ifdef RANGECHECK
 	if (srcx<0
@@ -165,7 +166,7 @@ V_CopyRect
 
 	for ( ; width>0 ; width--)
 	{
-		memcpy (dest, src, height);
+		memcpy (dest, src, height*sizeof(colourindex_t));
 		src += SCREENHEIGHT;
 		dest += SCREENHEIGHT;
 	}
@@ -174,13 +175,13 @@ V_CopyRect
 
 void
 V_DrawPatchColumnInternal
-( unsigned char* desttop,
+( colourindex_t*  desttop,
   const patch_t* patch,
   int            col )
 {
 	column_t*      column;
 	unsigned char* source;
-	unsigned char* dest;
+	colourindex_t*  dest;
 	int            count;
 
 	column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
@@ -222,7 +223,7 @@ V_DrawPatchFlipped
 {
 
 	int         col;
-	unsigned char*       desttop;
+	colourindex_t*       desttop;
 	int         w;
 
 #ifdef RANGECHECK
@@ -266,9 +267,9 @@ V_DrawBlock
   screen_t      scrn,
   int           width,
   int           height,
-  const unsigned char*           src )
+  const colourindex_t* src )
 {
-	unsigned char*       dest;
+	colourindex_t*       dest;
 
 #ifdef RANGECHECK
 	if (x<0
@@ -285,7 +286,7 @@ V_DrawBlock
 
 	while (width--)
 	{
-		memcpy (dest, src, height);
+		memcpy (dest, src, height*sizeof(colourindex_t));
 		src += height;
 		dest += SCREENHEIGHT;
 	}
@@ -302,9 +303,9 @@ V_GetBlock
   screen_t      scrn,
   int           width,
   int           height,
-  unsigned char*         dest )
+  colourindex_t* dest )
 {
-	const unsigned char* src;
+	const colourindex_t* src;
 
 #ifdef RANGECHECK
 	if (x<0
@@ -321,7 +322,7 @@ V_GetBlock
 
 	while (width--)
 	{
-		memcpy (dest, src, height);
+		memcpy (dest, src, height*sizeof(colourindex_t));
 		src += SCREENHEIGHT;
 		dest += height;
 	}
@@ -339,11 +340,11 @@ V_FillScreenWithPattern
 	int x,y,w;
 
 	const unsigned char* const src = (unsigned char*)W_CacheLumpName ( lump_name , PU_CACHE);
-	unsigned char *dest = screens[screen];
+	colourindex_t *dest = screens[screen];
 
 	for (x=0 ; x<(SCREENWIDTH+(HUD_SCALE-1))/HUD_SCALE ; x++)
 	{
-		static unsigned char line_buffer[BG_TILE_DST_SIZE];
+		static colourindex_t line_buffer[BG_TILE_DST_SIZE];
 
 		/* Upscale a row of pixels. */
 		for (y=0 ; y<BG_TILE_SRC_SIZE ; y++)
@@ -355,9 +356,9 @@ V_FillScreenWithPattern
 		{
 			for (y=0 ; y<height; y+=BG_TILE_DST_SIZE)
 			{
-				const int bytes_to_do = D_MIN(BG_TILE_DST_SIZE, height - y);
-				memcpy (dest, line_buffer, bytes_to_do);
-				dest += bytes_to_do;
+				const int pixels_to_do = D_MIN(BG_TILE_DST_SIZE, height - y);
+				memcpy (dest, line_buffer, pixels_to_do * sizeof(colourindex_t));
+				dest += pixels_to_do;
 			}
 			dest += SCREENHEIGHT - height;
 		}
@@ -371,4 +372,99 @@ V_FillScreenWithPattern
 void V_Init (void)
 {
 	/* The first four framebuffers used to be allocated here. */
+}
+
+
+
+
+
+void V_SetPalette(const int palette_id)
+{
+	extern int full_colour;
+
+	unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
+
+	if (!full_colour)
+	{
+		I_SetPalette(&palettes[palette_id], 1);
+		Z_ChangeTag(palettes, PU_CACHE);
+	}
+	else
+	{
+		/* This generates a 'true-colour' palette covering every brightness.
+		   It essentially performs the job of Id Software's 'dcolors.c' tool at runtime
+		   to generate palettes with the proper brightness fall-off and tint. */
+		int tint[3], shift, steps;
+		size_t i;
+		unsigned char (* const calculated_palette)[0x100][3] = (unsigned char (*)[0x100][3])Z_Malloc(NUMCOLORMAPS * 0x100 * 3, PU_STATIC, NULL);
+
+		if (palette_id >= 13)
+		{
+			/* Radiation suit. */
+			tint[0] = 0;
+			tint[1] = 256;
+			tint[2] = 0;
+			shift = 1;
+			steps = 8;
+		}
+		else if (palette_id >= 9)
+		{
+			/* Item pickup. */
+			tint[0] = 215;
+			tint[1] = 186;
+			tint[2] = 69;
+			shift = palette_id - 9 + 1;
+			steps = 8;
+		}
+		else if (palette_id >= 1)
+		{
+			/* Pain. */
+			tint[0] = 255;
+			tint[1] = 0;
+			tint[2] = 0;
+			shift = palette_id - 1 + 1;
+			steps = 9;
+		}
+		else
+		{
+			/* Normal. */
+			tint[0] = 0;
+			tint[1] = 0;
+			tint[2] = 0;
+			shift = 0;
+			steps = 1;
+		}
+
+		/* Compute darkened copies of the palette for true-colour rendering. */
+		for (i = 0; i < NUMCOLORMAPS; ++i)
+		{
+			size_t j;
+
+			for (j = 0; j < D_COUNT_OF(calculated_palette[i]); ++j)
+			{
+				size_t k;
+
+				for (k = 0; k < D_COUNT_OF(calculated_palette[i][j]); ++k)
+				{
+					int colour;
+
+					/* Apply darkness. */
+					/* This is the exact formula used by the tool that Id used to generate `COLORMAP` - `dcolors.c`. */
+					/* https://doomwiki.org/wiki/Doom_utilities */
+					/* This gives us the raw colours that `COLORMAP` tries to emulate. */
+					colour = (palettes[0][j][k] * (NUMCOLORMAPS - i) + NUMCOLORMAPS / 2) / NUMCOLORMAPS;
+					/* Apply tint. */
+					colour += (tint[k] - colour) * shift / steps;
+
+					calculated_palette[i][j][k] = colour;
+				}
+			}
+		}
+
+		Z_ChangeTag(palettes, PU_CACHE);
+
+		I_SetPalette(calculated_palette, NUMCOLORMAPS);
+
+		Z_Free(calculated_palette);
+	}
 }

@@ -151,6 +151,7 @@ int             usemouse;
 int             usejoystick;
 int             bmp_screenshots;
 int             show_stats;
+int             full_colour;
 
 extern int      key_right;
 extern int      key_left;
@@ -250,6 +251,7 @@ default_t       defaults[] =
 	{"detaillevel",&detailLevel, 0, d_false},
 	{"usegamma",&usegamma, 0, d_false},
 	{"aspect_ratio_correction",&aspect_ratio_correction, 1, d_false},
+	{"full_colour",&full_colour, 1, d_false},
 
 	/* Audio */
 	{"music_volume",&musicVolume, 8, d_false},

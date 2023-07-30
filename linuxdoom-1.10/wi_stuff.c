@@ -381,7 +381,7 @@ static int kill_percent[MAXPLAYERS], item_percent[MAXPLAYERS], secret_percent[MA
 
 void WI_slamBackground(void)
 {
-	memcpy(screens[SCREEN_FRAMEBUFFER], screens[SCREEN_BACK], SCREENWIDTH * SCREENHEIGHT);
+	memcpy(screens[SCREEN_FRAMEBUFFER], screens[SCREEN_BACK], SCREENWIDTH * SCREENHEIGHT * sizeof(colourindex_t));
 }
 
 /* The ticker is used to detect keys */

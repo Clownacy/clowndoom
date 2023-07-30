@@ -222,7 +222,7 @@ static int      f_w;
 static int      f_h;
 
 static int      lightlev;               /* used for funky strobing effect */
-static unsigned char*    fb;                     /* pseudo-frame buffer */
+static colourindex_t*    fb;                     /* pseudo-frame buffer */
 static int      amclock;
 
 static mpoint_t m_paninc; /* how far the window pans each tic (map coords) */
@@ -766,7 +766,7 @@ void AM_clearFB(int color)
 {
 	int i;
 	for (i = 0; i < f_w; ++i)
-		memset(&fb[i * SCREENHEIGHT], color, f_h);
+		memset(&fb[i * SCREENHEIGHT], color, f_h * sizeof(colourindex_t));
 }
 
 

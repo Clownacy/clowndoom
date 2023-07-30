@@ -31,6 +31,8 @@
 
 #include "i_video.h"
 
+#define MAX_PALETTES 32
+
 int aspect_ratio_correction;
 
 static unsigned char *colors;
@@ -74,7 +76,7 @@ void I_FinishUpdate (void)
 	static int lasttic;
 	int tics;
 	size_t i,x,y;
-	unsigned char *indexed_pixels;
+	colourindex_t *indexed_pixels;
 	unsigned char *colored_screen_pointer;
 	unsigned char *pixels;
 	size_t pitch;
@@ -153,22 +155,34 @@ void I_FinishUpdate (void)
 
 
 /* I_ReadScreen */
-void I_ReadScreen (unsigned char* scr)
+void I_ReadScreen (colourindex_t* scr)
 {
-	memcpy(scr, screens[SCREEN_FRAMEBUFFER], SCREENWIDTH*SCREENHEIGHT);
+	memcpy(scr, screens[SCREEN_FRAMEBUFFER], SCREENWIDTH*SCREENHEIGHT*sizeof(colourindex_t));
 }
 
 
 /* I_SetPalette */
-void I_SetPalette (const unsigned char* palette)
+void I_SetPalette (unsigned char(* const palette)[0x100][3], const size_t total_palettes)
 {
-	register int        i;
-	const unsigned char* gamma = gammatable[usegamma];
+	size_t i;
+	const unsigned char* const gamma = gammatable[usegamma];
 
-	for (i=0 ; i<256 ; i++)
+#ifdef RANGECHECK
+	if (total_palettes > MAX_PALETTES)
+		I_Error("Bad I_SetPalette");
+#endif
+
+	for (i = 0; i < total_palettes; ++i)
 	{
-		IB_GetColor(&colors[i * bytes_per_pixel], gamma[palette[0]], gamma[palette[1]], gamma[palette[2]]);
-		palette += 3;
+		size_t j;
+
+		for (j = 0; j < D_COUNT_OF(palette[i]); ++j)
+		{
+			IB_GetColor(&colors[(i * 0x100 + j) * bytes_per_pixel],
+				gamma[palette[i][j][0]],
+				gamma[palette[i][j][1]],
+				gamma[palette[i][j][2]]);
+		}
 	}
 }
 
@@ -249,7 +263,7 @@ void I_InitGraphics(void)
 	I_GrabMouse(d_true);
 
 	/* TODO - handle failed allocations */
-	colors = (unsigned char*)malloc(256 * bytes_per_pixel);
+	colors = (unsigned char*)malloc(MAX_PALETTES * 0x100 * bytes_per_pixel);
 	colored_screen = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 
 	OutputSizeChanged(output_width, output_height);

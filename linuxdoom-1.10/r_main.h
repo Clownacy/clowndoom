@@ -63,17 +63,12 @@ extern int              loopcount;
 #define MAXLIGHTZ              128
 #define LIGHTZSHIFT             20
 
-extern lighttable_t*    scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
-extern lighttable_t*    scalelightfixed[MAXLIGHTSCALE];
-extern lighttable_t*    zlight[LIGHTLEVELS][MAXLIGHTZ];
+extern colourindex_t*    scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
+extern colourindex_t*    scalelightfixed[MAXLIGHTSCALE];
+extern colourindex_t*    zlight[LIGHTLEVELS][MAXLIGHTZ];
 
 extern int              extralight;
-extern lighttable_t*    fixedcolormap;
-
-
-/* Number of diminishing brightness levels. */
-/* There a 0-31, i.e. 32 LUT in the COLORMAP lump. */
-#define NUMCOLORMAPS            32
+extern colourindex_t*    fixedcolormap;
 
 
 /* Blocky/low detail mode. */

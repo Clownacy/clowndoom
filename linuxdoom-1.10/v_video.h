@@ -49,7 +49,7 @@ typedef enum screen_t
     SCREEN_STATUS_BAR
 } screen_t;
 
-extern  unsigned char screens[5][SCREENWIDTH * SCREENHEIGHT];
+extern  colourindex_t screens[5][SCREENWIDTH * SCREENHEIGHT];
 
 extern  const unsigned char      gammatable[5][256];
 extern  int     usegamma;
@@ -73,9 +73,9 @@ V_CopyRect
 
 void
 V_DrawPatchColumnInternal
-(unsigned char* desttop,
-    const patch_t* patch,
-    int            col);
+( colourindex_t*  desttop,
+  const patch_t* patch,
+  int            col);
 
 #define V_DrawPatchColumn(x, y, scrn, patch, col) V_DrawPatchColumnInternal(&screens[scrn][(y)+(x)*SCREENHEIGHT], patch, col)
 
@@ -97,7 +97,7 @@ V_FillScreenWithPattern
   screen_t    screen,
   int         height );
 
-#define V_ClearScreen(scrn) if (SCREENWIDTH != ORIGINAL_SCREEN_WIDTH * HUD_SCALE || SCREENHEIGHT != ORIGINAL_SCREEN_HEIGHT * HUD_SCALE) memset(screens[scrn], 0, SCREENWIDTH*SCREENHEIGHT);
+#define V_ClearScreen(scrn) if (SCREENWIDTH != ORIGINAL_SCREEN_WIDTH * HUD_SCALE || SCREENHEIGHT != ORIGINAL_SCREEN_HEIGHT * HUD_SCALE) memset(screens[scrn], 0, SCREENWIDTH*SCREENHEIGHT*sizeof(colourindex_t));
 
 /* Draw a linear block of pixels into the view buffer. */
 void
@@ -107,7 +107,7 @@ V_DrawBlock
   screen_t      scrn,
   int           width,
   int           height,
-  const unsigned char*           src );
+  const colourindex_t* src );
 
 /* Reads a linear block of pixels into the view buffer. */
 void
@@ -117,6 +117,9 @@ V_GetBlock
   screen_t      scrn,
   int           width,
   int           height,
-  unsigned char*         dest );
+  colourindex_t* dest );
+
+/* Selects palette to display. */
+void V_SetPalette(const int palette_id);
 
 #endif

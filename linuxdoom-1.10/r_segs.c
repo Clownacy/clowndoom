@@ -78,7 +78,7 @@ fixed_t         bottomfrac;
 fixed_t         bottomstep;
 
 
-lighttable_t**  walllights;
+colourindex_t**  walllights;
 
 short*          maskedtexturecol;
 

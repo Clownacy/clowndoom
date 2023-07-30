@@ -46,7 +46,14 @@
 
 #define MAXDRAWSEGS             256
 
+/* Number of diminishing brightness levels. */
+/* There a 0-31, i.e. 32 LUT in the COLORMAP lump. */
+#define NUMCOLORMAPS            32
 
+/* Index of the special effects (INVUL inverse) map. */
+#define INVERSECOLORMAP         (NUMCOLORMAPS+0)
+
+#define FUZZCOLORMAPS           (NUMCOLORMAPS+1)
 
 
 
@@ -280,16 +287,6 @@ typedef post_t  column_t;
 
 /* OTHER TYPES */
 
-/* This could be wider for >8 bit display. */
-/* Indeed, true color support is posibble */
-/*  precalculating 24bpp lightmap/colormap LUT. */
-/*  from darkening PLAYPAL to all black. */
-/* Could even use more than 32 levels. */
-typedef unsigned char    lighttable_t;
-
-
-
-
 /* ? */
 typedef struct drawseg_s
 {
@@ -374,7 +371,7 @@ typedef struct vissprite_s
 
 	/* for color translation and shadow draw, */
 	/*  maxbright frames as well */
-	lighttable_t*       colormap;
+	colourindex_t*       colormap;
 
 	int                 mobjflags;
 

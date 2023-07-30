@@ -1550,7 +1550,7 @@ d_bool M_Responder (event_t* ev)
 			if (usegamma > 4)
 				usegamma = 0;
 			players[consoleplayer].message = gammamsg[usegamma];
-			I_SetPalette ((unsigned char*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
+			V_SetPalette(0);
 			return d_true;
 
 		}
