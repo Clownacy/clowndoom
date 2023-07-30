@@ -1432,7 +1432,7 @@ d_bool M_Responder (event_t* ev)
 			if (ch >= 32 && ch <= 127 &&
 				saveCharIndex < SAVESTRINGSIZE-1 &&
 				M_StringWidth(savegamestrings[saveSlot]) <
-				(SAVESTRINGSIZE-2)*8)
+				(SAVESTRINGSIZE-2)*8*HUD_SCALE)
 			{
 				savegamestrings[saveSlot][saveCharIndex++] = ch;
 				savegamestrings[saveSlot][saveCharIndex] = 0;
