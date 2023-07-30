@@ -31,12 +31,15 @@
 
 #include "w_wad.h"
 
+#include "clownlibs/dictionary.h"
 
 
 
 
 
 /* GLOBALS */
+
+Dictionary_State        lump_dictionary;
 
 /* Location of each lump on disk. */
 lumpinfo_t*             lumpinfo;
@@ -136,6 +139,7 @@ void W_AddFile (const char *filename)
 	lumpinfo_t          singleinfo;
 	FILE*               storehandle;
 	d_bool              singlelump;
+	Dictionary_Entry*   dictionary_entry;
 
 	/* open the file and add to directory */
 
@@ -203,6 +207,12 @@ void W_AddFile (const char *filename)
 	if (singlelump)
 	{
 		*lump_p = singleinfo;
+
+		/* overwrite existing entries so patch lump files take precedence */
+		if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, singleinfo.name, 8, &dictionary_entry))
+			I_Error("Could not create lump dictionary entry");
+
+		dictionary_entry->shared.unsigned_long = startlump;
 	}
 	else
 	{
@@ -212,6 +222,12 @@ void W_AddFile (const char *filename)
 			lump_p->position = Read32LE(storehandle);
 			lump_p->size = Read32LE(storehandle);
 			fread(lump_p->name, 1, 8, storehandle);
+
+			/* overwrite existing entries so patch lump files take precedence */
+			if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, lump_p->name, 8, &dictionary_entry))
+				I_Error("Could not create lump dictionary entry");
+
+			dictionary_entry->shared.unsigned_long = i;
 		}
 	}
 
@@ -279,6 +295,9 @@ void W_InitMultipleFiles (const char** filenames)
 {
 	size_t      size;
 
+	if (!Dictionary_Init(&lump_dictionary, cc_false))
+		I_Error("Couldn't initialise dictionary");
+
 	/* open all the files, load headers, and count lumps */
 	numlumps = 0;
 
@@ -331,8 +350,7 @@ int W_NumLumps (void)
 int W_CheckNumForName (const char* name)
 {
 	char name_upper[9];
-
-	lumpinfo_t* lump_p;
+	Dictionary_Entry *dictionary_entry;
 
 	strncpy (name_upper,name,8);
 
@@ -342,12 +360,10 @@ int W_CheckNumForName (const char* name)
 	/* case insensitive */
 	M_strupr(name_upper);
 
-	/* scan backwards so patch lump files take precedence */
-	lump_p = lumpinfo + numlumps;
+	dictionary_entry = Dictionary_LookUp(&lump_dictionary, name_upper, 8);
 
-	while (lump_p-- != lumpinfo)
-		if (!memcmp(lump_p->name, name_upper, 8))
-			return lump_p - lumpinfo;
+	if (dictionary_entry != NULL)
+		return dictionary_entry->shared.unsigned_long;
 
 	/* TFB. Not found. */
 	return -1;

@@ -7,6 +7,9 @@ option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 option(FRENCH "Change the language of various strings to French" OFF)
 
 add_executable(clowndoom WIN32
+	"linuxdoom-1.10/clownlibs/clowncommon.h"
+	"linuxdoom-1.10/clownlibs/dictionary.c"
+	"linuxdoom-1.10/clownlibs/dictionary.h"
 	"linuxdoom-1.10/am_map.c"
 	"linuxdoom-1.10/am_map.h"
 	"linuxdoom-1.10/d_englsh.h"
