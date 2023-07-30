@@ -145,7 +145,7 @@ void HUlib_eraseTextLine(hu_textline_t* l)
 	if (!automapactive &&
 		viewwindowx && l->needsupdate)
 	{
-		lh = SHORT(l->f[0]->height) * HUD_SCALE + 1; /* TODO: Should the '+1' be scaled too? */
+		lh = (SHORT(l->f[0]->height) + 1) * HUD_SCALE;
 		for (y=l->y,yoffset=y*SCREENWIDTH ; y<l->y+lh ; y++,yoffset+=SCREENWIDTH)
 		{
 			if (y < viewwindowy || y >= viewwindowy + viewheight)
