@@ -27,6 +27,7 @@
 
 /* Pads save_p to a 4-byte boundary */
 /*  so that the load/save works on SGI&Gecko. */
+/* TODO: Remove this. This is stupid: memcpy should work regardless of what address it begins at, so SGI&Gecko can go fuck themselves. */
 #define PADSAVEP()      index += (4 - (index & 3)) & 3
 
 
