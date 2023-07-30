@@ -255,7 +255,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 #endif
 
 #if SDL_MAJOR_VERSION >= 2
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 
 	if (window == NULL)
 		I_Error("Could not create SDL window");
