@@ -115,19 +115,6 @@ wipe_doColorXForm
 
 }
 
-int
-wipe_exitColorXForm
-( int   width,
-  int   height,
-  int   ticks )
-{
-	(void)width;
-	(void)height;
-	(void)ticks;
-
-	return 0;
-}
-
 
 static int     y[SCREENWIDTH];
 
@@ -219,19 +206,6 @@ wipe_doMelt
 }
 
 int
-wipe_exitMelt
-( int   width,
-  int   height,
-  int   ticks )
-{
-	(void)width;
-	(void)height;
-	(void)ticks;
-
-	return 0;
-}
-
-int
 wipe_StartScreen
 ( int   x,
   int   y,
@@ -271,10 +245,10 @@ wipe_ScreenWipe
   int   ticks )
 {
 	int rc;
-	static const int (*wipes[][3])(int, int, int) =
+	static const int (*wipes[][2])(int, int, int) =
 	{
-		{wipe_initColorXForm, wipe_doColorXForm, wipe_exitColorXForm},
-		{wipe_initMelt, wipe_doMelt, wipe_exitMelt}
+		{wipe_initColorXForm, wipe_doColorXForm},
+		{wipe_initMelt, wipe_doMelt}
 	};
 
 	void V_MarkRect(int, int, int, int);
@@ -298,10 +272,7 @@ wipe_ScreenWipe
 
 	/* final stuff */
 	if (rc)
-	{
 		go = 0;
-		wipes[wipeno][2](width, height, ticks);
-	}
 
 	return !go;
 
