@@ -285,7 +285,7 @@ void R_GenerateLookup (int texnum)
 	texture = textures[texnum];
 
 	/* Composited texture not created yet. */
-	texturecomposite[texnum] = 0;
+	texturecomposite[texnum] = NULL;
 
 	texturecompositesize[texnum] = 0;
 	collump = texturecolumnlump[texnum];
@@ -295,7 +295,7 @@ void R_GenerateLookup (int texnum)
 	/*  that are covered by more than one patch. */
 	/* Fill in the lump / offset, so columns */
 	/*  with only a single patch are all done. */
-	patchcount = (unsigned char *)Z_Malloc (texture->width, PU_STATIC, 0);
+	patchcount = (unsigned char *)Z_Malloc (texture->width, PU_STATIC, NULL);
 	memset(patchcount, 0, texture->width);
 	patch = texture->patches;
 
@@ -423,7 +423,7 @@ void R_InitTextures (void)
 	names = (unsigned char*)W_CacheLumpName ("PNAMES", PU_STATIC);
 	nummappatches = M_BytesToLong(names);
 	name_p = (const char*)names+4;
-	patchlookup = (int*)Z_Malloc (nummappatches*sizeof(*patchlookup), PU_STATIC, 0);
+	patchlookup = (int*)Z_Malloc (nummappatches*sizeof(*patchlookup), PU_STATIC, NULL);
 
 	for (i=0 ; i<nummappatches ; i++)
 	{
@@ -454,13 +454,13 @@ void R_InitTextures (void)
 	}
 	numtextures = numtextures1 + numtextures2;
 
-	textures = (texture_t**)Z_Malloc (numtextures*sizeof(*textures), PU_STATIC, 0);
-	texturecolumnlump = (short**)Z_Malloc (numtextures*sizeof(*texturecolumnlump), PU_STATIC, 0);
-	texturecolumnofs = (unsigned short**)Z_Malloc (numtextures*sizeof(*texturecolumnofs), PU_STATIC, 0);
-	texturecomposite = (unsigned char**)Z_Malloc (numtextures*sizeof(*texturecomposite), PU_STATIC, 0);
-	texturecompositesize = (int*)Z_Malloc (numtextures*sizeof(*texturecompositesize), PU_STATIC, 0);
-	texturewidthmask = (int*)Z_Malloc (numtextures*sizeof(*texturewidthmask), PU_STATIC, 0);
-	textureheight = (fixed_t*)Z_Malloc (numtextures*sizeof(*textureheight), PU_STATIC, 0);
+	textures = (texture_t**)Z_Malloc (numtextures*sizeof(*textures), PU_STATIC, NULL);
+	texturecolumnlump = (short**)Z_Malloc (numtextures*sizeof(*texturecolumnlump), PU_STATIC, NULL);
+	texturecolumnofs = (unsigned short**)Z_Malloc (numtextures*sizeof(*texturecolumnofs), PU_STATIC, NULL);
+	texturecomposite = (unsigned char**)Z_Malloc (numtextures*sizeof(*texturecomposite), PU_STATIC, NULL);
+	texturecompositesize = (int*)Z_Malloc (numtextures*sizeof(*texturecompositesize), PU_STATIC, NULL);
+	texturewidthmask = (int*)Z_Malloc (numtextures*sizeof(*texturewidthmask), PU_STATIC, NULL);
+	textureheight = (fixed_t*)Z_Malloc (numtextures*sizeof(*textureheight), PU_STATIC, NULL);
 
 	totalwidth = 0;
 
@@ -499,7 +499,7 @@ void R_InitTextures (void)
 		texture = textures[i] =
 			(texture_t*)Z_Malloc (sizeof(texture_t)
 					  + sizeof(texpatch_t)*(M_BytesToShort(&mtexture[MAPTEXTURE_PATCH_COUNT])-1),
-					  PU_STATIC, 0);
+					  PU_STATIC, NULL);
 
 		texture->width = M_BytesToShort(&mtexture[MAPTEXTURE_WIDTH]);
 		texture->height = M_BytesToShort(&mtexture[MAPTEXTURE_HEIGHT]);
@@ -520,8 +520,8 @@ void R_InitTextures (void)
 						 texture->name);
 			}
 		}
-		texturecolumnlump[i] = (short*)Z_Malloc (texture->width*2, PU_STATIC,0);
-		texturecolumnofs[i] = (unsigned short*)Z_Malloc (texture->width*2, PU_STATIC,0);
+		texturecolumnlump[i] = (short*)Z_Malloc (texture->width*2, PU_STATIC, NULL);
+		texturecolumnofs[i] = (unsigned short*)Z_Malloc (texture->width*2, PU_STATIC, NULL);
 
 		j = 1;
 		while (j*2 <= texture->width)
@@ -544,7 +544,7 @@ void R_InitTextures (void)
 		R_GenerateLookup (i);
 
 	/* Create translation table for global animation. */
-	texturetranslation = (int*)Z_Malloc ((numtextures+1)*sizeof(*texturetranslation), PU_STATIC, 0);
+	texturetranslation = (int*)Z_Malloc ((numtextures+1)*sizeof(*texturetranslation), PU_STATIC, NULL);
 
 	for (i=0 ; i<numtextures ; i++)
 		texturetranslation[i] = i;
@@ -562,7 +562,7 @@ void R_InitFlats (void)
 	numflats = lastflat - firstflat + 1;
 
 	/* Create translation table for global animation. */
-	flattranslation = (int*)Z_Malloc ((numflats+1)*sizeof(*flattranslation), PU_STATIC, 0);
+	flattranslation = (int*)Z_Malloc ((numflats+1)*sizeof(*flattranslation), PU_STATIC, NULL);
 
 	for (i=0 ; i<numflats ; i++)
 		flattranslation[i] = i;
@@ -582,9 +582,9 @@ void R_InitSpriteLumps (void)
 	lastspritelump = W_GetNumForName ("S_END") - 1;
 
 	numspritelumps = lastspritelump - firstspritelump + 1;
-	spritewidth = (fixed_t*)Z_Malloc (numspritelumps*sizeof(*spritewidth), PU_STATIC, 0);
-	spriteoffset = (fixed_t*)Z_Malloc (numspritelumps*sizeof(*spriteoffset), PU_STATIC, 0);
-	spritetopoffset = (fixed_t*)Z_Malloc (numspritelumps*sizeof(*spritetopoffset), PU_STATIC, 0);
+	spritewidth = (fixed_t*)Z_Malloc (numspritelumps*sizeof(*spritewidth), PU_STATIC, NULL);
+	spriteoffset = (fixed_t*)Z_Malloc (numspritelumps*sizeof(*spriteoffset), PU_STATIC, NULL);
+	spritetopoffset = (fixed_t*)Z_Malloc (numspritelumps*sizeof(*spritetopoffset), PU_STATIC, NULL);
 
 	for (i=0 ; i< numspritelumps ; i++)
 	{
@@ -609,7 +609,7 @@ void R_InitColormaps (void)
 	/*  256 byte align tables. */
 	lump = W_GetNumForName("COLORMAP");
 	length = W_LumpLength (lump) + 255;
-	colormaps = (unsigned char *)Z_Malloc (length, PU_STATIC, 0);
+	colormaps = (unsigned char *)Z_Malloc (length, PU_STATIC, NULL);
 	colormaps = (unsigned char *)( ((size_t)colormaps + 255)&~0xff);
 	W_ReadLump (lump,colormaps);
 }
@@ -720,7 +720,7 @@ void R_PrecacheLevel (void)
 		return;
 
 	/* Precache flats. */
-	flatpresent = (char*)Z_Malloc(numflats, PU_STATIC, 0);
+	flatpresent = (char*)Z_Malloc(numflats, PU_STATIC, NULL);
 	memset(flatpresent, d_false, numflats);
 
 	for (i=0 ; i<numsectors ; i++)
@@ -744,7 +744,7 @@ void R_PrecacheLevel (void)
 	Z_Free(flatpresent);
 
 	/* Precache textures. */
-	texturepresent = (char*)Z_Malloc(numtextures, PU_STATIC, 0);
+	texturepresent = (char*)Z_Malloc(numtextures, PU_STATIC, NULL);
 	memset(texturepresent, d_false, numtextures);
 
 	for (i=0 ; i<numsides ; i++)
@@ -781,7 +781,7 @@ void R_PrecacheLevel (void)
 	Z_Free(texturepresent);
 
 	/* Precache sprites. */
-	spritepresent = (char*)Z_Malloc(numsprites, PU_STATIC, 0);
+	spritepresent = (char*)Z_Malloc(numsprites, PU_STATIC, NULL);
 	memset(spritepresent, d_false, numsprites);
 
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)

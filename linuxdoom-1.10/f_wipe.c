@@ -258,7 +258,7 @@ wipe_ScreenWipe
 	if (!go)
 	{
 		go = 1;
-		/*wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, 0);*/ /* DEBUG */
+		/*wipe_scr = (byte *) Z_Malloc(width*height, PU_STATIC, NULL);*/ /* DEBUG */
 		wipe_scr = screens[0];
 		wipes[wipeno][0](width, height, ticks);
 	}

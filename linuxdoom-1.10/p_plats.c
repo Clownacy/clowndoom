@@ -158,7 +158,7 @@ EV_DoPlat
 
 		/* Find lowest & highest floors around sector */
 		rtn = 1;
-		plat = (plat_t*)Z_Malloc( sizeof(*plat), PU_LEVSPEC, 0);
+		plat = (plat_t*)Z_Malloc( sizeof(*plat), PU_LEVSPEC, NULL);
 		P_AddThinker(&plat->thinker);
 
 		plat->type = type;

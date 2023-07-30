@@ -589,7 +589,7 @@ void R_InitTranslationTables (void)
 {
 	int         i;
 
-	translationtables = (unsigned char*)Z_Malloc (256*3+255, PU_STATIC, 0);
+	translationtables = (unsigned char*)Z_Malloc (256*3+255, PU_STATIC, NULL);
 	translationtables = (unsigned char *)(( (size_t)translationtables + 255 )& ~255);
 
 	/* translate just the 16 green colors */

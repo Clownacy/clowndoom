@@ -118,7 +118,7 @@ void P_LoadVertexes (int lump)
 	numvertexes = W_LumpLength (lump) / sizeof(mapvertex_t);
 
 	/* Allocate zone memory for buffer. */
-	vertexes = (vertex_t*)Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,0);
+	vertexes = (vertex_t*)Z_Malloc (numvertexes*sizeof(vertex_t),PU_LEVEL,NULL);
 
 	/* Load data into cache. */
 	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
@@ -152,7 +152,7 @@ void P_LoadSegs (int lump)
 	int                 side;
 
 	numsegs = W_LumpLength (lump) / sizeof(mapseg_t);
-	segs = (seg_t*)Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,0);
+	segs = (seg_t*)Z_Malloc (numsegs*sizeof(seg_t),PU_LEVEL,NULL);
 	memset (segs, 0, numsegs*sizeof(seg_t));
 	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
@@ -190,7 +190,7 @@ void P_LoadSubsectors (int lump)
 	subsector_t*        ss;
 
 	numsubsectors = W_LumpLength (lump) / sizeof(mapsubsector_t);
-	subsectors = (subsector_t*)Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,0);
+	subsectors = (subsector_t*)Z_Malloc (numsubsectors*sizeof(subsector_t),PU_LEVEL,NULL);
 	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	ms = (mapsubsector_t *)data;
@@ -217,7 +217,7 @@ void P_LoadSectors (int lump)
 	sector_t*           ss;
 
 	numsectors = W_LumpLength (lump) / sizeof(mapsector_t);
-	sectors = (sector_t*)Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,0);
+	sectors = (sector_t*)Z_Malloc (numsectors*sizeof(sector_t),PU_LEVEL,NULL);
 	memset (sectors, 0, numsectors*sizeof(sector_t));
 	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
@@ -250,7 +250,7 @@ void P_LoadNodes (int lump)
 	node_t*     no;
 
 	numnodes = W_LumpLength (lump) / sizeof(mapnode_t);
-	nodes = (node_t*)Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,0);
+	nodes = (node_t*)Z_Malloc (numnodes*sizeof(node_t),PU_LEVEL,NULL);
 	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
 	mn = (mapnode_t *)data;
@@ -339,7 +339,7 @@ void P_LoadLineDefs (int lump)
 	vertex_t*           v2;
 
 	numlines = W_LumpLength (lump) / sizeof(maplinedef_t);
-	lines = (line_t*)Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,0);
+	lines = (line_t*)Z_Malloc (numlines*sizeof(line_t),PU_LEVEL,NULL);
 	memset (lines, 0, numlines*sizeof(line_t));
 	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
@@ -416,7 +416,7 @@ void P_LoadSideDefs (int lump)
 	side_t*             sd;
 
 	numsides = W_LumpLength (lump) / sizeof(mapsidedef_t);
-	sides = (side_t*)Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,0);
+	sides = (side_t*)Z_Malloc (numsides*sizeof(side_t),PU_LEVEL,NULL);
 	memset (sides, 0, numsides*sizeof(side_t));
 	data = (unsigned char*)W_CacheLumpNum (lump,PU_STATIC);
 
@@ -456,7 +456,7 @@ void P_LoadBlockMap (int lump)
 
 	/* clear out mobj chains */
 	count = sizeof(*blocklinks)* bmapwidth*bmapheight;
-	blocklinks = (mobj_t**)Z_Malloc (count,PU_LEVEL, 0);
+	blocklinks = (mobj_t**)Z_Malloc (count,PU_LEVEL,NULL);
 	memset (blocklinks, 0, count);
 }
 
@@ -502,7 +502,7 @@ void P_GroupLines (void)
 	}
 
 	/* build line tables for each sector */
-	linebuffer = (line_t**)Z_Malloc (total*sizeof(*linebuffer), PU_LEVEL, 0);
+	linebuffer = (line_t**)Z_Malloc (total*sizeof(*linebuffer), PU_LEVEL, NULL);
 	sector = sectors;
 	for (i=0 ; i<numsectors ; i++, sector++)
 	{

@@ -1282,7 +1282,7 @@ void G_DoSaveGame (void)
 
 	length = ArchiveToBuffer(NULL);
 
-	savebuffer = (unsigned char*)Z_Malloc(length, PU_STATIC, 0);
+	savebuffer = (unsigned char*)Z_Malloc(length, PU_STATIC, NULL);
 
 	if (savebuffer != NULL)
 	{
