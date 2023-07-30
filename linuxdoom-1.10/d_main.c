@@ -580,10 +580,10 @@ void IdentifyVersion (void)
 		if (configdir != NULL)
 			sprintf(basedefault, "%s/.config/", configdir);
 	}
-#else
-	basedefault[0] = '\0';
-#endif
 	strcat(basedefault, "clowndoomrc");
+#else
+	strcpy(basedefault, "default.cfg");
+#endif
 
 	if (M_CheckParm ("-shdev"))
 	{
