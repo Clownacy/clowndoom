@@ -39,7 +39,7 @@ extern fixed_t*         spritewidth;
 extern fixed_t*         spriteoffset;
 extern fixed_t*         spritetopoffset;
 
-extern colourindex_t    colormaps[NUMCOLORMAPS+2+NUMCOLORMAPS][0x100];
+extern colourindex_t    colormaps[NUMLIGHTCOLORMAPS+2+NUMLIGHTCOLORMAPS][0x100];
 
 extern int              viewwidth;
 extern int              scaledviewwidth;

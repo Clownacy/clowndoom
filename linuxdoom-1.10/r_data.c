@@ -146,7 +146,7 @@ fixed_t*        spritewidth;
 fixed_t*        spriteoffset;
 fixed_t*        spritetopoffset;
 
-colourindex_t    colormaps[NUMCOLORMAPS+2+NUMCOLORMAPS][0x100];
+colourindex_t    colormaps[NUMLIGHTCOLORMAPS*2+2][0x100];
 
 
 /* MAPTEXTURE_T CACHING */
@@ -610,23 +610,25 @@ void R_InitColormaps (void)
 	unsigned char(* const original_colour_maps)[0x100] = (unsigned char(*)[0x100])W_CacheLumpName("COLORMAP", PU_STATIC);
 
 	/* Load-in the original light tables. */
-	for (i = 0; i < D_COUNT_OF(colormaps); ++i)
-		for (j = 0; j < D_COUNT_OF(colormaps[i]); ++j)
-			colormaps[i][j] = original_colour_maps[i][j];
+	for (i = 0; i < NUMLIGHTCOLORMAPS; ++i)
+		for (j = 0; j < D_COUNT_OF(colormaps[FUZZCOLORMAPS + i]); ++j)
+			colormaps[FUZZCOLORMAPS + i][j] = original_colour_maps[i][j];
 
 	/* Release the `COLORMAP` buffer. */
 	Z_ChangeTag(original_colour_maps, PU_CACHE);
 
-	/* Make a copy just for the Spectre's fuzz effect that won't be overwritten. */
-	memcpy(colormaps[FUZZCOLORMAPS], colormaps[0], sizeof(colormaps[0]) * NUMCOLORMAPS);
-
 	if (full_colour)
 	{
-		/* Overwrite the brightness-related light tables so that they pass-through
-		   straight to the underlying expanded palette, enabling 'true-colour' rendering. */
-		for (i = 0; i < NUMCOLORMAPS; ++i)
+		/* Make the brightness-related light tables pass-through straight to the
+		   underlying expanded palette, enabling 'full-colour' rendering. */
+		for (i = 0; i < NUMLIGHTCOLORMAPS; ++i)
 			for (j = 0; j < D_COUNT_OF(colormaps[i]); ++j)
 				colormaps[i][j] = i * D_COUNT_OF(colormaps[i]) + j;
+	}
+	else
+	{
+		/* Make a copy just for the Spectre's fuzz effect that won't be overwritten. */
+		memcpy(colormaps[0], colormaps[FUZZCOLORMAPS], sizeof(colormaps[0]) * NUMLIGHTCOLORMAPS);
 	}
 
 	/* Set-up the light-amplification visor colour map. */

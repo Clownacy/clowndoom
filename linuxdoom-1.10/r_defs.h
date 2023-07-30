@@ -48,12 +48,12 @@
 
 /* Number of diminishing brightness levels. */
 /* There a 0-31, i.e. 32 LUT in the COLORMAP lump. */
-#define NUMCOLORMAPS            32
+#define NUMLIGHTCOLORMAPS            32
 
 /* Index of the special effects (INVUL inverse) map. */
-#define INVERSECOLORMAP         (NUMCOLORMAPS+0)
-#define LIGHTAMPCOLORMAP        (NUMCOLORMAPS+1)
-#define FUZZCOLORMAPS           (NUMCOLORMAPS+2)
+#define INVERSECOLORMAP         (NUMLIGHTCOLORMAPS+0)
+#define LIGHTAMPCOLORMAP        (NUMLIGHTCOLORMAPS+1)
+#define FUZZCOLORMAPS           (NUMLIGHTCOLORMAPS+2)
 
 
 

@@ -596,7 +596,7 @@ void R_InitLightTables (void)
 	/*  for each level / distance combination. */
 	for (i=0 ; i< LIGHTLEVELS ; i++)
 	{
-		startmap = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
+		startmap = ((LIGHTLEVELS-1-i)*2)*NUMLIGHTCOLORMAPS/LIGHTLEVELS;
 		for (j=0 ; j<MAXLIGHTZ ; j++)
 		{
 			scale = FixedDiv ((SCREENWIDTH/2*FRACUNIT), (j+1)<<LIGHTZSHIFT);
@@ -606,8 +606,8 @@ void R_InitLightTables (void)
 			if (level < 0)
 				level = 0;
 
-			if (level >= NUMCOLORMAPS)
-				level = NUMCOLORMAPS-1;
+			if (level >= NUMLIGHTCOLORMAPS)
+				level = NUMLIGHTCOLORMAPS-1;
 
 			zlight[i][j] = colormaps[level];
 		}
@@ -722,7 +722,7 @@ void R_ExecuteSetViewSize (void)
 	/*  for each level / scale combination. */
 	for (i=0 ; i< LIGHTLEVELS ; i++)
 	{
-		startmap = ((LIGHTLEVELS-1-i)*2)*NUMCOLORMAPS/LIGHTLEVELS;
+		startmap = ((LIGHTLEVELS-1-i)*2)*NUMLIGHTCOLORMAPS/LIGHTLEVELS;
 		for (j=0 ; j<MAXLIGHTSCALE ; j++)
 		{
 			level = startmap - j*SCREENWIDTH/(viewwidth<<detailshift)/DISTMAP;
@@ -730,8 +730,8 @@ void R_ExecuteSetViewSize (void)
 			if (level < 0)
 				level = 0;
 
-			if (level >= NUMCOLORMAPS)
-				level = NUMCOLORMAPS-1;
+			if (level >= NUMLIGHTCOLORMAPS)
+				level = NUMLIGHTCOLORMAPS-1;
 
 			scalelight[i][j] = colormaps[level];
 		}

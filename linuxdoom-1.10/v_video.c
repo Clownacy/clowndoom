@@ -399,10 +399,10 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 		int tint[3], shift, steps;
 		size_t i;
 		unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
-		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(NUMCOLORMAPS * 0x100 * 3, PU_STATIC, NULL);
+		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(NUMLIGHTCOLORMAPS * 0x100 * 3, PU_STATIC, NULL);
 
 		if (length != NULL)
-			*length = NUMCOLORMAPS;
+			*length = NUMLIGHTCOLORMAPS;
 
 		if (current_palette_id >= 13)
 		{
@@ -442,7 +442,7 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 		}
 
 		/* Compute darkened copies of the palette for true-colour rendering. */
-		for (i = 0; i < NUMCOLORMAPS; ++i)
+		for (i = 0; i < NUMLIGHTCOLORMAPS; ++i)
 		{
 			size_t j;
 
@@ -458,7 +458,7 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 					/* This is the exact formula used by the tool that Id used to generate `COLORMAP` - `dcolors.c`. */
 					/* https://doomwiki.org/wiki/Doom_utilities */
 					/* This gives us the raw colours that `COLORMAP` tries to emulate. */
-					colour = (palettes[0][j][k] * (NUMCOLORMAPS - i) + NUMCOLORMAPS / 2) / NUMCOLORMAPS;
+					colour = (palettes[0][j][k] * (NUMLIGHTCOLORMAPS - i) + NUMLIGHTCOLORMAPS / 2) / NUMLIGHTCOLORMAPS;
 					/* Apply tint. */
 					colour += (tint[k] - colour) * shift / steps;
 
