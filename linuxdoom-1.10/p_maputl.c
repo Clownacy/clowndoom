@@ -511,7 +511,7 @@ intercept_t     intercepts[MAXINTERCEPTS];
 intercept_t*    intercept_p;
 
 divline_t       trace;
-d_bool         earlyout;
+d_bool          earlyout;
 int             ptflags;
 
 /* PIT_AddLineIntercepts. */
@@ -587,7 +587,7 @@ d_bool PIT_AddThingIntercepts (mobj_t* thing)
 	int                 s1;
 	int                 s2;
 
-	d_bool             tracepositive;
+	d_bool              tracepositive;
 
 	divline_t           dl;
 

@@ -209,7 +209,7 @@ static int      grid = 0;
 
 static int      leveljuststarted = 1;   /* kluge until AM_LevelInit() is called */
 
-d_bool         automapactive = d_false;
+d_bool          automapactive = d_false;
 static int      finit_width = SCREENWIDTH;
 static int      finit_height = SCREENHEIGHT - ST_HEIGHT;
 

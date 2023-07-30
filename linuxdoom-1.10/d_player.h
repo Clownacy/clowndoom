@@ -94,8 +94,8 @@ typedef struct player_s
 
 	/* Power ups. invinc and invis are tic counters. */
 	int                 powers[NUMPOWERS];
-	d_bool             cards[NUMCARDS];
-	d_bool             backpack;
+	d_bool              cards[NUMCARDS];
+	d_bool              backpack;
 
 	/* Frags, kills of other players. */
 	int                 frags[MAXPLAYERS];
@@ -149,7 +149,7 @@ typedef struct player_s
 	pspdef_t            psprites[NUMPSPRITES];
 
 	/* True if secret level has been done. */
-	d_bool             didsecret;
+	d_bool              didsecret;
 
 } player_t;
 
@@ -158,7 +158,7 @@ typedef struct player_s
 /* Structure passed e.g. to WI_Start(wb) */
 typedef struct
 {
-	d_bool     in;     /* whether the player is in game */
+	d_bool      in;     /* whether the player is in game */
 
 	/* Player stats, kills, collected items etc. */
 	int         skills;
@@ -175,7 +175,7 @@ typedef struct
 	int         epsd;   /* episode # (0-2) */
 
 	/* if true, splash the secret level */
-	d_bool     didsecret;
+	d_bool      didsecret;
 
 	/* previous and next levels, origin 0 */
 	int         last;

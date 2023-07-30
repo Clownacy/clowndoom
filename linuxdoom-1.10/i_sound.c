@@ -86,9 +86,9 @@ static short            vol_lookup[S_TOTAL_VOLUMES][0x100];
 const char*             wildmidi_config_path;
 
 #ifdef WILDMIDI
-static d_bool          music_initialised;
+static d_bool           music_initialised;
 static midi*            music_midi;
-static d_bool          music_playing;
+static d_bool           music_playing;
 #endif
 
 

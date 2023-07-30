@@ -89,25 +89,25 @@ void    G_DoSaveGame (void);
 gameaction_t    gameaction;
 gamestate_t     gamestate;
 skill_t         gameskill;
-d_bool         respawnmonsters;
+d_bool          respawnmonsters;
 int             gameepisode;
 int             gamemap;
 
-d_bool         paused;
-d_bool         sendpause;              /* send a pause event next tic */
-d_bool         sendsave;               /* send a save event next tic */
-d_bool         usergame;               /* ok to save / end game */
+d_bool          paused;
+d_bool          sendpause;              /* send a pause event next tic */
+d_bool          sendsave;               /* send a save event next tic */
+d_bool          usergame;               /* ok to save / end game */
 
-d_bool         timingdemo;             /* if true, exit with report on completion */
-d_bool         nodrawers;              /* for comparative timing purposes */
-d_bool         noblit;                 /* for comparative timing purposes */
+d_bool          timingdemo;             /* if true, exit with report on completion */
+d_bool          nodrawers;              /* for comparative timing purposes */
+d_bool          noblit;                 /* for comparative timing purposes */
 int             starttime;              /* for comparative timing purposes */
 
-d_bool         viewactive;
+d_bool          viewactive;
 
 deathmatch_t   deathmatch;             /* only if started as net death */
-d_bool         netgame;                /* only true if packets are broadcast */
-d_bool         playeringame[MAXPLAYERS];
+d_bool          netgame;                /* only true if packets are broadcast */
+d_bool          playeringame[MAXPLAYERS];
 player_t        players[MAXPLAYERS];
 
 int             consoleplayer;          /* player taking events and displaying */
@@ -117,15 +117,15 @@ int             levelstarttic;          /* gametic at level start */
 int             totalkills, totalitems, totalsecret;    /* for intermission */
 
 char            demoname[32];
-d_bool         demorecording;
-d_bool         demoplayback;
-d_bool         netdemo;
+d_bool          demorecording;
+d_bool          demoplayback;
+d_bool          netdemo;
 unsigned char*           demobuffer;
 unsigned char*           demo_p;
 unsigned char*           demoend;
-d_bool         singledemo;             /* quit after playing a demo from cmdline */
+d_bool          singledemo;             /* quit after playing a demo from cmdline */
 
-d_bool         precache = d_true;        /* if true, load all graphics at start */
+d_bool          precache = d_true;        /* if true, load all graphics at start */
 
 wbstartstruct_t wminfo;                 /* parms for world map / intermission */
 
@@ -170,10 +170,10 @@ fixed_t         angleturn[3] = {640, 1280, 320};        /* + slow turn */
 
 #define NUMKEYS         256
 
-d_bool         gamekeydown[NUMKEYS];
+d_bool          gamekeydown[NUMKEYS];
 int             turnheld;                               /* for accelerative turning */
 
-d_bool         mousearray[4];
+d_bool          mousearray[4];
 d_bool*        mousebuttons = &mousearray[1];          /* allow [-1] */
 
 /* mouse values are used once */
@@ -181,16 +181,16 @@ int             mousex;
 int             mousey;
 
 int             dclicktime;
-d_bool         dclickstate;
+d_bool          dclickstate;
 int             dclicks;
 int             dclicktime2;
-d_bool         dclickstate2;
+d_bool          dclickstate2;
 int             dclicks2;
 
 /* joystick values are repeated */
 int             joyxmove;
 int             joyymove;
-d_bool         joyarray[5];
+d_bool          joyarray[5];
 d_bool*        joybuttons = &joyarray[1];              /* allow [-1] */
 
 int             savegameslot;
@@ -216,8 +216,8 @@ int             novert;
 void G_BuildTiccmd (ticcmd_t* cmd)
 {
 	int         i;
-	d_bool     strafe;
-	d_bool     bstrafe;
+	d_bool      strafe;
+	d_bool      bstrafe;
 	int         speed;
 	int         tspeed;
 	int         forward;
@@ -952,7 +952,7 @@ int cpars[32] =
 
 
 /* G_DoCompleted */
-d_bool         secretexit;
+d_bool          secretexit;
 
 void G_ExitLevel (void)
 {

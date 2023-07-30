@@ -94,7 +94,7 @@ R_InstallSpriteLump
 ( int           lump,
   unsigned      frame,
   unsigned      rotation,
-  d_bool       flipped )
+  d_bool        flipped )
 {
 	int         r;
 
@@ -438,7 +438,7 @@ void R_ProjectSprite (mobj_t* thing)
 	int                 lump;
 
 	unsigned            rot;
-	d_bool             flip;
+	d_bool              flip;
 
 	int                 index;
 
@@ -615,7 +615,7 @@ void R_DrawPSprite (pspdef_t* psp)
 	spritedef_t*        sprdef;
 	spriteframe_t*      sprframe;
 	int                 lump;
-	d_bool             flip;
+	d_bool              flip;
 	vissprite_t*        vis;
 	vissprite_t         avis;
 

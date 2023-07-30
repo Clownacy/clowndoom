@@ -204,7 +204,7 @@ typedef struct
 	const char* name;
 	int*        location;
 	size_t      defaultvalue;
-	d_bool     is_string;
+	d_bool      is_string;
 	/*int               scantranslate;*/        /* PC scan code hack */
 	/*int               untranslated;*/         /* lousy hack */
 } default_t;
@@ -314,7 +314,7 @@ void M_LoadDefaults (void)
 	char        strparm[100];
 	char*       newstring;
 	int         parm;
-	d_bool     isstring;
+	d_bool      isstring;
 
 	/* set everything to base values */
 	numdefaults = sizeof(defaults)/sizeof(defaults[0]);

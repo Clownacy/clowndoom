@@ -74,7 +74,7 @@ STlib_initNum
 void
 STlib_drawNum
 ( st_number_t*  n,
-  d_bool       refresh )
+  d_bool        refresh )
 {
 
 	int         numdigits = n->width;
@@ -137,7 +137,7 @@ STlib_drawNum
 void
 STlib_updateNum
 ( st_number_t*          n,
-  d_bool               refresh )
+  d_bool                refresh )
 {
 	if (*n->on) STlib_drawNum(n, refresh);
 }
@@ -195,7 +195,7 @@ STlib_initMultIcon
 void
 STlib_updateMultIcon
 ( st_multicon_t*        mi,
-  d_bool               refresh )
+  d_bool                refresh )
 {
 	int                 w;
 	int                 h;
@@ -247,7 +247,7 @@ STlib_initBinIcon
 void
 STlib_updateBinIcon
 ( st_binicon_t*         bi,
-  d_bool               refresh )
+  d_bool                refresh )
 {
 	int                 x;
 	int                 y;

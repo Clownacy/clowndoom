@@ -111,7 +111,7 @@ typedef struct
 	int                 y;
 
 	/* last icon value */
-	d_bool                     oldval;
+	d_bool                      oldval;
 
 	/* pointer to current icon status */
 	d_bool*            val;
@@ -151,7 +151,7 @@ STlib_initNum
 void
 STlib_updateNum
 ( st_number_t*          n,
-  d_bool               refresh );
+  d_bool                refresh );
 
 
 /* Percent widget routines */
@@ -186,7 +186,7 @@ STlib_initMultIcon
 void
 STlib_updateMultIcon
 ( st_multicon_t*        mi,
-  d_bool               refresh );
+  d_bool                refresh );
 
 /* Binary Icon widget routines */
 
@@ -202,6 +202,6 @@ STlib_initBinIcon
 void
 STlib_updateBinIcon
 ( st_binicon_t*         bi,
-  d_bool               refresh );
+  d_bool                refresh );
 
 #endif

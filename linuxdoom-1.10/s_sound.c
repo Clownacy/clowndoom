@@ -81,13 +81,13 @@
 typedef struct
 {
 	/* sound information (if null, channel avail.) */
-	sfxinfo_t*  sfxinfo;
+	sfxinfo_t*          sfxinfo;
 
 	/* origin of sound */
 	const mobj_t*       origin;
 
 	/* handle of the sound being played */
-	int         handle;
+	int                 handle;
 
 } channel_t;
 
@@ -102,7 +102,7 @@ static int              snd_SfxVolume;
 
 
 /* whether songs are mus_paused */
-static d_bool          mus_paused;
+static d_bool           mus_paused;
 
 /* music currently being played */
 static musicinfo_t*     mus_playing;
@@ -594,7 +594,7 @@ void S_StartMusic(int m_id)
 void
 S_ChangeMusic
 ( int                   musicnum,
-  d_bool               looping )
+  d_bool                looping )
 {
 	musicinfo_t*        music;
 	char                namebuf[9];

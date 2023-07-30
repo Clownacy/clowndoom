@@ -72,7 +72,7 @@ void S_StartMusic(int music_id);
 void
 S_ChangeMusic
 ( int           music_id,
-  d_bool       looping );
+  d_bool        looping );
 
 /* Stops the music fer sure. */
 void S_StopMusic(void);

@@ -151,10 +151,10 @@ d_bool
 P_GiveWeapon
 ( player_t*     player,
   weapontype_t  weapon,
-  d_bool       dropped )
+  d_bool        dropped )
 {
-	d_bool     gaveammo;
-	d_bool     gaveweapon;
+	d_bool      gaveammo;
+	d_bool      gaveweapon;
 
 	if (netgame
 		&& (deathmatch != DM_ALTERNATE)

@@ -61,7 +61,7 @@ typedef struct
 
 	/* pointer to boolean stating whether to update window */
 	d_bool*            on;
-	d_bool             laston;         /* last value of *->on. */
+	d_bool              laston;         /* last value of *->on. */
 
 } hu_stext_t;
 
@@ -78,7 +78,7 @@ typedef struct
 
 	/* pointer to boolean stating whether to update window */
 	d_bool*            on;
-	d_bool             laston; /* last value of *->on; */
+	d_bool              laston; /* last value of *->on; */
 
 } hu_itext_t;
 

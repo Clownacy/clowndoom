@@ -130,7 +130,7 @@ typedef struct
 typedef struct
 {
 	fixed_t     frac;           /* along trace line */
-	d_bool     isaline;
+	d_bool      isaline;
 	union {
 		mobj_t* thing;
 		line_t* line;
@@ -174,7 +174,7 @@ P_PathTraverse
   fixed_t       x2,
   fixed_t       y2,
   int           flags,
-  d_bool       (*trav) (intercept_t *));
+  d_bool        (*trav) (intercept_t *));
 
 void P_UnsetThingPosition (mobj_t* thing);
 void P_SetThingPosition (mobj_t* thing);
@@ -184,7 +184,7 @@ void P_SetThingPosition (mobj_t* thing);
 
 /* If "floatok" true, move would be ok */
 /* if within "tmfloorz - tmceilingz". */
-extern d_bool          floatok;
+extern d_bool           floatok;
 extern fixed_t          tmfloorz;
 extern fixed_t          tmceilingz;
 

@@ -33,7 +33,7 @@
 /* 16 pixels of bob */
 #define MAXBOB  0x100000
 
-d_bool         onground;
+d_bool          onground;
 
 
 /* P_Thrust */

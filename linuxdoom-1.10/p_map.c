@@ -45,7 +45,7 @@ fixed_t         tmy;
 
 /* If "floatok" true, move would be ok */
 /* if within "tmfloorz - tmceilingz". */
-d_bool         floatok;
+d_bool          floatok;
 
 fixed_t         tmfloorz;
 fixed_t         tmceilingz;
@@ -233,7 +233,7 @@ d_bool PIT_CheckLine (line_t* ld)
 d_bool PIT_CheckThing (mobj_t* thing)
 {
 	fixed_t             blockdist;
-	d_bool             solid;
+	d_bool              solid;
 	int                 damage;
 
 	if (!(thing->flags & (MF_SOLID|MF_SPECIAL|MF_SHOOTABLE) ))
@@ -499,7 +499,7 @@ P_TryMove
 /* and false will be returned. */
 d_bool P_ThingHeightClip (mobj_t* thing)
 {
-	d_bool             onfloor;
+	d_bool              onfloor;
 
 	onfloor = (thing->z == thing->floorz);
 
@@ -1185,8 +1185,8 @@ P_RadiusAttack
 /* If Crunch is false, you should set the sector height back */
 /*  the way it was and call P_ChangeSector again */
 /*  to undo the changes. */
-d_bool         crushchange;
-d_bool         nofit;
+d_bool          crushchange;
+d_bool          nofit;
 
 
 /* PIT_ChangeSector */
@@ -1254,7 +1254,7 @@ d_bool PIT_ChangeSector (mobj_t*       thing)
 d_bool
 P_ChangeSector
 ( sector_t*     sector,
-  d_bool       crunch )
+  d_bool        crunch )
 {
 	int         x;
 	int         y;

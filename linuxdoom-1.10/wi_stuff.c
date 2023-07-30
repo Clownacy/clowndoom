@@ -440,7 +440,7 @@ WI_drawOnLnode
 	int         top;
 	int         right;
 	int         bottom;
-	d_bool     fits = d_false;
+	d_bool      fits = d_false;
 
 	i = 0;
 	do
@@ -719,7 +719,7 @@ void WI_updateNoState(void) {
 
 }
 
-static d_bool          snl_pointeron = d_false;
+static d_bool           snl_pointeron = d_false;
 
 
 void WI_initShowNextLoc(void)
@@ -854,7 +854,7 @@ void WI_updateDeathmatchStats(void)
 	int         i;
 	int         j;
 
-	d_bool     stillticking;
+	d_bool      stillticking;
 
 	WI_updateAnimatedBack();
 
@@ -1078,7 +1078,7 @@ void WI_updateNetgameStats(void)
 	int         i;
 	int         fsum;
 
-	d_bool     stillticking;
+	d_bool      stillticking;
 
 	WI_updateAnimatedBack();
 

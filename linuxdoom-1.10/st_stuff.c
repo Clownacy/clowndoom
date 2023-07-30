@@ -196,22 +196,22 @@
 static player_t*        plyr;
 
 /* ST_Start() has just been called */
-static d_bool          st_firsttime;
+static d_bool           st_firsttime;
 
 /* lump number for PLAYPAL */
 static int              lu_palette;
 
 /* whether left-side main status bar is active */
-static d_bool          st_statusbaron;
+static d_bool           st_statusbaron;
 
 /* !deathmatch */
-static d_bool          st_notdeathmatch;
+static d_bool           st_notdeathmatch;
 
 /* !deathmatch && st_statusbaron */
-static d_bool          st_armson;
+static d_bool           st_armson;
 
 /* !deathmatch */
-static d_bool          st_fragson;
+static d_bool           st_fragson;
 
 /* main bar left */
 static patch_t*         sbar;
@@ -648,7 +648,7 @@ void ST_updateFaceWidget(void)
 	angle_t     diffang;
 	static int  lastattackdown = -1;
 	static int  priority = 0;
-	d_bool     doevilgrin;
+	d_bool      doevilgrin;
 
 	if (priority < 10)
 	{

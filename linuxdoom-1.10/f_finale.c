@@ -353,10 +353,10 @@ castinfo_t      castorder[] = {
 int             castnum;
 int             casttics;
 state_t*        caststate;
-d_bool         castdeath;
+d_bool          castdeath;
 int             castframes;
 int             castonmelee;
-d_bool         castattacking;
+d_bool          castattacking;
 
 
 /* F_StartCast */
@@ -562,7 +562,7 @@ void F_CastDrawer (void)
 	spritedef_t*        sprdef;
 	spriteframe_t*      sprframe;
 	int                 lump;
-	d_bool             flip;
+	d_bool              flip;
 	patch_t*            patch;
 
 	/* erase the entire screen to a background */

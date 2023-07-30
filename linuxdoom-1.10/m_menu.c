@@ -55,9 +55,9 @@
 
 
 extern patch_t*         hu_font[HU_FONTSIZE];
-extern d_bool          message_dontfuckwithme;
+extern d_bool           message_dontfuckwithme;
 
-extern d_bool          chat_on;                /* in heads-up code */
+extern d_bool           chat_on;                /* in heads-up code */
 
 /* defaulted values */
 int                     mouseSensitivity;       /* has default */
@@ -94,7 +94,7 @@ int                     messy;
 int                     messageLastMenuActive;
 
 /* timed message = no input from user */
-d_bool                 messageNeedsInput;
+d_bool                  messageNeedsInput;
 
 void    (*messageRoutine)(int response);
 
@@ -116,13 +116,13 @@ int                     saveCharIndex;  /* which char we're editing */
 /* old save description before edit */
 char                    saveOldString[SAVESTRINGSIZE];
 
-d_bool                 inhelpscreens;
-d_bool                 menuactive;
+d_bool                  inhelpscreens;
+d_bool                  menuactive;
 
 #define SKULLXOFF               (-32*HUD_SCALE)
 #define LINEHEIGHT              (16*HUD_SCALE)
 
-extern d_bool          sendpause;
+extern d_bool           sendpause;
 char                    savegamestrings[10][SAVESTRINGSIZE];
 
 char    endstring[160];
@@ -1190,7 +1190,7 @@ void
 M_StartMessage
 ( const char*   string,
   void(*routine)(int),
-  d_bool       input )
+  d_bool        input )
 {
 	messageLastMenuActive = menuactive;
 	messageToPrint = 1;

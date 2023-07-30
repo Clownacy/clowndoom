@@ -86,22 +86,22 @@ char                    chat_char; /* remove later. */
 static player_t*        plr;
 patch_t*                hu_font[HU_FONTSIZE];
 static hu_textline_t    w_title;
-d_bool                 chat_on;
+d_bool                  chat_on;
 static hu_itext_t       w_chat;
-static d_bool          always_off = d_false;
+static d_bool           always_off = d_false;
 static char             chat_dest[MAXPLAYERS];
 static hu_itext_t w_inputbuffer[MAXPLAYERS];
 
-static d_bool          message_on;
-d_bool                 message_dontfuckwithme;
-static d_bool          message_nottobefuckedwith;
+static d_bool           message_on;
+d_bool                  message_dontfuckwithme;
+static d_bool           message_nottobefuckedwith;
 
 static hu_stext_t       w_message;
 static int              message_counter;
 
 extern int              showMessages;
 
-static d_bool          headsupactive = d_false;
+static d_bool           headsupactive = d_false;
 
 /* Builtin map names. */
 /* The actual names can be found in DStrings.h. */
@@ -665,9 +665,9 @@ d_bool HU_Responder(const event_t *ev)
 
 	static char         lastmessage[HU_MAXLINELENGTH+1];
 	const char*         macromessage;
-	d_bool             eatkey = d_false;
-	static d_bool      shiftdown = d_false;
-	static d_bool      altdown = d_false;
+	d_bool              eatkey = d_false;
+	static d_bool       shiftdown = d_false;
+	static d_bool       altdown = d_false;
 	unsigned char       c;
 	int                 i;
 	int                 numplayers;

@@ -56,7 +56,7 @@ static int
 wipe_doColorXForm
 ( int   ticks )
 {
-	d_bool     changed;
+	d_bool      changed;
 	colourindex_t*       w;
 	colourindex_t*       e;
 	int         newval;
@@ -133,7 +133,7 @@ wipe_doMelt
 	int         i;
 	int         j;
 
-	d_bool     done = d_true;
+	d_bool      done = d_true;
 
 	while (ticks--)
 	{

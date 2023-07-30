@@ -241,8 +241,8 @@ d_bool P_Move (mobj_t* actor)
 
 	/* warning: 'catch', 'throw', and 'try' */
 	/* are all C++ reserved words */
-	d_bool     try_ok;
-	d_bool     good;
+	d_bool      try_ok;
+	d_bool      good;
 
 	if (actor->movedir == DI_NODIR)
 		return d_false;
@@ -457,7 +457,7 @@ void P_NewChaseDir (mobj_t*     actor)
 d_bool
 P_LookForPlayers
 ( mobj_t*       actor,
-  d_bool       allaround )
+  d_bool        allaround )
 {
 	int         c;
 	int         stop;
@@ -1067,7 +1067,7 @@ fixed_t         viletryy;
 d_bool PIT_VileCheck (mobj_t*  thing)
 {
 	int         maxdist;
-	d_bool     check;
+	d_bool      check;
 
 	if (!(thing->flags & MF_CORPSE) )
 		return d_true;    /* not a monster */

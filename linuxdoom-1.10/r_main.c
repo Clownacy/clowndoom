@@ -620,7 +620,7 @@ void R_InitLightTables (void)
 /* Do not really change anything here, */
 /*  because it might be in the middle of a refresh. */
 /* The change will take effect next refresh. */
-d_bool         setsizeneeded;
+d_bool          setsizeneeded;
 int             setblocks;
 int             setdetail;
 

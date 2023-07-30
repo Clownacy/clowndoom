@@ -52,7 +52,7 @@
 /* There is another anim_t used in wi_stuff, unrelated. */
 typedef struct
 {
-	d_bool     istexture;
+	d_bool      istexture;
 	int         picnum;
 	int         basepic;
 	int         numpics;
@@ -63,7 +63,7 @@ typedef struct
 /*      source animation definition */
 typedef struct
 {
-	d_bool     istexture;      /* if false, it is a flat */
+	d_bool      istexture;      /* if false, it is a flat */
 	char        endname[9];
 	char        startname[9];
 	int         speed;
@@ -1035,7 +1035,7 @@ void P_PlayerInSpecialSector (player_t* player)
 
 /* P_UpdateSpecials */
 /* Animate planes, scroll walls, etc. */
-d_bool         levelTimer;
+d_bool          levelTimer;
 int             levelTimeCount;
 
 void P_UpdateSpecials (void)

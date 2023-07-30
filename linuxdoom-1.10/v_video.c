@@ -219,7 +219,7 @@ V_DrawPatchFlipped
   int            y,
   screen_t       scrn,
   const patch_t* patch,
-  d_bool         flip )
+  d_bool          flip )
 {
 
 	int         col;

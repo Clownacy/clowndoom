@@ -26,7 +26,7 @@
 
 
 /* End-level timer (-TIMER option) */
-extern  d_bool levelTimer;
+extern  d_bool  levelTimer;
 extern  int     levelTimeCount;
 
 
@@ -281,7 +281,7 @@ typedef struct
 	int         count;
 	plat_e      status;
 	plat_e      oldstatus;
-	d_bool     crush;
+	d_bool      crush;
 	int         tag;
 	plattype_e  type;
 
@@ -479,7 +479,7 @@ typedef struct
 	fixed_t     bottomheight;
 	fixed_t     topheight;
 	fixed_t     speed;
-	d_bool     crush;
+	d_bool      crush;
 
 	/* 1 = up, 0 = waiting, -1 = down */
 	int         direction;
@@ -564,7 +564,7 @@ typedef struct
 {
 	thinker_t   thinker;
 	floor_e     type;
-	d_bool     crush;
+	d_bool      crush;
 	sector_t*   sector;
 	int         direction;
 	int         newspecial;
@@ -591,7 +591,7 @@ T_MovePlane
 ( sector_t*     sector,
   fixed_t       speed,
   fixed_t       dest,
-  d_bool       crush,
+  d_bool        crush,
   int           floorOrCeiling,
   int           direction );
 

@@ -135,7 +135,7 @@ void W_AddFile (const char *filename)
 	size_t              startlump;
 	lumpinfo_t          singleinfo;
 	FILE*               storehandle;
-	d_bool             singlelump;
+	d_bool              singlelump;
 
 	/* open the file and add to directory */
 

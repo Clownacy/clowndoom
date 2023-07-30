@@ -573,7 +573,7 @@ void P_BulletSlope (mobj_t*     mo)
 void
 P_GunShot
 ( mobj_t*       mo,
-  d_bool       accurate )
+  d_bool        accurate )
 {
 	angle_t     angle;
 	int         damage;

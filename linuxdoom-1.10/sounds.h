@@ -32,7 +32,7 @@ struct sfxinfo_struct
 	const char* name;
 
 	/* Sfx singularity (only one at a time) */
-	d_bool             singularity;
+	d_bool              singularity;
 
 	/* Sfx priority */
 	int         priority;

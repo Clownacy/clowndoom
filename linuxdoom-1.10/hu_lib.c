@@ -91,7 +91,7 @@ d_bool HUlib_delCharFromTextLine(hu_textline_t* t)
 void
 HUlib_drawTextLine
 ( hu_textline_t*        l,
-  d_bool               drawcursor )
+  d_bool                drawcursor )
 {
 
 	int                 i;

@@ -67,7 +67,7 @@ extern  skill_t         startskill;
 extern  int             startepisode;
 extern  int             startmap;
 
-extern  d_bool         autostart;
+extern  d_bool          autostart;
 
 /* Selected by user. */
 extern  skill_t         gameskill;
@@ -75,7 +75,7 @@ extern  int             gameepisode;
 extern  int             gamemap;
 
 /* Nightmare mode flag, single player. */
-extern  d_bool         respawnmonsters;
+extern  d_bool          respawnmonsters;
 
 /* Netgame? Only true if >1 player. */
 extern  d_bool netgame;
@@ -121,10 +121,10 @@ extern  d_bool menuactive;     /* Menu overlayed? */
 extern  d_bool paused;         /* Game Pause? */
 
 
-extern  d_bool         viewactive;
+extern  d_bool          viewactive;
 
-extern  d_bool         nodrawers;
-extern  d_bool         noblit;
+extern  d_bool          nodrawers;
+extern  d_bool          noblit;
 
 extern  int             viewwindowx;
 extern  int             viewwindowy;
@@ -170,7 +170,7 @@ extern  d_bool demoplayback;
 extern  d_bool demorecording;
 
 /* Quit after playing a demo from cmdline. */
-extern  d_bool         singledemo;
+extern  d_bool          singledemo;
 
 
 
@@ -198,7 +198,7 @@ extern  int             gametic;
 extern  player_t        players[MAXPLAYERS];
 
 /* Alive? Disconnected? */
-extern  d_bool         playeringame[MAXPLAYERS];
+extern  d_bool          playeringame[MAXPLAYERS];
 
 
 /* Player spawn spots for deathmatch. */
@@ -230,7 +230,7 @@ extern  char            basedefault[1024];
 extern  FILE*           debugfile;
 
 /* if true, load all graphics at level load */
-extern  d_bool         precache;
+extern  d_bool          precache;
 
 
 /* wipegamestate can be set to -1 */
@@ -240,7 +240,7 @@ extern  gamestate_t     wipegamestate;
 extern  int             mouseSensitivity;
 /* ? */
 /* debug flag to cancel adaptiveness */
-extern  d_bool         singletics;
+extern  d_bool          singletics;
 
 extern  int             bodyqueslot;
 
