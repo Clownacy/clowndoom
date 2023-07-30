@@ -97,88 +97,87 @@
 typedef enum
 {
 	/* Call P_SpecialThing when touched. */
-	MF_SPECIAL          = 1,
+	MF_SPECIAL          = 1 << 0,
 	/* Blocks. */
-	MF_SOLID            = 2,
+	MF_SOLID            = 1 << 1,
 	/* Can be hit. */
-	MF_SHOOTABLE        = 4,
+	MF_SHOOTABLE        = 1 << 2,
 	/* Don't use the sector links (invisible but touchable). */
-	MF_NOSECTOR         = 8,
+	MF_NOSECTOR         = 1 << 3,
 	/* Don't use the blocklinks (inert but displayable) */
-	MF_NOBLOCKMAP       = 16,
+	MF_NOBLOCKMAP       = 1 << 4,
 
 	/* Not to be activated by sound, deaf monster. */
-	MF_AMBUSH           = 32,
+	MF_AMBUSH           = 1 << 5,
 	/* Will try to attack right back. */
-	MF_JUSTHIT          = 64,
+	MF_JUSTHIT          = 1 << 6,
 	/* Will take at least one step before attacking. */
-	MF_JUSTATTACKED     = 128,
+	MF_JUSTATTACKED     = 1 << 7,
 	/* On level spawning (initial position), */
 	/*  hang from ceiling instead of stand on floor. */
-	MF_SPAWNCEILING     = 256,
+	MF_SPAWNCEILING     = 1 << 8,
 	/* Don't apply gravity (every tic), */
 	/*  that is, object will float, keeping current height */
 	/*  or changing it actively. */
-	MF_NOGRAVITY        = 512,
+	MF_NOGRAVITY        = 1 << 9,
 
 	/* Movement flags. */
 	/* This allows jumps from high places. */
-	MF_DROPOFF          = 0x400,
+	MF_DROPOFF          = 1 << 10,
 	/* For players, will pick up items. */
-	MF_PICKUP           = 0x800,
+	MF_PICKUP           = 1 << 11,
 	/* Player cheat. ??? */
-	MF_NOCLIP           = 0x1000,
+	MF_NOCLIP           = 1 << 12,
 	/* Player: keep info about sliding along walls. */
-	MF_SLIDE            = 0x2000,
+	MF_SLIDE            = 1 << 13,
 	/* Allow moves to any height, no gravity. */
 	/* For active floaters, e.g. cacodemons, pain elementals. */
-	MF_FLOAT            = 0x4000,
+	MF_FLOAT            = 1 << 14,
 	/* Don't cross lines */
 	/*   ??? or look at heights on teleport. */
-	MF_TELEPORT         = 0x8000,
+	MF_TELEPORT         = 1 << 15,
 	/* Don't hit same species, explode on block. */
 	/* Player missiles as well as fireballs of various kinds. */
-	MF_MISSILE          = 0x10000,
+	MF_MISSILE          = 1 << 16,
 	/* Dropped by a demon, not level spawned. */
 	/* E.g. ammo clips dropped by dying former humans. */
-	MF_DROPPED          = 0x20000,
+	MF_DROPPED          = 1 << 17,
 	/* Use fuzzy draw (shadow demons or spectres), */
 	/*  temporary player invisibility powerup. */
-	MF_SHADOW           = 0x40000,
+	MF_SHADOW           = 1 << 18,
 	/* Flag: don't bleed when shot (use puff), */
 	/*  barrels and shootable furniture shall not bleed. */
-	MF_NOBLOOD          = 0x80000,
+	MF_NOBLOOD          = 1 << 19,
 	/* Don't stop moving halfway off a step, */
 	/*  that is, have dead bodies slide down all the way. */
-	MF_CORPSE           = 0x100000,
+	MF_CORPSE           = 1 << 20,
 	/* Floating to a height for a move, ??? */
 	/*  don't auto float to target's height. */
-	MF_INFLOAT          = 0x200000,
+	MF_INFLOAT          = 1 << 21,
 
 	/* On kill, count this enemy object */
 	/*  towards intermission kill total. */
 	/* Happy gathering. */
-	MF_COUNTKILL        = 0x400000,
+	MF_COUNTKILL        = 1 << 22,
 
 	/* On picking up, count this item object */
 	/*  towards intermission item total. */
-	MF_COUNTITEM        = 0x800000,
+	MF_COUNTITEM        = 1 << 23,
 
 	/* Special handling: skull in flight. */
 	/* Neither a cacodemon nor a missile. */
-	MF_SKULLFLY         = 0x1000000,
+	MF_SKULLFLY         = 1 << 24,
 
 	/* Don't spawn this object */
 	/*  in death match mode (e.g. key cards). */
-	MF_NOTDMATCH        = 0x2000000,
+	MF_NOTDMATCH        = 1 << 25,
 
 	/* Player sprites in multiplayer modes are modified */
 	/*  using an internal color lookup table for re-indexing. */
 	/* If 0x4 0x8 or 0xc, */
 	/*  use a translation table for player colormaps */
-	MF_TRANSLATION      = 0xc000000,
-	/* Hmm ???. */
-	MF_TRANSSHIFT       = 26
+	MF_TRANSSHIFT = 26,
+	MF_TRANSLATION      = 3 << MF_TRANSSHIFT
 
 } mobjflag_t;
 
