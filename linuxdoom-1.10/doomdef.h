@@ -78,16 +78,13 @@ typedef enum
 /* #define X11_DGA              1 */
 
 
-/* It is educational but futile to change this */
-/*  scaling e.g. to 2. Drawing of status bar, */
-/*  menues etc. is tied to the scale implied */
-/*  by the graphics. */
 #define SCREEN_MUL              1
 
-#define SCREENWIDTH  320
-#define SCREENHEIGHT 200
+#define SCREENWIDTH  (320*SCREEN_MUL)
+#define SCREENHEIGHT (200*SCREEN_MUL)
 
 #define SCREEN_X_OFFSET ((SCREENWIDTH - 320) / 2)
+#define SCREEN_Y_OFFSET ((SCREENHEIGHT - 200) / 2)
 
 
 

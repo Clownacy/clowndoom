@@ -37,8 +37,8 @@
 #define LOWERSPEED      (FRACUNIT*6)
 #define RAISESPEED      (FRACUNIT*6)
 
-#define WEAPONBOTTOM    ((((SCREENHEIGHT-200)/2)+128)*FRACUNIT)
-#define WEAPONTOP       ((((SCREENHEIGHT-200)/2)+32)*FRACUNIT)
+#define WEAPONBOTTOM    ((SCREEN_Y_OFFSET+128)*FRACUNIT)
+#define WEAPONTOP       ((SCREEN_Y_OFFSET+32)*FRACUNIT)
 
 
 /* plasma cells for a bfg attack */

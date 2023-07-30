@@ -72,6 +72,13 @@ V_DrawPatch
   const patch_t*        patch);
 
 void
+V_DrawPatchScaled
+( int           x,
+  int           y,
+  int           scrn,
+  const patch_t*        patch);
+
+void
 V_DrawPatchDirect
 ( int           x,
   int           y,

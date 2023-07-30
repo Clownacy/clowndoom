@@ -80,8 +80,8 @@ STlib_drawNum
 	int         numdigits = n->width;
 	int         num = *n->num;
 
-	int         w = SHORT(n->p[0]->width);
-	int         h = SHORT(n->p[0]->height);
+	int         w = SHORT(n->p[0]->width) * SCREEN_MUL;
+	int         h = SHORT(n->p[0]->height) * SCREEN_MUL;
 	int         x = n->x;
 
 	int         neg;
@@ -118,19 +118,19 @@ STlib_drawNum
 
 	/* in the special case of 0, you draw 0 */
 	if (!num)
-		V_DrawPatch(x - w, n->y, FG, n->p[ 0 ]);
+		V_DrawPatchScaled(x - w, n->y, FG, n->p[ 0 ]);
 
 	/* draw the new number */
 	while (num && numdigits--)
 	{
 		x -= w;
-		V_DrawPatch(x, n->y, FG, n->p[ num % 10 ]);
+		V_DrawPatchScaled(x, n->y, FG, n->p[ num % 10 ]);
 		num /= 10;
 	}
 
 	/* draw a minus sign if necessary */
 	if (neg)
-		V_DrawPatch(x - 8, n->y, FG, sttminus);
+		V_DrawPatchScaled(x - 8, n->y, FG, sttminus);
 }
 
 
@@ -166,7 +166,7 @@ STlib_updatePercent
   int                   refresh )
 {
 	if (refresh && *per->n.on)
-		V_DrawPatch(per->n.x, per->n.y, FG, per->p);
+		V_DrawPatchScaled(per->n.x, per->n.y, FG, per->p);
 
 	STlib_updateNum(&per->n, refresh);
 }
@@ -208,17 +208,17 @@ STlib_updateMultIcon
 	{
 		if (mi->oldinum != -1)
 		{
-			x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset);
-			y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset);
-			w = SHORT(mi->p[mi->oldinum]->width);
-			h = SHORT(mi->p[mi->oldinum]->height);
+			x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset) * SCREEN_MUL;
+			y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset) * SCREEN_MUL;
+			w = SHORT(mi->p[mi->oldinum]->width) * SCREEN_MUL;
+			h = SHORT(mi->p[mi->oldinum]->height) * SCREEN_MUL;
 
 			if (y - ST_Y < 0)
 				I_Error("updateMultIcon: y - ST_Y < 0");
 
 			V_CopyRect(x, y-ST_Y, BG, w, h, x, y, FG);
 		}
-		V_DrawPatch(mi->x, mi->y, FG, mi->p[*mi->inum]);
+		V_DrawPatchScaled(mi->x, mi->y, FG, mi->p[*mi->inum]);
 		mi->oldinum = *mi->inum;
 	}
 }
@@ -257,16 +257,16 @@ STlib_updateBinIcon
 	if (*bi->on
 		&& (bi->oldval != *bi->val || refresh))
 	{
-		x = bi->x - SHORT(bi->p->leftoffset);
-		y = bi->y - SHORT(bi->p->topoffset);
-		w = SHORT(bi->p->width);
-		h = SHORT(bi->p->height);
+		x = bi->x - SHORT(bi->p->leftoffset) * SCREEN_MUL;
+		y = bi->y - SHORT(bi->p->topoffset) * SCREEN_MUL;
+		w = SHORT(bi->p->width) * SCREEN_MUL;
+		h = SHORT(bi->p->height) * SCREEN_MUL;
 
 		if (y - ST_Y < 0)
 			I_Error("updateBinIcon: y - ST_Y < 0");
 
 		if (*bi->val)
-			V_DrawPatch(bi->x, bi->y, FG, bi->p);
+			V_DrawPatchScaled(bi->x, bi->y, FG, bi->p);
 		else
 			V_CopyRect(x, y-ST_Y, BG, w, h, x, y, FG);
 

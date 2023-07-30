@@ -23,6 +23,7 @@
 #include "doomdef.h"
 
 #include "i_system.h"
+#include "st_stuff.h"
 #include "z_zone.h"
 #include "w_wad.h"
 
@@ -40,7 +41,9 @@
 #define MAXHEIGHT                       832
 
 /* status bar height at bottom of screen */
-#define SBARHEIGHT              32
+#define SBARHEIGHT              ST_HEIGHT
+
+#define BEVEL_SIZE (8*SCREEN_MUL)
 
 /* All drawing to the view buffer is accomplished in this file. */
 /* The other refresh files only know about ccordinates, */
@@ -826,7 +829,7 @@ R_InitBuffer
 	for (i=0 ; i<width ; i++)
 		columnofs[i] = viewwindowx + i;
 
-	/* Samw with base row offset. */
+	/* Same with base row offset. */
 	if (width == SCREENWIDTH)
 		viewwindowy = 0;
 	else
@@ -871,6 +874,7 @@ void R_FillBackScreen (void)
 	src = (unsigned char*)W_CacheLumpName (name, PU_CACHE);
 	dest = screens[1];
 
+	/* TODO: Scale this. */
 	for (y=0 ; y<SCREENHEIGHT-SBARHEIGHT ; y++)
 	{
 		for (x=0 ; x<SCREENWIDTH/64 ; x++)
@@ -888,39 +892,39 @@ void R_FillBackScreen (void)
 
 	patch = (patch_t*)W_CacheLumpName ("brdr_t",PU_CACHE);
 
-	for (x=0 ; x<scaledviewwidth ; x+=8)
-		V_DrawPatch (viewwindowx+x,viewwindowy-8,1,patch);
+	for (x=0 ; x<scaledviewwidth ; x+=BEVEL_SIZE)
+		V_DrawPatchScaled (viewwindowx+x,viewwindowy-BEVEL_SIZE,1,patch);
 	patch = (patch_t*)W_CacheLumpName ("brdr_b",PU_CACHE);
 
-	for (x=0 ; x<scaledviewwidth ; x+=8)
-		V_DrawPatch (viewwindowx+x,viewwindowy+viewheight,1,patch);
+	for (x=0 ; x<scaledviewwidth ; x+=BEVEL_SIZE)
+		V_DrawPatchScaled(viewwindowx+x,viewwindowy+viewheight,1,patch);
 	patch = (patch_t*)W_CacheLumpName ("brdr_l",PU_CACHE);
 
-	for (y=0 ; y<viewheight ; y+=8)
-		V_DrawPatch (viewwindowx-8,viewwindowy+y,1,patch);
+	for (y=0 ; y<viewheight ; y+=BEVEL_SIZE)
+		V_DrawPatchScaled(viewwindowx-BEVEL_SIZE,viewwindowy+y,1,patch);
 	patch = (patch_t*)W_CacheLumpName ("brdr_r",PU_CACHE);
 
-	for (y=0 ; y<viewheight ; y+=8)
-		V_DrawPatch (viewwindowx+scaledviewwidth,viewwindowy+y,1,patch);
+	for (y=0 ; y<viewheight ; y+=BEVEL_SIZE)
+		V_DrawPatchScaled(viewwindowx+scaledviewwidth,viewwindowy+y,1,patch);
 
 
 	/* Draw beveled edge. */
-	V_DrawPatch (viewwindowx-8,
-				 viewwindowy-8,
+	V_DrawPatchScaled (viewwindowx-BEVEL_SIZE,
+				 viewwindowy-BEVEL_SIZE,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_tl",PU_CACHE));
 
-	V_DrawPatch (viewwindowx+scaledviewwidth,
-				 viewwindowy-8,
+	V_DrawPatchScaled(viewwindowx+scaledviewwidth,
+				 viewwindowy-BEVEL_SIZE,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_tr",PU_CACHE));
 
-	V_DrawPatch (viewwindowx-8,
+	V_DrawPatchScaled(viewwindowx-BEVEL_SIZE,
 				 viewwindowy+viewheight,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_bl",PU_CACHE));
 
-	V_DrawPatch (viewwindowx+scaledviewwidth,
+	V_DrawPatchScaled(viewwindowx+scaledviewwidth,
 				 viewwindowy+viewheight,
 				 1,
 				 (patch_t*)W_CacheLumpName ("brdr_br",PU_CACHE));

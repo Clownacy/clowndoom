@@ -184,14 +184,13 @@ V_CopyRect
 }
 
 
-/* V_DrawPatch */
-/* Masks a column based masked pic to the screen. */
-void
-V_DrawPatch
+static void
+V_DrawPatchInternal
 ( int           x,
   int           y,
   int           scrn,
-  const patch_t*        patch )
+  const patch_t*        patch,
+  int           scale )
 {
 
 	int         count;
@@ -202,13 +201,16 @@ V_DrawPatch
 	unsigned char*       source;
 	int         w;
 
-	y -= SHORT(patch->topoffset);
-	x -= SHORT(patch->leftoffset);
+	const int scaled_width = SHORT(patch->width) * scale;
+	const int scaled_height = SHORT(patch->height) * scale;
+
+	y -= SHORT(patch->topoffset) * scale;
+	x -= SHORT(patch->leftoffset) * scale;
 #ifdef RANGECHECK
 	if (x<0
-		||x+SHORT(patch->width) >SCREENWIDTH
+		||x+scaled_width >SCREENWIDTH
 		|| y<0
-		|| y+SHORT(patch->height)>SCREENHEIGHT
+		|| y+scaled_height>SCREENHEIGHT
 		|| (unsigned)scrn>4)
 	{
 	  fprintf( stderr, "Patch at %d,%d exceeds LFB\n", x,y );
@@ -219,14 +221,14 @@ V_DrawPatch
 #endif
 
 	if (!scrn)
-		V_MarkRect (x, y, SHORT(patch->width), SHORT(patch->height));
+		V_MarkRect (x, y, scaled_width, scaled_height);
 
 	col = 0;
 	desttop = screens[scrn]+y*SCREENWIDTH+x;
 
 	w = SHORT(patch->width);
 
-	for ( ; col<w ; x++, col++, desttop++)
+	for ( ; col<w ; col++, desttop += scale)
 	{
 		column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
 
@@ -234,19 +236,55 @@ V_DrawPatch
 		while (column->topdelta != 0xff )
 		{
 			source = (unsigned char *)column + 3;
-			dest = desttop + column->topdelta*SCREENWIDTH;
+			dest = desttop + column->topdelta*SCREENWIDTH*scale;
 			count = column->length;
 
 			while (count--)
 			{
-				*dest = *source++;
-				dest += SCREENWIDTH;
+				int y;
+
+				for (y = 0; y < scale; ++y)
+				{
+					int x;
+
+					for (x = 0; x < scale; ++x)
+						dest[x] = *source;
+
+					dest += SCREENWIDTH;
+				}
+
+				++source;
 			}
 			column = (column_t *)(  (unsigned char *)column + column->length
 									+ 4 );
 		}
 	}
 }
+
+
+/* V_DrawPatch */
+/* Masks a column based masked pic to the screen. */
+void
+V_DrawPatch
+( int           x,
+  int           y,
+  int           scrn,
+  const patch_t*        patch)
+{
+	V_DrawPatchInternal(x, y, scrn, patch, 1);
+}
+
+
+void
+V_DrawPatchScaled
+( int           x,
+  int           y,
+  int           scrn,
+  const patch_t*        patch)
+{
+	V_DrawPatchInternal(x, y, scrn, patch, SCREEN_MUL);
+}
+
 
 /* V_DrawPatchFlipped */
 /* Masks a column based masked pic to the screen. */
