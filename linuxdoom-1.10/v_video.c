@@ -189,8 +189,10 @@ V_DrawPatchInternal
 	unsigned char*       source;
 	int         w;
 
+#ifdef RANGECHECK
 	const int scaled_width = SHORT(patch->width) * scale;
 	const int scaled_height = SHORT(patch->height) * scale;
+#endif
 
 	y -= SHORT(patch->topoffset) * scale;
 	x -= SHORT(patch->leftoffset) * scale;

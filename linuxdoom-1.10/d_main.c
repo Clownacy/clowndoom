@@ -605,7 +605,7 @@ void IdentifyVersion (void)
 		};
 
 		const size_t wad_directory_length = strlen(doomwaddir);
-		char* const path = (char*)malloc(wad_directory_length + 1 + sizeof(wads[0].filename) + 4 + 1);
+		char* const path = (char*)malloc(wad_directory_length + 1 + sizeof(wads[0].filename) - 1 + 4 + 1);
 
 		gamemode = indetermined;
 		gamemission = none;
@@ -620,7 +620,7 @@ void IdentifyVersion (void)
 
 			for (i = 0; i < D_COUNT_OF(wads); ++i)
 			{
-				sprintf(&path[wad_directory_length + 1], "%s.wad", wads[i].filename);
+				sprintf(&path[wad_directory_length + 1], "%.*s.wad", (int)sizeof(wads[i].filename) - 1, wads[i].filename);
 
 				if (M_FileExists(path))
 				{
