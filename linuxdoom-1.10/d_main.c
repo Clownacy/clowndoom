@@ -25,6 +25,7 @@
 #define FGCOLOR         8
 
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -504,12 +505,18 @@ char            title[128];
 /* D_AddFile */
 void D_AddFile (const char *file)
 {
-	int     numwadfiles;
+	size_t i;
 
-	for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
-		;
+	for (i = 0; i < D_COUNT_OF(wadfiles); ++i)
+	{
+		if (wadfiles[i] == NULL)
+		{
+			wadfiles[i] = M_strdup(file);
+			return;
+		}
+	}
 
-	wadfiles[numwadfiles] = M_strdup(file);
+	printf("D_AddFile: Too many wads!\n");
 }
 
 /* IdentifyVersion */
