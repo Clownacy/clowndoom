@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	Main program, simply calls D_DoomMain high level loop.
+        Main program, simply calls D_DoomMain high level loop.
 
 ******************************************************************************/
 
@@ -28,13 +28,13 @@
 
 int
 main
-( int		argc,
-  char**	argv )
+( int           argc,
+  char**        argv )
 {
-    myargc = argc;
-    myargv = argv;
+	myargc = argc;
+	myargv = argv;
 
-    D_DoomMain ();
+	D_DoomMain ();
 
-    return 0;
+	return 0;
 }

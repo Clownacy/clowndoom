@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	The not so system specific sound interface.
+        The not so system specific sound interface.
 
 ******************************************************************************/
 
@@ -31,8 +31,8 @@
 /*  allocates channel buffer, sets S_sfx lookup. */
 void
 S_Init
-( int		sfxVolume,
-  int		musicVolume );
+( int           sfxVolume,
+  int           musicVolume );
 
 
 
@@ -47,17 +47,17 @@ void S_Start(void);
 /*  using <sound_id> from sounds.h */
 void
 S_StartSound
-( const mobj_t*	origin,
-  int		sound_id );
+( const mobj_t* origin,
+  int           sound_id );
 
 
 
 /* Will start a sound at a given volume. */
 void
 S_StartSoundAtVolume
-( const mobj_t*	origin,
-  int		sound_id,
-  int		volume );
+( const mobj_t* origin,
+  int           sound_id,
+  int           volume );
 
 
 /* Stop sound for thing at <origin> */
@@ -71,8 +71,8 @@ void S_StartMusic(int music_id);
 /*  and set whether looping */
 void
 S_ChangeMusic
-( int		music_id,
-  boolean	looping );
+( int           music_id,
+  boolean       looping );
 
 /* Stops the music fer sure. */
 void S_StopMusic(void);

@@ -36,14 +36,14 @@
 
 
 
-static size_t	mb_used = 6;
+static size_t   mb_used = 6;
 
 
 void
 I_Tactile
-( int	on,
-  int	off,
-  int	total )
+( int   on,
+  int   off,
+  int   total )
 {
   /* UNUSED. */
   (void)on;
@@ -51,22 +51,22 @@ I_Tactile
   (void)total;
 }
 
-static ticcmd_t	emptycmd;
-ticcmd_t*	I_BaseTiccmd(void)
+static ticcmd_t emptycmd;
+ticcmd_t*       I_BaseTiccmd(void)
 {
-    return &emptycmd;
+	return &emptycmd;
 }
 
 
 size_t  I_GetHeapSize (void)
 {
-    return mb_used*1024*1024;
+	return mb_used*1024*1024;
 }
 
-byte* I_ZoneBase (size_t*	size)
+byte* I_ZoneBase (size_t*       size)
 {
-    *size = mb_used*1024*1024;
-    return (byte *) malloc (*size);
+	*size = mb_used*1024*1024;
+	return (byte *) malloc (*size);
 }
 
 
@@ -75,7 +75,7 @@ byte* I_ZoneBase (size_t*	size)
 /* returns time in 1/70th second tics */
 int  I_GetTime (void)
 {
-    return IB_GetTime();
+	return IB_GetTime();
 }
 
 
@@ -83,46 +83,46 @@ int  I_GetTime (void)
 /* I_Init */
 void I_Init (void)
 {
-    IB_Init();
+	IB_Init();
 
-    I_StartupSound();
-    /*  I_InitGraphics(); */
+	I_StartupSound();
+	/*  I_InitGraphics(); */
 }
 
 /* I_Quit */
 void I_Quit (void)
 {
-    D_QuitNetGame ();
-    I_ShutdownSound();
-    M_SaveDefaults ();
-    I_ShutdownGraphics();
+	D_QuitNetGame ();
+	I_ShutdownSound();
+	M_SaveDefaults ();
+	I_ShutdownGraphics();
 
-    IB_Quit();
+	IB_Quit();
 
-    exit(0);
+	exit(0);
 }
 
 void I_WaitVBL(int count)
 {
-    IB_WaitVBL(count);
+	IB_WaitVBL(count);
 }
 
 void I_BeginRead(void)
 {
-    /* This used to be for drawing the disk icon - see the Hexen source code */
+	/* This used to be for drawing the disk icon - see the Hexen source code */
 }
 
 void I_EndRead(void)
 {
 }
 
-byte*	I_AllocLow(size_t length)
+byte*   I_AllocLow(size_t length)
 {
-    byte*	mem;
+	byte*       mem;
 
-    mem = (byte *)malloc (length);
-    memset (mem,0,length);
-    return mem;
+	mem = (byte *)malloc (length);
+	memset (mem,0,length);
+	return mem;
 }
 
 
@@ -131,28 +131,28 @@ extern boolean demorecording;
 
 void I_Error (const char *error, ...)
 {
-    va_list	argptr;
+	va_list     argptr;
 
-    /* Message first. */
-    va_start (argptr,error);
-    fprintf (stderr, "Error: ");
-    vfprintf (stderr,error,argptr);
-    fprintf (stderr, "\n");
-    va_end (argptr);
+	/* Message first. */
+	va_start (argptr,error);
+	fprintf (stderr, "Error: ");
+	vfprintf (stderr,error,argptr);
+	fprintf (stderr, "\n");
+	va_end (argptr);
 
-    fflush( stderr );
+	fflush( stderr );
 
-    /* Shutdown. Here might be other errors. */
-    if (demorecording)
-	G_CheckDemoStatus();
+	/* Shutdown. Here might be other errors. */
+	if (demorecording)
+		G_CheckDemoStatus();
 
-    D_QuitNetGame ();
-    I_ShutdownGraphics();
+	D_QuitNetGame ();
+	I_ShutdownGraphics();
 
-    exit(-1);
+	exit(-1);
 }
 
 void I_Sleep(void)
 {
-    IB_Sleep();
+	IB_Sleep();
 }

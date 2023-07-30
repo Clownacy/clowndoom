@@ -27,31 +27,31 @@
 /* returns time in 1/70th second tics */
 int  IB_GetTime (void)
 {
-    return SDL_GetTicks() * TICRATE / 1000;
+	return SDL_GetTicks() * TICRATE / 1000;
 }
 
 
 /* IB_Init */
 void IB_Init (void)
 {
-    SDL_Init(0);
+	SDL_Init(0);
 }
 
 
 /* IB_Quit */
 void IB_Quit (void)
 {
-    SDL_Quit();
+	SDL_Quit();
 }
 
 
 void IB_WaitVBL(int count)
 {
-    SDL_Delay(count * 1000 / 70);
+	SDL_Delay(count * 1000 / 70);
 }
 
 
 void IB_Sleep(void)
 {
-    SDL_Delay(1);
+	SDL_Delay(1);
 }

@@ -13,8 +13,8 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	Simple basic typedefs, isolated here to make it easier
-  	 separating modules.
+        Simple basic typedefs, isolated here to make it easier
+         separating modules.
 
 ******************************************************************************/
 
@@ -35,18 +35,18 @@ typedef unsigned char byte;
 
 #include <limits.h>
 
-#define MAXCHAR		SCHAR_MAX
-#define MAXSHORT	SHRT_MAX
+#define MAXCHAR         SCHAR_MAX
+#define MAXSHORT        SHRT_MAX
 
 /* Max pos 32-bit int. */
-#define MAXINT		INT_MAX
-#define MAXLONG		LONG_MAX
-#define MINCHAR		SCHAR_MIN
-#define MINSHORT	SHRT_MIN
+#define MAXINT          INT_MAX
+#define MAXLONG         LONG_MAX
+#define MINCHAR         SCHAR_MIN
+#define MINSHORT        SHRT_MIN
 
 /* Max negative 32-bit integer. */
-#define MININT		INT_MIN
-#define MINLONG		LONG_MIN
+#define MININT          INT_MIN
+#define MINLONG         LONG_MIN
 
 
 

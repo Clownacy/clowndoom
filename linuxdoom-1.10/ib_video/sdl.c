@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	DOOM graphics stuff for X11, UNIX.
+        DOOM graphics stuff for X11, UNIX.
 
 ******************************************************************************/
 
@@ -47,72 +47,72 @@ static int xlatekey(SDLKey keysym)
 #endif
 {
 
-    int rc;
+	int rc;
 
-    switch(rc = keysym)
-    {
-      case SDLK_LEFT:	rc = KEY_LEFTARROW;	break;
-      case SDLK_RIGHT:	rc = KEY_RIGHTARROW;	break;
-      case SDLK_DOWN:	rc = KEY_DOWNARROW;	break;
-      case SDLK_UP:	rc = KEY_UPARROW;	break;
-      case SDLK_ESCAPE:	rc = KEY_ESCAPE;	break;
-      case SDLK_RETURN:	rc = KEY_ENTER;		break;
-      case SDLK_TAB:	rc = KEY_TAB;		break;
-      case SDLK_F1:	rc = KEY_F1;		break;
-      case SDLK_F2:	rc = KEY_F2;		break;
-      case SDLK_F3:	rc = KEY_F3;		break;
-      case SDLK_F4:	rc = KEY_F4;		break;
-      case SDLK_F5:	rc = KEY_F5;		break;
-      case SDLK_F6:	rc = KEY_F6;		break;
-      case SDLK_F7:	rc = KEY_F7;		break;
-      case SDLK_F8:	rc = KEY_F8;		break;
-      case SDLK_F9:	rc = KEY_F9;		break;
-      case SDLK_F10:	rc = KEY_F10;		break;
-      case SDLK_F11:	rc = KEY_F11;		break;
-      case SDLK_F12:	rc = KEY_F12;		break;
+	switch(rc = keysym)
+	{
+	  case SDLK_LEFT:   rc = KEY_LEFTARROW;     break;
+	  case SDLK_RIGHT:  rc = KEY_RIGHTARROW;    break;
+	  case SDLK_DOWN:   rc = KEY_DOWNARROW;     break;
+	  case SDLK_UP:     rc = KEY_UPARROW;       break;
+	  case SDLK_ESCAPE: rc = KEY_ESCAPE;        break;
+	  case SDLK_RETURN: rc = KEY_ENTER;         break;
+	  case SDLK_TAB:    rc = KEY_TAB;           break;
+	  case SDLK_F1:     rc = KEY_F1;            break;
+	  case SDLK_F2:     rc = KEY_F2;            break;
+	  case SDLK_F3:     rc = KEY_F3;            break;
+	  case SDLK_F4:     rc = KEY_F4;            break;
+	  case SDLK_F5:     rc = KEY_F5;            break;
+	  case SDLK_F6:     rc = KEY_F6;            break;
+	  case SDLK_F7:     rc = KEY_F7;            break;
+	  case SDLK_F8:     rc = KEY_F8;            break;
+	  case SDLK_F9:     rc = KEY_F9;            break;
+	  case SDLK_F10:    rc = KEY_F10;           break;
+	  case SDLK_F11:    rc = KEY_F11;           break;
+	  case SDLK_F12:    rc = KEY_F12;           break;
 
-      case SDLK_BACKSPACE:
-      case SDLK_DELETE:	rc = KEY_BACKSPACE;	break;
+	  case SDLK_BACKSPACE:
+	  case SDLK_DELETE: rc = KEY_BACKSPACE;     break;
 
-      case SDLK_PAUSE:	rc = KEY_PAUSE;		break;
+	  case SDLK_PAUSE:  rc = KEY_PAUSE;         break;
 
-      case SDLK_KP_EQUALS:
-      case SDLK_EQUALS:	rc = KEY_EQUALS;	break;
+	  case SDLK_KP_EQUALS:
+	  case SDLK_EQUALS: rc = KEY_EQUALS;        break;
 
-      case SDLK_KP_MINUS:
-      case SDLK_MINUS:	rc = KEY_MINUS;		break;
+	  case SDLK_KP_MINUS:
+	  case SDLK_MINUS:  rc = KEY_MINUS;         break;
 
-      case SDLK_LSHIFT:
-      case SDLK_RSHIFT:
-	rc = KEY_RSHIFT;
-	break;
+	  case SDLK_LSHIFT:
+	  case SDLK_RSHIFT:
+		rc = KEY_RSHIFT;
+		break;
 
-      case SDLK_LCTRL:
-      case SDLK_RCTRL:
-	rc = KEY_RCTRL;
-	break;
+	  case SDLK_LCTRL:
+	  case SDLK_RCTRL:
+		rc = KEY_RCTRL;
+		break;
 
-      case SDLK_LALT:
-      case SDLK_RALT:
+	  case SDLK_LALT:
+	  case SDLK_RALT:
 #if SDL_MAJOR_VERSION >= 2
-      case SDLK_LGUI:
-      case SDLK_RGUI:
+	  case SDLK_LGUI:
+	  case SDLK_RGUI:
 #else
-      case SDLK_LMETA:
-      case SDLK_RMETA:
+	  case SDLK_LMETA:
+	  case SDLK_RMETA:
 #endif
-	rc = KEY_RALT;
-	break;
+		rc = KEY_RALT;
+		break;
 
-      default:
-	if (rc >= SDLK_SPACE && rc <= SDLK_BACKQUOTE)
-	    rc = rc - SDLK_SPACE + ' ';
-	else if (rc >= 'A' && rc <= 'Z')
-	    rc = rc - 'A' + 'a';
-	break;
-    }
+	  default:
+		if (rc >= SDLK_SPACE && rc <= SDLK_BACKQUOTE)
+			rc = rc - SDLK_SPACE + ' ';
+		else if (rc >= 'A' && rc <= 'Z')
+			rc = rc - 'A' + 'a';
+		break;
+	}
 
-    return rc;
+	return rc;
 
 }
 
@@ -120,157 +120,157 @@ static int xlatekey(SDLKey keysym)
 /* IB_StartTic */
 void IB_StartTic (void)
 {
-    event_t event;
-    static int button_state;
-    SDL_Event sdl_event;
+	event_t event;
+	static int button_state;
+	SDL_Event sdl_event;
 
-    while (SDL_PollEvent(&sdl_event))
-    {
-	switch (sdl_event.type)
+	while (SDL_PollEvent(&sdl_event))
 	{
-	    case SDL_QUIT:
-		I_Quit();
-		break;
+		switch (sdl_event.type)
+		{
+			case SDL_QUIT:
+				I_Quit();
+				break;
 
-	    case SDL_KEYDOWN:
-		event.type = ev_keydown;
-		event.data1 = xlatekey(sdl_event.key.keysym.sym);
-		D_PostEvent(&event);
-		/* fprintf(stderr, "k"); */
-		break;
-	    case SDL_KEYUP:
-		event.type = ev_keyup;
-		event.data1 = xlatekey(sdl_event.key.keysym.sym);
-		D_PostEvent(&event);
-		/* fprintf(stderr, "ku"); */
-		break;
-	    case SDL_MOUSEBUTTONDOWN:
-		switch (sdl_event.button.button)
-		{
-		    case SDL_BUTTON_LEFT:
-			button_state |= 1;
-			break;
-		    case SDL_BUTTON_MIDDLE:
-			button_state |= 2;
-			break;
-		    case SDL_BUTTON_RIGHT:
-			button_state |= 4;
-			break;
-		}
-		event.type = ev_mouse;
-		event.data1 = button_state;
-		event.data2 = event.data3 = 0;
-		D_PostEvent(&event);
-		/* fprintf(stderr, "b"); */
-		break;
-	    case SDL_MOUSEBUTTONUP:
-		switch (sdl_event.button.button)
-		{
-		    case SDL_BUTTON_LEFT:
-			button_state &= ~1;
-			break;
-		    case SDL_BUTTON_MIDDLE:
-			button_state &= ~2;
-			break;
-		    case SDL_BUTTON_RIGHT:
-			button_state &= ~4;
-			break;
-		}
-		event.type = ev_mouse;
-		event.data1 = button_state;
-		event.data2 = event.data3 = 0;
-		D_PostEvent(&event);
-		/* fprintf(stderr, "bu"); */
-		break;
-	    case SDL_MOUSEMOTION:
-		event.type = ev_mouse;
-		event.data1 = button_state;
-		event.data2 = sdl_event.motion.xrel * (1 << 5);
-		event.data3 = -sdl_event.motion.yrel * (1 << 5);
+			case SDL_KEYDOWN:
+				event.type = ev_keydown;
+				event.data1 = xlatekey(sdl_event.key.keysym.sym);
+				D_PostEvent(&event);
+				/* fprintf(stderr, "k"); */
+				break;
+			case SDL_KEYUP:
+				event.type = ev_keyup;
+				event.data1 = xlatekey(sdl_event.key.keysym.sym);
+				D_PostEvent(&event);
+				/* fprintf(stderr, "ku"); */
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				switch (sdl_event.button.button)
+				{
+					case SDL_BUTTON_LEFT:
+						button_state |= 1;
+						break;
+					case SDL_BUTTON_MIDDLE:
+						button_state |= 2;
+						break;
+					case SDL_BUTTON_RIGHT:
+						button_state |= 4;
+						break;
+				}
+				event.type = ev_mouse;
+				event.data1 = button_state;
+				event.data2 = event.data3 = 0;
+				D_PostEvent(&event);
+				/* fprintf(stderr, "b"); */
+				break;
+			case SDL_MOUSEBUTTONUP:
+				switch (sdl_event.button.button)
+				{
+					case SDL_BUTTON_LEFT:
+						button_state &= ~1;
+						break;
+					case SDL_BUTTON_MIDDLE:
+						button_state &= ~2;
+						break;
+					case SDL_BUTTON_RIGHT:
+						button_state &= ~4;
+						break;
+				}
+				event.type = ev_mouse;
+				event.data1 = button_state;
+				event.data2 = event.data3 = 0;
+				D_PostEvent(&event);
+				/* fprintf(stderr, "bu"); */
+				break;
+			case SDL_MOUSEMOTION:
+				event.type = ev_mouse;
+				event.data1 = button_state;
+				event.data2 = sdl_event.motion.xrel * (1 << 5);
+				event.data3 = -sdl_event.motion.yrel * (1 << 5);
 
-		if (event.data2 || event.data3)
-		{
-		    D_PostEvent(&event);
-		    /* fprintf(stderr, "m"); */
+				if (event.data2 || event.data3)
+				{
+					D_PostEvent(&event);
+					/* fprintf(stderr, "m"); */
+				}
+				break;
 		}
-		break;
 	}
-    }
 }
 
 
 void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 {
-    SDL_LockSurface(surface);
+	SDL_LockSurface(surface);
 
-    *pixels = surface->pixels;
-    *pitch = surface->pitch;
+	*pixels = surface->pixels;
+	*pitch = surface->pitch;
 }
 
 
 /* IB_FinishUpdate */
 void IB_FinishUpdate (void)
 {
-    SDL_UnlockSurface(surface);
+	SDL_UnlockSurface(surface);
 
 #if SDL_MAJOR_VERSION >= 2
-    SDL_UpdateWindowSurface(window);
+	SDL_UpdateWindowSurface(window);
 #else
-    SDL_Flip(surface);
+	SDL_Flip(surface);
 #endif
 }
 
 
 void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, unsigned char blue)
 {
-    unsigned int i;
+	unsigned int i;
 
-    const Uint32 color = SDL_MapRGB(surface->format, red, green, blue);
+	const Uint32 color = SDL_MapRGB(surface->format, red, green, blue);
 
-    for (i = 0; i < surface->format->BytesPerPixel; ++i)
-	bytes[i] = (color >> (i * 8)) & 0xFF;
+	for (i = 0; i < surface->format->BytesPerPixel; ++i)
+		bytes[i] = (color >> (i * 8)) & 0xFF;
 }
 
 
 void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel)
 {
 #if SDL_MAJOR_VERSION >= 2
-    SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 #else
-    SDL_InitSubSystem(SDL_INIT_VIDEO);
+	SDL_InitSubSystem(SDL_INIT_VIDEO);
 #endif
 
 #if SDL_MAJOR_VERSION >= 2
-    window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, 0);
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screen_width, screen_height, 0);
 
-    if (window == NULL)
-	I_Error("Could not create SDL window");
+	if (window == NULL)
+		I_Error("Could not create SDL window");
 
-    surface = SDL_GetWindowSurface(window);
+	surface = SDL_GetWindowSurface(window);
 #else
-    surface = SDL_SetVideoMode(screen_width, screen_height, 32, SDL_SWSURFACE | SDL_ANYFORMAT);
+	surface = SDL_SetVideoMode(screen_width, screen_height, 32, SDL_SWSURFACE | SDL_ANYFORMAT);
 
-    if (surface == NULL)
-	I_Error("Could not create SDL window surface");
+	if (surface == NULL)
+		I_Error("Could not create SDL window surface");
 
-    SDL_WM_SetCaption(title, title);
+	SDL_WM_SetCaption(title, title);
 #endif
 
-    *bytes_per_pixel = surface->format->BytesPerPixel;
+	*bytes_per_pixel = surface->format->BytesPerPixel;
 }
 
 
 void IB_ShutdownGraphics(void)
 {
 #if SDL_MAJOR_VERSION >= 2
-    SDL_FreeSurface(surface);
-    SDL_DestroyWindow(window);
+	SDL_FreeSurface(surface);
+	SDL_DestroyWindow(window);
 #endif
 
 #if SDL_MAJOR_VERSION >= 2
-    SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 #else
-    SDL_QuitSubSystem(SDL_INIT_VIDEO);
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 #endif
 }
 
@@ -278,9 +278,9 @@ void IB_ShutdownGraphics(void)
 void IB_GrabMouse(boolean grab)
 {
 #if SDL_MAJOR_VERSION >= 2
-    SDL_SetRelativeMouseMode(grab ? SDL_ENABLE : SDL_DISABLE);
+	SDL_SetRelativeMouseMode(grab ? SDL_ENABLE : SDL_DISABLE);
 #else
-    SDL_WM_GrabInput(grab ? SDL_GRAB_ON : SDL_GRAB_OFF);
-    SDL_ShowCursor(!grab);
+	SDL_WM_GrabInput(grab ? SDL_GRAB_ON : SDL_GRAB_OFF);
+	SDL_ShowCursor(!grab);
 #endif
 }

@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	Fixed point implementation.
+        Fixed point implementation.
 
 ******************************************************************************/
 
@@ -27,76 +27,76 @@
 
 typedef struct SplitInteger
 {
-	unsigned long splits[3];
+		unsigned long splits[3];
 } SplitInteger;
 
 static void Subtract(SplitInteger * const minuend, const SplitInteger * const subtrahend)
 {
-    unsigned long carry;
-    unsigned int i;
+	unsigned long carry;
+	unsigned int i;
 
-    carry = 0;
+	carry = 0;
 
-    for (i = 3; i-- != 0; )
-    {
-        const unsigned long difference = minuend->splits[i] - subtrahend->splits[i] + carry;
+	for (i = 3; i-- != 0; )
+	{
+		const unsigned long difference = minuend->splits[i] - subtrahend->splits[i] + carry;
 
-        /* Isolate and sign-extend the overflow to obtain the new carry. */
-        carry = difference >> 16;
-        carry = (carry & 0x7FFF) - (carry & 0x8000);
+		/* Isolate and sign-extend the overflow to obtain the new carry. */
+		carry = difference >> 16;
+		carry = (carry & 0x7FFF) - (carry & 0x8000);
 
-        /* Store result. */
-        minuend->splits[i] = difference & 0xFFFF;
-    }
+		/* Store result. */
+		minuend->splits[i] = difference & 0xFFFF;
+	}
 }
 
 static boolean GreaterThan(const SplitInteger * const a, const SplitInteger * const b)
 {
-    unsigned int i;
+	unsigned int i;
 
-    for (i = 0; i < 3; ++i)
-    {
-        if (a->splits[i] > b->splits[i])
-            return true;
-        else if (a->splits[i] < b->splits[i])
-            return false;
-    }
+	for (i = 0; i < 3; ++i)
+	{
+		if (a->splits[i] > b->splits[i])
+			return true;
+		else if (a->splits[i] < b->splits[i])
+			return false;
+	}
 
-    return false;
+	return false;
 }
 
 static void LeftShift(SplitInteger * const value)
 {
-    unsigned long carry;
-    unsigned int i;
+	unsigned long carry;
+	unsigned int i;
 
-    carry = 0;
+	carry = 0;
 
-    for (i = 3; i-- != 0; )
-    {
-        const unsigned long new_carry = value->splits[i] >> 15;
-        value->splits[i] <<= 1;
-	value->splits[i] |= carry;
-	carry = new_carry;
-        value->splits[i] &= 0xFFFF;
-    }
+	for (i = 3; i-- != 0; )
+	{
+		const unsigned long new_carry = value->splits[i] >> 15;
+		value->splits[i] <<= 1;
+		value->splits[i] |= carry;
+		carry = new_carry;
+		value->splits[i] &= 0xFFFF;
+	}
 }
 
 static void RightShift(SplitInteger * const value)
 {
-    unsigned long carry;
-    unsigned int i;
+	unsigned long carry;
+	unsigned int i;
 
-    carry = 0;
+	carry = 0;
 
-    for (i = 0; i < 3; ++i)
-    {
-        const unsigned long new_carry = value->splits[i] << 15;
-        value->splits[i] >>= 1;
-	value->splits[i] |= carry;
-	carry = new_carry;
-        value->splits[i] &= 0xFFFF;
-    }
+	for (i = 0; i < 3; ++i)
+	{
+		const unsigned long new_carry = value->splits[i] << 15;
+		value->splits[i] >>= 1;
+		value->splits[i] |= carry;
+		carry = new_carry;
+		value->splits[i] &= 0xFFFF;
+	}
 }
 
 
@@ -105,24 +105,24 @@ static void RightShift(SplitInteger * const value)
 
 fixed_t
 FixedMul
-( fixed_t	a,
-  fixed_t	b )
+( fixed_t       a,
+  fixed_t       b )
 {
-    const unsigned long a_absolute = labs(a);
-    const unsigned long b_absolute = labs(b);
+	const unsigned long a_absolute = labs(a);
+	const unsigned long b_absolute = labs(b);
 
-    const unsigned long a_upper = a_absolute / FRACUNIT;
-    const unsigned long a_lower = a_absolute % FRACUNIT;
-    const unsigned long b_upper = b_absolute / FRACUNIT;
-    const unsigned long b_lower = b_absolute % FRACUNIT;
+	const unsigned long a_upper = a_absolute / FRACUNIT;
+	const unsigned long a_lower = a_absolute % FRACUNIT;
+	const unsigned long b_upper = b_absolute / FRACUNIT;
+	const unsigned long b_lower = b_absolute % FRACUNIT;
 
-    const long result = (long)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + (a_lower * b_lower / FRACUNIT));
+	const long result = (long)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + (a_lower * b_lower / FRACUNIT));
 
-    return (a < 0) != (b < 0) ? -result : result;
+	return (a < 0) != (b < 0) ? -result : result;
 
 #if 0
-    /* Old legacy code. */
-    return ((long long) a * (long long) b) >> FRACBITS;
+	/* Old legacy code. */
+	return ((long long) a * (long long) b) >> FRACBITS;
 #endif
 }
 
@@ -132,67 +132,67 @@ FixedMul
 
 fixed_t
 FixedDiv
-( fixed_t	a,
-  fixed_t	b )
+( fixed_t       a,
+  fixed_t       b )
 {
-    if ( (abs(a)>>14) >= abs(b))
-	return (a^b)<0 ? MININT : MAXINT;
-    return FixedDiv2 (a,b);
+	if ( (abs(a)>>14) >= abs(b))
+		return (a^b)<0 ? MININT : MAXINT;
+	return FixedDiv2 (a,b);
 }
 
 
 
 fixed_t
 FixedDiv2
-( fixed_t	a,
-  fixed_t	b )
+( fixed_t       a,
+  fixed_t       b )
 {
-    /* Horrific fixed point division using only 32-bit integers. */
-    SplitInteger dividend, divisor;
-    unsigned int shift_amount;
-    unsigned long result;
+	/* Horrific fixed point division using only 32-bit integers. */
+	SplitInteger dividend, divisor;
+	unsigned int shift_amount;
+	unsigned long result;
 
-    const unsigned long a_absolute = labs(a);
-    const unsigned long b_absolute = labs(b);
+	const unsigned long a_absolute = labs(a);
+	const unsigned long b_absolute = labs(b);
 
-    /* Note that this sneakily multiplies by FRACUNIT. */
-    dividend.splits[0] = (a_absolute >> 16) & 0xFFFF;
-    dividend.splits[1] = a_absolute & 0xFFFF;
-    dividend.splits[2] = 0;
+	/* Note that this sneakily multiplies by FRACUNIT. */
+	dividend.splits[0] = (a_absolute >> 16) & 0xFFFF;
+	dividend.splits[1] = a_absolute & 0xFFFF;
+	dividend.splits[2] = 0;
 
-    divisor.splits[0] = 0;
-    divisor.splits[1] = (b_absolute >> 16) & 0xFFFF;
-    divisor.splits[2] = b_absolute & 0xFFFF;
+	divisor.splits[0] = 0;
+	divisor.splits[1] = (b_absolute >> 16) & 0xFFFF;
+	divisor.splits[2] = b_absolute & 0xFFFF;
 
-    shift_amount = 0;
+	shift_amount = 0;
 
-    while (GreaterThan(&dividend, &divisor))
-    {
-        LeftShift(&divisor);
-        ++shift_amount;
-    }
+	while (GreaterThan(&dividend, &divisor))
+	{
+		LeftShift(&divisor);
+		++shift_amount;
+	}
 
-    result = 0;
+	result = 0;
 
-    for (;;)
-    {
-        do
-        {
-            if (shift_amount == 0)
-                return (a < 0) != (b < 0) ? -(long)result : (long)result;
+	for (;;)
+	{
+		do
+		{
+			if (shift_amount == 0)
+				return (a < 0) != (b < 0) ? -(long)result : (long)result;
 
-            RightShift(&divisor);
-            --shift_amount;
+			RightShift(&divisor);
+			--shift_amount;
 
-            result <<= 1;
-        } while (GreaterThan(&divisor, &dividend));
+			result <<= 1;
+		} while (GreaterThan(&divisor, &dividend));
 
-        do
-        {
-            Subtract(&dividend, &divisor);
-            ++result;
-        } while (!GreaterThan(&divisor, &dividend));
-    }
+		do
+		{
+			Subtract(&dividend, &divisor);
+			++result;
+		} while (!GreaterThan(&divisor, &dividend));
+	}
 }
 
 
@@ -201,21 +201,21 @@ FixedDiv2
 /* Old legacy code. */
 fixed_t
 FixedDiv2
-( fixed_t	a,
-  fixed_t	b )
+( fixed_t       a,
+  fixed_t       b )
 {
 #if 1
-    long long c;
-    c = ((long long)a<<16) / ((long long)b);
-    return (fixed_t) c;
+	long long c;
+	c = ((long long)a<<16) / ((long long)b);
+	return (fixed_t) c;
 #else
-    double c;
+	double c;
 
-    c = ((double)a) / ((double)b) * FRACUNIT;
+	c = ((double)a) / ((double)b) * FRACUNIT;
 
-    if (c >= 2147483648.0 || c < -2147483648.0)
-	I_Error("FixedDiv: divide by zero");
-    return (fixed_t) c;
+	if (c >= 2147483648.0 || c < -2147483648.0)
+		I_Error("FixedDiv: divide by zero");
+	return (fixed_t) c;
 #endif
 }
 #endif

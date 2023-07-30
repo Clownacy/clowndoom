@@ -28,16 +28,16 @@
 /* returns time in 1/70th second tics */
 int  IB_GetTime (void)
 {
-    struct timeval	tp;
-    struct timezone	tzp;
-    int			newtics;
-    static int		basetime=0;
+	struct timeval      tp;
+	struct timezone     tzp;
+	int                 newtics;
+	static int          basetime=0;
 
-    gettimeofday(&tp, &tzp);
-    if (!basetime)
-	basetime = tp.tv_sec;
-    newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
-    return newtics;
+	gettimeofday(&tp, &tzp);
+	if (!basetime)
+		basetime = tp.tv_sec;
+	newtics = (tp.tv_sec-basetime)*TICRATE + tp.tv_usec*TICRATE/1000000;
+	return newtics;
 }
 
 
@@ -56,12 +56,12 @@ void IB_Quit (void)
 void IB_WaitVBL(int count)
 {
 #ifdef SGI
-    sginap(1);
+	sginap(1);
 #else
 #ifdef SUN
-    sleep(0);
+	sleep(0);
 #else
-    usleep (count * (1000000/70) );
+	usleep (count * (1000000/70) );
 #endif
 #endif
 }
@@ -69,5 +69,5 @@ void IB_WaitVBL(int count)
 
 void IB_Sleep(void)
 {
-    usleep(1);
+	usleep(1);
 }

@@ -25,8 +25,8 @@
 /* NOT called by W_Ticker. Fixme. */
 void
 P_SetupLevel
-( int		episode,
-  int		map);
+( int           episode,
+  int           map);
 
 /* Called by startup code. */
 void P_Init (void);

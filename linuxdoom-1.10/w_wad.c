@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	Handles WAD file header, directory, lump I/O.
+        Handles WAD file header, directory, lump I/O.
 
 ******************************************************************************/
 
@@ -39,76 +39,76 @@
 /* GLOBALS */
 
 /* Location of each lump on disk. */
-lumpinfo_t*		lumpinfo;
-size_t			numlumps;
+lumpinfo_t*             lumpinfo;
+size_t                  numlumps;
 
-void**			lumpcache;
+void**                  lumpcache;
 
 
 /* This was originally called 'strupr', but it conflicted with the standard library so I renamed it. */
 static void MakeStringUppercase (char* s)
 {
-    while (*s) { *s = toupper(*s); s++; }
+	while (*s) { *s = toupper(*s); s++; }
 }
 
 static int filelength (FILE* handle)
 {
-    long previous_position, length;
+	long previous_position, length;
 
-    previous_position = ftell(handle);
-    fseek(handle, 0, SEEK_END);
-    length = ftell(handle);
-    fseek(handle, previous_position, SEEK_SET);
+	previous_position = ftell(handle);
+	fseek(handle, 0, SEEK_END);
+	length = ftell(handle);
+	fseek(handle, previous_position, SEEK_SET);
 
-    return length;
+	return length;
 }
 
 
 static void
 ExtractFileBase
-( const char*	path,
-  char*		dest )
+( const char*   path,
+  char*         dest )
 {
-    const char*	src;
-    int		length;
+	const char* src;
+	int         length;
 
-    src = path + strlen(path) - 1;
+	src = path + strlen(path) - 1;
 
-    /* back up until a \ or the start */
-    while (src != path
-	   && *(src-1) != '\\'
-	   && *(src-1) != '/')
-    {
-	src--;
-    }
+	/* back up until a \ or the start */
+	while (src != path
+		   && *(src-1) != '\\'
+		   && *(src-1) != '/')
+	{
+		src--;
+	}
 
-    /* copy up to eight characters */
-    memset (dest,0,8);
-    length = 0;
+	/* copy up to eight characters */
+	memset (dest,0,8);
+	length = 0;
 
-    while (*src && *src != '.')
-    {
-	if (++length == 9)
-	    I_Error ("Filename base of %s >8 chars",path);
+	while (*src && *src != '.')
+	{
+		if (++length == 9)
+			I_Error ("Filename base of %s >8 chars",path);
 
-	*dest++ = toupper((int)*src++);
-    }
+		*dest++ = toupper((int)*src++);
+	}
 }
 
 static unsigned long Read32LE(FILE* handle)
 {
-    unsigned char bytes[4];
-    unsigned long value;
-    unsigned int i;
+	unsigned char bytes[4];
+	unsigned long value;
+	unsigned int i;
 
-    fread(bytes, 1, 4, handle);
+	fread(bytes, 1, 4, handle);
 
-    value = 0;
+	value = 0;
 
-    for (i = 0; i < 4; ++i)
-        value |= (unsigned long)bytes[i] << (8 * i);
+	for (i = 0; i < 4; ++i)
+		value |= (unsigned long)bytes[i] << (8 * i);
 
-    return value;
+	return value;
 }
 
 
@@ -128,101 +128,101 @@ static unsigned long Read32LE(FILE* handle)
 /*  specially to allow map reloads. */
 /* But: the reload feature is a fragile hack... */
 
-size_t			reloadlump;
-const char*		reloadname;
+size_t                  reloadlump;
+const char*             reloadname;
 
 
 void W_AddFile (const char *filename)
 {
-    wadinfo_t		header;
-    lumpinfo_t*		lump_p;
-    size_t		i;
-    FILE*		handle;
-    size_t		startlump;
-    lumpinfo_t		singleinfo;
-    FILE*		storehandle;
-    boolean		singlelump;
+	wadinfo_t           header;
+	lumpinfo_t*         lump_p;
+	size_t              i;
+	FILE*               handle;
+	size_t              startlump;
+	lumpinfo_t          singleinfo;
+	FILE*               storehandle;
+	boolean             singlelump;
 
-    /* open the file and add to directory */
+	/* open the file and add to directory */
 
-    /* handle reload indicator. */
-    if (filename[0] == '~')
-    {
-	filename++;
-	reloadname = filename;
-	reloadlump = numlumps;
-    }
-
-    if ((handle = fopen (filename,"rb")) == NULL)
-    {
-	printf(" couldn't open %s\n",filename);
-	return;
-    }
-
-    printf(" adding %s\n",filename);
-    startlump = numlumps;
-
-    singlelump = M_strcasecmp(filename+strlen(filename)-3 , "wad" );
-
-    if (singlelump)
-    {
-	/* single lump file */
-	singleinfo.handle = handle;
-	singleinfo.position = 0;
-	singleinfo.size = filelength(handle);
-	ExtractFileBase (filename, singleinfo.name);
-	numlumps++;
-    }
-    else
-    {
-	/* WAD file */
-	fread(header.identification, 1, sizeof(header.identification), handle);
-	header.numlumps = Read32LE(handle);
-	header.infotableofs = Read32LE(handle);
-
-	if (memcmp(header.identification,"IWAD",4))
+	/* handle reload indicator. */
+	if (filename[0] == '~')
 	{
-	    /* Homebrew levels? */
-	    if (memcmp(header.identification,"PWAD",4))
-	    {
-		I_Error ("Wad file %s doesn't have IWAD "
-			 "or PWAD id\n", filename);
-	    }
-
-	    /* ???modifiedgame = true; */
+		filename++;
+		reloadname = filename;
+		reloadlump = numlumps;
 	}
-	fseek (handle, header.infotableofs, SEEK_SET);
-	numlumps += header.numlumps;
-    }
 
-
-    /* Fill in lumpinfo */
-    lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
-
-    if (lumpinfo == NULL)
-	I_Error ("Couldn't realloc lumpinfo");
-
-    lump_p = &lumpinfo[startlump];
-
-    storehandle = reloadname ? NULL : handle;
-
-    if (singlelump)
-    {
-	*lump_p = singleinfo;
-    }
-    else
-    {
-	for (i=startlump; i<numlumps; i++, lump_p++)
+	if ((handle = fopen (filename,"rb")) == NULL)
 	{
-	    lump_p->handle = storehandle;
-	    lump_p->position = Read32LE(storehandle);
-	    lump_p->size = Read32LE(storehandle);
-	    fread(lump_p->name, 1, 8, storehandle);
+		printf(" couldn't open %s\n",filename);
+		return;
 	}
-    }
 
-    if (reloadname)
-	fclose(handle);
+	printf(" adding %s\n",filename);
+	startlump = numlumps;
+
+	singlelump = M_strcasecmp(filename+strlen(filename)-3 , "wad" );
+
+	if (singlelump)
+	{
+		/* single lump file */
+		singleinfo.handle = handle;
+		singleinfo.position = 0;
+		singleinfo.size = filelength(handle);
+		ExtractFileBase (filename, singleinfo.name);
+		numlumps++;
+	}
+	else
+	{
+		/* WAD file */
+		fread(header.identification, 1, sizeof(header.identification), handle);
+		header.numlumps = Read32LE(handle);
+		header.infotableofs = Read32LE(handle);
+
+		if (memcmp(header.identification,"IWAD",4))
+		{
+			/* Homebrew levels? */
+			if (memcmp(header.identification,"PWAD",4))
+			{
+				I_Error ("Wad file %s doesn't have IWAD "
+						 "or PWAD id\n", filename);
+			}
+
+			/* ???modifiedgame = true; */
+		}
+		fseek (handle, header.infotableofs, SEEK_SET);
+		numlumps += header.numlumps;
+	}
+
+
+	/* Fill in lumpinfo */
+	lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
+
+	if (lumpinfo == NULL)
+		I_Error ("Couldn't realloc lumpinfo");
+
+	lump_p = &lumpinfo[startlump];
+
+	storehandle = reloadname ? NULL : handle;
+
+	if (singlelump)
+	{
+		*lump_p = singleinfo;
+	}
+	else
+	{
+		for (i=startlump; i<numlumps; i++, lump_p++)
+		{
+			lump_p->handle = storehandle;
+			lump_p->position = Read32LE(storehandle);
+			lump_p->size = Read32LE(storehandle);
+			fread(lump_p->name, 1, 8, storehandle);
+		}
+	}
+
+	if (reloadname)
+		fclose(handle);
 }
 
 
@@ -233,39 +233,39 @@ void W_AddFile (const char *filename)
 /*  and reloads the directory. */
 void W_Reload (void)
 {
-    lumpinfo_t*		lump_p;
-    size_t		i;
-    FILE*		handle;
-    size_t		numlumps;
-    size_t		infotableofs;
+	lumpinfo_t*         lump_p;
+	size_t              i;
+	FILE*               handle;
+	size_t              numlumps;
+	size_t              infotableofs;
 
-    if (!reloadname)
-	return;
+	if (!reloadname)
+		return;
 
-    if ((handle = fopen(reloadname,"rb")) == NULL)
-	I_Error ("W_Reload: couldn't open %s",reloadname);
+	if ((handle = fopen(reloadname,"rb")) == NULL)
+		I_Error ("W_Reload: couldn't open %s",reloadname);
 
-    fseek(handle, 4, SEEK_CUR);
-    numlumps = Read32LE(handle);
-    infotableofs = Read32LE(handle);
-    fseek (handle, infotableofs, SEEK_SET);
+	fseek(handle, 4, SEEK_CUR);
+	numlumps = Read32LE(handle);
+	infotableofs = Read32LE(handle);
+	fseek (handle, infotableofs, SEEK_SET);
 
-    /* Fill in lumpinfo */
-    lump_p = &lumpinfo[reloadlump];
+	/* Fill in lumpinfo */
+	lump_p = &lumpinfo[reloadlump];
 
-    for (i=reloadlump ;
-	 i<reloadlump+numlumps ;
-	 i++,lump_p++)
-    {
-	if (lumpcache[i] != NULL)
-	    Z_Free(lumpcache[i]);
+	for (i=reloadlump ;
+		 i<reloadlump+numlumps ;
+		 i++,lump_p++)
+	{
+		if (lumpcache[i] != NULL)
+			Z_Free(lumpcache[i]);
 
-	lump_p->position = Read32LE(handle);
-	lump_p->size = Read32LE(handle);
-	fseek(handle, 8, SEEK_CUR);
-    }
+		lump_p->position = Read32LE(handle);
+		lump_p->size = Read32LE(handle);
+		fseek(handle, 8, SEEK_CUR);
+	}
 
-    fclose(handle);
+	fclose(handle);
 }
 
 
@@ -283,28 +283,28 @@ void W_Reload (void)
 /*  does override all earlier ones. */
 void W_InitMultipleFiles (const char** filenames)
 {
-    size_t	size;
+	size_t      size;
 
-    /* open all the files, load headers, and count lumps */
-    numlumps = 0;
+	/* open all the files, load headers, and count lumps */
+	numlumps = 0;
 
-    /* will be realloced as lumps are added */
-    lumpinfo = malloc(1);
+	/* will be realloced as lumps are added */
+	lumpinfo = malloc(1);
 
-    for ( ; *filenames ; filenames++)
-	W_AddFile (*filenames);
+	for ( ; *filenames ; filenames++)
+		W_AddFile (*filenames);
 
-    if (!numlumps)
-	I_Error ("W_InitFiles: no files found");
+	if (!numlumps)
+		I_Error ("W_InitFiles: no files found");
 
-    /* set up caching */
-    size = numlumps * sizeof(*lumpcache);
-    lumpcache = malloc (size);
+	/* set up caching */
+	size = numlumps * sizeof(*lumpcache);
+	lumpcache = malloc (size);
 
-    if (!lumpcache)
-	I_Error ("Couldn't allocate lumpcache");
+	if (!lumpcache)
+		I_Error ("Couldn't allocate lumpcache");
 
-    memset (lumpcache,0, size);
+	memset (lumpcache,0, size);
 }
 
 
@@ -314,11 +314,11 @@ void W_InitMultipleFiles (const char** filenames)
 /* Just initialize from a single file. */
 void W_InitFile (const char* filename)
 {
-    const char*	names[2];
+	const char* names[2];
 
-    names[0] = filename;
-    names[1] = NULL;
-    W_InitMultipleFiles (names);
+	names[0] = filename;
+	names[1] = NULL;
+	W_InitMultipleFiles (names);
 }
 
 
@@ -326,7 +326,7 @@ void W_InitFile (const char* filename)
 /* W_NumLumps */
 int W_NumLumps (void)
 {
-    return numlumps;
+	return numlumps;
 }
 
 
@@ -336,27 +336,27 @@ int W_NumLumps (void)
 
 int W_CheckNumForName (const char* name)
 {
-    char name_upper[9];
+	char name_upper[9];
 
-    lumpinfo_t*	lump_p;
+	lumpinfo_t* lump_p;
 
-    strncpy (name_upper,name,8);
+	strncpy (name_upper,name,8);
 
-    /* in case the name was a full 8 chars */
-    name_upper[8] = '\0';
+	/* in case the name was a full 8 chars */
+	name_upper[8] = '\0';
 
-    /* case insensitive */
-    MakeStringUppercase(name_upper);
+	/* case insensitive */
+	MakeStringUppercase(name_upper);
 
-    /* scan backwards so patch lump files take precedence */
-    lump_p = lumpinfo + numlumps;
+	/* scan backwards so patch lump files take precedence */
+	lump_p = lumpinfo + numlumps;
 
-    while (lump_p-- != lumpinfo)
-	if (!memcmp(lump_p->name, name_upper, 8))
-	    return lump_p - lumpinfo;
+	while (lump_p-- != lumpinfo)
+		if (!memcmp(lump_p->name, name_upper, 8))
+			return lump_p - lumpinfo;
 
-    /* TFB. Not found. */
-    return -1;
+	/* TFB. Not found. */
+	return -1;
 }
 
 
@@ -366,14 +366,14 @@ int W_CheckNumForName (const char* name)
 /* Calls W_CheckNumForName, but bombs out if not found. */
 int W_GetNumForName (const char* name)
 {
-    int	i;
+	int i;
 
-    i = W_CheckNumForName (name);
+	i = W_CheckNumForName (name);
 
-    if (i == -1)
-      I_Error ("W_GetNumForName: %s not found!", name);
+	if (i == -1)
+	  I_Error ("W_GetNumForName: %s not found!", name);
 
-    return i;
+	return i;
 }
 
 
@@ -381,10 +381,10 @@ int W_GetNumForName (const char* name)
 /* Returns the buffer size needed to load the given lump. */
 int W_LumpLength (size_t lump)
 {
-    if (lump >= numlumps)
-	I_Error ("W_LumpLength: %i >= numlumps",lump);
+	if (lump >= numlumps)
+		I_Error ("W_LumpLength: %i >= numlumps",lump);
 
-    return lumpinfo[lump].size;
+	return lumpinfo[lump].size;
 }
 
 
@@ -394,40 +394,40 @@ int W_LumpLength (size_t lump)
 /*  which must be >= W_LumpLength(). */
 void
 W_ReadLump
-( size_t	lump,
-  void*		dest )
+( size_t        lump,
+  void*         dest )
 {
-    size_t	c;
-    lumpinfo_t*	l;
-    FILE*	handle;
+	size_t      c;
+	lumpinfo_t* l;
+	FILE*       handle;
 
-    if (lump >= numlumps)
-	I_Error ("W_ReadLump: %i >= numlumps",lump);
+	if (lump >= numlumps)
+		I_Error ("W_ReadLump: %i >= numlumps",lump);
 
-    l = lumpinfo+lump;
+	l = lumpinfo+lump;
 
-    /* ??? I_BeginRead (); */
+	/* ??? I_BeginRead (); */
 
-    if (l->handle == NULL)
-    {
-	/* reloadable file, so use open / read / close */
-	if ( (handle = fopen (reloadname,"rb")) == NULL)
-	    I_Error ("W_ReadLump: couldn't open %s",reloadname);
-    }
-    else
-	handle = l->handle;
+	if (l->handle == NULL)
+	{
+		/* reloadable file, so use open / read / close */
+		if ( (handle = fopen (reloadname,"rb")) == NULL)
+			I_Error ("W_ReadLump: couldn't open %s",reloadname);
+	}
+	else
+		handle = l->handle;
 
-    fseek (handle, l->position, SEEK_SET);
-    c = fread (dest, 1, l->size, handle);
+	fseek (handle, l->position, SEEK_SET);
+	c = fread (dest, 1, l->size, handle);
 
-    if (c < l->size)
-	I_Error ("W_ReadLump: only read %i of %i on lump %i",
-		 c,l->size,lump);
+	if (c < l->size)
+		I_Error ("W_ReadLump: only read %i of %i on lump %i",
+				 c,l->size,lump);
 
-    if (l->handle == NULL)
-	fclose (handle);
+	if (l->handle == NULL)
+		fclose (handle);
 
-    /* ??? I_EndRead (); */
+	/* ??? I_EndRead (); */
 }
 
 
@@ -436,27 +436,27 @@ W_ReadLump
 /* W_CacheLumpNum */
 void*
 W_CacheLumpNum
-( size_t	lump,
-  int		tag )
+( size_t        lump,
+  int           tag )
 {
-    if (lump >= numlumps)
-	I_Error ("W_CacheLumpNum: %i >= numlumps",(unsigned int)lump);
+	if (lump >= numlumps)
+		I_Error ("W_CacheLumpNum: %i >= numlumps",(unsigned int)lump);
 
-    if (!lumpcache[lump])
-    {
-	/* read the lump in */
+	if (!lumpcache[lump])
+	{
+		/* read the lump in */
 
 /* printf ("cache miss on lump %i\n",lump); */
-	Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
-	W_ReadLump (lump, lumpcache[lump]);
-    }
-    else
-    {
+		Z_Malloc (W_LumpLength (lump), tag, &lumpcache[lump]);
+		W_ReadLump (lump, lumpcache[lump]);
+	}
+	else
+	{
 /* printf ("cache hit on lump %i\n",lump); */
-	Z_ChangeTag (lumpcache[lump],tag);
-    }
+		Z_ChangeTag (lumpcache[lump],tag);
+	}
 
-    return lumpcache[lump];
+	return lumpcache[lump];
 }
 
 
@@ -464,70 +464,70 @@ W_CacheLumpNum
 /* W_CacheLumpName */
 void*
 W_CacheLumpName
-( const char*	name,
-  int		tag )
+( const char*   name,
+  int           tag )
 {
-    return W_CacheLumpNum (W_GetNumForName(name), tag);
+	return W_CacheLumpNum (W_GetNumForName(name), tag);
 }
 
 
 /* W_Profile */
-int		info[2500][10];
-size_t		profilecount;
+int             info[2500][10];
+size_t          profilecount;
 
 void W_Profile (void)
 {
-    size_t	i;
-    memblock_t*	block;
-    void*	ptr;
-    char	ch;
-    FILE*	f;
-    size_t	j;
-    char	name[9];
+	size_t      i;
+	memblock_t* block;
+	void*       ptr;
+	char        ch;
+	FILE*       f;
+	size_t      j;
+	char        name[9];
 
 
-    for (i=0 ; i<numlumps ; i++)
-    {
-	ptr = lumpcache[i];
-	if (!ptr)
+	for (i=0 ; i<numlumps ; i++)
 	{
-	    ch = ' ';
-	    continue;
+		ptr = lumpcache[i];
+		if (!ptr)
+		{
+			ch = ' ';
+			continue;
+		}
+		else
+		{
+			block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
+			if (block->tag < PU_PURGELEVEL)
+				ch = 'S';
+			else
+				ch = 'P';
+		}
+		info[i][profilecount] = ch;
 	}
-	else
+	profilecount++;
+
+	f = fopen ("waddump.txt","w");
+	name[8] = 0;
+
+	for (i=0 ; i<numlumps ; i++)
 	{
-	    block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
-	    if (block->tag < PU_PURGELEVEL)
-		ch = 'S';
-	    else
-		ch = 'P';
+		memcpy (name,lumpinfo[i].name,8);
+
+		for (j=0 ; j<8 ; j++)
+			if (!name[j])
+				break;
+
+		for ( ; j<8 ; j++)
+			name[j] = ' ';
+
+		fprintf (f,"%s ",name);
+
+		for (j=0 ; j<profilecount ; j++)
+			fprintf (f,"    %c",info[i][j]);
+
+		fprintf (f,"\n");
 	}
-	info[i][profilecount] = ch;
-    }
-    profilecount++;
-
-    f = fopen ("waddump.txt","w");
-    name[8] = 0;
-
-    for (i=0 ; i<numlumps ; i++)
-    {
-	memcpy (name,lumpinfo[i].name,8);
-
-	for (j=0 ; j<8 ; j++)
-	    if (!name[j])
-		break;
-
-	for ( ; j<8 ; j++)
-	    name[j] = ' ';
-
-	fprintf (f,"%s ",name);
-
-	for (j=0 ; j<profilecount ; j++)
-	    fprintf (f,"    %c",info[i][j]);
-
-	fprintf (f,"\n");
-    }
-    fclose (f);
+	fclose (f);
 }
 
 

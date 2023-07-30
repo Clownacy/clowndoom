@@ -109,89 +109,89 @@ static boolean          music_playing;
 /* This function currently supports only 16bit. */
 static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_data)
 {
-    /* Mix current sound data. */
+	/* Mix current sound data. */
 
-    /* Pointers in mixbuffer. */
-    short* output_buffer_end;
+	/* Pointers in mixbuffer. */
+	short* output_buffer_end;
 
-    size_t bytes_done;
+	size_t bytes_done;
 
-    const size_t bytes_to_do = frames_to_do * sizeof(short) * 2;
+	const size_t bytes_to_do = frames_to_do * sizeof(short) * 2;
 
-    (void)user_data;
+	(void)user_data;
 
-    bytes_done = 0;
+	bytes_done = 0;
 
 #ifdef WILDMIDI
-    if (music_playing)
-    {
-        bytes_done = (size_t)WildMidi_GetOutput(music_midi, (int8_t*)output_buffer, bytes_to_do);
+	if (music_playing)
+	{
+		bytes_done = (size_t)WildMidi_GetOutput(music_midi, (int8_t*)output_buffer, bytes_to_do);
 
-        if (bytes_done < bytes_to_do)
-            music_playing = false;
-    }
+		if (bytes_done < bytes_to_do)
+			music_playing = false;
+	}
 #endif
 
-    memset((char*)output_buffer + bytes_done, 0, bytes_to_do - bytes_done);
+	memset((char*)output_buffer + bytes_done, 0, bytes_to_do - bytes_done);
 
-    /* Determine where the sample ends */
-    output_buffer_end = output_buffer + frames_to_do * 2;
+	/* Determine where the sample ends */
+	output_buffer_end = output_buffer + frames_to_do * 2;
 
-    /* Mix sounds into the mix buffer */
-    while (output_buffer != output_buffer_end)
-    {
-        size_t chan;
+	/* Mix sounds into the mix buffer */
+	while (output_buffer != output_buffer_end)
+	{
+		size_t chan;
 
-        /* Obtain base values for mixing */
-        long dl = output_buffer[0];
-        long dr = output_buffer[1];
+		/* Obtain base values for mixing */
+		long dl = output_buffer[0];
+		long dr = output_buffer[1];
 
-        for (chan = 0; chan < NUM_CHANNELS; ++chan)
-        {
-            /* Check if channel is playing anything */
-            if (channels[chan] != NULL)
-            {
-                /* Get interpolated sample */
-                const int interpolation_scale = channelstepremainder[chan] / (1 << 8);
-                const int sample = channels[chan][0] + (((channels[chan][1] - channels[chan][0]) * interpolation_scale) / (1 << 8));
+		for (chan = 0; chan < NUM_CHANNELS; ++chan)
+		{
+			/* Check if channel is playing anything */
+			if (channels[chan] != NULL)
+			{
+				/* Get interpolated sample */
+				const int interpolation_scale = channelstepremainder[chan] / (1 << 8);
+				const int sample = channels[chan][0] + (((channels[chan][1] - channels[chan][0]) * interpolation_scale) / (1 << 8));
 
-                /* Add volume-adjusted sample to mix buffer */
-                dl += channelleftvol_lookup[chan][sample];
-                dr += channelrightvol_lookup[chan][sample];
+				/* Add volume-adjusted sample to mix buffer */
+				dl += channelleftvol_lookup[chan][sample];
+				dr += channelrightvol_lookup[chan][sample];
 
-                /* Increment sample position */
-                channelstepremainder[chan] += channelstep[chan];
-                channels[chan] += channelstepremainder[chan] / (1 << 16);
-                channelstepremainder[chan] %= 1 << 16;
+				/* Increment sample position */
+				channelstepremainder[chan] += channelstep[chan];
+				channels[chan] += channelstepremainder[chan] / (1 << 16);
+				channelstepremainder[chan] %= 1 << 16;
 
-                /* Disable channel if sound has finished */
-                if (channels[chan] >= channelsend[chan])
-                    channels[chan] = NULL;
-            }
-        }
+				/* Disable channel if sound has finished */
+				if (channels[chan] >= channelsend[chan])
+					channels[chan] = NULL;
+			}
+		}
 
 #define CAP ((1 << 15) - 1)
 
-        /* Clamp mixed samples to 16-bit range and write them back to the buffer */
+		/* Clamp mixed samples to 16-bit range and write them back to the buffer */
 
-        /* Left channel */
-        if (dl > CAP)
-            *output_buffer++ = CAP;
-        else if (dl < -CAP)
-            *output_buffer++ = -CAP;
-        else
-            *output_buffer++ = dl;
+		/* Left channel */
+		if (dl > CAP)
+			*output_buffer++ = CAP;
+		else if (dl < -CAP)
+			*output_buffer++ = -CAP;
+		else
+			*output_buffer++ = dl;
 
-        /* Right channel */
-        if (dr > CAP)
-            *output_buffer++ = CAP;
-        else if (dr < -CAP)
-            *output_buffer++ = -CAP;
-        else
-            *output_buffer++ = dr;
+		/* Right channel */
+		if (dr > CAP)
+			*output_buffer++ = CAP;
+		else if (dr < -CAP)
+			*output_buffer++ = -CAP;
+		else
+			*output_buffer++ = dr;
 
 #undef CAP
-    }
+	}
 }
 
 
@@ -199,39 +199,39 @@ static void AudioCallback(short* output_buffer, size_t frames_to_do, void *user_
 
 static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 {
-    int rightvol;
-    int leftvol;
+	int rightvol;
+	int leftvol;
 
-    /* Set stepping */
-    channelstep[slot] = S_sfx[channelids[slot]].sample_rate * steptable[pitch] / output_sample_rate;
-    channelstepremainder[slot] = 0;
+	/* Set stepping */
+	channelstep[slot] = S_sfx[channelids[slot]].sample_rate * steptable[pitch] / output_sample_rate;
+	channelstepremainder[slot] = 0;
 
-    /* Separation, that is, orientation/stereo. */
-    /*  range is: 1 - 256 */
-    sep += 1;
+	/* Separation, that is, orientation/stereo. */
+	/*  range is: 1 - 256 */
+	sep += 1;
 
-    /* Per left/right channel. */
-    /*  x^2 seperation, */
-    /*  adjust volume properly. */
-    leftvol =
-        vol - ((vol*sep*sep) / (1 << 16)); /* /(256*256); */
-    sep = sep - 257;
-    rightvol =
-        vol - ((vol*sep*sep) / (1 << 16));
+	/* Per left/right channel. */
+	/*  x^2 seperation, */
+	/*  adjust volume properly. */
+	leftvol =
+		vol - ((vol*sep*sep) / (1 << 16)); /* /(256*256); */
+	sep = sep - 257;
+	rightvol =
+		vol - ((vol*sep*sep) / (1 << 16));
 
 #ifdef RANGECHECK
-    /* Sanity check, clamp volume. */
-    if (rightvol < 0 || rightvol > 127)
-        I_Error("rightvol out of bounds");
+	/* Sanity check, clamp volume. */
+	if (rightvol < 0 || rightvol > 127)
+		I_Error("rightvol out of bounds");
 
-    if (leftvol < 0 || leftvol > 127)
-        I_Error("leftvol out of bounds");
+	if (leftvol < 0 || leftvol > 127)
+		I_Error("leftvol out of bounds");
 #endif
 
-    /* Get the proper lookup table piece */
-    /*  for this volume level */
-    channelleftvol_lookup[slot] = vol_lookup[leftvol];
-    channelrightvol_lookup[slot] = vol_lookup[rightvol];
+	/* Get the proper lookup table piece */
+	/*  for this volume level */
+	channelleftvol_lookup[slot] = vol_lookup[leftvol];
+	channelrightvol_lookup[slot] = vol_lookup[rightvol];
 }
 
 
@@ -241,39 +241,39 @@ static void UpdateSoundParams(int slot, int vol, int sep, int pitch)
 /*  for a single sound. */
 static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
 {
-    unsigned char* sfx;
-    size_t         size;
-    char           name[20];
-    int            sfxlump;
+	unsigned char* sfx;
+	size_t         size;
+	char           name[20];
+	int            sfxlump;
 
-    /* Get the sound data from the WAD, allocate lump */
-    /*  in zone memory. */
-    sprintf(name, "ds%s", sfxinfo->name);
+	/* Get the sound data from the WAD, allocate lump */
+	/*  in zone memory. */
+	sprintf(name, "ds%s", sfxinfo->name);
 
-    /* Now, there is a severe problem with the */
-    /*  sound handling, in it is not (yet/anymore) */
-    /*  gamemode aware. That means, sounds from */
-    /*  DOOM II will be requested even with DOOM */
-    /*  shareware. */
-    /* The sound list is wired into sounds.c, */
-    /*  which sets the external variable. */
-    /* I do not do runtime patches to that */
-    /*  variable. Instead, we will use a */
-    /*  default sound for replacement. */
-    if (W_CheckNumForName(name) == -1)
-      sfxlump = W_GetNumForName("dspistol");
-    else
-      sfxlump = W_GetNumForName(name);
+	/* Now, there is a severe problem with the */
+	/*  sound handling, in it is not (yet/anymore) */
+	/*  gamemode aware. That means, sounds from */
+	/*  DOOM II will be requested even with DOOM */
+	/*  shareware. */
+	/* The sound list is wired into sounds.c, */
+	/*  which sets the external variable. */
+	/* I do not do runtime patches to that */
+	/*  variable. Instead, we will use a */
+	/*  default sound for replacement. */
+	if (W_CheckNumForName(name) == -1)
+	  sfxlump = W_GetNumForName("dspistol");
+	else
+	  sfxlump = W_GetNumForName(name);
 
-    size = W_LumpLength(sfxlump);
+	size = W_LumpLength(sfxlump);
 
-    sfx = (unsigned char*)W_CacheLumpNum(sfxlump, PU_STATIC);
+	sfx = (unsigned char*)W_CacheLumpNum(sfxlump, PU_STATIC);
 
-    *len = size-8-16-16;
+	*len = size-8-16-16;
 
-    sfxinfo->data = (void*)(sfx+8+16);
+	sfxinfo->data = (void*)(sfx+8+16);
 
-    sfxinfo->sample_rate = sfx[2] | (sfx[3] << 8);
+	sfxinfo->sample_rate = sfx[2] | (sfx[3] << 8);
 }
 
 
@@ -285,7 +285,7 @@ static void getsfx(sfxinfo_t* sfxinfo, size_t* len)
 /* channel count and sample rate, it seems. */
 void I_SetChannels(int channels)
 {
-    (void)channels;
+	(void)channels;
 }
 
 
@@ -295,9 +295,9 @@ void I_SetChannels(int channels)
 /*  for a given SFX name. */
 int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 {
-    char namebuf[9];
-    sprintf(namebuf, "ds%s", sfx->name);
-    return W_GetNumForName(namebuf);
+	char namebuf[9];
+	sprintf(namebuf, "ds%s", sfx->name);
+	return W_GetNumForName(namebuf);
 }
 
 
@@ -313,85 +313,85 @@ int I_GetSfxLumpNum(const sfxinfo_t* sfx)
 /*  priority, it is ignored. */
 int I_StartSound(int id, int vol, int sep, int pitch)
 {
-    static unsigned short handlenums = 0;
+	static unsigned short handlenums = 0;
 
-    int i;
-    int rc = -1;
+	int i;
+	int rc = -1;
 
-    int oldest = gametic;
-    int oldestnum = 0;
-    int slot;
+	int oldest = gametic;
+	int oldestnum = 0;
+	int slot;
 
-    IB_LockSound();
+	IB_LockSound();
 
-    /* Chainsaw troubles. */
-    /* Play these sound effects only one at a time. */
-    if (id == sfx_sawup
-     || id == sfx_sawidl
-     || id == sfx_sawful
-     || id == sfx_sawhit
-     || id == sfx_stnmov
-     || id == sfx_pistol)
-    {
-        /* Loop all channels, check. */
-        for (i=0 ; i<NUM_CHANNELS ; ++i)
-        {
-            /* Active, and using the same SFX? */
-            if (channels[i] != NULL && channelids[i] == id)
-            {
-                /* Reset. */
-                channels[i] = NULL;
-                break;
-            }
-        }
-    }
+	/* Chainsaw troubles. */
+	/* Play these sound effects only one at a time. */
+	if (id == sfx_sawup
+	 || id == sfx_sawidl
+	 || id == sfx_sawful
+	 || id == sfx_sawhit
+	 || id == sfx_stnmov
+	 || id == sfx_pistol)
+	{
+		/* Loop all channels, check. */
+		for (i=0 ; i<NUM_CHANNELS ; ++i)
+		{
+			/* Active, and using the same SFX? */
+			if (channels[i] != NULL && channelids[i] == id)
+			{
+				/* Reset. */
+				channels[i] = NULL;
+				break;
+			}
+		}
+	}
 
-    /* Loop all channels to find oldest SFX. */
-    for (i=0; i<NUM_CHANNELS && channels[i] != NULL; ++i)
-    {
-        if (channelstart[i] < oldest)
-        {
-            oldestnum = i;
-            oldest = channelstart[i];
-        }
-    }
+	/* Loop all channels to find oldest SFX. */
+	for (i=0; i<NUM_CHANNELS && channels[i] != NULL; ++i)
+	{
+		if (channelstart[i] < oldest)
+		{
+			oldestnum = i;
+			oldest = channelstart[i];
+		}
+	}
 
-    /* Tales from the cryptic. */
-    /* If we found a channel, fine. */
-    /* If not, we simply overwrite the first one, 0. */
-    /* Probably only happens at startup. */
-    if (i == NUM_CHANNELS)
-        slot = oldestnum;
-    else
-        slot = i;
+	/* Tales from the cryptic. */
+	/* If we found a channel, fine. */
+	/* If not, we simply overwrite the first one, 0. */
+	/* Probably only happens at startup. */
+	if (i == NUM_CHANNELS)
+		slot = oldestnum;
+	else
+		slot = i;
 
-    /* Okay, in the less recent channel, */
-    /*  we will handle the new SFX. */
-    /* Set pointer to raw data. */
-    channels[slot] = (unsigned char*)S_sfx[id].data;
-    /* Set pointer to end of raw data. */
-    channelsend[slot] = channels[slot] + lengths[id];
+	/* Okay, in the less recent channel, */
+	/*  we will handle the new SFX. */
+	/* Set pointer to raw data. */
+	channels[slot] = (unsigned char*)S_sfx[id].data;
+	/* Set pointer to end of raw data. */
+	channelsend[slot] = channels[slot] + lengths[id];
 
-    /* Disable handle numbers 0-99 (were they error values in DMX?). */
-    if (handlenums == 0)
-        handlenums = 100;
+	/* Disable handle numbers 0-99 (were they error values in DMX?). */
+	if (handlenums == 0)
+		handlenums = 100;
 
-    /* Assign current handle number. */
-    /* Preserved so sounds could be stopped. */
-    channelhandles[slot] = rc = handlenums++;
+	/* Assign current handle number. */
+	/* Preserved so sounds could be stopped. */
+	channelhandles[slot] = rc = handlenums++;
 
-    /* Should be gametic, I presume. */
-    channelstart[slot] = gametic;
+	/* Should be gametic, I presume. */
+	channelstart[slot] = gametic;
 
-    /* Preserve sound SFX id, */
-    /*  e.g. for avoiding duplicates of chainsaw. */
-    channelids[slot] = id;
+	/* Preserve sound SFX id, */
+	/*  e.g. for avoiding duplicates of chainsaw. */
+	channelids[slot] = id;
 
-    UpdateSoundParams(slot, vol, sep, pitch);
+	UpdateSoundParams(slot, vol, sep, pitch);
 
-    IB_UnlockSound();
+	IB_UnlockSound();
 
-    return rc;
+	return rc;
 }
 
 
@@ -399,20 +399,20 @@ int I_StartSound(int id, int vol, int sep, int pitch)
 
 void I_StopSound(int handle)
 {
-    int i;
+	int i;
 
-    for (i=0;i<NUM_CHANNELS;++i)
-    {
-        if (channelhandles[i] == handle)
-        {
-            IB_LockSound();
+	for (i=0;i<NUM_CHANNELS;++i)
+	{
+		if (channelhandles[i] == handle)
+		{
+			IB_LockSound();
 
-            channels[i] = NULL;
+			channels[i] = NULL;
 
-            IB_UnlockSound();
-            break;
-        }
-    }
+			IB_UnlockSound();
+			break;
+		}
+	}
 }
 
 
@@ -420,25 +420,25 @@ void I_StopSound(int handle)
 
 boolean I_SoundIsPlaying(int handle)
 {
-    int i;
+	int i;
 
-    for (i=0;i<NUM_CHANNELS;++i)
-    {
-        if (channelhandles[i] == handle)
+	for (i=0;i<NUM_CHANNELS;++i)
 	{
-            boolean playing;
+		if (channelhandles[i] == handle)
+		{
+			boolean playing;
 
-            IB_LockSound();
+			IB_LockSound();
 
-            playing = channels[i] != NULL;
+			playing = channels[i] != NULL;
 
-            IB_UnlockSound();
+			IB_UnlockSound();
 
-	    return playing;
+			return playing;
+		}
 	}
-    }
 
-    return 0; /* Sound doesn't exist */
+	return 0; /* Sound doesn't exist */
 }
 
 
@@ -446,21 +446,21 @@ boolean I_SoundIsPlaying(int handle)
 
 void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
 {
-    int i;
+	int i;
 
-    for (i=0;i<NUM_CHANNELS;++i)
-    {
-        if (channelhandles[i] == handle)
-        {
-            IB_LockSound();
+	for (i=0;i<NUM_CHANNELS;++i)
+	{
+		if (channelhandles[i] == handle)
+		{
+			IB_LockSound();
 
-            UpdateSoundParams(i, vol, sep, pitch);
+			UpdateSoundParams(i, vol, sep, pitch);
 
-            IB_UnlockSound();
+			IB_UnlockSound();
 
-            break;
-        }
-    }
+			break;
+		}
+	}
 }
 
 
@@ -468,56 +468,56 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
 
 static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 {
-    (void)user_data;
+	(void)user_data;
 
-    output_sample_rate = _output_sample_rate;
+	output_sample_rate = _output_sample_rate;
 
 #ifdef WILDMIDI
-    if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
-        music_initialised = true;
+	if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) == 0)
+		music_initialised = true;
 #endif
 }
 
 void I_StartupSound(void)
 {
-    int i;
-    int j;
+	int i;
+	int j;
 
-     /* Init internal lookups (raw data, mixing buffer, channels). */
+	 /* Init internal lookups (raw data, mixing buffer, channels). */
 
-    /* This table provides step widths for pitch parameters. */
-    for (i=0 ; i<256 ; ++i)
-        steptable[i] = (long)(pow(2.0, ((i-128)/64.0))*65536.0);
+	/* This table provides step widths for pitch parameters. */
+	for (i=0 ; i<256 ; ++i)
+		steptable[i] = (long)(pow(2.0, ((i-128)/64.0))*65536.0);
 
-    /* Generates volume lookup tables */
-    /*  which also turn the unsigned samples */
-    /*  into signed samples. */
-    for (i=0 ; i<128 ; ++i)
-        for (j=0 ; j<256 ; ++j)
-            vol_lookup[i][j] = (i*(j-128)*256)/127;
+	/* Generates volume lookup tables */
+	/*  which also turn the unsigned samples */
+	/*  into signed samples. */
+	for (i=0 ; i<128 ; ++i)
+		for (j=0 ; j<256 ; ++j)
+			vol_lookup[i][j] = (i*(j-128)*256)/127;
 
-    if (!IB_StartupSound(StartupCallback, AudioCallback, NULL))
-        I_Error("I_StartupSound: Failed to initialize backend");
+	if (!IB_StartupSound(StartupCallback, AudioCallback, NULL))
+		I_Error("I_StartupSound: Failed to initialize backend");
 
-     /* Cache sounds. */
+	 /* Cache sounds. */
 
-    /* Initialize external data (all sounds) at start, keep static. */
+	/* Initialize external data (all sounds) at start, keep static. */
 
-    for (i=1 ; i<NUMSFX ; ++i)
-    {
-        /* Alias? Example is the chaingun sound linked to pistol. */
-        if (S_sfx[i].link == NULL)
-        {
-            /* Load data from WAD file. */
-            getsfx(&S_sfx[i], &lengths[i]);
-        }
-        else
-        {
-            /* Previously loaded already? */
-            S_sfx[i].data = S_sfx[i].link->data;
-            lengths[i] = lengths[(S_sfx[i].link - S_sfx)/sizeof(sfxinfo_t)];
-        }
-    }
+	for (i=1 ; i<NUMSFX ; ++i)
+	{
+		/* Alias? Example is the chaingun sound linked to pistol. */
+		if (S_sfx[i].link == NULL)
+		{
+			/* Load data from WAD file. */
+			getsfx(&S_sfx[i], &lengths[i]);
+		}
+		else
+		{
+			/* Previously loaded already? */
+			S_sfx[i].data = S_sfx[i].link->data;
+			lengths[i] = lengths[(S_sfx[i].link - S_sfx)/sizeof(sfxinfo_t)];
+		}
+	}
 }
 
 
@@ -525,14 +525,14 @@ void I_StartupSound(void)
 
 void I_ShutdownSound(void)
 {
-    IB_ShutdownSound();
+	IB_ShutdownSound();
 
 #ifdef WILDMIDI
-    if (music_initialised)
-    {
-	WildMidi_Shutdown();
-	music_initialised = false;
-    }
+	if (music_initialised)
+	{
+		WildMidi_Shutdown();
+		music_initialised = false;
+	}
 #endif
 }
 
@@ -543,21 +543,21 @@ void I_ShutdownSound(void)
 
 void I_PlaySong(int handle, boolean looping)
 {
-    /* UNUSED. */
-    (void)handle;
+	/* UNUSED. */
+	(void)handle;
 
 #ifndef WILDMIDI
-    (void)looping;
+	(void)looping;
 #else
-    if (music_initialised)
-    {
-        IB_LockSound();
+	if (music_initialised)
+	{
+		IB_LockSound();
 
-        music_playing = true;
-        WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
+		music_playing = true;
+		WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
 
-        IB_UnlockSound();
-    }
+		IB_UnlockSound();
+	}
 #endif
 }
 
@@ -566,18 +566,18 @@ void I_PlaySong(int handle, boolean looping)
 
 void I_PauseSong (int handle)
 {
-    /* UNUSED. */
-    (void)handle;
+	/* UNUSED. */
+	(void)handle;
 
 #ifdef WILDMIDI
-    if (music_initialised)
-    {
-        IB_LockSound();
+	if (music_initialised)
+	{
+		IB_LockSound();
 
-        music_playing = false;
+		music_playing = false;
 
-        IB_UnlockSound();
-    }
+		IB_UnlockSound();
+	}
 #endif
 }
 
@@ -586,18 +586,18 @@ void I_PauseSong (int handle)
 
 void I_ResumeSong (int handle)
 {
-    /* UNUSED. */
-    (void)handle;
+	/* UNUSED. */
+	(void)handle;
 
 #ifdef WILDMIDI
-    if (music_initialised)
-    {
-        IB_LockSound();
+	if (music_initialised)
+	{
+		IB_LockSound();
 
-        music_playing = true;
+		music_playing = true;
 
-        IB_UnlockSound();
-    }
+		IB_UnlockSound();
+	}
 #endif
 }
 
@@ -606,19 +606,19 @@ void I_ResumeSong (int handle)
 
 void I_StopSong(int handle)
 {
-    /* UNUSED. */
-    (void)handle;
+	/* UNUSED. */
+	(void)handle;
 
 #ifdef WILDMIDI
-    if (music_initialised)
-    {
-        IB_LockSound();
+	if (music_initialised)
+	{
+		IB_LockSound();
 
-        music_playing = false;
-        WildMidi_FastSeek(music_midi, 0);
+		music_playing = false;
+		WildMidi_FastSeek(music_midi, 0);
 
-        IB_UnlockSound();
-    }
+		IB_UnlockSound();
+	}
 #endif
 }
 
@@ -627,18 +627,18 @@ void I_StopSong(int handle)
 
 void I_UnRegisterSong(int handle)
 {
-    /* UNUSED. */
-    (void)handle;
+	/* UNUSED. */
+	(void)handle;
 
 #ifdef WILDMIDI
-    if (music_initialised)
-    {
-        IB_LockSound();
+	if (music_initialised)
+	{
+		IB_LockSound();
 
-        WildMidi_Close(music_midi);
+		WildMidi_Close(music_midi);
 
-        IB_UnlockSound();
-    }
+		IB_UnlockSound();
+	}
 #endif
 }
 
@@ -648,20 +648,20 @@ void I_UnRegisterSong(int handle)
 int I_RegisterSong(const void* data, size_t size)
 {
 #ifndef WILDMIDI
-    (void)data;
-    (void)size;
+	(void)data;
+	(void)size;
 #else
-    if (music_initialised)
-    {
-        IB_LockSound();
+	if (music_initialised)
+	{
+		IB_LockSound();
 
-        music_midi = WildMidi_OpenBuffer(data, size);
+		music_midi = WildMidi_OpenBuffer(data, size);
 
-        IB_UnlockSound();
-    }
+		IB_UnlockSound();
+	}
 #endif
 
-    return 1;
+	return 1;
 }
 
 
@@ -671,22 +671,22 @@ int I_RegisterSong(const void* data, size_t size)
 int I_QrySongPlaying(int handle)
 {
 #ifdef WILDMIDI
-    boolean playing;
+	boolean playing;
 #endif
 
-    /* UNUSED. */
-    (void)handle;
+	/* UNUSED. */
+	(void)handle;
 
 #ifndef WILDMIDI
-    return 0;
+	return 0;
 #else
-    IB_LockSound();
+	IB_LockSound();
 
-    playing = music_playing;
+	playing = music_playing;
 
-    IB_UnlockSound();
+	IB_UnlockSound();
 
-    return playing;
+	return playing;
 #endif
 }
 
@@ -695,19 +695,19 @@ int I_QrySongPlaying(int handle)
 
 void I_SetMusicVolume(int volume)
 {
-    /* Internal state variable. */
+	/* Internal state variable. */
    /* snd_MusicVolume = volume; */
-    /* Now set volume on output device. */
+	/* Now set volume on output device. */
 #ifndef WILDMIDI
-    (void)volume;
+	(void)volume;
 #else
-    if (music_initialised)
-    {
-        IB_LockSound();
+	if (music_initialised)
+	{
+		IB_LockSound();
 
-        WildMidi_MasterVolume(volume);
+		WildMidi_MasterVolume(volume);
 
-        IB_UnlockSound();
-    }
+		IB_UnlockSound();
+	}
 #endif
 }

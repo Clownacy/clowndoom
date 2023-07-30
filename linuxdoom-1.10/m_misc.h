@@ -29,14 +29,14 @@
 
 boolean
 M_WriteFile
-( char const*	name,
-  void*		source,
-  int		length );
+( char const*   name,
+  void*         source,
+  int           length );
 
 int
 M_ReadFile
-( char const*	name,
-  byte**	buffer );
+( char const*   name,
+  byte**        buffer );
 
 void M_ScreenShot (void);
 
@@ -47,10 +47,10 @@ void M_SaveDefaults (void);
 
 int
 M_DrawText
-( int		x,
-  int		y,
-  boolean	direct,
-  char*		string );
+( int           x,
+  int           y,
+  boolean       direct,
+  char*         string );
 
 int M_strncasecmp(const char *s1, const char *s2, size_t n);
 #define M_strcasecmp(s1, s2) M_strncasecmp(s1, s2, (size_t)-1)

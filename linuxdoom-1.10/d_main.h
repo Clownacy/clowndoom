@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	System specific interface stuff.
+        System specific interface stuff.
 
 ******************************************************************************/
 
@@ -26,7 +26,7 @@
 
 
 #define MAXWADFILES             20
-extern const char*		wadfiles[MAXWADFILES];
+extern const char*              wadfiles[MAXWADFILES];
 
 void D_AddFile (const char *file);
 

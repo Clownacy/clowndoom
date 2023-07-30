@@ -20,8 +20,8 @@
 
 #include "m_misc.h"
 
-int		myargc;
-char**		myargv;
+int             myargc;
+char**          myargv;
 
 
 
@@ -33,15 +33,15 @@ char**		myargv;
 /* or 0 if not present */
 int M_CheckParm (const char *check)
 {
-    int		i;
+	int         i;
 
-    for (i = 1;i<myargc;i++)
-    {
-	if ( !M_strcasecmp(check, myargv[i]) )
-	    return i;
-    }
+	for (i = 1;i<myargc;i++)
+	{
+		if ( !M_strcasecmp(check, myargv[i]) )
+			return i;
+	}
 
-    return 0;
+	return 0;
 }
 
 

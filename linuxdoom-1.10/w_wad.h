@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	WAD I/O functions.
+        WAD I/O functions.
 
 ******************************************************************************/
 
@@ -28,10 +28,10 @@
 /* TYPES */
 typedef struct
 {
-    /* Should be "IWAD" or "PWAD". */
-    char		identification[4];
-    size_t		numlumps;
-    size_t		infotableofs;
+	/* Should be "IWAD" or "PWAD". */
+	char                identification[4];
+	size_t              numlumps;
+	size_t              infotableofs;
 
 } wadinfo_t;
 
@@ -39,28 +39,28 @@ typedef struct
 /* WADFILE I/O related stuff. */
 typedef struct
 {
-    char	name[8];
-    FILE*	handle;
-    size_t	position;
-    size_t	size;
+	char        name[8];
+	FILE*       handle;
+	size_t      position;
+	size_t      size;
 } lumpinfo_t;
 
 
-extern	void**		lumpcache;
-extern	lumpinfo_t*	lumpinfo;
-extern	size_t		numlumps;
+extern  void**          lumpcache;
+extern  lumpinfo_t*     lumpinfo;
+extern  size_t          numlumps;
 
 void    W_InitMultipleFiles (const char** filenames);
 void    W_Reload (void);
 
-int	W_CheckNumForName (const char* name);
-int	W_GetNumForName (const char* name);
+int     W_CheckNumForName (const char* name);
+int     W_GetNumForName (const char* name);
 
-int	W_LumpLength (size_t lump);
+int     W_LumpLength (size_t lump);
 void    W_ReadLump (size_t lump, void *dest);
 
-void*	W_CacheLumpNum (size_t lump, int tag);
-void*	W_CacheLumpName (const char* name, int tag);
+void*   W_CacheLumpNum (size_t lump, int tag);
+void*   W_CacheLumpName (const char* name, int tag);
 
 
 

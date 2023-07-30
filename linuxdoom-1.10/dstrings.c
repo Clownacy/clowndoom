@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    DESCRIPTION:
-  	Globally defined strings.
+        Globally defined strings.
 
 ******************************************************************************/
 
