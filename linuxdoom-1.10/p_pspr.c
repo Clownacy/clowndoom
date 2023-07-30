@@ -557,7 +557,7 @@ A_FirePlasma
 
 	P_SetPsprite (player,
 				  ps_flash,
-				  weaponinfo[player->readyweapon].flashstate+(P_Random ()&1) );
+				  (statenum_t)(weaponinfo[player->readyweapon].flashstate+(P_Random ()&1)) );
 
 	P_SpawnPlayerMissile (player->mo, MT_PLASMA);
 }
@@ -711,9 +711,9 @@ A_FireCGun
 
 	P_SetPsprite (player,
 				  ps_flash,
-				  weaponinfo[player->readyweapon].flashstate
+				  (statenum_t)(weaponinfo[player->readyweapon].flashstate
 				  + psp->state
-				  - &states[S_CHAIN1] );
+				  - &states[S_CHAIN1]) );
 
 	P_BulletSlope (player->mo);
 

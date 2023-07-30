@@ -197,12 +197,12 @@ void I_InitGraphics(void)
 	I_GrabMouse(b_true);
 
 	/* TODO - handle failed allocations */
-	colors = malloc(256 * bytes_per_pixel);
-	colored_screen = malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
+	colors = (unsigned char*)malloc(256 * bytes_per_pixel);
+	colored_screen = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 
 	/* Create LUTs for the upscaler */
-	upscale_x_deltas = malloc(output_width);
-	upscale_y_deltas = malloc(output_height);
+	upscale_x_deltas = (unsigned char*)malloc(output_width);
+	upscale_y_deltas = (unsigned char*)malloc(output_height);
 
 	for (last = 0, i = 0; i < output_height; ++i)
 	{

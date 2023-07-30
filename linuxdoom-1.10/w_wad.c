@@ -197,7 +197,7 @@ void W_AddFile (const char *filename)
 
 
 	/* Fill in lumpinfo */
-	lumpinfo = realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
+	lumpinfo = (lumpinfo_t*)realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
 
 	if (lumpinfo == NULL)
 		I_Error ("Couldn't realloc lumpinfo");
@@ -289,7 +289,7 @@ void W_InitMultipleFiles (const char** filenames)
 	numlumps = 0;
 
 	/* will be realloced as lumps are added */
-	lumpinfo = malloc(1);
+	lumpinfo = NULL;
 
 	for ( ; *filenames ; filenames++)
 		W_AddFile (*filenames);
@@ -299,7 +299,7 @@ void W_InitMultipleFiles (const char** filenames)
 
 	/* set up caching */
 	size = numlumps * sizeof(*lumpcache);
-	lumpcache = malloc (size);
+	lumpcache = (void**)malloc (size);
 
 	if (!lumpcache)
 		I_Error ("Couldn't allocate lumpcache");

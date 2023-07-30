@@ -203,7 +203,7 @@ void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 {
 	SDL_LockSurface(surface);
 
-	*pixels = surface->pixels;
+	*pixels = (unsigned char*)surface->pixels;
 	*pitch = surface->pitch;
 }
 
@@ -278,7 +278,7 @@ void IB_ShutdownGraphics(void)
 void IB_GrabMouse(bool32 grab)
 {
 #if SDL_MAJOR_VERSION >= 2
-	SDL_SetRelativeMouseMode(grab ? SDL_ENABLE : SDL_DISABLE);
+	SDL_SetRelativeMouseMode(grab ? SDL_TRUE : SDL_FALSE);
 #else
 	SDL_WM_GrabInput(grab ? SDL_GRAB_ON : SDL_GRAB_OFF);
 	SDL_ShowCursor(!grab);

@@ -181,7 +181,7 @@ void D_Display (void)
 	static  bool32             menuactivestate = b_false;
 	static  bool32             inhelpscreensstate = b_false;
 	static  bool32             fullscreen = b_false;
-	static  gamestate_t         oldgamestate = -1;
+	static  gamestate_t         oldgamestate = (gamestate_t)-1;
 	static  int                 borderdrawcount;
 	int                         nowtime;
 	int                         tics;
@@ -200,7 +200,7 @@ void D_Display (void)
 	if (setsizeneeded)
 	{
 		R_ExecuteSetViewSize ();
-		oldgamestate = -1;                      /* force background redraw */
+		oldgamestate = (gamestate_t)-1;                      /* force background redraw */
 		borderdrawcount = 3;
 	}
 
@@ -257,7 +257,7 @@ void D_Display (void)
 
 	/* clean up border stuff */
 	if (gamestate != oldgamestate && gamestate != GS_LEVEL)
-		I_SetPalette (W_CacheLumpName ("PLAYPAL",PU_CACHE));
+		I_SetPalette ((byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
 	/* see if the border needs to be initially drawn */
 	if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -292,7 +292,7 @@ void D_Display (void)
 		else
 			y = viewwindowy+4;
 		V_DrawPatchDirect(viewwindowx+(scaledviewwidth-68)/2,
-						  y,0,W_CacheLumpName ("M_PAUSE", PU_CACHE));
+						  y,0,(patch_t*)W_CacheLumpName ("M_PAUSE", PU_CACHE));
 	}
 
 
@@ -400,7 +400,7 @@ void D_PageTicker (void)
 /* D_PageDrawer */
 void D_PageDrawer (void)
 {
-	V_DrawPatch (0,0, 0, W_CacheLumpName(pagename, PU_CACHE));
+	V_DrawPatch (0,0, 0, (patch_t*)W_CacheLumpName(pagename, PU_CACHE));
 }
 
 
@@ -507,7 +507,7 @@ void D_AddFile (const char *file)
 	for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
 		;
 
-	newfile = malloc (strlen(file)+1);
+	newfile = (char*)malloc (strlen(file)+1);
 	strcpy (newfile, file);
 
 	wadfiles[numwadfiles] = newfile;
@@ -540,32 +540,32 @@ void IdentifyVersion (void)
 		doomwaddir = ".";
 
 	/* Commercial. */
-	doom2wad = malloc(strlen(doomwaddir)+1+9+1);
+	doom2wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
 	sprintf(doom2wad, "%s/doom2.wad", doomwaddir);
 
 	/* Retail. */
-	doomuwad = malloc(strlen(doomwaddir)+1+9+1);
+	doomuwad = (char*)malloc(strlen(doomwaddir)+1+9+1);
 	sprintf(doomuwad, "%s/doomu.wad", doomwaddir);
 
 	/* Registered. */
-	doomwad = malloc(strlen(doomwaddir)+1+8+1);
+	doomwad = (char*)malloc(strlen(doomwaddir)+1+8+1);
 	sprintf(doomwad, "%s/doom.wad", doomwaddir);
 
 	/* Shareware. */
-	doom1wad = malloc(strlen(doomwaddir)+1+9+1);
+	doom1wad = (char*)malloc(strlen(doomwaddir)+1+9+1);
 	sprintf(doom1wad, "%s/doom1.wad", doomwaddir);
 
 	 /* Bug, dear Shawn. */
 	/* Insufficient malloc, caused spurious realloc errors. */
-	plutoniawad = malloc(strlen(doomwaddir)+1+/*9*/12+1);
+	plutoniawad = (char*)malloc(strlen(doomwaddir)+1+/*9*/12+1);
 	sprintf(plutoniawad, "%s/plutonia.wad", doomwaddir);
 
-	tntwad = malloc(strlen(doomwaddir)+1+7+1);
+	tntwad = (char*)malloc(strlen(doomwaddir)+1+7+1);
 	sprintf(tntwad, "%s/tnt.wad", doomwaddir);
 
 
 	/* French stuff. */
-	doom2fwad = malloc(strlen(doomwaddir)+1+10+1);
+	doom2fwad = (char*)malloc(strlen(doomwaddir)+1+10+1);
 	sprintf(doom2fwad, "%s/doom2f.wad", doomwaddir);
 
 #ifdef __unix__
@@ -719,7 +719,7 @@ void FindResponseFile (void)
 			fseek (handle,0,SEEK_END);
 			size = ftell(handle);
 			fseek (handle,0,SEEK_SET);
-			file = malloc (size);
+			file = (char*)malloc (size);
 			fread (file,size,1,handle);
 			fclose (handle);
 
@@ -728,7 +728,7 @@ void FindResponseFile (void)
 				moreargs[index++] = myargv[k];
 
 			firstargv = myargv[0];
-			myargv = malloc(sizeof(char *)*MAXARGVS);
+			myargv = (char**)malloc(sizeof(char *)*MAXARGVS);
 			memset(myargv,0,sizeof(char *)*MAXARGVS);
 			myargv[0] = firstargv;
 
@@ -942,7 +942,7 @@ void D_DoomMain (void)
 	p = M_CheckParm ("-skill");
 	if (p && p < myargc-1)
 	{
-		startskill = myargv[p+1][0]-'1';
+		startskill = (skill_t)(myargv[p+1][0]-'1');
 		autostart = b_true;
 	}
 

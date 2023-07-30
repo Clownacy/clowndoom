@@ -568,7 +568,7 @@ P_TouchSpecialThing
 			player->backpack = b_true;
 		}
 		for (i=0 ; i<NUMAMMO ; i++)
-			P_GiveAmmo (player, i, 1);
+			P_GiveAmmo (player, (ammotype_t)i, 1);
 		player->message = GOTBACKPACK;
 		break;
 

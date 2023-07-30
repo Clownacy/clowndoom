@@ -131,7 +131,7 @@ M_ReadFile
 		length = ftell(handle);
 		if (length != -1)
 		{
-			buf = Z_Malloc (length, PU_STATIC, NULL);
+			buf = (byte*)Z_Malloc (length, PU_STATIC, NULL);
 			rewind(handle);
 			count = fread (buf, 1, length, handle);
 			fclose (handle);
@@ -407,7 +407,7 @@ WritePCXfile
 
 	length = 0x80 + 1 + (1 << 8) * 3;
 
-	pcx = Z_Malloc(length + width * height * 2, PU_STATIC, NULL);
+	pcx = (byte*)Z_Malloc(length + width * height * 2, PU_STATIC, NULL);
 
 	/* Manufacturer */
 	pcx[0] = 0x0A;      /* PCX ID */
@@ -501,7 +501,7 @@ WriteBMPfile
 	const unsigned long bitmap_offset = 0x1A + 0x100 * 3;
 	const unsigned long length = bitmap_offset + rounded_width * height;
 
-	bmp = Z_Malloc(length, PU_STATIC, NULL);
+	bmp = (byte*)Z_Malloc(length, PU_STATIC, NULL);
 
 	/* BMP file header */
 
@@ -599,7 +599,7 @@ void M_ScreenShot (void)
 	/* save the screenshot file */
 	(bmp_screenshots ? WriteBMPfile : WritePCXfile) (lbmname, linear,
 				  SCREENWIDTH, SCREENHEIGHT,
-				  W_CacheLumpName ("PLAYPAL",PU_CACHE));
+				  (byte*)W_CacheLumpName ("PLAYPAL",PU_CACHE));
 
 	players[consoleplayer].message = "screen shot";
 }

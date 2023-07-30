@@ -476,7 +476,7 @@ void AM_loadPics(void)
 	for (i=0;i<10;i++)
 	{
 		sprintf(namebuf, "AMMNUM%d", i);
-		marknums[i] = W_CacheLumpName(namebuf, PU_STATIC);
+		marknums[i] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	}
 
 }

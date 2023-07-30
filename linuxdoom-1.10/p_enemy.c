@@ -328,7 +328,7 @@ void P_NewChaseDir (mobj_t*     actor)
 
 	dirtype_t   d[3];
 
-	unsigned int        tdir;
+	dirtype_t   tdir;
 	dirtype_t   olddir;
 
 	dirtype_t   turnaround;
@@ -412,7 +412,7 @@ void P_NewChaseDir (mobj_t*     actor)
 	{
 		for ( tdir=DI_EAST;
 			  tdir<=DI_SOUTHEAST;
-			  tdir++ )
+			  tdir = (dirtype_t)(tdir + 1) )
 		{
 			if (tdir!=turnaround)
 			{
@@ -427,7 +427,7 @@ void P_NewChaseDir (mobj_t*     actor)
 	{
 		for ( tdir=DI_SOUTHEAST;
 			  tdir != (DI_EAST-1u);
-			  tdir-- )
+			  tdir = (dirtype_t)(tdir - 1) )
 		{
 			if (tdir!=turnaround)
 			{

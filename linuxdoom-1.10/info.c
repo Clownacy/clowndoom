@@ -1132,7 +1132,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_POSS_PAIN,            /* painstate */
 		200,            /* painchance */
 		sfx_popain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_POSS_ATK1,            /* missilestate */
 		S_POSS_DIE1,            /* deathstate */
 		S_POSS_XDIE1,           /* xdeathstate */
@@ -1158,7 +1158,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_SPOS_PAIN,            /* painstate */
 		170,            /* painchance */
 		sfx_popain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_SPOS_ATK1,            /* missilestate */
 		S_SPOS_DIE1,            /* deathstate */
 		S_SPOS_XDIE1,           /* xdeathstate */
@@ -1184,7 +1184,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_VILE_PAIN,            /* painstate */
 		10,             /* painchance */
 		sfx_vipain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_VILE_ATK1,            /* missilestate */
 		S_VILE_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1314,7 +1314,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_FATT_PAIN,            /* painstate */
 		80,             /* painchance */
 		sfx_mnpain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_FATT_ATK1,            /* missilestate */
 		S_FATT_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1366,7 +1366,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_CPOS_PAIN,            /* painstate */
 		170,            /* painchance */
 		sfx_popain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_CPOS_ATK1,            /* missilestate */
 		S_CPOS_DIE1,            /* deathstate */
 		S_CPOS_XDIE1,           /* xdeathstate */
@@ -1419,7 +1419,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		180,            /* painchance */
 		sfx_dmpain,             /* painsound */
 		S_SARG_ATK1,            /* meleestate */
-		0,              /* missilestate */
+		(statenum_t)0,  /* missilestate */
 		S_SARG_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
 		sfx_sgtdth,             /* deathsound */
@@ -1445,7 +1445,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		180,            /* painchance */
 		sfx_dmpain,             /* painsound */
 		S_SARG_ATK1,            /* meleestate */
-		0,              /* missilestate */
+		(statenum_t)0,  /* missilestate */
 		S_SARG_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
 		sfx_sgtdth,             /* deathsound */
@@ -1470,7 +1470,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_HEAD_PAIN,            /* painstate */
 		128,            /* painchance */
 		sfx_dmpain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_HEAD_ATK1,            /* missilestate */
 		S_HEAD_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1574,7 +1574,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_SKULL_PAIN,           /* painstate */
 		256,            /* painchance */
 		sfx_dmpain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_SKULL_ATK1,           /* missilestate */
 		S_SKULL_DIE1,           /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1600,7 +1600,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_SPID_PAIN,            /* painstate */
 		40,             /* painchance */
 		sfx_dmpain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_SPID_ATK1,            /* missilestate */
 		S_SPID_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1626,7 +1626,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_BSPI_PAIN,            /* painstate */
 		128,            /* painchance */
 		sfx_dmpain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_BSPI_ATK1,            /* missilestate */
 		S_BSPI_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1652,7 +1652,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_CYBER_PAIN,           /* painstate */
 		20,             /* painchance */
 		sfx_dmpain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_CYBER_ATK1,           /* missilestate */
 		S_CYBER_DIE1,           /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1678,7 +1678,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_PAIN_PAIN,            /* painstate */
 		128,            /* painchance */
 		sfx_pepain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_PAIN_ATK1,            /* missilestate */
 		S_PAIN_DIE1,            /* deathstate */
 		S_NULL,         /* xdeathstate */
@@ -1704,7 +1704,7 @@ mobjinfo_t mobjinfo[NUMMOBJTYPES] = {
 		S_SSWV_PAIN,            /* painstate */
 		170,            /* painchance */
 		sfx_popain,             /* painsound */
-		0,              /* meleestate */
+		(statenum_t)0,  /* meleestate */
 		S_SSWV_ATK1,            /* missilestate */
 		S_SSWV_DIE1,            /* deathstate */
 		S_SSWV_XDIE1,           /* xdeathstate */

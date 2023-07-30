@@ -179,7 +179,7 @@ void R_InitSpriteDefs (const char* const *namelist)
 	if (!numsprites)
 		return;
 
-	sprites = Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
+	sprites = (spritedef_t*)Z_Malloc(numsprites *sizeof(*sprites), PU_STATIC, NULL);
 
 	start = firstspritelump-1;
 	end = lastspritelump+1;
@@ -257,7 +257,7 @@ void R_InitSpriteDefs (const char* const *namelist)
 		/* allocate space for the frames present and copy sprtemp to it */
 		sprites[i].numframes = maxframe;
 		sprites[i].spriteframes =
-			Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
+			(spriteframe_t*)Z_Malloc (maxframe * sizeof(spriteframe_t), PU_STATIC, NULL);
 		memcpy (sprites[i].spriteframes, sprtemp, maxframe*sizeof(spriteframe_t));
 	}
 
@@ -374,7 +374,7 @@ R_DrawVisSprite
 	patch_t*            patch;
 
 
-	patch = W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
+	patch = (patch_t*)W_CacheLumpNum (vis->patch+firstspritelump, PU_CACHE);
 
 	dc_colormap = vis->colormap;
 
@@ -749,7 +749,7 @@ void R_SortVisSprites (void)
 	int                 count;
 	vissprite_t*        ds;
 	vissprite_t*        best;
-	vissprite_t         unsorted;
+	static vissprite_t  unsorted;
 	fixed_t             bestscale;
 
 	count = vissprite_p - vissprites;
@@ -767,11 +767,11 @@ void R_SortVisSprites (void)
 
 	vissprites[0].prev = &unsorted;
 	unsorted.next = &vissprites[0];
-	(vissprite_p-1)->next = &unsorted;
-	unsorted.prev = vissprite_p-1;
+	vissprite_p[-1].next = &unsorted;
+	unsorted.prev = &vissprite_p[-1];
 
 	/* pull the vissprites out by scale */
-	best = 0;           /* shut up the compiler warning */
+	best = NULL;           /* shut up the compiler warning */
 	vsprsortedhead.next = vsprsortedhead.prev = &vsprsortedhead;
 	for (i=0 ; i<count ; i++)
 	{

@@ -463,7 +463,7 @@ void G_DoLoadLevel (void)
 	levelstarttic = gametic;        /* for time calculation */
 
 	if (wipegamestate == GS_LEVEL)
-		wipegamestate = -1;             /* force a wipe */
+		wipegamestate = (gamestate_t)-1;             /* force a wipe */
 
 	gamestate = GS_LEVEL;
 
@@ -1180,7 +1180,7 @@ void G_DoLoadGame (void)
 		return;                         /* bad version */
 	save_p += VERSIONSIZE;
 
-	gameskill = *save_p++;
+	gameskill = (skill_t)*save_p++;
 	gameepisode = *save_p++;
 	gamemap = *save_p++;
 	for (i=0 ; i<MAXPLAYERS ; i++)
@@ -1494,7 +1494,7 @@ void G_RecordDemo (const char* name)
 	i = M_CheckParm ("-maxdemo");
 	if (i && i<myargc-1)
 		maxsize = atoi(myargv[i+1])*1024;
-	demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL);
+	demobuffer = (byte*)Z_Malloc (maxsize,PU_STATIC,NULL);
 	demoend = demobuffer + maxsize;
 
 	demorecording = b_true;
@@ -1538,7 +1538,7 @@ void G_DoPlayDemo (void)
 	int             i, episode, map;
 
 	gameaction = ga_nothing;
-	demobuffer = demo_p = W_CacheLumpName (defdemoname, PU_STATIC);
+	demobuffer = demo_p = (byte*)W_CacheLumpName (defdemoname, PU_STATIC);
 	if ( *demo_p++ != VERSION)
 	{
 	  fprintf( stderr, "Demo is from a different game version!\n");
@@ -1546,7 +1546,7 @@ void G_DoPlayDemo (void)
 	  return;
 	}
 
-	skill = *demo_p++;
+	skill = (skill_t)*demo_p++;
 	episode = *demo_p++;
 	map = *demo_p++;
 	deathmatch = *demo_p++;
