@@ -434,9 +434,9 @@ void D_AdvanceDemo (void)
 	{
 	  case 0:
 		if ( gamemode == commercial )
-			pagetic = 35 * 11;
+			pagetic = TICRATE * 11;
 		else
-			pagetic = 170;
+			pagetic = TICRATE * 34 / 7;
 		gamestate = GS_DEMOSCREEN;
 		pagename = "TITLEPIC";
 		if ( gamemode == commercial )
@@ -448,7 +448,7 @@ void D_AdvanceDemo (void)
 		G_DeferedPlayDemo ("demo1");
 		break;
 	  case 2:
-		pagetic = 200;
+		pagetic = TICRATE * 40 / 7;
 		gamestate = GS_DEMOSCREEN;
 		pagename = "CREDIT";
 		break;
@@ -459,13 +459,13 @@ void D_AdvanceDemo (void)
 		gamestate = GS_DEMOSCREEN;
 		if ( gamemode == commercial)
 		{
-			pagetic = 35 * 11;
+			pagetic = TICRATE * 11;
 			pagename = "TITLEPIC";
 			S_StartMusic(mus_dm2ttl);
 		}
 		else
 		{
-			pagetic = 200;
+			pagetic = TICRATE * 40 / 7;
 
 			if ( gamemode == retail )
 			  pagename = "CREDIT";
@@ -477,7 +477,7 @@ void D_AdvanceDemo (void)
 		G_DeferedPlayDemo ("demo3");
 		break;
 	  case 6:
-		  pagetic = 200;
+		  pagetic = TICRATE * 40 / 7;
 		  gamestate = GS_DEMOSCREEN;
 		  pagename = "CREDIT";
 		  break;
