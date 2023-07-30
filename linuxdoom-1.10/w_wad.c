@@ -102,10 +102,17 @@ ExtractFileBase
 static unsigned long Read32LE(FILE* handle)
 {
     unsigned char bytes[4];
+    unsigned long value;
+    unsigned int i;
 
     fread(bytes, 1, 4, handle);
 
-    return bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24);
+    value = 0;
+
+    for (i = 0; i < 4; ++i)
+        value |= (unsigned long)bytes[i] << (8 * i);
+
+    return value;
 }
 
 
