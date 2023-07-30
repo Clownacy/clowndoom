@@ -106,7 +106,8 @@ static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
 	#else
 		#define SCANCODE_WRAPPER(sdl2, linux, macos) linux
 	#endif
-
+		/* These magic numbers are taken from 'sdl12-compat':
+		   https://github.com/libsdl-org/sdl12-compat/blob/b000fdc51a7543f4067fa45dbe402ace6c738ba6/src/SDL12_compat.c#L4291 */
 		case SCANCODE_WRAPPER(EQUALS      , 0x15, 0x18): return KEY_EQUALS;
 		case SCANCODE_WRAPPER(MINUS       , 0x14, 0x1B): return KEY_MINUS;
 		case SCANCODE_WRAPPER(SPACE       , 0x41, 0x31): return ' ';
@@ -156,7 +157,6 @@ static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
 		case SCANCODE_WRAPPER(Y, 0x1D, 0x10): return 'y';
 		case SCANCODE_WRAPPER(Z, 0x34, 0x06): return 'z';
 
-	#undef CONVERT_SCANCODE
 	#undef SCANCODE_WRAPPER
 
 		default:
