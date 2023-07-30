@@ -672,7 +672,7 @@ int I_RegisterSong(const void* data, size_t size)
     {
         IB_LockSound();
 
-        music_midi = WildMidi_OpenBuffer((void*)data, size);
+        music_midi = WildMidi_OpenBuffer(data, size);
 
         IB_UnlockSound();
     }
