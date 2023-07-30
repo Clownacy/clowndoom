@@ -149,7 +149,6 @@ M_ReadFile
 /* DEFAULTS */
 int             usemouse;
 int             usejoystick;
-int             show_stats;
 int             full_colour;
 int             prototype_light_amplification_visor_effect;
 
@@ -215,7 +214,6 @@ default_t       defaults[] =
 	{"show_messages",&showMessages, 1, d_false},
 	{"novert",&novert, 1, d_false},
 	{"always_run",&always_run, 1, d_false},
-	{"show_stats",&show_stats, 1, d_false},
 
 	/* Keyboard */
 	/* Movement */

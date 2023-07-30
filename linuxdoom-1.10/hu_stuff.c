@@ -25,6 +25,7 @@
 
 #include "m_swap.h"
 
+#include "am_map.h"
 #include "hu_stuff.h"
 #include "hu_lib.h"
 #include "w_wad.h"
@@ -514,11 +515,9 @@ void HU_Drawer(void)
 	HUlib_drawIText(&w_chat);
 	if (automapactive)
 	{
-		extern int show_stats;
-
 		HUlib_drawTextLine(&w_title, d_false);
 
-		if (deathmatch == DM_OFF && show_stats)
+		if (deathmatch == DM_OFF && automap_cheats >= 1)
 		{
 			int i, kills, items, secrets;
 
