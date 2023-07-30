@@ -505,15 +505,11 @@ char            title[128];
 void D_AddFile (const char *file)
 {
 	int     numwadfiles;
-	char    *newfile;
 
 	for (numwadfiles = 0 ; wadfiles[numwadfiles] ; numwadfiles++)
 		;
 
-	newfile = (char*)malloc (strlen(file)+1);
-	strcpy (newfile, file);
-
-	wadfiles[numwadfiles] = newfile;
+	wadfiles[numwadfiles] = M_strdup(file);
 }
 
 /* IdentifyVersion */

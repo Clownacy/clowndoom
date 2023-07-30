@@ -21,6 +21,7 @@
 ******************************************************************************/
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <ctype.h>
 
@@ -306,7 +307,6 @@ extern unsigned char     scantokey[128];
 void M_LoadDefaults (void)
 {
 	int         i;
-	int         len;
 	FILE*       f;
 	char        def[80];
 	char        strparm[100];
@@ -347,10 +347,7 @@ void M_LoadDefaults (void)
 				{
 					/* get a string default */
 					isstring = d_true;
-					len = strlen(strparm);
-					newstring = (char *) malloc(len);
-					strparm[len-1] = 0;
-					strcpy(newstring, strparm+1);
+					newstring = M_strndup(strparm+1, strlen(strparm+1)-1);
 				}
 				else
 					sscanf(strparm, "%i", &parm);
@@ -630,6 +627,24 @@ char* M_strupr(char* const string)
 	for (s = string; *s != '\0'; ++s)
 		*s = toupper(*s);
 	return string;
+}
+
+char* M_strndup(const char* const src, const size_t size)
+{
+	char* const copy = (char*)malloc(size + 1);
+
+	if (copy != NULL)
+	{
+		memcpy(copy, src, size);
+		copy[size] = '\0';
+	}
+
+	return copy;
+}
+
+char* M_strdup(const char* const src)
+{
+	return M_strndup(src, strlen(src));
 }
 
 d_bool M_FileExists(const char* const filename)

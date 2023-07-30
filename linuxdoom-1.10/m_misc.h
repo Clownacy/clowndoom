@@ -55,6 +55,8 @@ int M_strncasecmp(const char *s1, const char *s2, size_t n);
 #define M_strcasecmp(s1, s2) M_strncasecmp(s1, s2, (size_t)-1)
 
 char* M_strupr(char *string);
+char* M_strndup(const char *src, const size_t size);
+char* M_strdup(const char *src);
 
 d_bool M_FileExists(const char* const filename);
 
