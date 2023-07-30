@@ -677,7 +677,7 @@ void G_Ticker (void)
 				switch (players[i].cmd.buttons & BT_SPECIALMASK)
 				{
 				  case BTS_PAUSE:
-					paused ^= 1;
+					paused = !paused;
 					if (paused)
 						S_PauseSound ();
 					else
