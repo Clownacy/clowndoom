@@ -647,17 +647,24 @@ void R_ExecuteSetViewSize (void)
 
 	setsizeneeded = d_false;
 
-	if (setblocks == 11)
+	switch (setblocks)
 	{
-		scaledviewwidth = SCREENWIDTH;
-		viewheight = SCREENHEIGHT;
-	}
-	else
-	{
-		scaledviewwidth = setblocks*SCREENWIDTH/10;
-		scaledviewwidth -= scaledviewwidth % BEVEL_SIZE;
-		viewheight = setblocks*(SCREENHEIGHT-ST_HEIGHT)/10;
-		viewheight -= viewheight % BEVEL_SIZE;
+		case 11:
+			scaledviewwidth = SCREENWIDTH;
+			viewheight = SCREENHEIGHT;
+			break;
+
+		case 10:
+			scaledviewwidth = SCREENWIDTH;
+			viewheight = SCREENHEIGHT - ST_HEIGHT;
+			break;
+
+		default:
+			scaledviewwidth = setblocks * SCREENWIDTH / 10;
+			scaledviewwidth -= scaledviewwidth % BEVEL_SIZE;
+			viewheight = setblocks * (SCREENHEIGHT - ST_HEIGHT) / 10;
+			viewheight -= viewheight % BEVEL_SIZE;
+			break;
 	}
 
 	detailshift = setdetail;
