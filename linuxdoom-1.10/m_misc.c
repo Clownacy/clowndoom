@@ -188,8 +188,6 @@ extern int      screenblocks;
 
 extern int      aspect_ratio_correction;
 
-extern int      showMessages;
-
 /* machine-independent sound params */
 extern  int     numChannels;
 

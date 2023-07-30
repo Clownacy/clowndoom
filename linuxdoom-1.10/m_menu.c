@@ -927,12 +927,9 @@ void M_ChangeMessages(int choice)
 	/* warning: unused parameter `int choice' */
 	(void)choice;
 
-	showMessages = 1 - showMessages;
+	showMessages = !showMessages;
 
-	if (!showMessages)
-		players[consoleplayer].message = MSGOFF;
-	else
-		players[consoleplayer].message = MSGON ;
+	players[consoleplayer].message = showMessages ? MSGON : MSGOFF;
 
 	message_dontfuckwithme = d_true;
 }
