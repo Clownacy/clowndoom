@@ -30,6 +30,7 @@
 #include "w_wad.h"
 
 #include "s_sound.h"
+#include "st_stuff.h"
 
 #include "doomstat.h"
 
@@ -44,7 +45,7 @@
 #define HU_TITLET       (mapnamest[gamemap-1])
 #define HU_TITLEHEIGHT  1
 #define HU_TITLEX       0
-#define HU_TITLEY       (SCREENHEIGHT - 33 - SHORT(hu_font[0]->height))
+#define HU_TITLEY       (SCREENHEIGHT - ST_HEIGHT - 1 - SHORT(hu_font[0]->height)) /* TODO: Scale by SCREEN_MUL. */
 
 #define HU_INPUTTOGGLE  't'
 #define HU_INPUTX       HU_MSGX

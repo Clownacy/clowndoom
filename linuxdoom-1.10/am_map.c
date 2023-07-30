@@ -214,7 +214,7 @@ static int      leveljuststarted = 1;   /* kluge until AM_LevelInit() is called 
 
 d_bool         automapactive = d_false;
 static int      finit_width = SCREENWIDTH;
-static int      finit_height = SCREENHEIGHT - 32;
+static int      finit_height = SCREENHEIGHT - ST_HEIGHT;
 
 /* location of window on screen */
 static int      f_x;
