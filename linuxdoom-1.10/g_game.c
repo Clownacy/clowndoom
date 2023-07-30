@@ -1398,8 +1398,6 @@ G_InitNew
 	gamemap = map;
 	gameskill = skill;
 
-	viewactive = d_true;
-
 	/* set the sky map for the episode */
 	if ( gamemode == commercial)
 	{
