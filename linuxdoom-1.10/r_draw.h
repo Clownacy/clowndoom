@@ -21,6 +21,10 @@
 #ifndef __R_DRAW__
 #define __R_DRAW__
 
+#include "doomdef.h"
+
+#define BEVEL_SIZE (8*SCREEN_MUL)
+
 
 extern lighttable_t*    dc_colormap;
 extern int              dc_x;

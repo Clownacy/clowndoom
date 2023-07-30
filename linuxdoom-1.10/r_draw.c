@@ -43,8 +43,6 @@
 /* status bar height at bottom of screen */
 #define SBARHEIGHT              ST_HEIGHT
 
-#define BEVEL_SIZE (8*SCREEN_MUL)
-
 /* All drawing to the view buffer is accomplished in this file. */
 /* The other refresh files only know about ccordinates, */
 /*  not the architecture of the frame buffer. */
