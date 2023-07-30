@@ -332,12 +332,13 @@ void R_DrawFuzzColumn (void)
 		/*  a pixel that is either one column */
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
-		*dest++ = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
+		*dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
 			fuzzpos = 0;
 
+		++dest;
 		frac += fracstep;
 	} while (count--);
 }
@@ -417,12 +418,14 @@ void R_DrawFuzzColumnLow (void)
 		/*  a pixel that is either one column */
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
-		*dest2++ = *dest++ = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
+		*dest2 = *dest = colormaps[6*256+dest[fuzzoffset[fuzzpos]]];
 
 		/* Clamp table lookup index. */
 		if (++fuzzpos == FUZZTABLE)
 			fuzzpos = 0;
 
+		++dest;
+		++dest2;
 		frac += fracstep;
 	} while (count--);
 }
@@ -912,7 +915,6 @@ void R_DrawViewBorder (void)
 {
 	int         top;
 	int         side;
-	int         ofs;
 	int         i;
 
 	if (scaledviewwidth == SCREENWIDTH)

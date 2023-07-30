@@ -140,9 +140,7 @@ wipe_doMelt
 {
 	int         i;
 	int         j;
-	int         k;
 
-	unsigned char *s, *d;
 	d_bool     done = d_true;
 
 	width/=PIXELS_PER_COLUMN; /* TODO: Maybe the caller should handle this, to prevent out-of-bounds errors. */
@@ -164,9 +162,9 @@ wipe_doMelt
 				if (y_offset + dy >= height) dy = height - y[i];
 				y_offset_incremented = y_offset + dy;
 
-				for (k=0;k<PIXELS_PER_COLUMN;++k)
+				for (j=0;j<PIXELS_PER_COLUMN;++j)
 				{
-					const int x_offset = (i * PIXELS_PER_COLUMN + k) * height;
+					const int x_offset = (i * PIXELS_PER_COLUMN + j) * height;
 
 					memcpy(&wipe_scr[x_offset + y_offset], &wipe_scr_end[x_offset + y_offset], dy);
 					memcpy(&wipe_scr[x_offset + y_offset_incremented], &wipe_scr_start[x_offset], height - y_offset_incremented);
