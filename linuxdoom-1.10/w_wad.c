@@ -382,7 +382,7 @@ int W_GetNumForName (const char* name)
 int W_LumpLength (size_t lump)
 {
 	if (lump >= numlumps)
-		I_Error ("W_LumpLength: %i >= numlumps",lump);
+		I_Error ("W_LumpLength: %li >= numlumps",(unsigned long)lump);
 
 	return lumpinfo[lump].size;
 }
@@ -402,7 +402,7 @@ W_ReadLump
 	FILE*       handle;
 
 	if (lump >= numlumps)
-		I_Error ("W_ReadLump: %i >= numlumps",lump);
+		I_Error ("W_ReadLump: %li >= numlumps",(unsigned long)lump);
 
 	l = lumpinfo+lump;
 
@@ -421,8 +421,8 @@ W_ReadLump
 	c = fread (dest, 1, l->size, handle);
 
 	if (c < l->size)
-		I_Error ("W_ReadLump: only read %i of %i on lump %i",
-				 c,l->size,lump);
+		I_Error ("W_ReadLump: only read %li of %li on lump %li",
+				 (unsigned long)c,(unsigned long)l->size,(unsigned long)lump);
 
 	if (l->handle == NULL)
 		fclose (handle);

@@ -343,16 +343,16 @@ void R_DrawPlanes (void)
 
 #ifdef RANGECHECK
 	if (ds_p - drawsegs > MAXDRAWSEGS)
-		I_Error ("R_DrawPlanes: drawsegs overflow (%i)",
-				 ds_p - drawsegs);
+		I_Error ("R_DrawPlanes: drawsegs overflow (%li)",
+				 (unsigned long)(ds_p - drawsegs));
 
 	if (lastvisplane - visplanes > MAXVISPLANES)
-		I_Error ("R_DrawPlanes: visplane overflow (%i)",
-				 lastvisplane - visplanes);
+		I_Error ("R_DrawPlanes: visplane overflow (%li)",
+				 (unsigned long)(lastvisplane - visplanes));
 
 	if (lastopening - openings > MAXOPENINGS)
-		I_Error ("R_DrawPlanes: opening overflow (%i)",
-				 lastopening - openings);
+		I_Error ("R_DrawPlanes: opening overflow (%li)",
+				 (unsigned long)(lastopening - openings));
 #endif
 
 	for (pl = visplanes ; pl < lastvisplane ; pl++)

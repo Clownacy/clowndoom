@@ -627,7 +627,7 @@ void R_DrawPSprite (pspdef_t* psp)
 	sprdef = &sprites[psp->state->sprite];
 #ifdef RANGECHECK
 	if ( (psp->state->frame & FF_FRAMEMASK)  >= sprdef->numframes)
-		I_Error ("R_ProjectSprite: invalid sprite frame %i : %i ",
+		I_Error ("R_ProjectSprite: invalid sprite frame %i : %li ",
 				 psp->state->sprite, psp->state->frame);
 #endif
 	sprframe = &sprdef->spriteframes[ psp->state->frame & FF_FRAMEMASK ];
