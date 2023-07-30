@@ -189,12 +189,9 @@ static void OutputSizeChanged(const size_t width, const size_t height)
 	offset_x = (width - output_width) / 2;
 	offset_y = (height - output_height) / 2;
 
-	free(upscale_x_deltas);
-	free(upscale_y_deltas);
-
 	/* Create LUTs for the upscaler */
-	upscale_x_deltas = (unsigned char*)malloc(output_width);
-	upscale_y_deltas = (unsigned char*)malloc(output_height);
+	upscale_x_deltas = (unsigned char*)realloc(upscale_x_deltas, output_width);
+	upscale_y_deltas = (unsigned char*)realloc(upscale_y_deltas, output_height);
 
 	for (last = 0, i = 0; i < output_height; ++i)
 	{
