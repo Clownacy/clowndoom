@@ -580,7 +580,7 @@ P_SetupLevel
 	}
 	else
 #endif
-		Z_FreeTags (PU_LEVEL, PU_PURGELEVEL-1);
+		Z_FreeTags (PU_LEVEL, PU_LEVEL);
 
 
 	/* UNUSED W_Profile (); */

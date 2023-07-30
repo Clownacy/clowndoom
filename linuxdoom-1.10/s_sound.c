@@ -653,7 +653,6 @@ void S_StopMusic(void)
 
 static void S_StopChannel(int cnum)
 {
-
 	int         i;
 	channel_t*  c = &channels[cnum];
 
