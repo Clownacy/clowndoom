@@ -8,8 +8,8 @@ improvements have been made, such as the addition of a `novert` option.
 
 ## Features
 - Music support (through WildMIDI).
-  - Make sure to specify the location of your GUS patches in the 'clowndoomrc'
-    configuration file.
+  - Make sure to specify the location of your GUS patches in the 'clowndoomrc'/
+    'default.cfg' configuration file.
 - Proper sound effect support (the original source release lacked features like
   stopping mid-playback and updating positional effects).
 - New configuration options:
@@ -19,8 +19,15 @@ improvements have been made, such as the addition of a `novert` option.
     versa.
   - `aspect_ratio_correction` - Restores the original 4:3 aspect ratio by
     making pixels rectangular.
+  - `full_colour` - Render with more than 256 colours.
+  - `prototype_light_amplification_visor_effect` - Restore the 'night vision'
+    effect for the light amplification visor from the Press Release Pre-Beta.
+- The 'iddt' cheat enables kill/item/secret totals in the automap, as well as
+  notifications when finding secrets.
+- The game's resolution can be increased by adjusting the `SCREENWIDTH`,
+  `SCREENHEIGHT`, and `HUD_SCALE` constants in `doomdef.h`.
 - Compiler warnings have been addressed.
-- 64-bit support (warning: save files are incompatible with 32-bit).
+- Support for 64-bit CPUs.
 - Support for Windows and modern Linux.
   - The X11 code has been converted from 8bpp to 24bpp, which is supported by
     modern X11 servers.
@@ -31,8 +38,6 @@ improvements have been made, such as the addition of a `novert` option.
   - The codebase can be compiled with MSVC.
 - Assorted bug fixes.
 - Low-detail mode has been restored to full working order.
-- Mouse-grab is no longer optional, and is instead toggled by the menu being
-  open.
 - Better than CuckyDOOM.
 
 ## Configuration
