@@ -129,7 +129,7 @@ static void AudioCallback(short* const output_buffer, const size_t frames_to_do,
 	}
 #endif
 
-	memset(output_buffer + bytes_done, 0, bytes_to_do - bytes_done);
+	memset(&output_buffer[bytes_done / sizeof(short)], 0, bytes_to_do - bytes_done);
 
 	output_buffer_pointer = output_buffer;
 
