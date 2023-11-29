@@ -1159,7 +1159,15 @@ P_RadiusAttack
 
 	fixed_t     dist;
 
+#ifdef FIX_BUGS
+	dist = (damage<<FRACBITS)+MAXRADIUS;
+#else
+	/* BUG: MAXRADIUS is already in fixed-point format, causing dist to be far
+	   larger than intended. This bug is masked by 32-bit overflow, and so must
+	   be emulated when larger integer types are being used. */
 	dist = (damage+MAXRADIUS)<<FRACBITS;
+	dist = (dist & 0x7FFFFFFF) - (dist & 0x80000000);
+#endif
 	yh = (spot->y + dist - bmaporgy)>>MAPBLOCKSHIFT;
 	yl = (spot->y - dist - bmaporgy)>>MAPBLOCKSHIFT;
 	xh = (spot->x + dist - bmaporgx)>>MAPBLOCKSHIFT;
