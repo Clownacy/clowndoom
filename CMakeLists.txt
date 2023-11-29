@@ -148,7 +148,7 @@ endif()
 set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
 
 if(CMAKE_C_BYTE_ORDER STREQUAL "BIG_ENDIAN")
-	target_compile_definitions(clowndoom PRIVATE BIG_ENDIAN)
+	target_compile_definitions(clowndoom PRIVATE PLATFORM_IS_BIG_ENDIAN)
 	target_sources(clowndoom "linuxdoom-1.10/m_swap.c")
 endif()
 
