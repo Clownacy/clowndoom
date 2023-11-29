@@ -252,7 +252,7 @@ void IB_StartTic (void)
 				{
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
 						surface = SDL_GetWindowSurface(window);
-						output_size_changed_callback(sdl_event.window.data1, sdl_event.window.data2);
+						output_size_changed_callback(surface->w, surface->h);
 						break;
 				}
 				break;
