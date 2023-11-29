@@ -164,10 +164,11 @@ endif()
 if(WILDMIDI)
 	target_compile_definitions(clowndoom PRIVATE WILDMIDI)
 
-	# TODO - Add support for system library
-	#find_package(WildMidi)
+	find_package(WildMidi)
 
-	#if(NOT WildMidi-FOUND)
+	if(WildMidi_FOUND)
+		target_link_libraries(clowndoom PRIVATE WildMidi::libwildmidi)
+	else()
 		# Set and hide these internal options
 		set(WANT_ALSA OFF CACHE INTERNAL "" FORCE)
 		set(WANT_DEVTEST OFF CACHE INTERNAL "" FORCE)
@@ -177,9 +178,7 @@ if(WILDMIDI)
 		set(WANT_STATIC ON CACHE INTERNAL "" FORCE)
 
 		add_subdirectory("external/wildmidi" EXCLUDE_FROM_ALL)
-	#endif()
-
-	target_link_libraries(clowndoom PRIVATE libwildmidi-static)
+	endif()
 endif()
 
 # Handle backends
