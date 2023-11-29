@@ -24,7 +24,7 @@
 
 /* Endianess handling. */
 /* WAD files are stored little endian. */
-#if defined(PLATFORM_IS_BIG_ENDIAN)
+#ifdef PLATFORM_IS_BIG_ENDIAN
 short   SwapSHORT(short);
 long    SwapLONG(long);
 #define SHORT(x)        ((short)SwapSHORT((unsigned short) (x)))
