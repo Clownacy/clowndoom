@@ -137,14 +137,6 @@ add_executable(clowndoom WIN32
 	"linuxdoom-1.10/z_zone.h"
 )
 
-if(WIN32)
-	if (MSVC)
-		target_sources(clowndoom PRIVATE "clowndoom.manifest")
-	elseif (MINGW)
-		target_sources(clowndoom PRIVATE "clowndoom.rc")
-	endif()
-endif()
-
 set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
 
 if(CMAKE_C_BYTE_ORDER STREQUAL "BIG_ENDIAN")

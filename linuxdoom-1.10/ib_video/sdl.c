@@ -308,6 +308,9 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 {
 	output_size_changed_callback = output_size_changed_callback_p;
 #if SDL_MAJOR_VERSION >= 2
+	/* Enable high-DPI support on Windows because SDL2 is bad at being a platform abstraction library. */
+	SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
+
 	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 #else
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
