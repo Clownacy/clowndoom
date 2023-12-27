@@ -333,6 +333,8 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 #endif
 
 	*bytes_per_pixel = surface->format->BytesPerPixel;
+
+	output_size_changed_callback(surface->w, surface->h);
 }
 
 

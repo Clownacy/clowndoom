@@ -265,8 +265,6 @@ void I_InitGraphics(void)
 	/* TODO - handle failed allocations */
 	colors = (unsigned char*)malloc(MAX_PALETTES * 0x100 * bytes_per_pixel);
 	colored_screen = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
-
-	OutputSizeChanged(output_width, output_height);
 }
 
 

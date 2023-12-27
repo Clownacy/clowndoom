@@ -469,8 +469,6 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	XGCValues           xgcvalues;
 	int                 valuemask;
 
-	(void)output_size_changed_callback;
-
 	signal(SIGINT, I_Quit_Wrapper);
 
 	X_width = screen_width;
@@ -643,6 +641,8 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	XStoreName(X_display, X_mainWindow, title);
 
 	*bytes_per_pixel = 4;
+
+	output_size_changed_callback(screen_width, screen_height);
 }
 
 
