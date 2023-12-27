@@ -213,7 +213,7 @@ V_DrawPatchColumnInternal
 	}
 }
 
-
+#include "opengl/opengl.h"
 void
 V_DrawPatchFlipped
 ( int            x,
@@ -231,6 +231,8 @@ V_DrawPatchFlipped
 	const int scaled_width = SHORT(patch->width) * HUD_SCALE;
 	const int scaled_height = SHORT(patch->height) * HUD_SCALE;
 #endif
+
+	/*OpenGL_DrawRect(x, x + scaled_width, y, y + scaled_height, NULL); */
 
 	y -= SHORT(patch->topoffset) * HUD_SCALE;
 	x -= SHORT(patch->leftoffset) * HUD_SCALE;

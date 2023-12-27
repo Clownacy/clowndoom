@@ -5,6 +5,7 @@ project(clowndoom LANGUAGES C)
 set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, or SDL2")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 option(FRENCH "Change the language of various strings to French" OFF)
+option(OPENGL "OpenGL renderer" ON)
 
 add_executable(clowndoom WIN32
 	"linuxdoom-1.10/clownlibs/clowncommon.h"
@@ -145,7 +146,11 @@ if(WIN32)
 	endif()
 endif()
 
-set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
+if(OPENGL)
+	set_target_properties(clowndoom PROPERTIES C_STANDARD 99)
+else()
+	set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
+endif()
 
 if(CMAKE_C_BYTE_ORDER STREQUAL "BIG_ENDIAN")
 	target_compile_definitions(clowndoom PRIVATE BIG_ENDIAN)
@@ -154,6 +159,22 @@ endif()
 
 if(WIN32)
 	target_link_libraries(clowndoom PRIVATE ws2_32)
+endif()
+
+if(OPENGL)
+	target_compile_definitions(clowndoom PRIVATE OPENGL)
+
+	target_include_directories(clowndoom PRIVATE "linuxdoom-1.10/opengl/glad/include")
+
+	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/opengl/glad/src/glad.c"
+		"linuxdoom-1.10/opengl/glad/include/glad/glad.h"
+		"linuxdoom-1.10/opengl/glad/include/KHR/khrplatform.h"
+		"linuxdoom-1.10/opengl/mathematics.c"
+		"linuxdoom-1.10/opengl/mathematics.h"
+		"linuxdoom-1.10/opengl/opengl.c"
+		"linuxdoom-1.10/opengl/opengl.h"
+	)
 endif()
 
 if(FRENCH)

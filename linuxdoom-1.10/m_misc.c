@@ -385,17 +385,17 @@ static void WriteLE(unsigned char *pointer, unsigned long value, unsigned int to
 
 
 /* WriteBMPfile */
-static void
-WriteBMPfile
+void
+M_WriteBMPfile
 ( char*          filename,
   const colourindex_t* data,
   unsigned int   width,
-  unsigned int   height,
-  unsigned char  ((*palette)[3]) )
+  unsigned int   height )
 {
 	unsigned int i;
 	unsigned char *bmp, *bmp_pointer;
 
+	unsigned char((* const palette)[3]) = V_GetPalette(NULL)[0];
 	const unsigned long rounded_width = (width * 3 + (4 - 1)) / 4 * 4; /* Pad width to a multiple of 4, as required by the BMP file format. */
 	const unsigned long bitmap_offset = 0x1A;
 	const unsigned long length = bitmap_offset + rounded_width * height;
@@ -465,6 +465,8 @@ WriteBMPfile
 
 		free(bmp);
 	}
+
+	Z_Free(palette);
 }
 
 
@@ -474,7 +476,6 @@ void M_ScreenShot (void)
 	int i;
 	colourindex_t* linear;
 	char lbmname[12];
-	unsigned char ((* palette)[0x100][3]);
 
 	/* find a file name to save it to */
 	strcpy(lbmname,"DOOM00.bmp");
@@ -500,12 +501,9 @@ void M_ScreenShot (void)
 			linear[j * SCREENWIDTH + i] = screens[SCREEN_FRAMEBUFFER][i * SCREENHEIGHT + j];
 	}
 
-	palette = V_GetPalette(NULL);
-
 	/* save the screenshot file */
-	WriteBMPfile(lbmname, linear,
-				  SCREENWIDTH, SCREENHEIGHT,
-				  palette[0]);
+	M_WriteBMPfile(lbmname, linear,
+				  SCREENWIDTH, SCREENHEIGHT);
 
 	players[consoleplayer].message = "screen shot";
 }

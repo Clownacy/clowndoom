@@ -591,6 +591,7 @@ void R_InitLightTables (void)
 	int         level;
 	int         startmap;
 	int         scale;
+	unsigned char zlight_opengl[LIGHTLEVELS][MAXLIGHTZ];
 
 	/* Calculate the light levels to use */
 	/*  for each level / distance combination. */
@@ -610,8 +611,11 @@ void R_InitLightTables (void)
 				level = NUMLIGHTCOLORMAPS-1;
 
 			zlight[i][j] = colormaps[level];
+			zlight_opengl[i][j] = level;
 		}
 	}
+
+	OpenGL_UploadZLight(&zlight_opengl[0][0]);
 }
 
 

@@ -389,6 +389,11 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 	else
 		cmd->angleturn -= mousex*0x8;
 
+	{
+		extern short y_rotate;
+		y_rotate -= mousey;
+	}
+
 	mousex = mousey = 0;
 
 	if (forward > MAXPLMOVE)

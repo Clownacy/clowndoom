@@ -38,6 +38,13 @@ M_ReadFile
 ( char const*   name,
   unsigned char**        buffer );
 
+void
+M_WriteBMPfile
+( char*          filename,
+  const colourindex_t* data,
+  unsigned int   width,
+  unsigned int   height );
+
 void M_ScreenShot (void);
 
 void M_LoadDefaults (void);

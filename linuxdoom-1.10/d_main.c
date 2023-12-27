@@ -1077,6 +1077,9 @@ void D_DoomMain (void)
 		break;
 	}
 
+	I_Info("I_Init: Setting up machine state.\n");
+	I_Init();
+
 	I_Info ("M_Init: Init miscellaneous info.\n");
 	M_Init ();
 
@@ -1085,9 +1088,6 @@ void D_DoomMain (void)
 
 	I_Info ("\nP_Init: Init Playloop state.\n");
 	P_Init ();
-
-	I_Info ("I_Init: Setting up machine state.\n");
-	I_Init ();
 
 	I_Info ("D_CheckNetGame: Checking network game status.\n");
 	D_CheckNetGame ();

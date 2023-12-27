@@ -34,6 +34,7 @@
 #include "d_think.h"
 /* SECTORS do store MObjs anyway. */
 #include "p_mobj.h"
+#include "opengl/opengl.h"
 
 
 
@@ -48,7 +49,7 @@
 
 /* Number of diminishing brightness levels. */
 /* There a 0-31, i.e. 32 LUT in the COLORMAP lump. */
-#define NUMLIGHTCOLORMAPS_MUL        8
+#define NUMLIGHTCOLORMAPS_MUL        1
 #define NUMLIGHTCOLORMAPS            (32*NUMLIGHTCOLORMAPS_MUL)
 
 /* Index of the special effects (INVUL inverse) map. */
@@ -92,7 +93,7 @@ typedef struct
 
 /* The SECTORS record, at runtime. */
 /* Stores things/mobjs. */
-typedef struct
+typedef struct sector_s
 {
 	fixed_t     floorheight;
 	fixed_t     ceilingheight;
@@ -116,6 +117,7 @@ typedef struct
 
 	/* if == validcount, already checked */
 	int         validcount;
+	int         validcount2;
 
 	/* list of mobjs in sector */
 	mobj_t*     thinglist;
@@ -149,6 +151,9 @@ typedef struct
 
 	/* Sector the SideDef is facing. */
 	sector_t*   sector;
+
+	/* if == validcount, already checked */
+	int         validcount;
 
 } side_t;
 
@@ -223,7 +228,7 @@ typedef struct subsector_s
 
 
 /* The LineSeg. */
-typedef struct
+typedef struct seg_s
 {
 	vertex_t*   v1;
 	vertex_t*   v2;
@@ -401,6 +406,7 @@ typedef struct
 
 	/* Lump to use for view angles 0-7. */
 	short       lump[8];
+	OpenGL_Texture hw_texture[8];
 
 	/* Flip bit (1 = flip) to use for view angles 0-7. */
 	unsigned char        flip[8];
@@ -443,6 +449,38 @@ typedef struct
 
 } visplane_t;
 
+
+
+/* A single patch from a texture definition, */
+/*  basically a rectangular area within */
+/*  the texture rectangle. */
+typedef struct
+{
+	/* Block origin (allways UL), */
+	/* which has allready accounted */
+	/* for the internal origin of the patch. */
+	int         originx;
+	int         originy;
+	int         patch;
+} texpatch_t;
+
+
+/* A maptexturedef_t describes a rectangular texture, */
+/*  which is composed of one or more mappatch_t structures */
+/*  that arrange graphic patches. */
+typedef struct
+{
+	/* Keep name for switch changing, etc. */
+	char        name[8];
+	short       width;
+	short       height;
+
+	/* All the patches[patchcount] */
+	/*  are drawn back to front into the cached texture. */
+	short       patchcount;
+	texpatch_t  patches[1];
+
+} texture_t;
 
 
 

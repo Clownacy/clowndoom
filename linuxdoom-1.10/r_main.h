@@ -58,7 +58,7 @@ extern int              loopcount;
 #define LIGHTLEVELS             16
 #define LIGHTSEGSHIFT            4
 
-#define LIGHTINGRESOLUTIONSCALE       4
+#define LIGHTINGRESOLUTIONSCALE       1
 #define MAXLIGHTSCALE           (48*LIGHTINGRESOLUTIONSCALE)
 #define LIGHTSCALESHIFT         ((1<<12)/LIGHTINGRESOLUTIONSCALE*(SCREENWIDTH/ORIGINAL_SCREEN_WIDTH)) /* TODO: This will break when I eventually allow adjustable FOV. */
 #define MAXLIGHTZ              (128*LIGHTINGRESOLUTIONSCALE)

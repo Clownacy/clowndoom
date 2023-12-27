@@ -80,42 +80,11 @@ enum
 };
 
 
-/* A single patch from a texture definition, */
-/*  basically a rectangular area within */
-/*  the texture rectangle. */
-typedef struct
-{
-	/* Block origin (allways UL), */
-	/* which has allready accounted */
-	/* for the internal origin of the patch. */
-	int         originx;
-	int         originy;
-	int         patch;
-} texpatch_t;
-
-
-/* A maptexturedef_t describes a rectangular texture, */
-/*  which is composed of one or more mappatch_t structures */
-/*  that arrange graphic patches. */
-typedef struct
-{
-	/* Keep name for switch changing, etc. */
-	char        name[8];
-	short       width;
-	short       height;
-
-	/* All the patches[patchcount] */
-	/*  are drawn back to front into the cached texture. */
-	short       patchcount;
-	texpatch_t  patches[1];
-
-} texture_t;
-
-
 
 int             firstflat;
 int             lastflat;
 int             numflats;
+OpenGL_Texture* flathwhandle;
 
 int             firstpatch;
 int             lastpatch;
@@ -131,11 +100,13 @@ texture_t**     textures;
 
 int*                    texturewidthmask;
 /* needed for texture pegging */
+fixed_t*                texturewidth;
 fixed_t*                textureheight;
 int*                    texturecompositesize;
 short**                 texturecolumnlump;
 unsigned short**        texturecolumnofs;
 unsigned char**         texturecomposite;
+OpenGL_Texture*         texturehwhandle;
 
 /* for global animation */
 int*            flattranslation;
@@ -350,6 +321,8 @@ void R_GenerateLookup (int texnum)
 	}
 
 	Z_Free(patchcount);
+
+	OpenGL_TextureToHWTexture(&texturehwhandle[texnum], texnum);
 }
 
 
@@ -460,7 +433,9 @@ void R_InitTextures (void)
 	texturecomposite = (unsigned char**)Z_Malloc (numtextures*sizeof(*texturecomposite), PU_STATIC, NULL);
 	texturecompositesize = (int*)Z_Malloc (numtextures*sizeof(*texturecompositesize), PU_STATIC, NULL);
 	texturewidthmask = (int*)Z_Malloc (numtextures*sizeof(*texturewidthmask), PU_STATIC, NULL);
-	textureheight = (fixed_t*)Z_Malloc (numtextures*sizeof(*textureheight), PU_STATIC, NULL);
+	texturewidth = (fixed_t*)Z_Malloc(numtextures * sizeof(*texturewidth), PU_STATIC, NULL);
+	textureheight = (fixed_t*)Z_Malloc(numtextures * sizeof(*textureheight), PU_STATIC, NULL);
+	texturehwhandle = (OpenGL_Texture*)Z_Malloc(numtextures * sizeof(*texturehwhandle), PU_STATIC, NULL);
 
 	totalwidth = 0;
 
@@ -528,6 +503,7 @@ void R_InitTextures (void)
 			j<<=1;
 
 		texturewidthmask[i] = j-1;
+		texturewidth[i] = texture->width<<FRACBITS;
 		textureheight[i] = texture->height<<FRACBITS;
 
 		totalwidth += texture->width;
@@ -563,9 +539,23 @@ void R_InitFlats (void)
 
 	/* Create translation table for global animation. */
 	flattranslation = (int*)Z_Malloc ((numflats+1)*sizeof(*flattranslation), PU_STATIC, NULL);
+	flathwhandle = (OpenGL_Texture*)Z_Malloc(numflats*sizeof(*flathwhandle), PU_STATIC, NULL);
 
 	for (i=0 ; i<numflats ; i++)
+	{
+		unsigned char *flat;
+		int j;
+		short buffer[64 * 64];
+
 		flattranslation[i] = i;
+
+		flat = (unsigned char*)W_CacheLumpNum(firstflat + i, PU_CACHE);
+
+		for (j = 0; j < D_COUNT_OF(buffer); ++j)
+			buffer[j] = flat[j] + 1;
+
+		OpenGL_LoadTexture(&flathwhandle[i], buffer, 64, 64);
+	}
 }
 
 

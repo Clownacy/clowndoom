@@ -32,6 +32,8 @@
 #include "doomstat.h"
 #include "r_state.h"
 
+#include "opengl/opengl.h"
+
 /* #include "r_local.h" */
 
 
@@ -328,10 +330,12 @@ void R_AddLine (seg_t*  line)
 
 
   clippass:
+	OpenGL_DrawLine(line);
 	R_ClipPassWallSegment (x1, x2-1);
 	return;
 
   clipsolid:
+	OpenGL_DrawLine(line);
 	R_ClipSolidWallSegment (x1, x2-1);
 }
 
@@ -509,9 +513,28 @@ void R_Subsector (int num)
 		ceilingplane = NULL;
 
 	R_AddSprites (frontsector);
+//	OpenGL_DrawSectorFlats(frontsector);
 
 	while (count--)
 	{
+		int i;
+
+		if (line->frontsector->validcount2 != validcount)
+		{
+			line->frontsector->validcount2 = validcount;
+
+			for (i = 0; i < line->frontsector->linecount; ++i)
+				OpenGL_DrawLineFlats(line->frontsector, line->frontsector->lines[i]);
+		}
+
+		if (line->backsector != NULL && line->backsector->validcount2 != validcount)
+		{
+			line->backsector->validcount2 = validcount;
+
+			for (i = 0; i < line->backsector->linecount; ++i)
+					OpenGL_DrawLineFlats(line->backsector, line->backsector->lines[i]);
+		}
+
 		R_AddLine (line);
 		line++;
 	}

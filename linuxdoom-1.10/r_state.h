@@ -25,13 +25,18 @@
 #include "d_player.h"
 #include "r_data.h"
 
+#include "opengl/opengl.h"
+
 
 
 /* Refresh internal data structures, */
 /*  for rendering. */
 
+extern texture_t**      textures;
 /* needed for texture pegging */
+extern fixed_t*         texturewidth;
 extern fixed_t*         textureheight;
+extern OpenGL_Texture*  texturehwhandle;
 
 /* needed for pre rendering (fracs) */
 extern fixed_t*         spritewidth;
@@ -62,6 +67,8 @@ extern int              numspritelumps;
 /* Lookup tables for map data. */
 extern int              numsprites;
 extern spritedef_t*     sprites;
+
+extern OpenGL_Texture*  flathwhandle;
 
 extern int              numvertexes;
 extern vertex_t*        vertexes;

@@ -31,11 +31,16 @@
 
 #include "../doomdef.h"
 
+#include "../opengl/opengl.h"
+
 #include "../ib_video.h"
 
 
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
+#ifdef OPENGL
+static SDL_GLContext context;
+#endif
 #endif
 static SDL_Surface *surface;
 
@@ -252,6 +257,7 @@ void IB_StartTic (void)
 				{
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
 						surface = SDL_GetWindowSurface(window);
+						glViewport(0, 0, sdl_event.window.data1, sdl_event.window.data2);
 						output_size_changed_callback(sdl_event.window.data1, sdl_event.window.data2);
 						break;
 				}
@@ -286,7 +292,10 @@ void IB_FinishUpdate (void)
 	SDL_UnlockSurface(surface);
 
 #if SDL_MAJOR_VERSION >= 2
-	SDL_UpdateWindowSurface(window);
+	/*SDL_UpdateWindowSurface(window);*/
+	OpenGL_Render();
+	SDL_GL_SwapWindow(window);
+	OpenGL_Clear();
 #else
 	SDL_Flip(surface);
 #endif
@@ -313,11 +322,30 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 #endif
 
+#ifdef OPENGL
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG /* | SDL_GL_CONTEXT_DEBUG_FLAG*/);
+#endif
+
 #if SDL_MAJOR_VERSION >= 2
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
+#ifdef OPENGL
+		| SDL_WINDOW_OPENGL
+#endif
+	);
 
 	if (window == NULL)
 		I_Error("Could not create SDL window");
+
+	context = SDL_GL_CreateContext(window);
+
+	if (context == NULL)
+		I_Error("Could not create SDL OpenGL context");
+
+	if (SDL_GL_MakeCurrent(window, context) < 0)
+		I_Error("Could not make SDL OpenGL context current");
 
 	surface = SDL_GetWindowSurface(window);
 #else
@@ -330,13 +358,17 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 #endif
 
 	*bytes_per_pixel = surface->format->BytesPerPixel;
+
+	OpenGL_Initialise();
 }
 
 
 void IB_ShutdownGraphics(void)
 {
+	OpenGL_Deinitialise();
 #if SDL_MAJOR_VERSION >= 2
 	SDL_FreeSurface(surface);
+	SDL_GL_DeleteContext(context);
 	SDL_DestroyWindow(window);
 #endif
 

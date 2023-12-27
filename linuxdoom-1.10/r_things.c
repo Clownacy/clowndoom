@@ -34,6 +34,7 @@
 #include "r_local.h"
 
 #include "doomstat.h"
+#include "opengl/opengl.h"
 
 
 
@@ -121,6 +122,7 @@ R_InstallSpriteLump
 		for (r=0 ; r<8 ; r++)
 		{
 			sprtemp[frame].lump[r] = lump - firstspritelump;
+			OpenGL_PatchToTexture(&sprtemp[frame].hw_texture[r], lump);
 			sprtemp[frame].flip[r] = (unsigned char)flipped;
 		}
 		return;
@@ -141,6 +143,7 @@ R_InstallSpriteLump
 				 spritename, 'A'+frame, '1'+rotation);
 
 	sprtemp[frame].lump[rotation] = lump - firstspritelump;
+	OpenGL_PatchToTexture(&sprtemp[frame].hw_texture[rotation], lump);
 	sprtemp[frame].flip[rotation] = (unsigned char)flipped;
 }
 
@@ -435,6 +438,7 @@ void R_ProjectSprite (mobj_t* thing)
 	spritedef_t*        sprdef;
 	spriteframe_t*      sprframe;
 	int                 lump;
+	const OpenGL_Texture* hw_texture;
 
 	unsigned            rot;
 	d_bool              flip;
@@ -489,12 +493,14 @@ void R_ProjectSprite (mobj_t* thing)
 		ang = R_PointToAngle (thing->x, thing->y);
 		rot = (ang-thing->angle+(unsigned)(ANG45/2)*9)>>29;
 		lump = sprframe->lump[rot];
+		hw_texture = &sprframe->hw_texture[rot];
 		flip = (d_bool)sprframe->flip[rot];
 	}
 	else
 	{
 		/* use single rotation for all views */
 		lump = sprframe->lump[0];
+		hw_texture = &sprframe->hw_texture[0];
 		flip = (d_bool)sprframe->flip[0];
 	}
 
@@ -512,6 +518,8 @@ void R_ProjectSprite (mobj_t* thing)
 	/* off the left side */
 	if (x2 < 0)
 		return;
+
+	OpenGL_DrawThing(thing->x, thing->y, thing->z + spritetopoffset[lump] / 2, viewangle * 360.0f / 4294967296.0f, hw_texture, flip);
 
 	/* store information in a vissprite */
 	vis = R_NewVisSprite ();
@@ -659,6 +667,8 @@ void R_DrawPSprite (pspdef_t* psp)
 	vis->x1 = x1 < 0 ? 0 : x1;
 	vis->x2 = x2 >= viewwidth ? viewwidth-1 : x2;
 	vis->scale = pspritescale<<detailshift;
+
+	OpenGL_DrawRect(x1, x2, (centeryfrac >> FRACBITS) - ((FixedMul(vis->texturemid,vis->scale) >> FRACBITS) - (x2 - x1) / 2), (centeryfrac >> FRACBITS) - ((FixedMul(vis->texturemid, vis->scale) >> FRACBITS) + (x2 - x1) / 2), &sprframe->hw_texture[0]);
 
 	if (flip)
 	{
