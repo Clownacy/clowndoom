@@ -170,6 +170,7 @@ if(WILDMIDI)
 		set(WANT_STATIC ON CACHE INTERNAL "" FORCE)
 
 		add_subdirectory("external/wildmidi" EXCLUDE_FROM_ALL)
+		target_link_libraries(clowndoom PRIVATE libwildmidi-static)
 	endif()
 endif()
 
