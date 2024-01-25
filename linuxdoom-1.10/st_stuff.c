@@ -298,8 +298,6 @@ static int      st_randomnumber;
 
 
 /* Massive bunches of cheat shit */
-/*  to keep it from being easy to figure them out. */
-/* Yeah, right... */
 char   cheat_mus_seq[] =
 {
 	'i', 'd', 'm', 'u', 's', 1, 0, 0, (char)-1
