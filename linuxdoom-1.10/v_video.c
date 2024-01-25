@@ -155,8 +155,8 @@ V_CopyRect
 		||destx<0||destx+width >SCREENWIDTH
 		|| desty<0
 		|| desty+height>SCREENHEIGHT
-		|| (unsigned)srcscrn>4
-		|| (unsigned)destscrn>4)
+		|| srcscrn>SCREEN__MAX
+		|| destscrn>SCREEN__MAX)
 	{
 		I_Error ("Bad V_CopyRect");
 	}
@@ -239,7 +239,7 @@ V_DrawPatchFlipped
 		||x+scaled_width >SCREENWIDTH
 		|| y<0
 		|| y+scaled_height>SCREENHEIGHT
-		|| (unsigned)scrn>4)
+		|| scrn>SCREEN__MAX)
 	{
 	  I_Info("Patch at %d,%d exceeds LFB\n", x,y );
 	  /* TODO: No I_Error abort - what is up with TNT.WAD? */
@@ -277,7 +277,7 @@ V_DrawBlock
 		||x+width >SCREENWIDTH
 		|| y<0
 		|| y+height>SCREENHEIGHT
-		|| (unsigned)scrn>4 )
+		|| scrn>SCREEN__MAX )
 	{
 		I_Error ("Bad V_DrawBlock");
 	}
@@ -313,7 +313,7 @@ V_GetBlock
 		||x+width >SCREENWIDTH
 		|| y<0
 		|| y+height>SCREENHEIGHT
-		|| (unsigned)scrn>4 )
+		|| scrn>SCREEN__MAX )
 	{
 		I_Error ("Bad V_DrawBlock");
 	}
