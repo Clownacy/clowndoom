@@ -23,7 +23,7 @@
 
 /* Location for any defines turned variables. */
 
-int screen_width = ORIGINAL_SCREEN_WIDTH, screen_height = ORIGINAL_SCREEN_HEIGHT;
+int resolution_scale = 2;
 
 /* Try to keep this to powers of two to prevent rounding errors. */
-int hud_scale = 1;
+int hud_scale = 2;

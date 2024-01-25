@@ -624,8 +624,7 @@ void R_InitLightTables (void)
 d_bool          setsizeneeded;
 int             setblocks;
 int             setdetail;
-int             setscreenwidth;
-int             setscreenheight;
+int             setresolutionscale;
 int             sethudscale;
 
 
@@ -633,15 +632,13 @@ void
 R_SetViewSize
 ( int           blocks,
   int           detail,
-  int           new_screen_width,
-  int           new_screen_height,
+  int           new_resolution_scale,
   int           new_hud_scale )
 {
 	setsizeneeded = d_true;
 	setblocks = blocks;
 	setdetail = detail;
-	setscreenwidth = new_screen_width;
-	setscreenheight = new_screen_height;
+	setresolutionscale = new_resolution_scale;
 	sethudscale = new_hud_scale;
 }
 
@@ -659,8 +656,7 @@ void R_ExecuteSetViewSize (void)
 	setsizeneeded = d_false;
 
 	/* TODO: These really should be moved somewhere else, somewhere higher-level. */
-	SCREENWIDTH = setscreenwidth;
-	SCREENHEIGHT = setscreenheight;
+	resolution_scale = setresolutionscale;
 	HUD_SCALE = sethudscale;
 	ST_setRefreshPending();
 	AM_resolutionChanged();
@@ -775,7 +771,7 @@ void R_Init (void)
 	/* viewwidth / viewheight / detailLevel are set by the defaults */
 	I_Info ("\nR_InitTables");
 
-	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
+	R_SetViewSize (screenblocks, detailLevel, resolution_scale, HUD_SCALE);
 	R_InitPlanes ();
 	I_Info ("\nR_InitPlanes");
 	R_InitLightTables ();

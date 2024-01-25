@@ -143,6 +143,6 @@ void R_RenderPlayerView (player_t *player);
 void R_Init (void);
 
 /* Called by M_Responder. */
-void R_SetViewSize (int blocks, int detail, int new_screen_width, int new_screen_height);
+void R_SetViewSize (int blocks, int detail, int new_resolution_scale, int hud_scale);
 
 #endif

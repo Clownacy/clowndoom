@@ -1102,7 +1102,7 @@ void M_ChangeDetail(int choice)
 
 	detailLevel = 1 - detailLevel;
 
-	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
+	R_SetViewSize (screenblocks, detailLevel, resolution_scale, HUD_SCALE);
 
 	if (!detailLevel)
 		players[consoleplayer].message = DETAILHI;
@@ -1115,7 +1115,7 @@ void M_ChangeDetail(int choice)
 
 void M_SizeDisplay(int choice)
 {
-	int new_screen_width = SCREENWIDTH, new_screen_height = SCREENHEIGHT, new_hud_scale = HUD_SCALE;
+	int new_resolution_scale = resolution_scale, new_hud_scale = HUD_SCALE;
 
 	switch(choice)
 	{
@@ -1126,10 +1126,9 @@ void M_SizeDisplay(int choice)
 			screenSize--;
 		}
 */
-		if (new_screen_width != ORIGINAL_SCREEN_WIDTH)
+		if (new_resolution_scale != 1)
 		{
-			new_screen_width -= ORIGINAL_SCREEN_WIDTH;
-			new_screen_height -= ORIGINAL_SCREEN_HEIGHT;
+			--new_resolution_scale;
 			--new_hud_scale;
 		}
 		break;
@@ -1140,16 +1139,15 @@ void M_SizeDisplay(int choice)
 			screenSize++;
 		}
 */
-		if (new_screen_width != MAXIMUM_SCREENWIDTH)
+		if (new_resolution_scale != MAXIMUM_RESOLUTION_SCALE)
 		{
-			new_screen_width += ORIGINAL_SCREEN_WIDTH;
-			new_screen_height += ORIGINAL_SCREEN_HEIGHT;
+			++new_resolution_scale;
 			++new_hud_scale;
 		}
 		break;
 	}
 
-	R_SetViewSize (screenblocks, detailLevel, new_screen_width, new_screen_height, new_hud_scale);
+	R_SetViewSize (screenblocks, detailLevel, new_resolution_scale, new_hud_scale);
 }
 
 
