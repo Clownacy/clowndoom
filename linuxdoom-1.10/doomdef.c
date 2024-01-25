@@ -25,3 +25,5 @@
 
 int screen_width = ORIGINAL_SCREEN_WIDTH, screen_height = ORIGINAL_SCREEN_HEIGHT;
 
+/* Try to keep this to powers of two to prevent rounding errors. */
+int hud_scale = 1;
