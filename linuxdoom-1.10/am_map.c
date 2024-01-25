@@ -1269,7 +1269,7 @@ void AM_resolutionChanged (void)
 	min_scale_mtof = a < b ? a : b;
 	max_scale_mtof = FixedDiv(f_h << FRACBITS, 2 * PLAYERRADIUS);
 
-	scale_mtof = FixedDiv(min_scale_mtof, (int)(0.7 * FRACUNIT));
+	scale_mtof = FixedDiv(min_scale_mtof, FRACUNIT*7/10);
 	if (scale_mtof > max_scale_mtof)
 		scale_mtof = min_scale_mtof;
 	scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
