@@ -1120,29 +1120,17 @@ void M_SizeDisplay(int choice)
 	switch(choice)
 	{
 	  case 0:
-/*		if (screenSize > 0)
+		if (screenSize > 0)
 		{
 			screenblocks--;
 			screenSize--;
 		}
-*/
-		if (new_resolution_scale != 1)
-		{
-			--new_resolution_scale;
-			--new_hud_scale;
-		}
 		break;
 	  case 1:
-/*		if (screenSize < 8)
+		if (screenSize < 8)
 		{
 			screenblocks++;
 			screenSize++;
-		}
-*/
-		if (new_resolution_scale != MAXIMUM_RESOLUTION_SCALE)
-		{
-			++new_resolution_scale;
-			++new_hud_scale;
 		}
 		break;
 	}

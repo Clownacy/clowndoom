@@ -250,6 +250,8 @@ default_t       defaults[] =
 	{"aspect_ratio_correction",&aspect_ratio_correction, 1, d_false},
 	{"full_colour",&full_colour, 1, d_false},
 	{"prototype_light_amplification_visor_effect",&prototype_light_amplification_visor_effect, 1, d_false},
+	{"resolution_scale",&resolution_scale, 1, d_false},
+	{"hud_scale",&hud_scale, 1, d_false},
 
 	/* Audio */
 	{"music_volume",&musicVolume, 8, d_false},
