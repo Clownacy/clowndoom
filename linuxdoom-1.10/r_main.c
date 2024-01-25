@@ -33,6 +33,7 @@
 #include "r_sky.h"
 #include "st_stuff.h"
 #include "i_system.h"
+#include "v_video.h"
 
 
 
@@ -660,6 +661,7 @@ void R_ExecuteSetViewSize (void)
 	ST_setRefreshPending();
 	AM_resolutionChanged();
 	I_RenderSizeChanged();
+	V_ClearScreen(SCREEN_STATUS_BAR);
 
 	switch (setblocks)
 	{
