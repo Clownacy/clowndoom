@@ -515,6 +515,7 @@ void HU_Drawer(void)
 	HUlib_drawIText(&w_chat);
 	if (automapactive)
 	{
+		HUlib_positionTextLine(&w_title, HU_TITLEX, HU_TITLEY);
 		HUlib_drawTextLine(&w_title, d_false);
 
 		if (deathmatch == DM_OFF && automap_cheats >= 1)

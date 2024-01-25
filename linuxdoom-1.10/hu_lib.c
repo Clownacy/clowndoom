@@ -57,6 +57,16 @@ HUlib_initTextLine
 	HUlib_clearTextLine(t);
 }
 
+void
+HUlib_positionTextLine
+( hu_textline_t*        t,
+  int                   x,
+  int                   y )
+{
+	t->x = x;
+	t->y = y;
+}
+
 d_bool
 HUlib_addCharToTextLine
 ( hu_textline_t*        t,

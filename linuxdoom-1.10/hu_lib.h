@@ -94,6 +94,7 @@ void HUlib_init(void);
 void    HUlib_clearTextLine(hu_textline_t *t);
 
 void    HUlib_initTextLine(hu_textline_t *t, int x, int y, patch_t **f, int sc);
+void    HUlib_positionTextLine(hu_textline_t *t, int x, int y);
 
 /* returns success */
 d_bool HUlib_addCharToTextLine(hu_textline_t *t, char ch);

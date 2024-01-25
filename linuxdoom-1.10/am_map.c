@@ -489,8 +489,6 @@ void AM_LevelInit(void)
 	leveljuststarted = 0;
 
 	f_x = f_y = 0;
-	f_w = finit_width;
-	f_h = finit_height;
 
 	AM_clearMarks();
 
@@ -970,7 +968,7 @@ AM_drawFline
 }
 
 
-/* Clip lines, draw visible part sof lines. */
+/* Clip lines, draw visible parts of lines. */
 void
 AM_drawMline
 ( mline_t*      ml,
@@ -1263,10 +1261,15 @@ void AM_Drawer (void)
 
 void AM_resolutionChanged (void)
 {
-	const fixed_t a = FixedDiv(f_w << FRACBITS, max_w);
-	const fixed_t b = FixedDiv(f_h << FRACBITS, max_h);
+	fixed_t a, b;
 
-	min_scale_mtof = a < b ? a : b;
+	f_w = finit_width;
+	f_h = finit_height;
+
+	a = FixedDiv(f_w << FRACBITS, max_w);
+	b = FixedDiv(f_h << FRACBITS, max_h);
+
+	min_scale_mtof = D_MIN(a, b);
 	max_scale_mtof = FixedDiv(f_h << FRACBITS, 2 * PLAYERRADIUS);
 
 	scale_mtof = FixedDiv(min_scale_mtof, FRACUNIT*7/10);
