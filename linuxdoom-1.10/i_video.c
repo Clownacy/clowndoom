@@ -70,14 +70,43 @@ void I_UpdateNoBlit (void)
 }
 
 
+static void RecurseRotateAndColour(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height)
+{
+	if (width == 1 && height == 1)
+	{
+		size_t i;
+
+		const colourindex_t* const indexed_pixels = screens[SCREEN_FRAMEBUFFER];
+
+		const unsigned char *input = &colors[indexed_pixels[x * SCREENHEIGHT + y] * bytes_per_pixel];
+		unsigned char *output = &colored_screen[(y * SCREENWIDTH + x) * bytes_per_pixel];
+
+		for (i = 0; i < bytes_per_pixel; ++i)
+			*output++ = *input++;
+	}
+	else if (width >= height)
+	{
+		const unsigned int left_width = width / 2;
+		const unsigned int right_width = width - left_width;
+		RecurseRotateAndColour(x, y, left_width, height);
+		RecurseRotateAndColour(x + left_width, y, right_width, height);
+	}
+	else
+	{
+		const unsigned int top_height = height / 2;
+		const unsigned int bottom_height = height - top_height;
+		RecurseRotateAndColour(x, y, width, top_height);
+		RecurseRotateAndColour(x, y + top_height, width, bottom_height);
+	}
+}
+
+
 /* I_FinishUpdate */
 void I_FinishUpdate (void)
 {
 	static int lasttic;
 	int tics;
 	size_t i,x,y;
-	colourindex_t *indexed_pixels;
-	unsigned char *colored_screen_pointer;
 	unsigned char *pixels;
 	size_t pitch;
 	const unsigned char *src_pointer;
@@ -102,20 +131,8 @@ void I_FinishUpdate (void)
 					screens[SCREEN_FRAMEBUFFER][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0x0;
 	}
 
-	/* Step 1. Color the screen */
-	indexed_pixels = screens[SCREEN_FRAMEBUFFER];
-	colored_screen_pointer = colored_screen;
-
-	for (y = 0; y < SCREENHEIGHT; ++y)
-	{
-		for (x = 0; x < SCREENWIDTH; ++x)
-		{
-			const unsigned char * const color = &colors[indexed_pixels[x * SCREENHEIGHT + y] * bytes_per_pixel];
-
-			for (i = 0; i < bytes_per_pixel; ++i)
-				*colored_screen_pointer++ = color[i];
-		}
-	}
+	/* Step 1. Color and rotate the screen */
+	RecurseRotateAndColour(0, 0, SCREENWIDTH, SCREENHEIGHT);
 
 	/* Step 2. Scale the screen */
 	IB_GetFramebuffer(&pixels, &pitch);
