@@ -97,7 +97,7 @@ wipe_doColorXForm
 }
 
 
-static int     y[SCREENWIDTH];
+static int     y[MAXIMUM_SCREENWIDTH];
 
 static int
 wipe_initMelt

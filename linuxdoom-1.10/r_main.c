@@ -92,7 +92,7 @@ int                     viewangletox[FINEANGLES/2];
 /* The xtoviewangleangle[] table maps a screen pixel */
 /* to the lowest viewangle that maps back to x ranges */
 /* from clipangle to -clipangle. */
-angle_t                 xtoviewangle[SCREENWIDTH+1];
+angle_t                 xtoviewangle[MAXIMUM_SCREENWIDTH+1];
 
 
 /* UNUSED. */
@@ -623,16 +623,22 @@ void R_InitLightTables (void)
 d_bool          setsizeneeded;
 int             setblocks;
 int             setdetail;
+int             setscreenwidth;
+int             setscreenheight;
 
 
 void
 R_SetViewSize
 ( int           blocks,
-  int           detail )
+  int           detail,
+  int           new_screen_width,
+  int           new_screen_height )
 {
 	setsizeneeded = d_true;
 	setblocks = blocks;
 	setdetail = detail;
+	setscreenwidth = new_screen_width;
+	setscreenheight = new_screen_height;
 }
 
 
@@ -647,6 +653,11 @@ void R_ExecuteSetViewSize (void)
 	int         startmap;
 
 	setsizeneeded = d_false;
+
+	/* TODO: These really should be moved somewhere else, somewhere higher-level. */
+	SCREENWIDTH = setscreenwidth;
+	SCREENHEIGHT = setscreenheight;
+	I_RenderSizeChanged();
 
 	switch (setblocks)
 	{
@@ -756,7 +767,7 @@ void R_Init (void)
 	/* viewwidth / viewheight / detailLevel are set by the defaults */
 	I_Info ("\nR_InitTables");
 
-	R_SetViewSize (screenblocks, detailLevel);
+	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT);
 	R_InitPlanes ();
 	I_Info ("\nR_InitPlanes");
 	R_InitLightTables ();

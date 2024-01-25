@@ -37,8 +37,8 @@
 
 
 /* ? */
-#define MAXWIDTH                SCREENWIDTH/*1120*/
-#define MAXHEIGHT               SCREENHEIGHT/*832*/
+#define MAXWIDTH                MAXIMUM_SCREENWIDTH/*1120*/
+#define MAXHEIGHT               MAXIMUM_SCREENHEIGHT/*832*/
 
 /* status bar height at bottom of screen */
 #define SBARHEIGHT              ST_HEIGHT
@@ -175,7 +175,7 @@ void R_DrawColumnLow (void)
 
 /* Spectre/Invisibility. */
 #define FUZZTABLE 50
-#define FUZZOFF (1*SCREENWIDTH/ORIGINAL_SCREEN_WIDTH) /* TODO: This will break when alternate FOVs are added. */
+#define FUZZOFF 1
 
 
 static const int fuzzoffset[FUZZTABLE] =
@@ -192,7 +192,18 @@ static const int fuzzoffset[FUZZTABLE] =
 	-FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF
 };
 
-static int fuzzpos = 0;
+static int GetFuzzOffset(void)
+{
+	static int fuzzpos = 0;
+
+	const int value = fuzzoffset[fuzzpos] * SCREENWIDTH / ORIGINAL_SCREEN_WIDTH; /* TODO: This will break when alternate FOVs are added. */
+
+	/* Clamp table lookup index. */
+	if (++fuzzpos == FUZZTABLE)
+		fuzzpos = 0;
+
+	return value;
+}
 
 
 /* Framebuffer postprocessing. */
@@ -248,12 +259,8 @@ void R_DrawFuzzColumn (void)
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
 		/* This wacky new logic converts from full-colour back down to 256-colour to authentically recreate the fuzz effect. */
-		const unsigned int pixel = dest[fuzzoffset[fuzzpos]];
+		const unsigned int pixel = dest[GetFuzzOffset()];
 		*dest = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100 / NUMLIGHTCOLORMAPS_MUL][pixel % 0x100]];
-
-		/* Clamp table lookup index. */
-		if (++fuzzpos == FUZZTABLE)
-			fuzzpos = 0;
 
 		++dest;
 		frac += fracstep;
@@ -307,12 +314,8 @@ void R_DrawFuzzColumnLow (void)
 		/*  left or right of the current one. */
 		/* Add index from colormap to index. */
 		/* This wacky new logic converts from full-colour back down to 256-colour to authentically recreate the fuzz effect. */
-		const unsigned int pixel = dest[0][fuzzoffset[fuzzpos]];
+		const unsigned int pixel = dest[0][GetFuzzOffset()];
 		*dest[0] = *dest[1] = colormaps[FUZZCOLORMAPS + 6][colormaps[FUZZCOLORMAPS + pixel / 0x100 / NUMLIGHTCOLORMAPS_MUL][pixel % 0x100]];
-
-		/* Clamp table lookup index. */
-		if (++fuzzpos == FUZZTABLE)
-			fuzzpos = 0;
 
 		++dest[0];
 		++dest[1];

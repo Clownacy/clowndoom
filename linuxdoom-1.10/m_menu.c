@@ -153,8 +153,8 @@ typedef struct menu_s
 	struct menu_s*      prevMenu;       /* previous menu */
 	menuitem_t*         menuitems;      /* menu items */
 	void                (*routine)();   /* draw routine */
-	short               x;
-	short               y;              /* x,y of menu */
+	short               xRaw;
+	short               yRaw;              /* x,y of menu */
 	short               lastOn;         /* last item user was on in menu */
 } menu_t;
 
@@ -252,7 +252,7 @@ menu_t  MainDef =
 	NULL,
 	MainMenu,
 	M_DrawMainMenu,
-	X_CENTRE(97),Y_CENTRE(64),
+	97,64,
 	0
 };
 
@@ -281,7 +281,7 @@ menu_t  EpiDef =
 	&MainDef,                  /* previous menu */
 	EpisodeMenu,               /* menuitem_t -> */
 	M_DrawEpisode,             /* drawing routine -> */
-	X_CENTRE(48),Y_CENTRE(63), /* x,y */
+	48,63, /* x,y */
 	ep1                        /* lastOn */
 };
 
@@ -311,7 +311,7 @@ menu_t  NewDef =
 	&EpiDef,                    /* previous menu */
 	NewGameMenu,                /* menuitem_t -> */
 	M_DrawNewGame,              /* drawing routine -> */
-	X_CENTRE(48),Y_CENTRE(63),  /* x,y */
+	48,63,  /* x,y */
 	hurtme                      /* lastOn */
 };
 
@@ -349,7 +349,7 @@ menu_t  OptionsDef =
 	&MainDef,
 	OptionsMenu,
 	M_DrawOptions,
-	X_CENTRE(60),Y_CENTRE(37),
+	60,37,
 	0
 };
 
@@ -371,7 +371,7 @@ menu_t  ReadDef1 =
 	&MainDef,
 	ReadMenu1,
 	M_DrawReadThis1,
-	X_CENTRE(330),Y_CENTRE(175),
+	330,175,
 	0
 };
 
@@ -392,7 +392,7 @@ menu_t  ReadDef2 =
 	&ReadDef1,
 	ReadMenu2,
 	M_DrawReadThis2,
-	X_CENTRE(280),Y_CENTRE(185),
+	280,185,
 	0
 };
 
@@ -420,7 +420,7 @@ menu_t  SoundDef =
 	&OptionsDef,
 	SoundMenu,
 	M_DrawSound,
-	X_CENTRE(80),Y_CENTRE(64),
+	80,64,
 	0
 };
 
@@ -452,7 +452,7 @@ menu_t  LoadDef =
 	&MainDef,
 	LoadMenu,
 	M_DrawLoad,
-	X_CENTRE(80),Y_CENTRE(54),
+	80,54,
 	0
 };
 
@@ -473,7 +473,7 @@ menu_t  SaveDef =
 	&MainDef,
 	SaveMenu,
 	M_DrawSave,
-	X_CENTRE(80),Y_CENTRE(54),
+	80,54,
 	0
 };
 
@@ -515,8 +515,8 @@ void M_DrawLoad(void)
 	V_DrawPatch (X_CENTRE(72),Y_CENTRE(28),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_LOADG",PU_CACHE));
 	for (i = 0;i < load_end; i++)
 	{
-		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_DrawSaveLoadBorder(X_CENTRE(LoadDef.xRaw),Y_CENTRE(LoadDef.yRaw)+LINEHEIGHT*i);
+		M_WriteText(X_CENTRE(LoadDef.xRaw),Y_CENTRE(LoadDef.yRaw)+LINEHEIGHT*i,savegamestrings[i]);
 	}
 }
 
@@ -577,14 +577,14 @@ void M_DrawSave(void)
 	V_DrawPatch (X_CENTRE(72),Y_CENTRE(28),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_SAVEG",PU_CACHE));
 	for (i = 0;i < load_end; i++)
 	{
-		M_DrawSaveLoadBorder(LoadDef.x,LoadDef.y+LINEHEIGHT*i);
-		M_WriteText(LoadDef.x,LoadDef.y+LINEHEIGHT*i,savegamestrings[i]);
+		M_DrawSaveLoadBorder(X_CENTRE(LoadDef.xRaw),Y_CENTRE(LoadDef.yRaw)+LINEHEIGHT*i);
+		M_WriteText(X_CENTRE(LoadDef.xRaw),Y_CENTRE(LoadDef.yRaw)+LINEHEIGHT*i,savegamestrings[i]);
 	}
 
 	if (saveStringEnter)
 	{
 		i = M_StringWidth(savegamestrings[saveSlot]);
-		M_WriteText(LoadDef.x + i,LoadDef.y+LINEHEIGHT*saveSlot,"_");
+		M_WriteText(X_CENTRE(LoadDef.xRaw) + i,Y_CENTRE(LoadDef.yRaw)+LINEHEIGHT*saveSlot,"_");
 	}
 }
 
@@ -752,10 +752,10 @@ void M_DrawSound(void)
 {
 	V_DrawPatch (X_CENTRE(60),Y_CENTRE(38),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_SVOL",PU_CACHE));
 
-	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(sfx_vol+1),
+	M_DrawThermo(X_CENTRE(SoundDef.xRaw),Y_CENTRE(SoundDef.yRaw)+LINEHEIGHT*(sfx_vol+1),
 				 16,sfxVolume);
 
-	M_DrawThermo(SoundDef.x,SoundDef.y+LINEHEIGHT*(music_vol+1),
+	M_DrawThermo(X_CENTRE(SoundDef.xRaw),Y_CENTRE(SoundDef.yRaw)+LINEHEIGHT*(music_vol+1),
 				 16,musicVolume);
 }
 
@@ -898,16 +898,16 @@ void M_DrawOptions(void)
 {
 	V_DrawPatch (X_CENTRE(108),Y_CENTRE(15),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("M_OPTTTL",PU_CACHE));
 
-	V_DrawPatch (OptionsDef.x + 175*HUD_SCALE,OptionsDef.y+LINEHEIGHT*detail,SCREEN_FRAMEBUFFER,
+	V_DrawPatch (X_CENTRE(OptionsDef.xRaw) + 175*HUD_SCALE,Y_CENTRE(OptionsDef.yRaw)+LINEHEIGHT*detail,SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName(detailNames[detailLevel],PU_CACHE));
 
-	V_DrawPatch (OptionsDef.x + 120 * HUD_SCALE,OptionsDef.y+LINEHEIGHT*messages,SCREEN_FRAMEBUFFER,
+	V_DrawPatch (X_CENTRE(OptionsDef.xRaw) + 120 * HUD_SCALE,Y_CENTRE(OptionsDef.yRaw)+LINEHEIGHT*messages,SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName(msgNames[showMessages],PU_CACHE));
 
-	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(mousesens+1),
+	M_DrawThermo(X_CENTRE(OptionsDef.xRaw),Y_CENTRE(OptionsDef.yRaw)+LINEHEIGHT*(mousesens+1),
 				 10,mouseSensitivity);
 
-	M_DrawThermo(OptionsDef.x,OptionsDef.y+LINEHEIGHT*(scrnsize+1),
+	M_DrawThermo(X_CENTRE(OptionsDef.xRaw),Y_CENTRE(OptionsDef.yRaw)+LINEHEIGHT*(scrnsize+1),
 				 9,screenSize);
 }
 
@@ -1102,7 +1102,7 @@ void M_ChangeDetail(int choice)
 
 	detailLevel = 1 - detailLevel;
 
-	R_SetViewSize (screenblocks, detailLevel);
+	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT);
 
 	if (!detailLevel)
 		players[consoleplayer].message = DETAILHI;
@@ -1115,26 +1115,39 @@ void M_ChangeDetail(int choice)
 
 void M_SizeDisplay(int choice)
 {
+	int new_screen_width = SCREENWIDTH, new_screen_height = SCREENHEIGHT;
+
 	switch(choice)
 	{
 	  case 0:
-		if (screenSize > 0)
+/*		if (screenSize > 0)
 		{
 			screenblocks--;
 			screenSize--;
 		}
+*/
+		if (new_screen_width != ORIGINAL_SCREEN_WIDTH)
+		{
+			new_screen_width -= ORIGINAL_SCREEN_WIDTH;
+			new_screen_height -= ORIGINAL_SCREEN_HEIGHT;
+		}
 		break;
 	  case 1:
-		if (screenSize < 8)
+/*		if (screenSize < 8)
 		{
 			screenblocks++;
 			screenSize++;
 		}
+*/
+		if (new_screen_width != MAXIMUM_SCREENWIDTH)
+		{
+			new_screen_width += ORIGINAL_SCREEN_WIDTH;
+			new_screen_height += ORIGINAL_SCREEN_HEIGHT;
+		}
 		break;
 	}
 
-
-	R_SetViewSize (screenblocks, detailLevel);
+	R_SetViewSize (screenblocks, detailLevel, new_screen_width, new_screen_height);
 }
 
 
@@ -1172,7 +1185,7 @@ M_DrawEmptyCell
 ( menu_t*       menu,
   int           item )
 {
-	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, SCREEN_FRAMEBUFFER,
+	V_DrawPatch (X_CENTRE(menu->xRaw) - 10*HUD_SCALE,        Y_CENTRE(menu->yRaw)+item*LINEHEIGHT - 1*HUD_SCALE, SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName("M_CELL1",PU_CACHE));
 }
 
@@ -1181,7 +1194,7 @@ M_DrawSelCell
 ( menu_t*       menu,
   int           item )
 {
-	V_DrawPatch (menu->x - 10*HUD_SCALE,        menu->y+item*LINEHEIGHT - 1*HUD_SCALE, SCREEN_FRAMEBUFFER,
+	V_DrawPatch (X_CENTRE(menu->xRaw) - 10*HUD_SCALE,        Y_CENTRE(menu->yRaw)+item*LINEHEIGHT - 1*HUD_SCALE, SCREEN_FRAMEBUFFER,
 					   (patch_t*)W_CacheLumpName("M_CELL2",PU_CACHE));
 }
 
@@ -1728,8 +1741,8 @@ void M_Drawer (void)
 		currentMenu->routine();         /* call Draw routine */
 
 	/* DRAW MENU */
-	x = currentMenu->x;
-	y = currentMenu->y;
+	x = X_CENTRE(currentMenu->xRaw);
+	y = Y_CENTRE(currentMenu->yRaw);
 	max = currentMenu->numitems;
 
 	for (i=0;i<max;i++)
@@ -1742,7 +1755,7 @@ void M_Drawer (void)
 
 
 	/* DRAW SKULL */
-	V_DrawPatch(x + SKULLXOFF,currentMenu->y - 5*HUD_SCALE + itemOn*LINEHEIGHT, SCREEN_FRAMEBUFFER,
+	V_DrawPatch(x + SKULLXOFF,Y_CENTRE(currentMenu->yRaw) - 5*HUD_SCALE + itemOn*LINEHEIGHT, SCREEN_FRAMEBUFFER,
 					  (patch_t*)W_CacheLumpName(skullName[whichSkull],PU_CACHE));
 
 }
@@ -1804,11 +1817,11 @@ void M_Init (void)
 		/*  kept this hack for educational purposes. */
 		MainMenu[readthis] = MainMenu[quitdoom];
 		MainDef.numitems--;
-		MainDef.y += 8*HUD_SCALE;
+		MainDef.yRaw += 8;
 		NewDef.prevMenu = &MainDef;
 		ReadDef1.routine = M_DrawReadThis1;
-		ReadDef1.x = X_CENTRE(330);
-		ReadDef1.y = Y_CENTRE(165);
+		ReadDef1.xRaw = 330;
+		ReadDef1.yRaw = 165;
 		ReadMenu1[0].routine = M_FinishReadThis;
 		break;
 	  case shareware:

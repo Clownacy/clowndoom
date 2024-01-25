@@ -70,8 +70,8 @@ colourindex_t**  spritelights;
 
 /* constant arrays */
 /*  used for psprite clipping and initializing clipping */
-short           negonearray[SCREENWIDTH];
-short           screenheightarray[SCREENWIDTH];
+short           negonearray[MAXIMUM_SCREENWIDTH];
+short           screenheightarray[MAXIMUM_SCREENWIDTH];
 
 
 /* INITIALIZATION FUNCTIONS */
@@ -799,8 +799,8 @@ void R_SortVisSprites (void)
 void R_DrawSprite (vissprite_t* spr)
 {
 	drawseg_t*          ds;
-	short               clipbot[SCREENWIDTH];
-	short               cliptop[SCREENWIDTH];
+	short               clipbot[MAXIMUM_SCREENWIDTH];
+	short               cliptop[MAXIMUM_SCREENWIDTH];
 	int                 x;
 	int                 r1;
 	int                 r2;

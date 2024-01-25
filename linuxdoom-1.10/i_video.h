@@ -61,6 +61,7 @@ void I_StartTic (void);
 
 void I_GrabMouse(d_bool grab);
 void I_ToggleFullscreen(void);
+void I_RenderSizeChanged(void);
 
 
 #endif

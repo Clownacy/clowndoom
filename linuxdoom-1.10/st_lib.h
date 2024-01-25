@@ -34,8 +34,8 @@ typedef struct
 {
 	/* upper right-hand corner */
 	/*  of the number (right-justified) */
-	int         x;
-	int         y;
+	int         xRaw;
+	int         yRaw;
 
 	/* max # of digits in number */
 	int width;
@@ -78,8 +78,8 @@ typedef struct
 typedef struct
 {
 	 /* center-justified location of icons */
-	int                 x;
-	int                 y;
+	int                 xRaw;
+	int                 yRaw;
 
 	/* last icon number */
 	int                 oldinum;
@@ -107,8 +107,8 @@ typedef struct
 typedef struct
 {
 	/* center-justified location of icon */
-	int                 x;
-	int                 y;
+	int                 xRaw;
+	int                 yRaw;
 
 	/* last icon value */
 	d_bool                      oldval;

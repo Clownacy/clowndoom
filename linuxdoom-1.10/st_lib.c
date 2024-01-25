@@ -58,8 +58,8 @@ STlib_initNum
   d_bool*              on,
   int                   width )
 {
-	n->x        = x;
-	n->y        = y;
+	n->xRaw        = x;
+	n->yRaw        = y;
 	n->oldnum   = 0;
 	n->width    = width;
 	n->num      = num;
@@ -82,7 +82,8 @@ STlib_drawNum
 
 	int         w = SHORT(n->p[0]->width) * HUD_SCALE;
 	int         h = SHORT(n->p[0]->height) * HUD_SCALE;
-	int         x = n->x;
+	int         x = X_CENTRE(n->xRaw);
+	int         y = Y_BOTTOM(n->yRaw);
 
 	int         neg;
 
@@ -103,34 +104,34 @@ STlib_drawNum
 	}
 
 	/* clear the area */
-	x = n->x - numdigits*w;
+	x = X_CENTRE(n->xRaw) - numdigits*w;
 
-	if (n->y - ST_Y < 0)
+	if (y - ST_Y < 0)
 		I_Error("drawNum: n->y - ST_Y < 0");
 
-	V_CopyRect(x, n->y - ST_Y, SCREEN_STATUS_BAR, w*numdigits, h, x, n->y, SCREEN_FRAMEBUFFER);
+	V_CopyRect(x, y - ST_Y, SCREEN_STATUS_BAR, w*numdigits, h, x, y, SCREEN_FRAMEBUFFER);
 
 	/* if non-number, do not draw it */
 	if (num == 1994)
 		return;
 
-	x = n->x;
+	x = X_CENTRE(n->xRaw);
 
 	/* in the special case of 0, you draw 0 */
 	if (!num)
-		V_DrawPatch(x - w, n->y, SCREEN_FRAMEBUFFER, n->p[ 0 ]);
+		V_DrawPatch(x - w, y, SCREEN_FRAMEBUFFER, n->p[ 0 ]);
 
 	/* draw the new number */
 	while (num && numdigits--)
 	{
 		x -= w;
-		V_DrawPatch(x, n->y, SCREEN_FRAMEBUFFER, n->p[ num % 10 ]);
+		V_DrawPatch(x, y, SCREEN_FRAMEBUFFER, n->p[ num % 10 ]);
 		num /= 10;
 	}
 
 	/* draw a minus sign if necessary */
 	if (neg)
-		V_DrawPatch(x - 8, n->y, SCREEN_FRAMEBUFFER, sttminus);
+		V_DrawPatch(x - 8, y, SCREEN_FRAMEBUFFER, sttminus);
 }
 
 
@@ -166,7 +167,7 @@ STlib_updatePercent
   int                   refresh )
 {
 	if (refresh && *per->n.on)
-		V_DrawPatch(per->n.x, per->n.y, SCREEN_FRAMEBUFFER, per->p);
+		V_DrawPatch(X_CENTRE(per->n.xRaw), Y_CENTRE(per->n.yRaw), SCREEN_FRAMEBUFFER, per->p);
 
 	STlib_updateNum(&per->n, refresh);
 }
@@ -182,8 +183,8 @@ STlib_initMultIcon
   int*                  inum,
   d_bool*              on )
 {
-	i->x        = x;
-	i->y        = y;
+	i->xRaw     = x;
+	i->yRaw     = y;
 	i->oldinum  = -1;
 	i->inum     = inum;
 	i->on       = on;
@@ -208,8 +209,8 @@ STlib_updateMultIcon
 	{
 		if (mi->oldinum != -1)
 		{
-			x = mi->x - SHORT(mi->p[mi->oldinum]->leftoffset) * HUD_SCALE;
-			y = mi->y - SHORT(mi->p[mi->oldinum]->topoffset) * HUD_SCALE;
+			x = X_CENTRE(mi->xRaw) - SHORT(mi->p[mi->oldinum]->leftoffset) * HUD_SCALE;
+			y = Y_BOTTOM(mi->yRaw) - SHORT(mi->p[mi->oldinum]->topoffset) * HUD_SCALE;
 			w = SHORT(mi->p[mi->oldinum]->width) * HUD_SCALE;
 			h = SHORT(mi->p[mi->oldinum]->height) * HUD_SCALE;
 
@@ -218,7 +219,7 @@ STlib_updateMultIcon
 
 			V_CopyRect(x, y-ST_Y, SCREEN_STATUS_BAR, w, h, x, y, SCREEN_FRAMEBUFFER);
 		}
-		V_DrawPatch(mi->x, mi->y, SCREEN_FRAMEBUFFER, mi->p[*mi->inum]);
+		V_DrawPatch(X_CENTRE(mi->xRaw), Y_BOTTOM(mi->yRaw), SCREEN_FRAMEBUFFER, mi->p[*mi->inum]);
 		mi->oldinum = *mi->inum;
 	}
 }
@@ -234,8 +235,8 @@ STlib_initBinIcon
   d_bool*              val,
   d_bool*              on )
 {
-	b->x        = x;
-	b->y        = y;
+	b->xRaw     = x;
+	b->yRaw     = y;
 	b->oldval   = d_false;
 	b->val      = val;
 	b->on       = on;
@@ -257,8 +258,8 @@ STlib_updateBinIcon
 	if (*bi->on
 		&& (bi->oldval != *bi->val || refresh))
 	{
-		x = bi->x - SHORT(bi->p->leftoffset) * HUD_SCALE;
-		y = bi->y - SHORT(bi->p->topoffset) * HUD_SCALE;
+		x = X_CENTRE(bi->xRaw) - SHORT(bi->p->leftoffset) * HUD_SCALE;
+		y = Y_BOTTOM(bi->yRaw) - SHORT(bi->p->topoffset) * HUD_SCALE;
 		w = SHORT(bi->p->width) * HUD_SCALE;
 		h = SHORT(bi->p->height) * HUD_SCALE;
 
@@ -266,7 +267,7 @@ STlib_updateBinIcon
 			I_Error("updateBinIcon: y - ST_Y < 0");
 
 		if (*bi->val)
-			V_DrawPatch(bi->x, bi->y, SCREEN_FRAMEBUFFER, bi->p);
+			V_DrawPatch(X_CENTRE(bi->xRaw), Y_BOTTOM(bi->yRaw), SCREEN_FRAMEBUFFER, bi->p);
 		else
 			V_CopyRect(x, y-ST_Y, SCREEN_STATUS_BAR, w, h, x, y, SCREEN_FRAMEBUFFER);
 

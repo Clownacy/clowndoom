@@ -166,41 +166,41 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 {
 	/* Episode 0 World Map */
 	{
-		{ X_CENTRE(185), Y_CENTRE(164) },   /* location of level 0 (CJ) */
-		{ X_CENTRE(148), Y_CENTRE(143) },   /* location of level 1 (CJ) */
-		{ X_CENTRE(69) , Y_CENTRE(122) },   /* location of level 2 (CJ) */
-		{ X_CENTRE(209), Y_CENTRE(102) },   /* location of level 3 (CJ) */
-		{ X_CENTRE(116), Y_CENTRE(89)  },   /* location of level 4 (CJ) */
-		{ X_CENTRE(166), Y_CENTRE(55)  },   /* location of level 5 (CJ) */
-		{ X_CENTRE(71) , Y_CENTRE(56)  },   /* location of level 6 (CJ) */
-		{ X_CENTRE(135), Y_CENTRE(29)  },   /* location of level 7 (CJ) */
-		{ X_CENTRE(71) , Y_CENTRE(24)  }    /* location of level 8 (CJ) */
+		{ 185, 164 },   /* location of level 0 (CJ) */
+		{ 148, 143 },   /* location of level 1 (CJ) */
+		{ 69 , 122 },   /* location of level 2 (CJ) */
+		{ 209, 102 },   /* location of level 3 (CJ) */
+		{ 116, 89  },   /* location of level 4 (CJ) */
+		{ 166, 55  },   /* location of level 5 (CJ) */
+		{ 71 , 56  },   /* location of level 6 (CJ) */
+		{ 135, 29  },   /* location of level 7 (CJ) */
+		{ 71 , 24  }    /* location of level 8 (CJ) */
 	},
 
 	/* Episode 1 World Map should go here */
 	{
-		{ X_CENTRE(254), Y_CENTRE(25)  },   /* location of level 0 (CJ) */
-		{ X_CENTRE(97) , Y_CENTRE(50)  },   /* location of level 1 (CJ) */
-		{ X_CENTRE(188), Y_CENTRE(64)  },   /* location of level 2 (CJ) */
-		{ X_CENTRE(128), Y_CENTRE(78)  },   /* location of level 3 (CJ) */
-		{ X_CENTRE(214), Y_CENTRE(92)  },   /* location of level 4 (CJ) */
-		{ X_CENTRE(133), Y_CENTRE(130) },   /* location of level 5 (CJ) */
-		{ X_CENTRE(208), Y_CENTRE(136) },   /* location of level 6 (CJ) */
-		{ X_CENTRE(148), Y_CENTRE(140) },   /* location of level 7 (CJ) */
-		{ X_CENTRE(235), Y_CENTRE(158) }    /* location of level 8 (CJ) */
+		{ 254, 25  },   /* location of level 0 (CJ) */
+		{ 97 , 50  },   /* location of level 1 (CJ) */
+		{ 188, 64  },   /* location of level 2 (CJ) */
+		{ 128, 78  },   /* location of level 3 (CJ) */
+		{ 214, 92  },   /* location of level 4 (CJ) */
+		{ 133, 130 },   /* location of level 5 (CJ) */
+		{ 208, 136 },   /* location of level 6 (CJ) */
+		{ 148, 140 },   /* location of level 7 (CJ) */
+		{ 235, 158 }    /* location of level 8 (CJ) */
 	},
 
 	/* Episode 2 World Map should go here */
 	{
-		{ X_CENTRE(156), Y_CENTRE(168) },   /* location of level 0 (CJ) */
-		{ X_CENTRE(48) , Y_CENTRE(154) },   /* location of level 1 (CJ) */
-		{ X_CENTRE(174), Y_CENTRE(95)  },   /* location of level 2 (CJ) */
-		{ X_CENTRE(265), Y_CENTRE(75)  },   /* location of level 3 (CJ) */
-		{ X_CENTRE(130), Y_CENTRE(48)  },   /* location of level 4 (CJ) */
-		{ X_CENTRE(279), Y_CENTRE(23)  },   /* location of level 5 (CJ) */
-		{ X_CENTRE(198), Y_CENTRE(48)  },   /* location of level 6 (CJ) */
-		{ X_CENTRE(140), Y_CENTRE(25)  },   /* location of level 7 (CJ) */
-		{ X_CENTRE(281), Y_CENTRE(136) }    /* location of level 8 (CJ) */
+		{ 156, 168 },   /* location of level 0 (CJ) */
+		{ 48 , 154 },   /* location of level 1 (CJ) */
+		{ 174, 95  },   /* location of level 2 (CJ) */
+		{ 265, 75  },   /* location of level 3 (CJ) */
+		{ 130, 48  },   /* location of level 4 (CJ) */
+		{ 279, 23  },   /* location of level 5 (CJ) */
+		{ 198, 48  },   /* location of level 6 (CJ) */
+		{ 140, 25  },   /* location of level 7 (CJ) */
+		{ 281, 136 }    /* location of level 8 (CJ) */
 	}
 
 };
@@ -211,39 +211,39 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 /*  as they replace 320x200 full screen frames. */
 static anim_t epsd0animinfo[] =
 {
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(224), Y_CENTRE(104) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(184), Y_CENTRE(160) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(112), Y_CENTRE(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(72) , Y_CENTRE(112) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(88) , Y_CENTRE(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(64) , Y_CENTRE(48)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(192), Y_CENTRE(40)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(136), Y_CENTRE(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(80) , Y_CENTRE(16)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(64) , Y_CENTRE(24)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 224, 104 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 184, 160 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 112, 136 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 72 , 112 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 88 , 96  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 64 , 48  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 192, 40  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 136, 16  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 80 , 16  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 64 , 24  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static anim_t epsd1animinfo[] =
 {
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 1, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 2, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 3, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 4, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 5, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 6, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 7, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 3, { X_CENTRE(192), Y_CENTRE(144) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_LEVEL, TICRATE/3, 1, { X_CENTRE(128), Y_CENTRE(136) }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 1, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 2, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 3, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 4, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 5, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 6, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 7, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 3, { 192, 144 }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_LEVEL, TICRATE/3, 1, { 128, 136 }, 8, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static anim_t epsd2animinfo[] =
 {
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(104), Y_CENTRE(168) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(40) , Y_CENTRE(136) }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(160), Y_CENTRE(96)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(104), Y_CENTRE(80)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { X_CENTRE(120), Y_CENTRE(32)  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/4, 3, { X_CENTRE(40) , Y_CENTRE(0)   }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 104, 168 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 40 , 136 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 160, 96  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 104, 80  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 120, 32  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/4, 3, { 40 , 0   }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static int NUMANIMS[NUMEPISODES] =
@@ -445,8 +445,8 @@ WI_drawOnLnode
 	i = 0;
 	do
 	{
-		left = lnodes[wbs->epsd][n].x - SHORT(c[i]->leftoffset)*HUD_SCALE;
-		top = lnodes[wbs->epsd][n].y - SHORT(c[i]->topoffset)*HUD_SCALE;
+		left = X_CENTRE(lnodes[wbs->epsd][n].x) - SHORT(c[i]->leftoffset)*HUD_SCALE;
+		top = Y_CENTRE(lnodes[wbs->epsd][n].y) - SHORT(c[i]->topoffset)*HUD_SCALE;
 		right = left + SHORT(c[i]->width)*HUD_SCALE;
 		bottom = top + SHORT(c[i]->height)*HUD_SCALE;
 
@@ -465,7 +465,7 @@ WI_drawOnLnode
 
 	if (fits && i<2)
 	{
-		V_DrawPatch(lnodes[wbs->epsd][n].x, lnodes[wbs->epsd][n].y,
+		V_DrawPatch(X_CENTRE(lnodes[wbs->epsd][n].x), Y_CENTRE(lnodes[wbs->epsd][n].y),
 					SCREEN_FRAMEBUFFER, c[i]);
 	}
 	else
@@ -573,7 +573,7 @@ void WI_drawAnimatedBack(void)
 		a = &anims[wbs->epsd][i];
 
 		if (a->ctr >= 0)
-			V_DrawPatch(a->loc.x, a->loc.y, SCREEN_FRAMEBUFFER, a->p[a->ctr]);
+			V_DrawPatch(X_CENTRE(a->loc.x), Y_CENTRE(a->loc.y), SCREEN_FRAMEBUFFER, a->p[a->ctr]);
 	}
 
 }

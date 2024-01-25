@@ -110,12 +110,10 @@ void I_FinishUpdate (void)
 	{
 		for (x = 0; x < SCREENWIDTH; ++x)
 		{
-			size_t j;
-
 			const unsigned char * const color = &colors[indexed_pixels[x * SCREENHEIGHT + y] * bytes_per_pixel];
 
-			for (j = 0; j < bytes_per_pixel; ++j)
-				*colored_screen_pointer++ = color[j];
+			for (i = 0; i < bytes_per_pixel; ++i)
+				*colored_screen_pointer++ = color[i];
 		}
 	}
 
@@ -130,8 +128,6 @@ void I_FinishUpdate (void)
 	{
 		if (upscale_y_deltas[y])
 		{
-			size_t x;
-
 			unsigned char *upscale_line_buffer_pointer = &pixels[y * pitch];
 
 			for (x = 0; x < output_width; ++x)
@@ -189,8 +185,6 @@ void I_SetPalette (unsigned char(* const palette)[0x100][3], const size_t total_
 
 static void OutputSizeChanged(const size_t width, const size_t height)
 {
-	size_t last, i;
-
 	const size_t aspect_ratio_w = SCREENWIDTH;
 	const size_t aspect_ratio_h = aspect_ratio_correction ? SCREENHEIGHT * 6 / 5 : SCREENHEIGHT;
 	const size_t alternate_width = height * aspect_ratio_w / aspect_ratio_h;
@@ -210,29 +204,7 @@ static void OutputSizeChanged(const size_t width, const size_t height)
 	offset_x = (width - output_width) / 2;
 	offset_y = (height - output_height) / 2;
 
-	/* Create LUTs for the upscaler */
-	upscale_x_deltas = (unsigned char*)realloc(upscale_x_deltas, output_width);
-	upscale_y_deltas = (unsigned char*)realloc(upscale_y_deltas, output_height);
-
-	for (last = 0, i = 0; i < output_height; ++i)
-	{
-		const size_t current = i * SCREENHEIGHT / output_height;
-
-		upscale_y_deltas[i] = last != current;
-
-		last = current;
-	}
-
-	upscale_y_deltas[0] = 1;    /* Force a redraw on the first line */
-
-	for (last = 0, i = 0; i < output_width; ++i)
-	{
-		const size_t current = (i + 1) * SCREENWIDTH / output_width;    /* The +1 here is deliberate, to avoid distortion at 320x240 */
-
-		upscale_x_deltas[i] = last != current;
-
-		last = current;
-	}
+	I_RenderSizeChanged();
 }
 
 
@@ -288,4 +260,33 @@ void I_GrabMouse(d_bool grab)
 void I_ToggleFullscreen(void)
 {
 	IB_ToggleFullscreen();
+}
+
+void I_RenderSizeChanged(void)
+{
+	size_t last, i;
+
+	/* Create LUTs for the upscaler */
+	upscale_x_deltas = (unsigned char*)realloc(upscale_x_deltas, output_width);
+	upscale_y_deltas = (unsigned char*)realloc(upscale_y_deltas, output_height);
+
+	for (last = 0, i = 0; i < output_height; ++i)
+	{
+		const size_t current = i * SCREENHEIGHT / output_height;
+
+		upscale_y_deltas[i] = last != current;
+
+		last = current;
+	}
+
+	upscale_y_deltas[0] = 1;    /* Force a redraw on the first line */
+
+	for (last = 0, i = 0; i < output_width; ++i)
+	{
+		const size_t current = (i + 1) * SCREENWIDTH / output_width;    /* The +1 here is deliberate, to avoid distortion at 320x240 */
+
+		upscale_x_deltas[i] = last != current;
+
+		last = current;
+	}
 }

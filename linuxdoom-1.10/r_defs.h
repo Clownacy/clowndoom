@@ -434,11 +434,11 @@ typedef struct
   int     pad1;
   /* Here lies the rub for all */
   /*  dynamic resize/change of resolution. */
-  int     top[SCREENWIDTH];
+  int     top[MAXIMUM_SCREENWIDTH];
   int     pad2;
   int     pad3;
   /* See above. */
-  int     bottom[SCREENWIDTH];
+  int     bottom[MAXIMUM_SCREENWIDTH];
   int     pad4;
 
 } visplane_t;

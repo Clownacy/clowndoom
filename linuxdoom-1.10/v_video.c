@@ -38,7 +38,7 @@
 
 /* Technically, the status bar buffer should only be `ST_WIDTH * ST_HEIGHT`, but every screen needs to be `SCREENHEIGHT` tall due to hardcoded assumptions. */
 /* TODO: Fix this. */
-colourindex_t screens[5][SCREENWIDTH * SCREENHEIGHT];
+colourindex_t screens[5][MAXIMUM_SCREENWIDTH * MAXIMUM_SCREENHEIGHT];
 
 
 

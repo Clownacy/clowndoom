@@ -82,8 +82,13 @@ typedef enum
 #define ORIGINAL_SCREEN_WIDTH  320
 #define ORIGINAL_SCREEN_HEIGHT 200
 
-#define SCREENWIDTH  ORIGINAL_SCREEN_WIDTH
-#define SCREENHEIGHT ORIGINAL_SCREEN_HEIGHT
+extern int screen_width, screen_height;
+
+#define SCREENWIDTH  screen_width
+#define SCREENHEIGHT screen_height
+
+#define MAXIMUM_SCREENWIDTH  (ORIGINAL_SCREEN_WIDTH*4)
+#define MAXIMUM_SCREENHEIGHT (ORIGINAL_SCREEN_HEIGHT*4)
 
 /* Try to keep this to powers of two to prevent rounding errors. */
 #define HUD_SCALE 1
