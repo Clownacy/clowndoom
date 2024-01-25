@@ -359,8 +359,6 @@ void AM_addMark(void)
 void AM_findMinMaxBoundaries(void)
 {
 	int i;
-	fixed_t a;
-	fixed_t b;
 
 	min_x = min_y = INT_MAX;
 	max_x = max_y = -INT_MAX;
@@ -383,13 +381,6 @@ void AM_findMinMaxBoundaries(void)
 
 	min_w = 2*PLAYERRADIUS; /* const? never changed? */
 	min_h = 2*PLAYERRADIUS;
-
-	a = FixedDiv(f_w<<FRACBITS, max_w);
-	b = FixedDiv(f_h<<FRACBITS, max_h);
-
-	min_scale_mtof = a < b ? a : b;
-	max_scale_mtof = FixedDiv(f_h<<FRACBITS, 2*PLAYERRADIUS);
-
 }
 
 
@@ -504,10 +495,8 @@ void AM_LevelInit(void)
 	AM_clearMarks();
 
 	AM_findMinMaxBoundaries();
-	scale_mtof = FixedDiv(min_scale_mtof, (int) (0.7*FRACUNIT));
-	if (scale_mtof > max_scale_mtof)
-		scale_mtof = min_scale_mtof;
-	scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
+
+	AM_resolutionChanged();
 }
 
 
@@ -1270,4 +1259,18 @@ void AM_Drawer (void)
 
 	AM_drawMarks();
 
+}
+
+void AM_resolutionChanged (void)
+{
+	const fixed_t a = FixedDiv(f_w << FRACBITS, max_w);
+	const fixed_t b = FixedDiv(f_h << FRACBITS, max_h);
+
+	min_scale_mtof = a < b ? a : b;
+	max_scale_mtof = FixedDiv(f_h << FRACBITS, 2 * PLAYERRADIUS);
+
+	scale_mtof = FixedDiv(min_scale_mtof, (int)(0.7 * FRACUNIT));
+	if (scale_mtof > max_scale_mtof)
+		scale_mtof = min_scale_mtof;
+	scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
 }
