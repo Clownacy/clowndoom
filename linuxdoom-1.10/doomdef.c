@@ -23,5 +23,5 @@
 
 /* Location for any defines turned variables. */
 
-int screen_width = MAXIMUM_SCREENWIDTH, screen_height = MAXIMUM_SCREENHEIGHT;
+int screen_width = ORIGINAL_SCREEN_WIDTH, screen_height = ORIGINAL_SCREEN_HEIGHT;
 

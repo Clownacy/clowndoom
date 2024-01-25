@@ -230,13 +230,12 @@ void I_InitGraphics(void)
 	else
 		output_height = SCREENHEIGHT * multiply;
 
-	IB_InitGraphics("clowndoom", output_width, output_height, &bytes_per_pixel, OutputSizeChanged);
+	IB_InitGraphics("clowndoom", 640, 480, &bytes_per_pixel, OutputSizeChanged);
 
 	I_GrabMouse(d_true);
 
 	/* TODO - handle failed allocations */
 	colors = (unsigned char*)malloc(MAX_PALETTES * 0x100 * bytes_per_pixel);
-	colored_screen = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 }
 
 
@@ -267,8 +266,10 @@ void I_RenderSizeChanged(void)
 	size_t last, i;
 
 	/* Create LUTs for the upscaler */
-	upscale_x_deltas = (unsigned char*)realloc(upscale_x_deltas, output_width);
-	upscale_y_deltas = (unsigned char*)realloc(upscale_y_deltas, output_height);
+	free(upscale_x_deltas);
+	free(upscale_y_deltas);
+	upscale_x_deltas = (unsigned char*)malloc(output_width);
+	upscale_y_deltas = (unsigned char*)malloc(output_height);
 
 	for (last = 0, i = 0; i < output_height; ++i)
 	{
@@ -289,4 +290,7 @@ void I_RenderSizeChanged(void)
 
 		last = current;
 	}
+
+	free(colored_screen);
+	colored_screen = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
 }

@@ -799,8 +799,8 @@ void R_SortVisSprites (void)
 void R_DrawSprite (vissprite_t* spr)
 {
 	drawseg_t*          ds;
-	short               clipbot[MAXIMUM_SCREENWIDTH];
-	short               cliptop[MAXIMUM_SCREENWIDTH];
+	static short        clipbot[MAXIMUM_SCREENWIDTH];
+	static short        cliptop[MAXIMUM_SCREENWIDTH];
 	int                 x;
 	int                 r1;
 	int                 r2;

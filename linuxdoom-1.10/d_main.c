@@ -218,7 +218,7 @@ void D_ProcessEvents (void)
 
 /* wipegamestate can be set to -1 to force a wipe on the next draw */
 gamestate_t     wipegamestate = GS_DEMOSCREEN;
-extern  d_bool setsizeneeded;
+extern  d_bool setsizeneeded; /* TODO: This is such spaghetti code bullshit */
 extern  int             showMessages;
 void R_ExecuteSetViewSize (void);
 
