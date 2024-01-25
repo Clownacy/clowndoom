@@ -330,7 +330,7 @@ V_GetBlock
 }
 
 #define BG_TILE_SRC_SIZE 64
-#define BG_TILE_DST_SIZE (BG_TILE_SRC_SIZE*MAXIMUM_RESOLUTION_SCALE)
+#define BG_TILE_DST_SIZE (BG_TILE_SRC_SIZE*HUD_SCALE)
 
 void
 V_FillScreenWithPattern
@@ -345,7 +345,7 @@ V_FillScreenWithPattern
 
 	for (x=0 ; x<(SCREENWIDTH+(HUD_SCALE-1))/HUD_SCALE ; x++)
 	{
-		static colourindex_t line_buffer[BG_TILE_DST_SIZE];
+		static colourindex_t line_buffer[BG_TILE_SRC_SIZE * MAXIMUM_RESOLUTION_SCALE];
 
 		/* Upscale a row of pixels. */
 		for (y=0 ; y<BG_TILE_SRC_SIZE ; y++)
