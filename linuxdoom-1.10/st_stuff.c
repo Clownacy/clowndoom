@@ -1356,3 +1356,8 @@ void ST_Init (void)
 	ST_loadData();
 	/* The status bar framebuffer used to be allocated here. */
 }
+
+void ST_setRefreshPending(void)
+{
+	st_firsttime = d_true;
+}

@@ -167,7 +167,7 @@ STlib_updatePercent
   int                   refresh )
 {
 	if (refresh && *per->n.on)
-		V_DrawPatch(X_CENTRE(per->n.xRaw), Y_CENTRE(per->n.yRaw), SCREEN_FRAMEBUFFER, per->p);
+		V_DrawPatch(X_CENTRE(per->n.xRaw), Y_BOTTOM(per->n.yRaw), SCREEN_FRAMEBUFFER, per->p);
 
 	STlib_updateNum(&per->n, refresh);
 }

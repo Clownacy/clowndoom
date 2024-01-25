@@ -657,6 +657,7 @@ void R_ExecuteSetViewSize (void)
 	/* TODO: These really should be moved somewhere else, somewhere higher-level. */
 	SCREENWIDTH = setscreenwidth;
 	SCREENHEIGHT = setscreenheight;
+	ST_setRefreshPending();
 	I_RenderSizeChanged();
 
 	switch (setblocks)
