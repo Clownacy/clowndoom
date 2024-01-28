@@ -4,3 +4,6 @@
 [submodule "external/wildmidi"]
 	path = external/wildmidi
 	url = https://github.com/Mindwerks/wildmidi
+[submodule "linuxdoom-1.10/clownlibs/clowncommon"]
+	path = linuxdoom-1.10/clownlibs/clowncommon
+	url = https://github.com/Clownacy/clowncommon
