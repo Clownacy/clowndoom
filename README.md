@@ -22,8 +22,8 @@ improvements have been made, such as the addition of a `novert` option.
   - `full_colour` - Render with more than 256 colours.
   - `prototype_light_amplification_visor_effect` - Restore the 'night vision'
     effect for the light amplification visor from the Press Release Pre-Beta.
-  - `resolution_scale` - Multiplies the rendering resolution. 1 is 320x200,
-    2 is 640x400, etc. The maximum value is 8.
+  - `screen_width` - The screen's horizontal resolution. The maximum is 3733.
+  - `screen_height` - The screen's vertical resolution. The maximum is 1600.
   - `hud_scale` - Multiplies the size of the user interface. 1 renders elements
     at their native resolutions, 2 renders them at double their resolution,
     etc. The maximum value is 8.

@@ -35,12 +35,15 @@
 #include "i_system.h"
 #include "v_video.h"
 
+#include "clownlibs/clowncommon/clowncommon.h"
 
 
 
 
+/* The original FOV is 90 degrees. Do some messy math here to increase it to suit the aspect ratio. */
+#define HORIZONTAL_FIELD_OF_VIEW_IN_DEGREES (unsigned int)CC_RADIAN_TO_DEGREE(atan(tan(CC_DEGREE_TO_RADIAN(90) / 2.0) * ORIGINAL_SCREEN_HEIGHT / ORIGINAL_SCREEN_WIDTH * SCREENWIDTH / SCREENHEIGHT) * 2.0)
 /* Fineangles in the SCREENWIDTH wide window. */
-#define FIELDOFVIEW             2048
+#define FIELDOFVIEW             (FINEANGLES * HORIZONTAL_FIELD_OF_VIEW_IN_DEGREES / 360)
 
 
 
@@ -624,7 +627,8 @@ void R_InitLightTables (void)
 d_bool          setsizeneeded;
 int             setblocks;
 int             setdetail;
-int             setresolutionscale;
+int             setscreenwidth;
+int             setscreenheight;
 int             sethudscale;
 
 
@@ -632,13 +636,15 @@ void
 R_SetViewSize
 ( int           blocks,
   int           detail,
-  int           new_resolution_scale,
+  int           new_screen_width,
+  int           new_screen_height,
   int           new_hud_scale )
 {
 	setsizeneeded = d_true;
 	setblocks = blocks;
 	setdetail = detail;
-	setresolutionscale = new_resolution_scale;
+	setscreenwidth = new_screen_width;
+	setscreenheight = new_screen_height;
 	sethudscale = new_hud_scale;
 }
 
@@ -656,7 +662,8 @@ void R_ExecuteSetViewSize (void)
 	setsizeneeded = d_false;
 
 	/* TODO: These really should be moved somewhere else, somewhere higher-level. */
-	resolution_scale = setresolutionscale;
+	SCREENWIDTH = setscreenwidth;
+	SCREENHEIGHT = setscreenheight;
 	HUD_SCALE = sethudscale;
 	ST_setRefreshPending();
 	AM_resolutionChanged();
@@ -690,7 +697,7 @@ void R_ExecuteSetViewSize (void)
 	centerx = viewwidth/2;
 	centerxfrac = centerx<<FRACBITS;
 	centeryfrac = centery<<FRACBITS;
-	projection = centerxfrac;
+	projection = WIDESCREENIFY(centerxfrac);
 
 	if (!detailshift)
 	{
@@ -712,8 +719,8 @@ void R_ExecuteSetViewSize (void)
 	R_InitTextureMapping ();
 
 	/* psprite scales */
-	pspritescale = FRACUNIT*viewwidth/ORIGINAL_SCREEN_WIDTH;
-	pspriteiscale = FRACUNIT*ORIGINAL_SCREEN_WIDTH/viewwidth;
+	pspritescale = FRACUNIT*WIDESCREENIFY(viewwidth)/ORIGINAL_SCREEN_WIDTH;
+	pspriteiscale = FRACUNIT*ORIGINAL_SCREEN_WIDTH/WIDESCREENIFY(viewwidth);
 
 	/* thing clipping */
 	for (i=0 ; i<viewwidth ; i++)
@@ -724,7 +731,7 @@ void R_ExecuteSetViewSize (void)
 	{
 		dy = ((i-viewheight/2)<<FRACBITS)+FRACUNIT/2;
 		dy = abs(dy);
-		yslope[i] = FixedDiv ( (viewwidth<<detailshift)/2*FRACUNIT, dy);
+		yslope[i] = FixedDiv ( (WIDESCREENIFY(viewwidth)<<detailshift)/2*FRACUNIT, dy);
 	}
 
 	for (i=0 ; i<viewwidth ; i++)
@@ -771,7 +778,7 @@ void R_Init (void)
 	/* viewwidth / viewheight / detailLevel are set by the defaults */
 	I_Info ("\nR_InitTables");
 
-	R_SetViewSize (screenblocks, detailLevel, resolution_scale, HUD_SCALE);
+	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
 	R_InitPlanes ();
 	I_Info ("\nR_InitPlanes");
 	R_InitLightTables ();

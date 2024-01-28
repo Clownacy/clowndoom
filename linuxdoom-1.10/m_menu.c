@@ -1102,7 +1102,7 @@ void M_ChangeDetail(int choice)
 
 	detailLevel = 1 - detailLevel;
 
-	R_SetViewSize (screenblocks, detailLevel, resolution_scale, HUD_SCALE);
+	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
 
 	if (!detailLevel)
 		players[consoleplayer].message = DETAILHI;
@@ -1115,8 +1115,6 @@ void M_ChangeDetail(int choice)
 
 void M_SizeDisplay(int choice)
 {
-	int new_resolution_scale = resolution_scale, new_hud_scale = HUD_SCALE;
-
 	switch(choice)
 	{
 	  case 0:
@@ -1135,7 +1133,7 @@ void M_SizeDisplay(int choice)
 		break;
 	}
 
-	R_SetViewSize (screenblocks, detailLevel, new_resolution_scale, new_hud_scale);
+	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
 }
 
 

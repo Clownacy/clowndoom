@@ -24,6 +24,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "m_fixed.h"
+
 /* Global parameters/defines. */
 /* DOOM version */
 enum { VERSION =  110 };
@@ -82,19 +84,14 @@ typedef enum
 #define ORIGINAL_SCREEN_WIDTH  320
 #define ORIGINAL_SCREEN_HEIGHT 200
 
+extern int SCREENWIDTH, SCREENHEIGHT;
+
+/* Support an absolute maximum of 21:9 at 3K. */
 #define MAXIMUM_RESOLUTION_SCALE 8 /* Roughly 3K as a maximum */
-
-extern int resolution_scale;
-
-#define SCREENWIDTH  (ORIGINAL_SCREEN_WIDTH  * resolution_scale)
-#define SCREENHEIGHT (ORIGINAL_SCREEN_HEIGHT * resolution_scale)
-
-#define MAXIMUM_SCREENWIDTH  (ORIGINAL_SCREEN_WIDTH  * MAXIMUM_RESOLUTION_SCALE)
 #define MAXIMUM_SCREENHEIGHT (ORIGINAL_SCREEN_HEIGHT * MAXIMUM_RESOLUTION_SCALE)
+#define MAXIMUM_SCREENWIDTH  (MAXIMUM_SCREENHEIGHT * 21 / 9)
 
-extern int hud_scale;
-
-#define HUD_SCALE hud_scale
+extern int HUD_SCALE;
 
 #define X_CENTRE(x) ((SCREENWIDTH / 2) - ((ORIGINAL_SCREEN_WIDTH / 2 - (x)) * HUD_SCALE))
 #define X_LEFT(x) (x)
@@ -103,6 +100,8 @@ extern int hud_scale;
 #define Y_CENTRE(x) ((SCREENHEIGHT / 2) - ((ORIGINAL_SCREEN_HEIGHT / 2 - (x)) * HUD_SCALE))
 #define Y_TOP(x) (x)
 #define Y_BOTTOM(x) (SCREENHEIGHT - ((ORIGINAL_SCREEN_HEIGHT - (x)) * HUD_SCALE))
+
+#define WIDESCREENIFY(x) FixedMul(x, FRACUNIT * SCREENHEIGHT / SCREENWIDTH * ORIGINAL_SCREEN_WIDTH / ORIGINAL_SCREEN_HEIGHT)
 
 
 
