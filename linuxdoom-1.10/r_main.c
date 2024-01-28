@@ -53,8 +53,8 @@ int                     viewangleoffset;
 int                     validcount = 1;
 
 
-colourindex_t*           fixedcolormap;
-extern colourindex_t**   walllights;
+colourindex_t*          fixedcolormap;
+extern colourindex_t**  walllights;
 
 int                     centerx;
 int                     centery;
