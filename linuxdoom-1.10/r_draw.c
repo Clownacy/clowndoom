@@ -175,28 +175,28 @@ void R_DrawColumnLow (void)
 
 /* Spectre/Invisibility. */
 #define FUZZTABLE 50
-#define FUZZOFF 1
+#define FUZZOFF (SCREENWIDTH / ORIGINAL_SCREEN_WIDTH) /* TODO: This will break when alternate FOVs are added. */
 
 
-static const int fuzzoffset[FUZZTABLE] =
+static const signed char fuzzoffset[FUZZTABLE] =
 {
-	 FUZZOFF,-FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF,
-	 FUZZOFF,-FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF,
-	 FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF,
-	 FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,
-	-FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF, FUZZOFF,
-	 FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF,
-	-FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF,
-	 FUZZOFF, FUZZOFF,-FUZZOFF,-FUZZOFF,-FUZZOFF,
-	-FUZZOFF, FUZZOFF, FUZZOFF, FUZZOFF, FUZZOFF,
-	-FUZZOFF, FUZZOFF, FUZZOFF,-FUZZOFF, FUZZOFF
+	 1,-1, 1,-1, 1,
+	 1,-1, 1, 1,-1,
+	 1, 1, 1,-1, 1,
+	 1, 1,-1,-1,-1,
+	-1, 1,-1,-1, 1,
+	 1, 1, 1,-1, 1,
+	-1, 1, 1,-1,-1,
+	 1, 1,-1,-1,-1,
+	-1, 1, 1, 1, 1,
+	-1, 1, 1,-1, 1
 };
 
 static int GetFuzzOffset(void)
 {
 	static int fuzzpos = 0;
 
-	const int value = fuzzoffset[fuzzpos] * SCREENWIDTH / ORIGINAL_SCREEN_WIDTH; /* TODO: This will break when alternate FOVs are added. */
+	const int value = FUZZOFF * fuzzoffset[fuzzpos];
 
 	/* Clamp table lookup index. */
 	if (++fuzzpos == FUZZTABLE)
