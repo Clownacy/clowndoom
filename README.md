@@ -22,10 +22,13 @@ improvements have been made, such as the addition of a `novert` option.
   - `full_colour` - Render with more than 256 colours.
   - `prototype_light_amplification_visor_effect` - Restore the 'night vision'
     effect for the light amplification visor from the Press Release Pre-Beta.
+  - `resolution_scale` - Multiplies the rendering resolution. 1 is 320x200,
+    2 is 640x400, etc. The maximum value is 8.
+  - `hud_scale` - Multiplies the size of the user interface. 1 renders elements
+    at their native resolutions, 2 renders them at double their resolution,
+    etc. The maximum value is 8.
 - The 'iddt' cheat enables kill/item/secret totals in the automap, as well as
   notifications when finding secrets.
-- The game's resolution can be increased by adjusting the `SCREENWIDTH`,
-  `SCREENHEIGHT`, and `HUD_SCALE` constants in `doomdef.h`.
 - Compiler warnings have been addressed.
 - Support for 64-bit CPUs.
 - Support for Windows and modern Linux.
