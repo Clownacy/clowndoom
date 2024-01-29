@@ -3,15 +3,34 @@
 Yet another purist DOOM port.
 
 This project aims to repair the Linux Doom source code, restoring features that
-were lost from the DOS version. Additionally, minor quality-of-life
-improvements have been made, such as the addition of a `novert` option.
+were lost from the DOS version, and implementing opt-in quality-of-life
+improvements such as widescreen rendering.
 
 ## Features
-- Music support (through WildMIDI).
-  - Make sure to specify the location of your GUS patches in the 'clowndoomrc'/
-    'default.cfg' configuration file.
-- Proper sound effect support (the original source release lacked features like
-  stopping mid-playback and updating positional effects).
+### Repaired Downgrades
+- Features that were broken by the original Linux port:
+  - Music support (through WildMIDI).
+  - Complete sound effect support (restored missing features such as stopping
+    mid-playback and updating positional effects).
+  - Low-detail mode.
+- Features that were broken by the 1997 source release:
+  - Animated Doom 1 intermission screens.
+  - Ultimate Doom wall switch textures.
+  - Volume levels and volume control.
+### Portability Improvements
+- Addressed various compiler warnings.
+- Support for 64-bit CPUs.
+- Support for Windows and modern Linux:
+  - The X11 code has been converted from 8bpp to 24bpp, which is supported by
+    modern X11 servers.
+  - The audio code has been migrated from OSS to the miniaudio middleware
+    library (supports OSS, ALSA, PulseAudio, JACK, and more).
+  - As an alternative to X11 and miniaudio, SDL1 and SDL2 backends are
+    available.
+  - The codebase can be compiled with MSVC.
+  - Windows networking code has been added.
+- Eliminated reliance on C99 and C extensions, making the codebase pure ANSI C.
+### Quality-of-Life Improvements
 - New configuration options:
   - `novert` - Prevents the player character from walking when the mouse is
     moved.
@@ -29,18 +48,7 @@ improvements have been made, such as the addition of a `novert` option.
     etc. The maximum value is 9.
 - The 'iddt' cheat enables kill/item/secret totals in the automap, as well as
   notifications when finding secrets.
-- Compiler warnings have been addressed.
-- Support for 64-bit CPUs.
-- Support for Windows and modern Linux.
-  - The X11 code has been converted from 8bpp to 24bpp, which is supported by
-    modern X11 servers.
-  - The audio code has been migrated from OSS to the miniaudio middleware
-    library (supports OSS, ALSA, PulseAudio, JACK, and more).
-  - As an alternative to X11 and miniaudio, SDL1 and SDL2 backends are
-    available.
-  - The codebase can be compiled with MSVC.
 - Assorted bug fixes.
-- Low-detail mode has been restored to full working order.
 - Better than CuckyDOOM.
 
 ## Configuration
