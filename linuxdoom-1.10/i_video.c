@@ -39,8 +39,6 @@ static unsigned char *colors;
 
 static size_t bytes_per_pixel;
 
-static unsigned char *colored_screen;
-
 static unsigned char *upscale_x_deltas;
 static unsigned char *upscale_y_deltas;
 
@@ -70,37 +68,6 @@ void I_UpdateNoBlit (void)
 }
 
 
-static void RecurseRotateAndColour(const unsigned int x, const unsigned int y, const unsigned int width, const unsigned int height)
-{
-	if (width == 1 && height == 1)
-	{
-		size_t i;
-
-		const colourindex_t* const indexed_pixels = screens[SCREEN_FRAMEBUFFER];
-
-		const unsigned char *input = &colors[indexed_pixels[x * SCREENHEIGHT + y] * bytes_per_pixel];
-		unsigned char *output = &colored_screen[(y * SCREENWIDTH + x) * bytes_per_pixel];
-
-		for (i = 0; i < bytes_per_pixel; ++i)
-			*output++ = *input++;
-	}
-	else if (width >= height)
-	{
-		const unsigned int left_width = width / 2;
-		const unsigned int right_width = width - left_width;
-		RecurseRotateAndColour(x, y, left_width, height);
-		RecurseRotateAndColour(x + left_width, y, right_width, height);
-	}
-	else
-	{
-		const unsigned int top_height = height / 2;
-		const unsigned int bottom_height = height - top_height;
-		RecurseRotateAndColour(x, y, width, top_height);
-		RecurseRotateAndColour(x, y + top_height, width, bottom_height);
-	}
-}
-
-
 /* I_FinishUpdate */
 void I_FinishUpdate (void)
 {
@@ -109,7 +76,9 @@ void I_FinishUpdate (void)
 	size_t i,x,y;
 	unsigned char *pixels;
 	size_t pitch;
-	const unsigned char *src_pointer;
+
+	colourindex_t* const indexed_pixels = screens[SCREEN_FRAMEBUFFER];
+	const colourindex_t *indexed_pixels_pointer;
 
 	/* draws little dots on the bottom of the screen */
 	if (devparm)
@@ -124,36 +93,36 @@ void I_FinishUpdate (void)
 		for (i=0 ; i<tics*2*HUD_SCALE ; i+=2*HUD_SCALE)
 			for (x=0 ; x<HUD_SCALE ; ++x)
 				for (y=0 ; y<HUD_SCALE ; ++y)
-					screens[SCREEN_FRAMEBUFFER][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0xff;
+					indexed_pixels[(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0xff;
 		for ( ; i<20*2*HUD_SCALE ; i+=2*HUD_SCALE)
 			for (x=0 ; x<HUD_SCALE ; ++x)
 				for (y=0 ; y<HUD_SCALE ; ++y)
-					screens[SCREEN_FRAMEBUFFER][(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0x0;
+					indexed_pixels[(i+x)*SCREENHEIGHT + SCREENHEIGHT-1-y] = 0x0;
 	}
 
-	/* Step 1. Color and rotate the screen */
-	RecurseRotateAndColour(0, 0, SCREENWIDTH, SCREENHEIGHT);
-
-	/* Step 2. Scale the screen */
+	/* Colour, rotate, and scale the screen. */
 	IB_GetFramebuffer(&pixels, &pitch);
 
 	pixels += offset_x * bytes_per_pixel;
 	pixels += offset_y * pitch;
 
-	src_pointer = colored_screen;
+	indexed_pixels_pointer = indexed_pixels;
+
 	for (y = 0; y < output_height; ++y)
 	{
 		if (upscale_y_deltas[y])
 		{
+			const colourindex_t *input_line_pointer = indexed_pixels_pointer++;
 			unsigned char *upscale_line_buffer_pointer = &pixels[y * pitch];
 
 			for (x = 0; x < output_width; ++x)
 			{
-				for (i = 0; i < bytes_per_pixel; ++i)
-					*upscale_line_buffer_pointer++ = src_pointer[i];
+				const unsigned char *colour_pointer = &colors[*input_line_pointer * bytes_per_pixel];
 
-				if (upscale_x_deltas[x])
-					src_pointer += bytes_per_pixel;
+				input_line_pointer += upscale_x_deltas[x] ? SCREENHEIGHT : 0;
+
+				memcpy(upscale_line_buffer_pointer, colour_pointer, bytes_per_pixel);
+				upscale_line_buffer_pointer += bytes_per_pixel;
 			}
 		}
 		else
@@ -162,7 +131,7 @@ void I_FinishUpdate (void)
 		}
 	}
 
-	/* Step 3. Display the screen */
+	/* Display the screen. */
 	IB_FinishUpdate();
 }
 
@@ -259,7 +228,6 @@ void I_InitGraphics(void)
 void I_ShutdownGraphics(void)
 {
 	free(colors);
-	free(colored_screen);
 
 	free(upscale_x_deltas);
 	free(upscale_y_deltas);
@@ -301,13 +269,12 @@ void I_RenderSizeChanged(void)
 
 	for (last = 0, i = 0; i < output_width; ++i)
 	{
-		const size_t current = (i + 1) * SCREENWIDTH / output_width;    /* The +1 here is deliberate, to avoid distortion at 320x240 */
+		const size_t current = i * SCREENWIDTH / output_width;
 
 		upscale_x_deltas[i] = last != current;
 
 		last = current;
 	}
 
-	free(colored_screen);
-	colored_screen = (unsigned char*)malloc(SCREENWIDTH * SCREENHEIGHT * bytes_per_pixel);
+	upscale_x_deltas[0] = 1;    /* Force a redraw on the first pixel */
 }
