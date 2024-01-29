@@ -86,8 +86,8 @@ typedef enum
 
 extern int SCREENWIDTH, SCREENHEIGHT;
 
-/* Support an absolute maximum of 21:9 at 3K. */
-#define MAXIMUM_RESOLUTION_SCALE 8 /* Roughly 3K as a maximum */
+/* Support an absolute maximum of 21:9 at 4K. */
+#define MAXIMUM_RESOLUTION_SCALE 9 /* Roughly 4K as a maximum */
 #define MAXIMUM_SCREENHEIGHT (ORIGINAL_SCREEN_HEIGHT * MAXIMUM_RESOLUTION_SCALE)
 #define MAXIMUM_SCREENWIDTH  (MAXIMUM_SCREENHEIGHT * 21 / 9)
 
