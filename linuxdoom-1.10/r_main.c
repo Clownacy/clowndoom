@@ -29,10 +29,12 @@
 
 #include "m_bbox.h"
 
+#include "am_map.h"
 #include "r_local.h"
 #include "r_sky.h"
 #include "st_stuff.h"
 #include "i_system.h"
+#include "i_video.h"
 #include "v_video.h"
 
 #include "clownlibs/clowncommon/clowncommon.h"

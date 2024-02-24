@@ -73,7 +73,7 @@ void I_FinishUpdate (void)
 {
 	static int lasttic;
 	int tics;
-	size_t i,x,y;
+	size_t x,y;
 	unsigned char *pixels;
 	size_t pitch;
 
@@ -83,7 +83,7 @@ void I_FinishUpdate (void)
 	/* draws little dots on the bottom of the screen */
 	if (devparm)
 	{
-		int i,x,y;
+		int i;
 
 		i = I_GetTime();
 		tics = i - lasttic;
