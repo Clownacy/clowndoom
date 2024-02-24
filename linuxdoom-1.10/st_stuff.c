@@ -1025,10 +1025,10 @@ void ST_loadGraphics(void)
 	/* Load the numbers, tall and short */
 	for (i=0;i<10;i++)
 	{
-		sprintf(namebuf, "STTNUM%d", i);
+		sprintf(namebuf, "STTNUM%u", i);
 		tallnum[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
 
-		sprintf(namebuf, "STYSNUM%d", i);
+		sprintf(namebuf, "STYSNUM%u", i);
 		shortnum[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
 	}
 
@@ -1039,7 +1039,7 @@ void ST_loadGraphics(void)
 	/* key cards */
 	for (i=0;i<NUMCARDS;i++)
 	{
-		sprintf(namebuf, "STKEYS%d", i);
+		sprintf(namebuf, "STKEYS%u", i);
 		keys[i] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
 	}
 
@@ -1049,7 +1049,7 @@ void ST_loadGraphics(void)
 	/* arms ownership widgets */
 	for (i=0;i<6;i++)
 	{
-		sprintf(namebuf, "STGNUM%d", i+2);
+		sprintf(namebuf, "STGNUM%u", i+2);
 
 		/* gray # */
 		arms[i][0] = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
@@ -1059,7 +1059,7 @@ void ST_loadGraphics(void)
 	}
 
 	/* face backgrounds for different color players */
-	sprintf(namebuf, "STFB%d", consoleplayer);
+	sprintf(namebuf, "STFB%u", consoleplayer);
 	faceback = (patch_t *) W_CacheLumpName(namebuf, PU_STATIC);
 
 	/* status bar background bits */
@@ -1071,18 +1071,18 @@ void ST_loadGraphics(void)
 	{
 		for (j=0;j<ST_NUMSTRAIGHTFACES;j++)
 		{
-			sprintf(namebuf, "STFST%d%d", i, j);
+			sprintf(namebuf, "STFST%u%u", i, j);
 			faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 		}
-		sprintf(namebuf, "STFTR%d0", i);        /* turn right */
+		sprintf(namebuf, "STFTR%u0", i);        /* turn right */
 		faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-		sprintf(namebuf, "STFTL%d0", i);        /* turn left */
+		sprintf(namebuf, "STFTL%u0", i);        /* turn left */
 		faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-		sprintf(namebuf, "STFOUCH%d", i);       /* ouch! */
+		sprintf(namebuf, "STFOUCH%u", i);       /* ouch! */
 		faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-		sprintf(namebuf, "STFEVL%d", i);        /* evil grin ;) */
+		sprintf(namebuf, "STFEVL%u", i);        /* evil grin ;) */
 		faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
-		sprintf(namebuf, "STFKILL%d", i);       /* pissed off */
+		sprintf(namebuf, "STFKILL%u", i);       /* pissed off */
 		faces[facenum++] = (patch_t*)W_CacheLumpName(namebuf, PU_STATIC);
 	}
 	faces[facenum++] = (patch_t*)W_CacheLumpName("STFGOD0", PU_STATIC);

@@ -392,7 +392,7 @@ void HU_Init(void)
 	/* load the heads-up font */
 	for (i=0;i<HU_FONTSIZE;i++)
 	{
-		sprintf(buffer, "STCFN%.3d", HU_FONTSTART + i);
+		sprintf(buffer, "STCFN%.3u", HU_FONTSTART + i);
 		hu_font[i] = (patch_t *) W_CacheLumpName(buffer, PU_STATIC);
 	}
 

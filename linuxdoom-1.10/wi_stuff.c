@@ -1558,7 +1558,7 @@ void WI_loadData(void)
 									   PU_STATIC, NULL);
 		for (i=0 ; i<NUMMAPS ; i++)
 		{
-			sprintf(name, "WILV%d%d", wbs->epsd, i);
+			sprintf(name, "WILV%u%u", wbs->epsd, i);
 			lnames[i] = (patch_t*)W_CacheLumpName(name, PU_STATIC);
 		}
 
@@ -1609,7 +1609,7 @@ void WI_loadData(void)
 	for (i=0;i<10;i++)
 	{
 		 /* numbers 0-9 */
-		sprintf(name, "WINUM%d", i);
+		sprintf(name, "WINUM%u", i);
 		num[i] = (patch_t*)W_CacheLumpName(name, PU_STATIC);
 	}
 
@@ -1675,11 +1675,11 @@ void WI_loadData(void)
 	for (i=0 ; i<MAXPLAYERS ; i++)
 	{
 		/* "1,2,3,4" */
-		sprintf(name, "STPB%d", i);
+		sprintf(name, "STPB%u", i);
 		p[i] = (patch_t*)W_CacheLumpName(name, PU_STATIC);
 
 		/* "1,2,3,4" */
-		sprintf(name, "WIBP%d", i+1);
+		sprintf(name, "WIBP%u", i+1);
 		bp[i] = (patch_t*)W_CacheLumpName(name, PU_STATIC);
 	}
 
