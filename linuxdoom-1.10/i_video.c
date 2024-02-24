@@ -83,7 +83,7 @@ void I_FinishUpdate (void)
 	/* draws little dots on the bottom of the screen */
 	if (devparm)
 	{
-		int i;
+		int i, x, y;
 
 		i = I_GetTime();
 		tics = i - lasttic;
