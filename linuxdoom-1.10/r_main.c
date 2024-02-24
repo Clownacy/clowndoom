@@ -389,8 +389,8 @@ R_PointToDist
 	fixed_t     temp;
 	fixed_t     dist;
 
-	dx = abs(x - viewx);
-	dy = abs(y - viewy);
+	dx = labs(x - viewx);
+	dy = labs(y - viewy);
 
 	if (dy>dx)
 	{
@@ -455,7 +455,7 @@ fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
 	sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];
 	dist = FixedDiv (rw_distance, sinv);
 	cosv = finecosine[(viewangle-visangle)>>ANGLETOFINESHIFT];
-	z = abs(FixedMul (dist, cosv));
+	z = labs(FixedMul (dist, cosv));
 	scale = FixedDiv(projection, z);
 	return scale;
 }
@@ -730,13 +730,13 @@ void R_ExecuteSetViewSize (void)
 	for (i=0 ; i<viewheight ; i++)
 	{
 		dy = ((i-viewheight/2)<<FRACBITS)+FRACUNIT/2;
-		dy = abs(dy);
+		dy = labs(dy);
 		yslope[i] = FixedDiv ( (WIDESCREENIFY(viewwidth)<<detailshift)/2*FRACUNIT, dy);
 	}
 
 	for (i=0 ; i<viewwidth ; i++)
 	{
-		cosadj = abs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
+		cosadj = labs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
 		distscale[i] = FixedDiv (FRACUNIT,cosadj);
 	}
 

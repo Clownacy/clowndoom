@@ -367,7 +367,7 @@ void P_NewChaseDir (mobj_t*     actor)
 
 	/* try other directions */
 	if (P_Random() > 200
-		||  abs(deltay)>abs(deltax))
+		||  labs(deltay)>labs(deltax))
 	{
 		tdir=d[1];
 		d[1]=d[2];
@@ -1080,8 +1080,8 @@ d_bool PIT_VileCheck (mobj_t*  thing)
 
 	maxdist = thing->info->radius + mobjinfo[MT_VILE].radius;
 
-	if ( abs(thing->x - viletryx) > maxdist
-		 || abs(thing->y - viletryy) > maxdist )
+	if ( labs(thing->x - viletryx) > maxdist
+		 || labs(thing->y - viletryy) > maxdist )
 		return d_true;            /* not actually touching */
 
 	corpsehit = thing;

@@ -397,7 +397,7 @@ void R_DrawPlanes (void)
 								   flattranslation[pl->picnum],
 								   PU_STATIC);
 
-		planeheight = abs(pl->height-viewz);
+		planeheight = labs(pl->height-viewz);
 		light = (pl->lightlevel >> LIGHTSEGSHIFT)+extralight;
 
 		if (light >= LIGHTLEVELS)
