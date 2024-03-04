@@ -172,6 +172,9 @@ void IB_StartTic (void)
 {
 	event_t event;
 	static int button_state;
+#if SDL_MAJOR_VERSION >= 2
+	static int joystick_button_state, joystick_x, joystick_y;
+#endif
 	SDL_Event sdl_event;
 
 	while (SDL_PollEvent(&sdl_event))
@@ -247,6 +250,82 @@ void IB_StartTic (void)
 				}
 				break;
 			#if SDL_MAJOR_VERSION >= 2
+			case SDL_CONTROLLERDEVICEADDED:
+				SDL_GameControllerOpen(sdl_event.cdevice.which);
+				break;
+			case SDL_CONTROLLERDEVICEREMOVED:
+				SDL_GameControllerClose(SDL_GameControllerFromInstanceID(sdl_event.cdevice.which));
+				break;
+			case SDL_CONTROLLERBUTTONDOWN:
+				switch (sdl_event.cbutton.button)
+				{
+					case SDL_CONTROLLER_BUTTON_X:
+						joystick_button_state |= 1;
+						break;
+					case SDL_CONTROLLER_BUTTON_Y:
+						joystick_button_state |= 2;
+						break;
+					case SDL_CONTROLLER_BUTTON_A:
+						joystick_button_state |= 4;
+						break;
+					case SDL_CONTROLLER_BUTTON_B:
+						joystick_button_state |= 8;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+						--joystick_x;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+						++joystick_x;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_UP:
+						--joystick_y;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+						++joystick_y;
+						break;
+				}
+				event.type = ev_joystick;
+				event.data1 = joystick_button_state;
+				event.data2 = joystick_x;
+				event.data3 = joystick_y;
+				D_PostEvent(&event);
+				/* I_Info("j"); */
+				break;
+			case SDL_CONTROLLERBUTTONUP:
+				switch (sdl_event.cbutton.button)
+				{
+					case SDL_CONTROLLER_BUTTON_X:
+						joystick_button_state &= ~1;
+						break;
+					case SDL_CONTROLLER_BUTTON_Y:
+						joystick_button_state &= ~2;
+						break;
+					case SDL_CONTROLLER_BUTTON_A:
+						joystick_button_state &= ~4;
+						break;
+					case SDL_CONTROLLER_BUTTON_B:
+						joystick_button_state &= ~8;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+						++joystick_x;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+						--joystick_x;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_UP:
+						++joystick_y;
+						break;
+					case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+						--joystick_y;
+						break;
+				}
+				event.type = ev_joystick;
+				event.data1 = joystick_button_state;
+				event.data2 = joystick_x;
+				event.data3 = joystick_y;
+				D_PostEvent(&event);
+				/* I_Info("ju"); */
+				break;
 			case SDL_WINDOWEVENT:
 				switch (sdl_event.window.event)
 				{
@@ -313,7 +392,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	/* Enable high-DPI support on Windows because SDL2 is bad at being a platform abstraction library. */
 	SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
 
-	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
+	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER);
 #else
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
 #endif
