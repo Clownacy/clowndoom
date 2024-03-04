@@ -132,6 +132,7 @@ wbstartstruct_t wminfo;                 /* parms for world map / intermission */
 short           consistancy[MAXPLAYERS][BACKUPTICS];
 
 int             always_run;
+int             always_strafe;
 
 
 /* controls (have defaults) */
@@ -237,6 +238,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 
 	strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe]
 		|| joybuttons[joybstrafe];
+
 	speed = !!always_run != (gamekeydown[key_speed] || joybuttons[joybspeed]);
 
 	forward = side = 0;
@@ -257,7 +259,7 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 		tspeed = speed;
 
 	/* let movement keys cancel each other out */
-	if (strafe)
+	if (strafe != always_strafe)
 	{
 		if (gamekeydown[key_right])
 		{

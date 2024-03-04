@@ -182,6 +182,7 @@ extern int      showMessages;
 
 extern int      novert;
 extern int      always_run;
+extern int      always_strafe;
 
 extern int      detailLevel;
 
@@ -214,15 +215,16 @@ static const default_t       defaults[] =
 	{"show_messages",&showMessages, 1, d_false},
 	{"novert",&novert, 1, d_false},
 	{"always_run",&always_run, 1, d_false},
+	{"always_strafe",&always_strafe, 1, d_false},
 
 	/* Keyboard */
 	/* Movement */
-	{"key_right",&key_right, ',', d_false},
-	{"key_left",&key_left, '.', d_false},
+	{"key_right",&key_right, 'd', d_false},
+	{"key_left",&key_left, 'a', d_false},
 	{"key_up",&key_up, 'w', d_false},
 	{"key_down",&key_down, 's', d_false},
-	{"key_strafeleft",&key_strafeleft, 'a', d_false},
-	{"key_straferight",&key_straferight, 'd', d_false},
+	{"key_strafeleft",&key_strafeleft, ',', d_false},
+	{"key_straferight",&key_straferight, '.', d_false},
 	/* Actions */
 	{"key_fire",&key_fire, KEY_RCTRL, d_false},
 	{"key_use",&key_use, ' ', d_false},
