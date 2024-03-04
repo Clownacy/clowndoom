@@ -301,8 +301,6 @@ void M_SaveDefaults (void)
 
 
 /* M_LoadDefaults */
-extern unsigned char     scantokey[128];
-
 void M_LoadDefaults (void)
 {
 	int         i;
