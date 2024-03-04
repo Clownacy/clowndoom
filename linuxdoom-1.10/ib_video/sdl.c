@@ -200,43 +200,45 @@ void IB_StartTic (void)
 				/* I_Info("ku"); */
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				switch (sdl_event.button.button)
-				{
-					case SDL_BUTTON_LEFT:
-						button_state |= 1;
-						break;
-					case SDL_BUTTON_RIGHT:
-						button_state |= 2;
-						break;
-					case SDL_BUTTON_MIDDLE:
-						button_state |= 4;
-						break;
-				}
-				event.type = ev_mouse;
-				event.data1 = button_state;
-				event.data2 = event.data3 = 0;
-				D_PostEvent(&event);
-				/* I_Info("b"); */
-				break;
 			case SDL_MOUSEBUTTONUP:
+			{
+				int button_index;
+				const d_bool button_down = sdl_event.type == SDL_MOUSEBUTTONDOWN;
+
+				button_index = -1;
+
 				switch (sdl_event.button.button)
 				{
+					default:
+						break;
 					case SDL_BUTTON_LEFT:
-						button_state &= ~1;
+						button_index = 0;
 						break;
 					case SDL_BUTTON_RIGHT:
-						button_state &= ~2;
+						button_index = 1;
 						break;
 					case SDL_BUTTON_MIDDLE:
-						button_state &= ~4;
+						button_index = 2;
 						break;
 				}
+
+				if (button_index != -1)
+				{
+					const unsigned int mask = 1U << button_index;
+
+					if (button_down)
+						button_state |= mask;
+					else
+						button_state &= ~mask;
+				}
+
 				event.type = ev_mouse;
 				event.data1 = button_state;
 				event.data2 = event.data3 = 0;
 				D_PostEvent(&event);
-				/* I_Info("bu"); */
+				/* I_Info(button_down ? "b" : "bu"); */
 				break;
+			}
 			case SDL_MOUSEMOTION:
 				event.type = ev_mouse;
 				event.data1 = button_state;
@@ -257,75 +259,72 @@ void IB_StartTic (void)
 				SDL_GameControllerClose(SDL_GameControllerFromInstanceID(sdl_event.cdevice.which));
 				break;
 			case SDL_CONTROLLERBUTTONDOWN:
-				switch (sdl_event.cbutton.button)
-				{
-					case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-						joystick_button_state |= 1;
-						break;
-					case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-						joystick_button_state |= 2;
-						break;
-					case SDL_CONTROLLER_BUTTON_X:
-						joystick_button_state |= 4;
-						break;
-					case SDL_CONTROLLER_BUTTON_A:
-						joystick_button_state |= 8;
-						break;
-					case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-						--joystick_x;
-						break;
-					case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-						++joystick_x;
-						break;
-					case SDL_CONTROLLER_BUTTON_DPAD_UP:
-						--joystick_y;
-						break;
-					case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-						++joystick_y;
-						break;
-				}
-				event.type = ev_joystick;
-				event.data1 = joystick_button_state;
-				event.data2 = joystick_x;
-				event.data3 = joystick_y;
-				D_PostEvent(&event);
-				/* I_Info("j"); */
-				break;
 			case SDL_CONTROLLERBUTTONUP:
+			{
+				int button_index, x_delta, y_delta;
+
+				const d_bool button_down = sdl_event.type == SDL_CONTROLLERBUTTONDOWN;
+
+				button_index = -1;
+				x_delta = y_delta = 0;
+
 				switch (sdl_event.cbutton.button)
 				{
+					default:
+						break;
 					case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
-						joystick_button_state &= ~1;
+						button_index = 0;
 						break;
 					case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
-						joystick_button_state &= ~2;
+						button_index = 1;
 						break;
 					case SDL_CONTROLLER_BUTTON_X:
-						joystick_button_state &= ~4;
+						button_index = 2;
 						break;
 					case SDL_CONTROLLER_BUTTON_A:
-						joystick_button_state &= ~8;
+						button_index = 3;
 						break;
 					case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
-						++joystick_x;
+						x_delta = -1;
 						break;
 					case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
-						--joystick_x;
+						x_delta = 1;
 						break;
 					case SDL_CONTROLLER_BUTTON_DPAD_UP:
-						++joystick_y;
+						y_delta = -1;
 						break;
 					case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
-						--joystick_y;
+						y_delta = 1;
 						break;
 				}
+
+				if (!button_down)
+				{
+					x_delta = -x_delta;
+					y_delta = -y_delta;
+				}
+
+				joystick_x += x_delta;
+				joystick_y += y_delta;
+
+				if (button_index != -1)
+				{
+					const unsigned int mask = 1U << button_index;
+
+					if (button_down)
+						joystick_button_state |= mask;
+					else
+						joystick_button_state &= ~mask;
+				}
+
 				event.type = ev_joystick;
 				event.data1 = joystick_button_state;
 				event.data2 = joystick_x;
 				event.data3 = joystick_y;
 				D_PostEvent(&event);
-				/* I_Info("ju"); */
+				/* I_Info(button_down ? "j" : "ju"); */
 				break;
+			}
 			case SDL_WINDOWEVENT:
 				switch (sdl_event.window.event)
 				{
