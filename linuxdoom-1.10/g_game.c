@@ -190,7 +190,7 @@ int             dclicks2;
 /* joystick values are repeated */
 int             joyxmove;
 int             joyymove;
-d_bool          joyarray[5];
+d_bool          joyarray[11];
 d_bool*        joybuttons = &joyarray[1];              /* allow [-1] */
 
 int             savegameslot;
@@ -532,6 +532,8 @@ d_bool G_Responder (const event_t* ev)
 
 	switch (ev->type)
 	{
+		unsigned int i;
+
 	  case ev_keydown:
 		if (ev->data1 == KEY_PAUSE)
 		{
@@ -548,18 +550,15 @@ d_bool G_Responder (const event_t* ev)
 		return d_false;   /* always let key up events filter down */
 
 	  case ev_mouse:
-		mousebuttons[0] = ev->data1 & 1;
-		mousebuttons[1] = ev->data1 & 2;
-		mousebuttons[2] = ev->data1 & 4;
+		for (i = 0; i < D_COUNT_OF(mousearray) - 1; ++i)
+			mousebuttons[i] = ev->data1 & 1U << i;
 		mousex = ev->data2*(mouseSensitivity+5)/10;
 		mousey = ev->data3*(mouseSensitivity+5)/10;
 		return d_true;    /* eat events */
 
 	  case ev_joystick:
-		joybuttons[0] = ev->data1 & 1;
-		joybuttons[1] = ev->data1 & 2;
-		joybuttons[2] = ev->data1 & 4;
-		joybuttons[3] = ev->data1 & 8;
+		for (i = 0; i < D_COUNT_OF(joyarray) - 1; ++i)
+			joybuttons[i] = ev->data1 & 1U << i;
 		joyxmove = ev->data2;
 		joyymove = ev->data3;
 		return d_true;    /* eat events */

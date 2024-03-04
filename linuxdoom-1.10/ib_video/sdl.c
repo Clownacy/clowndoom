@@ -284,6 +284,24 @@ void IB_StartTic (void)
 					case SDL_CONTROLLER_BUTTON_A:
 						button_index = 3;
 						break;
+					case SDL_CONTROLLER_BUTTON_Y:
+						button_index = 4;
+						break;
+					case SDL_CONTROLLER_BUTTON_B:
+						button_index = 5;
+						break;
+					case SDL_CONTROLLER_BUTTON_START:
+						button_index = 6;
+						break;
+					case SDL_CONTROLLER_BUTTON_BACK:
+						button_index = 7;
+						break;
+					case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+						button_index = 8;
+						break;
+					case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+						button_index = 9;
+						break;
 					case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
 						x_delta = -1;
 						break;
