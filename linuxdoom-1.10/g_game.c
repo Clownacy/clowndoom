@@ -155,6 +155,8 @@ int             joybfire;
 int             joybstrafe;
 int             joybuse;
 int             joybspeed;
+int             joybweaponprevious;
+int             joybweaponnext;
 
 
 
@@ -325,6 +327,11 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 			cmd->buttons |= i<<BT_WEAPONSHIFT;
 			break;
 		}
+
+	if (joybuttons[joybweaponprevious])
+		cmd->buttons |= BT_CYCLE | 0;
+	else if (joybuttons[joybweaponnext])
+		cmd->buttons |= BT_CYCLE | 1;
 
 	/* mouse */
 	if (mousebuttons[mousebforward])

@@ -207,6 +207,24 @@ void P_DeathThink (player_t* player)
 
 
 
+static d_bool WeaponValid(const player_t* const player, const weapontype_t weapon)
+{
+	if (!player->weaponowned[weapon])
+		return d_false;
+
+	/* Disable plasma rifle and BFG if playing shareware Doom. */
+	if ((weapon == wp_plasma || weapon == wp_bfg) && gamemode == shareware)
+		return d_false;
+
+	/* Disable super shotgun if not playing Doom II. */
+	if (weapon == wp_supershotgun && gamemode != commercial)
+		return d_false;
+
+	return d_true;
+}
+
+
+
 /* P_PlayerThink */
 void P_PlayerThink (player_t* player)
 {
@@ -270,27 +288,41 @@ void P_PlayerThink (player_t* player)
 			newweapon = wp_chainsaw;
 		}
 
-		if ( (gamemode == commercial)
-			&& newweapon == wp_shotgun
-			&& player->weaponowned[wp_supershotgun]
+		if (newweapon == wp_shotgun
+			&& WeaponValid(player, wp_supershotgun)
 			&& player->readyweapon != wp_supershotgun)
 		{
 			newweapon = wp_supershotgun;
 		}
 
 
-		if (player->weaponowned[newweapon]
-			&& newweapon != player->readyweapon)
-		{
-			/* Do not go to plasma or BFG in shareware, */
-			/*  even if cheated. */
-			if ((newweapon != wp_plasma
-				 && newweapon != wp_bfg)
-				|| (gamemode != shareware) )
-			{
+		if (newweapon != player->readyweapon && WeaponValid(player, newweapon))
 				player->pendingweapon = newweapon;
-			}
-		}
+	}
+
+	if (cmd->buttons & BT_CYCLE)
+	{
+		int index;
+
+		static const weapontype_t order[] = {wp_fist, wp_chainsaw, wp_pistol, wp_shotgun, wp_supershotgun, wp_chaingun, wp_missile, wp_plasma, wp_bfg};
+		static const int type_to_index[] = {0, 2, 3, 5, 6, 7, 8, 1, 4};
+
+		index = type_to_index[player->readyweapon];
+
+		do
+		{
+			if (cmd->buttons & 1)
+				++index;
+			else
+				--index;
+
+			if (index == -1)
+				index = D_COUNT_OF(order) - 1;
+			else if (index == D_COUNT_OF(order))
+				index = 0;
+		} while (!WeaponValid(player, order[index]));
+
+		player->pendingweapon = order[index];
 	}
 
 	/* check for use */
