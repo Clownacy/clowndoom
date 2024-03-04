@@ -147,8 +147,6 @@ M_ReadFile
 
 
 /* DEFAULTS */
-int             usemouse;
-int             usejoystick;
 int             full_colour;
 int             prototype_light_amplification_visor_effect;
 
@@ -230,14 +228,12 @@ default_t       defaults[] =
 	{"key_speed",&key_speed, KEY_RSHIFT, d_false},
 
 	/* Mouse */
-	{"use_mouse",&usemouse, 1, d_false},
 	{"mouseb_fire",&mousebfire,0, d_false},
 	{"mouseb_strafe",&mousebstrafe,1, d_false},
 	{"mouseb_forward",&mousebforward,2, d_false},
 	{"mouse_sensitivity",&mouseSensitivity, 5, d_false},
 
 	/* Joystick */
-	{"use_joystick",&usejoystick, 0, d_false},
 	{"joyb_fire",&joybfire,0, d_false},
 	{"joyb_strafe",&joybstrafe,1, d_false},
 	{"joyb_use",&joybuse,3, d_false},
