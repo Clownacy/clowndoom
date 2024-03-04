@@ -32,8 +32,8 @@ improvements such as widescreen rendering.
 - Eliminated reliance on C99 and C extensions, making the codebase pure ANSI C.
 ### Quality-of-Life Improvements
 - New configuration options:
-  - `novert` - Prevents the player character from walking when the mouse is
-    moved.
+  - `novert` - Disables being able to make the player character walk by moving
+    the mouse up and down.
   - `always_run` - Makes the player character run instead of walk, and vice
     versa.
   - `aspect_ratio_correction` - Restores the original 4:3 aspect ratio by
