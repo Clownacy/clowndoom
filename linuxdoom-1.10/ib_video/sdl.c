@@ -259,16 +259,16 @@ void IB_StartTic (void)
 			case SDL_CONTROLLERBUTTONDOWN:
 				switch (sdl_event.cbutton.button)
 				{
-					case SDL_CONTROLLER_BUTTON_X:
+					case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
 						joystick_button_state |= 1;
 						break;
-					case SDL_CONTROLLER_BUTTON_Y:
+					case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
 						joystick_button_state |= 2;
 						break;
-					case SDL_CONTROLLER_BUTTON_A:
+					case SDL_CONTROLLER_BUTTON_X:
 						joystick_button_state |= 4;
 						break;
-					case SDL_CONTROLLER_BUTTON_B:
+					case SDL_CONTROLLER_BUTTON_A:
 						joystick_button_state |= 8;
 						break;
 					case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
@@ -294,16 +294,16 @@ void IB_StartTic (void)
 			case SDL_CONTROLLERBUTTONUP:
 				switch (sdl_event.cbutton.button)
 				{
-					case SDL_CONTROLLER_BUTTON_X:
+					case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
 						joystick_button_state &= ~1;
 						break;
-					case SDL_CONTROLLER_BUTTON_Y:
+					case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
 						joystick_button_state &= ~2;
 						break;
-					case SDL_CONTROLLER_BUTTON_A:
+					case SDL_CONTROLLER_BUTTON_X:
 						joystick_button_state &= ~4;
 						break;
-					case SDL_CONTROLLER_BUTTON_B:
+					case SDL_CONTROLLER_BUTTON_A:
 						joystick_button_state &= ~8;
 						break;
 					case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
