@@ -166,15 +166,26 @@ static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
 	return -1;
 }
 
+#if SDL_MAJOR_VERSION >= 2
+static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right, joystick_x_dpad, joystick_y_dpad;
+#endif
+
+static void SubmitJoystickEvent(void)
+{
+	event_t event;
+	event.type = ev_joystick;
+	event.data1 = joystick_button_state;
+	event.data2 = SDL_clamp(joystick_x_left + joystick_x_dpad, -0x7FFF, 0x7FFF);
+	event.data3 = SDL_clamp(joystick_y_left + joystick_y_dpad, -0x7FFF, 0x7FFF);
+	event.data4 = joystick_x_right;
+	D_PostEvent(&event);
+}
 
 /* IB_StartTic */
 void IB_StartTic (void)
 {
 	event_t event;
 	static int button_state;
-#if SDL_MAJOR_VERSION >= 2
-	static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right;
-#endif
 	SDL_Event sdl_event;
 
 	while (SDL_PollEvent(&sdl_event))
@@ -322,8 +333,8 @@ void IB_StartTic (void)
 					y_delta = -y_delta;
 				}
 
-				joystick_x_left += x_delta;
-				joystick_y_left += y_delta;
+				joystick_x_dpad += x_delta;
+				joystick_y_dpad += y_delta;
 
 				if (button_index != -1)
 				{
@@ -335,12 +346,7 @@ void IB_StartTic (void)
 						joystick_button_state &= ~mask;
 				}
 
-				event.type = ev_joystick;
-				event.data1 = joystick_button_state;
-				event.data2 = joystick_x_left;
-				event.data3 = joystick_y_left;
-				event.data4 = joystick_x_right;
-				D_PostEvent(&event);
+				SubmitJoystickEvent();
 				/* I_Info(button_down ? "j" : "ju"); */
 				break;
 			}
@@ -379,12 +385,7 @@ void IB_StartTic (void)
 						break;
 				}
 
-				event.type = ev_joystick;
-				event.data1 = joystick_button_state;
-				event.data2 = joystick_x_left;
-				event.data3 = joystick_y_left;
-				event.data4 = joystick_x_right;
-				D_PostEvent(&event);
+				SubmitJoystickEvent();
 				break;
 			}
 			case SDL_WINDOWEVENT:
