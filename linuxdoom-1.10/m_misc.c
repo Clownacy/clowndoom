@@ -206,7 +206,7 @@ typedef struct
 	/*int               untranslated;*/         /* lousy hack */
 } default_t;
 
-default_t       defaults[] =
+static const default_t       defaults[] =
 {
 	/* General */
 	{"show_messages",&showMessages, 1, d_false},
