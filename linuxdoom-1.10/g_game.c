@@ -192,6 +192,7 @@ int             dclicks2;
 /* joystick values are repeated */
 int             joyxmove;
 int             joyymove;
+int             joyxmoveright;
 d_bool          joyarray[11];
 d_bool*        joybuttons = &joyarray[1];              /* allow [-1] */
 
@@ -285,6 +286,8 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 		if (joyxmove < 0)
 			cmd->angleturn += angleturn[tspeed];
 	}
+
+	cmd->angleturn -= joyxmoveright / 48;
 
 	if (gamekeydown[key_up])
 	{
@@ -474,6 +477,7 @@ void G_DoLoadLevel (void)
 	/* clear cmd building stuff */
 	memset (gamekeydown, 0, sizeof(gamekeydown));
 	joyxmove = joyymove = 0;
+	joyxmoveright = 0;
 	mousex = mousey = 0;
 	sendpause = sendsave = paused = d_false;
 	memset (mousearray, 0, sizeof(mousearray));
@@ -568,6 +572,7 @@ d_bool G_Responder (const event_t* ev)
 			joybuttons[i] = ev->data1 & 1U << i;
 		joyxmove = ev->data2;
 		joyymove = ev->data3;
+		joyxmoveright = ev->data4*(mouseSensitivity+5)/10;
 		return d_true;    /* eat events */
 
 	  default:

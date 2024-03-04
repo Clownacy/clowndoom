@@ -173,7 +173,7 @@ void IB_StartTic (void)
 	event_t event;
 	static int button_state;
 #if SDL_MAJOR_VERSION >= 2
-	static int joystick_button_state, joystick_x, joystick_y;
+	static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right;
 #endif
 	SDL_Event sdl_event;
 
@@ -322,8 +322,8 @@ void IB_StartTic (void)
 					y_delta = -y_delta;
 				}
 
-				joystick_x += x_delta;
-				joystick_y += y_delta;
+				joystick_x_left += x_delta;
+				joystick_y_left += y_delta;
 
 				if (button_index != -1)
 				{
@@ -337,12 +337,37 @@ void IB_StartTic (void)
 
 				event.type = ev_joystick;
 				event.data1 = joystick_button_state;
-				event.data2 = joystick_x;
-				event.data3 = joystick_y;
+				event.data2 = joystick_x_left;
+				event.data3 = joystick_y_left;
+				event.data4 = joystick_x_right;
 				D_PostEvent(&event);
 				/* I_Info(button_down ? "j" : "ju"); */
 				break;
 			}
+			case SDL_CONTROLLERAXISMOTION:
+				if (sdl_event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX)
+				{
+					unsigned long value = sdl_event.caxis.value;
+
+					value *= value;
+					value /= 0x8000;
+
+					if (value < 0x7FFF / 0x10)
+						value = 0;
+
+					if (sdl_event.caxis.value < 0)
+						value = -value;
+
+					joystick_x_right = value;
+				}
+
+				event.type = ev_joystick;
+				event.data1 = joystick_button_state;
+				event.data2 = joystick_x_left;
+				event.data3 = joystick_y_left;
+				event.data4 = joystick_x_right;
+				D_PostEvent(&event);
+				break;
 			case SDL_WINDOWEVENT:
 				switch (sdl_event.window.event)
 				{
