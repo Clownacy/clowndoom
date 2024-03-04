@@ -345,20 +345,38 @@ void IB_StartTic (void)
 				break;
 			}
 			case SDL_CONTROLLERAXISMOTION:
-				if (sdl_event.caxis.axis == SDL_CONTROLLER_AXIS_RIGHTX)
+			{
+				unsigned long value = sdl_event.caxis.value;
+
+				switch (sdl_event.caxis.axis)
 				{
-					unsigned long value = sdl_event.caxis.value;
+					case SDL_CONTROLLER_AXIS_LEFTX:
+					case SDL_CONTROLLER_AXIS_LEFTY:
+						/* Deadzone. */
+						if (SDL_abs(value) < 0x7FFF / 4)
+							value = 0;
 
-					value *= value;
-					value /= 0x8000;
+						if (sdl_event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX)
+							joystick_x_left = value;
+						else
+							joystick_y_left = value;
 
-					if (value < 0x7FFF / 0x10)
-						value = 0;
+						break;
 
-					if (sdl_event.caxis.value < 0)
-						value = -value;
+					case SDL_CONTROLLER_AXIS_RIGHTX:
+						value *= value;
+						value /= 0x8000;
 
-					joystick_x_right = value;
+						/* Deadzone. */
+						if (value < 0x7FFF / 0x10)
+							value = 0;
+
+						if (sdl_event.caxis.value < 0)
+							value = -value;
+
+						joystick_x_right = value;
+
+						break;
 				}
 
 				event.type = ev_joystick;
@@ -368,6 +386,7 @@ void IB_StartTic (void)
 				event.data4 = joystick_x_right;
 				D_PostEvent(&event);
 				break;
+			}
 			case SDL_WINDOWEVENT:
 				switch (sdl_event.window.event)
 				{
