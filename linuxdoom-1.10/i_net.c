@@ -21,7 +21,11 @@
 #include <string.h>
 
 /* TODO: Abstract this away. */
-#if defined(__unix__)
+#ifdef _WIN32
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#else
+/* Just assume Unix-style sockets otherwise. */
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -29,9 +33,6 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/ioctl.h>
-#elif defined(_WIN32)
-#include <winsock2.h>
-#include <ws2tcpip.h>
 #endif
 
 #include "i_system.h"
@@ -62,10 +63,10 @@ static int UDPsocket (void)
 	/* allocate a socket */
 	s = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	if (s == -1)
-#if defined(__unix__)
-		I_Error ("can't create socket: %s",strerror(errno));
-#elif defined(_WIN32)
+#ifdef _WIN32
 		I_Error ("can't create socket: error code %d",WSAGetLastError());
+#else
+		I_Error ("can't create socket: %s",strerror(errno));
 #endif
 
 	return s;
@@ -87,10 +88,10 @@ BindToLocalPort
 
 	v = bind (s, (struct sockaddr *)&address, sizeof(address));
 	if (v == -1)
-#if defined(__unix__)
-		I_Error ("BindToPort: bind: %s", strerror(errno));
-#elif defined(_WIN32)
+#ifdef _WIN32
 		I_Error ("BindToPort: bind: error code %d", WSAGetLastError());
+#else
+		I_Error ("BindToPort: bind: %s", strerror(errno));
 #endif
 }
 
@@ -123,10 +124,10 @@ static void PacketSend (void)
 				,sizeof(sendaddress[doomcom->remotenode]));
 
 	/*  if (c == -1) */
-#if defined(__unix__)
-	/*          I_Error ("SendPacket error: %s",strerror(errno)); */
-#elif defined(_WIN32)
+#ifdef _WIN32
 	/*          I_Error ("SendPacket error: error code %d",WSAGetLastError()); */
+#else
+	/*          I_Error ("SendPacket error: %s",strerror(errno)); */
 #endif
 }
 
@@ -145,12 +146,12 @@ static void PacketGet (void)
 				  , (struct sockaddr *)&fromaddress, &fromlen );
 	if (c == -1 )
 	{
-	#if defined(__unix__)
-		if (errno != EWOULDBLOCK)
-			I_Error ("GetPacket: %s",strerror(errno));
-	#elif defined(_WIN32)
+	#ifdef _WIN32
 		if (WSAGetLastError() != WSAEWOULDBLOCK)
 			I_Error ("GetPacket: error code %d",WSAGetLastError());
+	#else
+		if (errno != EWOULDBLOCK)
+			I_Error ("GetPacket: %s",strerror(errno));
 	#endif
 		doomcom->remotenode = -1;               /* no packet */
 		return;
@@ -200,10 +201,10 @@ static void PacketGet (void)
 /* I_InitNetwork */
 void I_InitNetwork (void)
 {
-#if defined(__unix__)
-	int
-#elif defined(_WIN32)
+#ifdef _WIN32
 	u_long
+#else
+	int
 #endif
 	                    trueval = d_true;
 	int                 i;
@@ -303,10 +304,10 @@ void I_InitNetwork (void)
 	/* build message to receive */
 	insocket = UDPsocket ();
 	BindToLocalPort (insocket,htons(DOOMPORT));
-#if defined(__unix__)
-	ioctl
-#elif defined(_WIN32)
+#ifdef _WIN32
 	ioctlsocket
+#else
+	ioctl
 #endif
 		(insocket, FIONBIO, &trueval);
 
