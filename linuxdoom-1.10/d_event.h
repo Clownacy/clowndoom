@@ -79,8 +79,8 @@ typedef enum
 	/* If true, the next 3 bits hold weapon num. */
 	BT_CHANGE           = 4,
 	/* The 3bit weapon mask and shift, convenience. */
-	BT_WEAPONMASK       = (8+16+32),
-	BT_WEAPONSHIFT      = 3,
+	BT_WEAPONSHIFT      = 4,
+	BT_WEAPONMASK       = (7<<BT_WEAPONSHIFT),
 
 	BT_CYCLE            = 8,
 
