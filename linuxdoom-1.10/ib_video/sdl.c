@@ -197,6 +197,10 @@ void IB_StartTic (void)
 				break;
 
 			case SDL_KEYDOWN:
+				/* Ignore repeat key-presses. */
+				if (sdl_event.key.repeat)
+					break;
+
 				event.type = ev_keydown;
 				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
 				if (event.data1 != -1)
