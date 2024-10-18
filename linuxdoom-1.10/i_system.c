@@ -153,3 +153,8 @@ void I_Sleep(void)
 {
 	IB_Sleep();
 }
+
+size_t I_GetConfigPath(char* const buffer, const size_t size)
+{
+	return IB_GetConfigPath(buffer, size);
+}

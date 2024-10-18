@@ -21,12 +21,14 @@
 #ifndef __IB_SYSTEM__
 #define __IB_SYSTEM__
 
+#include <stddef.h>
 
 int  IB_GetTime (void);
 void IB_Init (void);
 void IB_Quit (void);
 void IB_WaitVBL(int count);
 void IB_Sleep(void);
+size_t IB_GetConfigPath(char *buffer, size_t size);
 
 
 #endif

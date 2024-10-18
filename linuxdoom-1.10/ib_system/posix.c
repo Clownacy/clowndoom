@@ -71,3 +71,35 @@ void IB_Sleep(void)
 {
 	usleep(1);
 }
+
+
+size_t IB_GetConfigPath(char* const buffer, const size_t size)
+{
+	static const struct
+	{
+		const char* environment_variable_name;
+		const char* path_suffix;
+	} directories = {
+		{"XDG_CONFIG_HOME", "/"},
+		{"HOME", "/.config/"},
+	};
+
+	size_t i;
+
+	for (i = 0; i < D_COUNT_OF(directories); ++i)
+	{
+		const char* const configdir = getenv(directories[i].environment_variable_name);
+
+		if (configdir != NULL)
+		{
+			const size_t offset = M_StringCopy(buffer, size, configdir);
+			M_StringCopyOffset(buffer, size, offset, directories[i].path_suffix);
+			return offset;
+		}
+	}
+
+	if (size != 0)
+		buffer[0] = '\0';
+
+	return 0;
+}

@@ -557,6 +557,38 @@ char* M_strdup(const char* const src)
 	return M_strndup(src, strlen(src));
 }
 
+size_t M_StringCopyMultipleInternal(char* const dest, const size_t destsz, const char* const* const src_list, const size_t src_list_length)
+{
+	size_t i;
+	size_t dest_index = 0;
+
+	for (i = 0; i < src_list_length; ++i)
+		dest_index += M_StringCopy(dest + dest_index, destsz - dest_index, src_list[i]);
+
+	return dest_index;
+}
+
+size_t M_StringCopy(char* const dest, const size_t destsz, const char* const src)
+{
+	size_t src_length, copy_length;
+
+	if (destsz == 0)
+		return 0;
+
+	src_length = strlen(src);
+	copy_length = D_MIN(src_length, destsz - 1);
+
+	memcpy(dest, src, copy_length);
+	dest[copy_length] = '\0';
+
+	return copy_length;
+}
+
+size_t M_StringCopyOffset(char* const dest, const size_t destsz, const size_t dest_offset, const char* const src)
+{
+	return M_StringCopy(dest + dest_offset, destsz - dest_offset, src);
+}
+
 d_bool M_FileExists(const char* const filename)
 {
 	FILE* const file = fopen(filename, "rb");

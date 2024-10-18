@@ -19,6 +19,7 @@
 #include "SDL.h"
 
 #include "../doomdef.h"
+#include "../m_misc.h"
 
 #include "../ib_system.h"
 
@@ -54,4 +55,13 @@ void IB_WaitVBL(int count)
 void IB_Sleep(void)
 {
 	SDL_Delay(1);
+}
+
+
+size_t IB_GetConfigPath(char* const buffer, const size_t size)
+{
+	char* const path = SDL_GetPrefPath("clownacy", "clowndoom");
+	const size_t path_length = M_StringCopy(buffer, size, path);
+	SDL_free(path);
+	return path_length;
 }

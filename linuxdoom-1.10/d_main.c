@@ -575,32 +575,16 @@ void D_AddFile (const char *file)
 /* should be executed (notably loading PWAD's). */
 void IdentifyVersion (void)
 {
-#ifdef __unix__
-	const char *configdir;
-#endif
 	const char *doomwaddir;
-#ifdef __unix__
+
+	{
+		const size_t length = IB_GetConfigPath(basedefault, D_COUNT_OF(basedefault));
+		M_StringCopyOffset(basedefault, D_COUNT_OF(basedefault), length, "default.cfg");
+	}
+
 	doomwaddir = getenv("DOOMWADDIR");
 	if (!doomwaddir)
-#endif
 		doomwaddir = ".";
-
-#ifdef __unix__
-	configdir = getenv("XDG_CONFIG_HOME");
-	if (configdir != NULL)
-	{
-		sprintf(basedefault, "%s/", configdir);
-	}
-	else
-	{
-		configdir = getenv("HOME");
-		if (configdir != NULL)
-			sprintf(basedefault, "%s/.config/", configdir);
-	}
-	strcat(basedefault, "clowndoomrc");
-#else
-	strcpy(basedefault, "default.cfg");
-#endif
 
 	if (M_CheckParm ("-shdev"))
 	{
