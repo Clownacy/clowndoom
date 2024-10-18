@@ -110,16 +110,18 @@ void I_FinishUpdate (void)
 
 	for (y = 0; y < output_height; ++y)
 	{
-		if (upscale_y_deltas[y])
+		if (upscale_y_deltas[y] != 0)
 		{
-			const colourindex_t *input_line_pointer = indexed_pixels_pointer++;
+			const colourindex_t *input_line_pointer = indexed_pixels_pointer;
 			unsigned char *upscale_line_buffer_pointer = &pixels[y * pitch];
+
+			indexed_pixels_pointer += upscale_y_deltas[y];
 
 			for (x = 0; x < output_width; ++x)
 			{
 				const unsigned char *colour_pointer = &colors[*input_line_pointer * bytes_per_pixel];
 
-				input_line_pointer += upscale_x_deltas[x] ? SCREENHEIGHT : 0;
+				input_line_pointer += upscale_x_deltas[x] * SCREENHEIGHT;
 
 				memcpy(upscale_line_buffer_pointer, colour_pointer, bytes_per_pixel);
 				upscale_line_buffer_pointer += bytes_per_pixel;
@@ -260,7 +262,7 @@ void I_RenderSizeChanged(void)
 	{
 		const size_t current = i * SCREENHEIGHT / output_height;
 
-		upscale_y_deltas[i] = last != current;
+		upscale_y_deltas[i] = current - last;
 
 		last = current;
 	}
@@ -271,7 +273,7 @@ void I_RenderSizeChanged(void)
 	{
 		const size_t current = i * SCREENWIDTH / output_width;
 
-		upscale_x_deltas[i] = last != current;
+		upscale_x_deltas[i] = current - last;
 
 		last = current;
 	}
