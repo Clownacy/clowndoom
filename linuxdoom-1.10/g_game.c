@@ -701,7 +701,7 @@ void G_Ticker (void)
 					if (!savedescription[0])
 						strcpy (savedescription, "NET GAME");
 					savegameslot =
-						(players[i].cmd.buttons & BTS_SAVEMASK)>>BTS_SAVESHIFT;
+						(players[i].cmd.buttons>>BTS_SAVESHIFT) & BTS_SAVEMASK;
 					gameaction = ga_savegame;
 					break;
 				}

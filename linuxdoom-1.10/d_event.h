@@ -67,22 +67,22 @@ typedef enum
 typedef enum
 {
 	/* Press "Fire". */
-	BT_ATTACK           = 1,
+	BT_ATTACK           = 1<<0,
 	/* Use button, to open doors, activate switches. */
-	BT_USE              = 2,
+	BT_USE              = 1<<1,
 
 	/* Flag: game events, not really buttons. */
-	BT_SPECIAL          = 128,
+	BT_SPECIAL          = 1<<7,
 	BT_SPECIALMASK      = 3,
 
 	/* Flag, weapon change pending. */
 	/* If true, the next 3 bits hold weapon num. */
-	BT_CHANGE           = 4,
+	BT_CHANGE           = 1<<2,
 	/* The 3bit weapon mask and shift, convenience. */
+	BT_WEAPONMASK       = 7,
 	BT_WEAPONSHIFT      = 4,
-	BT_WEAPONMASK       = (7<<BT_WEAPONSHIFT),
 
-	BT_CYCLE            = 8,
+	BT_CYCLE            = 1<<3,
 
 	/* Pause the game. */
 	BTS_PAUSE           = 1,
@@ -91,7 +91,7 @@ typedef enum
 
 	/* Savegame slot numbers */
 	/*  occupy the second byte of buttons. */
-	BTS_SAVEMASK        = (4+8+16),
+	BTS_SAVEMASK        = 7,
 	BTS_SAVESHIFT       = 2
 
 } buttoncode_t;
