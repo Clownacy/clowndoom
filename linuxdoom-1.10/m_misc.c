@@ -557,17 +557,6 @@ char* M_strdup(const char* const src)
 	return M_strndup(src, strlen(src));
 }
 
-size_t M_StringCopyMultipleInternal(char* const dest, const size_t destsz, const char* const* const src_list, const size_t src_list_length)
-{
-	size_t i;
-	size_t dest_index = 0;
-
-	for (i = 0; i < src_list_length; ++i)
-		dest_index += M_StringCopy(dest + dest_index, destsz - dest_index, src_list[i]);
-
-	return dest_index;
-}
-
 size_t M_StringCopy(char* const dest, const size_t destsz, const char* const src)
 {
 	size_t src_length, copy_length;
