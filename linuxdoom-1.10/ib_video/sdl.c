@@ -387,6 +387,24 @@ void IB_StartTic (void)
 						joystick_x_right = value;
 
 						break;
+
+					case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
+						joystick_button_state &= ~(1 << 10);
+
+						/* Deadzone. */
+						if (value >= 0x7FFF / 4)
+							joystick_button_state |= 1 << 10;
+
+						break;
+
+					case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
+						joystick_button_state &= ~(1 << 11);
+
+						/* Deadzone. */
+						if (value >= 0x7FFF / 4)
+							joystick_button_state |= 1 << 11;
+
+						break;
 				}
 
 				SubmitJoystickEvent();

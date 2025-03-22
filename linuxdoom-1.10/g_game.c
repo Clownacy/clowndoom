@@ -194,7 +194,7 @@ int             dclicks2;
 int             joyxmove;
 int             joyymove;
 int             joyxmoveright;
-d_bool          joyarray[11];
+d_bool          joyarray[1 + 12];
 d_bool*        joybuttons = &joyarray[1];              /* allow [-1] */
 
 int             savegameslot;
