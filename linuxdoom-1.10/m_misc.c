@@ -238,12 +238,12 @@ static const default_t       defaults[] =
 	{"mouse_sensitivity",&mouseSensitivity, 5, d_false},
 
 	/* Joystick */
-	{"joyb_fire",&joybfire,0, d_false},
-	{"joyb_strafe",&joybstrafe,1, d_false},
+	{"joyb_fire",&joybfire,11, d_false},
+	{"joyb_strafe",&joybstrafe,2, d_false},
 	{"joyb_use",&joybuse,3, d_false},
-	{"joyb_speed",&joybspeed,2, d_false},
-	{"joyb_weaponprevious",&joybweaponprevious,4, d_false},
-	{"joyb_weaponnext",&joybweaponnext,5, d_false},
+	{"joyb_speed",&joybspeed,10, d_false},
+	{"joyb_weaponprevious",&joybweaponprevious,1, d_false},
+	{"joyb_weaponnext",&joybweaponnext,0, d_false},
 
 	/* Video */
 	{"screenblocks",&screenblocks, 10, d_false},
