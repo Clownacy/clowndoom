@@ -193,7 +193,7 @@ T_MovePlane
 }
 
 
-/* MOVE A FLOOR TO IT'S DESTINATION (UP OR DOWN) */
+/* MOVE A FLOOR TO ITS DESTINATION (UP OR DOWN) */
 void T_MoveFloor(floormove_t* floor)
 {
 	result_e    res;
