@@ -471,6 +471,8 @@ EV_BuildStairs
 		P_AddThinker (&floor->thinker);
 		sec->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
+		floor->type = raiseBuildStep;
+		floor->crush = d_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
 		floor->direction = 1;
 		floor->sector = sec;
 		switch(type)
@@ -527,6 +529,8 @@ EV_BuildStairs
 
 				sec->specialdata = floor;
 				floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
+				floor->type = raiseBuildStep;
+				floor->crush = d_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
 				floor->direction = 1;
 				floor->sector = sec;
 				floor->speed = speed;
