@@ -170,6 +170,16 @@ static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
 static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right, joystick_x_dpad, joystick_y_dpad;
 #endif
 
+static void SetJoystickButton(const unsigned int button_index, const d_bool pressed)
+{
+	const unsigned int mask = 1U << button_index;
+
+	if (pressed)
+		joystick_button_state |= mask;
+	else
+		joystick_button_state &= ~mask;
+}
+
 static void SubmitJoystickEvent(void)
 {
 	event_t event;
@@ -341,14 +351,7 @@ void IB_StartTic (void)
 				joystick_y_dpad += y_delta;
 
 				if (button_index != -1)
-				{
-					const unsigned int mask = 1U << button_index;
-
-					if (button_down)
-						joystick_button_state |= mask;
-					else
-						joystick_button_state &= ~mask;
-				}
+					SetJoystickButton(button_index, button_down);
 
 				SubmitJoystickEvent();
 				/* I_Info(button_down ? "j" : "ju"); */
@@ -389,21 +392,9 @@ void IB_StartTic (void)
 						break;
 
 					case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
-						joystick_button_state &= ~(1 << 10);
-
-						/* Deadzone. */
-						if (value >= 0x7FFF / 4)
-							joystick_button_state |= 1 << 10;
-
-						break;
-
 					case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
-						joystick_button_state &= ~(1 << 11);
-
 						/* Deadzone. */
-						if (value >= 0x7FFF / 4)
-							joystick_button_state |= 1 << 11;
-
+						SetJoystickButton(sdl_event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT ? 10 : 11, value >= 0x7FFF / 4);
 						break;
 				}
 
