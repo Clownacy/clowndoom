@@ -20,6 +20,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "libretro-callbacks.h"
 
@@ -201,13 +202,11 @@ void retro_cheat_set(const unsigned int index, const bool enabled, const char* c
 /* Doom stuff */
 /**************/
 
-#include "windows.h"
-
 /* IB_GetTime */
 /* returns time in 1/70th second tics */
 int  IB_GetTime (void)
 {
-	return GetTickCount() * TICRATE / 1000;
+	return clock() / (CLOCKS_PER_SEC / TICRATE);
 }
 
 
