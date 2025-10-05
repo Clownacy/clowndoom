@@ -16,6 +16,8 @@
 
 ******************************************************************************/
 
+#include <stdlib.h>
+
 #include "SDL.h"
 
 #if SDL_MAJOR_VERSION >= 2
@@ -53,6 +55,7 @@ void IB_Init (void)
 void IB_Quit (void)
 {
 	SDL_Quit();
+	exit(0);
 }
 
 

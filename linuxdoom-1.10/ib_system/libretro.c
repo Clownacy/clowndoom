@@ -18,6 +18,9 @@
 
 #include "../ib_system.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "libretro-callbacks.h"
 
 #include "../doomdef.h"
@@ -36,11 +39,13 @@ static cothread_t main_coroutine, game_coroutine;
 static void GameEntryPoint(void)
 {
 	static char *argv[] = {""};
-	D_DoomMain(0, argv);
+	D_DoomMain(1, argv);
 }
 
 void retro_init(void)
 {
+	/* Doom uses 'main-loops', which are incompatible with libretro's cooperative multitasking model.
+	   So, we use libretro's 'libco' library to work-around this issue with coroutines. */
 	main_coroutine = co_active();
 	game_coroutine = co_create(64 * 1024, GameEntryPoint);
 }
@@ -50,7 +55,7 @@ void retro_deinit(void)
 	co_delete(game_coroutine);
 }
 
-unsigned retro_api_version(void)
+unsigned int retro_api_version(void)
 {
 	return RETRO_API_VERSION;
 }
@@ -118,7 +123,7 @@ void retro_set_video_refresh(const retro_video_refresh_t cb)
 
 void retro_reset(void)
 {
-	
+	/* TODO: It would be a good idea to return to the title screen here. */
 }
 
 void retro_run(void)
@@ -136,7 +141,7 @@ bool retro_load_game(const struct retro_game_info* const info)
 
 void retro_unload_game(void)
 {
-	
+	I_Quit();
 }
 
 unsigned int retro_get_region(void)
@@ -168,7 +173,7 @@ bool retro_unserialize(const void* const data, const size_t size)
 	return false;
 }
 
-void* retro_get_memory_data(unsigned id)
+void* retro_get_memory_data(const unsigned int id)
 {
 	(void)id;
 	return NULL;
@@ -216,7 +221,7 @@ void IB_Init (void)
 /* IB_Quit */
 void IB_Quit (void)
 {
-	
+	exit(0);
 }
 
 
@@ -234,8 +239,15 @@ void IB_Sleep(void)
 
 size_t IB_GetConfigPath(char* const buffer, const size_t size)
 {
-	(void)buffer;
-	(void)size;
+	const char *system_directory;
+
+	if (libretro.environment(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory))
+	{
+		size_t copy_length = 0;
+		copy_length += M_StringCopy(buffer, size, system_directory);
+		copy_length += M_StringCopyOffset(buffer, size, copy_length, "/");
+		return copy_length;
+	}
 
 	return 0;
 }

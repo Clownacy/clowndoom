@@ -16,6 +16,7 @@
 
 ******************************************************************************/
 
+#include <stdlib.h>
 #include <sys/time.h>
 #include <unistd.h>
 
@@ -57,6 +58,7 @@ void IB_Init (void)
 /* IB_Quit */
 void IB_Quit (void)
 {
+	exit(0);
 }
 
 

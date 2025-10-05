@@ -93,8 +93,6 @@ void I_Quit (void)
 	I_ShutdownGraphics();
 
 	IB_Quit();
-
-	exit(0);
 }
 
 void I_WaitVBL(int count)
