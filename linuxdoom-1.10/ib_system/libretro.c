@@ -26,21 +26,26 @@
 
 #include "../doomdef.h"
 #include "../d_main.h"
+#include "../m_misc.h"
 
 /******************/
 /* libretro stuff */
 /******************/
 
-#include "../../external/libretro-common/libco/libco.c"
+#include "libco.h"
 
 LibretroCallbacks libretro;
 
 static cothread_t main_coroutine, game_coroutine;
+static char *iwad_path;
 
 static void GameEntryPoint(void)
 {
-	static char *argv[] = {""};
-	D_DoomMain(1, argv);
+	static char *argv[3];
+	argv[0] = "";
+	argv[1] = "-iwad";
+	argv[2] = iwad_path;
+	D_DoomMain(D_COUNT_OF(argv), argv);
 }
 
 void retro_init(void)
@@ -154,8 +159,10 @@ unsigned int retro_get_region(void)
 bool retro_load_game_special(const unsigned int type, const struct retro_game_info* const info, const size_t num)
 {
 	(void)type;
-	(void)info;
 	(void)num;
+
+	iwad_path = M_strdup(info[0].path);
+
 	return true;
 }
 
@@ -242,8 +249,7 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 
 	if (libretro.environment(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory))
 	{
-		size_t copy_length = 0;
-		copy_length += M_StringCopy(buffer, size, system_directory);
+		size_t copy_length = M_StringCopy(buffer, size, system_directory);
 		copy_length += M_StringCopyOffset(buffer, size, copy_length, "/");
 		return copy_length;
 	}

@@ -557,6 +557,29 @@ char* M_strdup(const char* const src)
 	return M_strndup(src, strlen(src));
 }
 
+static const char* M_basename_Internal(const char* const path, const char separator)
+{
+	const char* const found = strrchr(path, '/');
+
+	if (found == NULL)
+		return path;
+
+	return found + 1;
+}
+
+const char* M_basename(const char* const path)
+{
+	const char *basename = path;
+
+	basename = M_basename_Internal(basename, '/');
+
+#ifdef _WIN32
+	basename = M_basename_Internal(basename, '\\');
+#endif
+
+	return basename;
+}
+
 size_t M_StringCopy(char* const dest, const size_t destsz, const char* const src)
 {
 	size_t src_length, copy_length;

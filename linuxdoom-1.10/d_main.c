@@ -628,53 +628,78 @@ void IdentifyVersion (void)
 	{
 		static const struct
 		{
-			char filename[8 + 1];
+			char filename[8 + 4 + 1];
 			GameMode_t gamemode;
 			GameMission_t gamemission;
 			Language_t language;
 		} wads[] = {
-			{"doom2f",   commercial, doom2,     french },
-			{"doom2",    commercial, doom2,     english},
-			{"plutonia", commercial, pack_plut, english},
-			{"tnt",      commercial, pack_tnt,  english},
-			{"doomu",    retail,     doom,      english},
-			{"doom",     registered, doom,      english},
-			{"doom1",    shareware,  doom,      english},
+			{"doom2f.wad",   commercial, doom2,     french },
+			{"doom2.wad",    commercial, doom2,     english},
+			{"plutonia.wad", commercial, pack_plut, english},
+			{"tnt.wad",      commercial, pack_tnt,  english},
+			{"doomu.wad",    retail,     doom,      english},
+			{"doom.wad",     registered, doom,      english},
+			{"doom1.wad",    shareware,  doom,      english},
 		};
 
-		const size_t wad_directory_length = strlen(doomwaddir);
-		char* const path = (char*)malloc(wad_directory_length + 1 + sizeof(wads[0].filename) - 1 + 4 + 1);
+		const int p = M_CheckParm ("-iwad");
 
 		gamemode = indetermined;
 		gamemission = none;
 		language = english;
 
-		if (path != NULL)
+		if (p != 0)
 		{
-			size_t i;
+			const char* const path = myargv[p + 1];
+			const char* const basename = M_basename(path);
 
-			memcpy(&path[0], doomwaddir, wad_directory_length);
-			path[wad_directory_length] = '/';
+			size_t i;
 
 			for (i = 0; i < D_COUNT_OF(wads); ++i)
 			{
-				sprintf(&path[wad_directory_length + 1], "%.*s.wad", (int)sizeof(wads[i].filename) - 1, wads[i].filename);
-
-				if (M_FileExists(path))
+				if (strcmp(basename, wads[i].filename) == 0)
 				{
 					gamemode = wads[i].gamemode;
 					gamemission = wads[i].gamemission;
 					language = wads[i].language;
-					D_AddFile(path);
 					break;
 				}
 			}
 
-			free(path);
-
-			if (language == french)
-				I_Info("French version\n");
+			D_AddFile(path);
 		}
+		else
+		{
+			const size_t wad_directory_length = strlen(doomwaddir);
+			char* const path = (char*)malloc(wad_directory_length + 1 + sizeof(wads[0].filename) - 1 + 4 + 1);
+
+			if (path != NULL)
+			{
+				size_t i;
+
+				memcpy(&path[0], doomwaddir, wad_directory_length);
+				path[wad_directory_length] = '/';
+
+				for (i = 0; i < D_COUNT_OF(wads); ++i)
+				{
+					sprintf(&path[wad_directory_length + 1], "%.*s", (int)sizeof(wads[i].filename) - 1, wads[i].filename);
+
+					if (M_FileExists(path))
+					{
+						gamemode = wads[i].gamemode;
+						gamemission = wads[i].gamemission;
+						language = wads[i].language;
+						D_AddFile(path);
+						break;
+					}
+				}
+
+				free(path);
+			}
+		}
+
+		if (language == french)
+			I_Info("French version\n");
 
 		if (gamemode == indetermined)
 		{

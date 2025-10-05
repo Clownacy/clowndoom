@@ -234,6 +234,7 @@ elseif(BACKEND STREQUAL "libretro")
 		"linuxdoom-1.10/ib_sound/miniaudio.h"
 		"linuxdoom-1.10/ib_system/libretro.c"
 		"linuxdoom-1.10/ib_video/libretro.c"
+		"external/libretro-common/libco/libco.c"
 	)
 
 	############################################
