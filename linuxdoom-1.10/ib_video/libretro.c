@@ -27,6 +27,7 @@
 #include "../ib_system/libretro-callbacks.h"
 
 #include "../doomdef.h"
+#include "../d_main.h"
 #include "../d_event.h"
 
 typedef uint16_t Pixel;
@@ -126,25 +127,22 @@ void IB_FinishUpdate (void)
 }
 
 
+#define BITS_PER_SOURCE_COLOUR_CHANNEL 8
+#define BITS_PER_DESTINATION_COLOUR_CHANNEL 5
+
 static unsigned int Get5BitColourChannel(const unsigned int channel)
 {
-	const unsigned int bits_per_source_colour = 8;
-	const unsigned int bits_per_destination_colour = 5;
-	const unsigned int colour_shift = bits_per_source_colour - bits_per_destination_colour;
-	const unsigned int colour_mask = (1 << bits_per_destination_colour) - 1;
+	const unsigned int colour_shift = BITS_PER_SOURCE_COLOUR_CHANNEL - BITS_PER_DESTINATION_COLOUR_CHANNEL;
+	const unsigned int colour_mask = (1 << BITS_PER_DESTINATION_COLOUR_CHANNEL) - 1;
 
 	return (channel >> colour_shift) & colour_mask;
 }
 
 void IB_GetColor(unsigned char* const bytes, const unsigned char red, const unsigned char green, const unsigned char blue)
 {
-	const unsigned int bits_per_source_colour = 8;
-	const unsigned int bits_per_destination_colour = 5;
-	const unsigned int colour_shift = bits_per_source_colour - bits_per_destination_colour;
-
-	const Pixel pixel = (Get5BitColourChannel(red)   << (bits_per_destination_colour * 2))
-	                  | (Get5BitColourChannel(green) << (bits_per_destination_colour * 1))
-	                  | (Get5BitColourChannel(blue)  << (bits_per_destination_colour * 0));
+	const Pixel pixel = (Get5BitColourChannel(red)   << (BITS_PER_DESTINATION_COLOUR_CHANNEL * 2))
+	                  | (Get5BitColourChannel(green) << (BITS_PER_DESTINATION_COLOUR_CHANNEL * 1))
+	                  | (Get5BitColourChannel(blue)  << (BITS_PER_DESTINATION_COLOUR_CHANNEL * 0));
 
 	/* Do this trick to write the pixel in native-endian byte ordering, as required by the libretro API. */
 	*(Pixel*)bytes = pixel;

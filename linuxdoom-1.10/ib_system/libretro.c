@@ -27,6 +27,7 @@
 #include "../doomdef.h"
 #include "../d_main.h"
 #include "../m_misc.h"
+#include "../i_system.h"
 
 /******************/
 /* libretro stuff */
@@ -173,11 +174,15 @@ size_t retro_serialize_size(void)
 
 bool retro_serialize(void* const data, const size_t size)
 {
+	(void)data;
+	(void)size;
 	return false;
 }
 
 bool retro_unserialize(const void* const data, const size_t size)
 {
+	(void)data;
+	(void)size;
 	return false;
 }
 

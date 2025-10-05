@@ -559,7 +559,7 @@ char* M_strdup(const char* const src)
 
 static const char* M_basename_Internal(const char* const path, const char separator)
 {
-	const char* const found = strrchr(path, '/');
+	const char* const found = strrchr(path, separator);
 
 	if (found == NULL)
 		return path;
