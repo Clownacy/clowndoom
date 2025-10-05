@@ -2,11 +2,17 @@ cmake_minimum_required(VERSION 3.19)
 
 project(clowndoom LANGUAGES C)
 
-set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, SDL2, or Null")
+set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, SDL2, libretro, or Null")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 option(FRENCH "Change the language of various strings to French" OFF)
 
-add_executable(clowndoom WIN32
+if(BACKEND STREQUAL "libretro")
+	add_library(clowndoom)
+else()
+	add_executable(clowndoom WIN32)
+endif()
+
+target_sources(clowndoom PRIVATE
 	"linuxdoom-1.10/clownlibs/clowncommon/clowncommon.h"
 	"linuxdoom-1.10/clownlibs/dictionary.c"
 	"linuxdoom-1.10/clownlibs/dictionary.h"
@@ -140,7 +146,7 @@ set_target_properties(clowndoom PROPERTIES C_STANDARD 90)
 
 if(CMAKE_C_BYTE_ORDER STREQUAL "BIG_ENDIAN")
 	target_compile_definitions(clowndoom PRIVATE PLATFORM_IS_BIG_ENDIAN)
-	target_sources(clowndoom "linuxdoom-1.10/m_swap.c")
+	target_sources(clowndoom PRIVATE "linuxdoom-1.10/m_swap.c")
 endif()
 
 if(WIN32)
@@ -221,6 +227,60 @@ elseif(BACKEND STREQUAL "SDL2")
 		endif()
 	else()
 		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
+	endif()
+elseif(BACKEND STREQUAL "libretro")
+	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_sound/miniaudio.c"
+		"linuxdoom-1.10/ib_sound/miniaudio.h"
+		"linuxdoom-1.10/ib_system/null.c"
+		"linuxdoom-1.10/ib_video/null.c"
+	)
+
+	############################################
+	# Standard libretro core boilerplate code. #
+	############################################
+
+	# Avoid some relocation-related linker errors when building a shared library that depends on static libraries.
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+	# Include libretro-common, so that 'libretro.h' can be found.
+	target_include_directories(clowndoom PRIVATE "external/libretro-common/include")
+
+	# Provide an 'stdint.h' for older versions of MSVC.
+	if(MSVC AND MSVC_VERSION LESS 1600)
+		target_include_directories(clowndoom PRIVATE "external/libretro-common/include/compat/msvc")
+	endif()
+
+	# Give the code a way of determining that it is targeting libretro.
+	target_compile_definitions(clowndoom PRIVATE __LIBRETRO__)
+
+	# Allow only the libretro API functions to be exported.
+	set_target_properties(clowndoom PROPERTIES C_VISIBILITY_PRESET hidden CXX_VISIBILITY_PRESET hidden VISIBILITY_INLINES_HIDDEN ON)
+
+	# Adjust the library's filename. This is relied upon by libretro's CI infrastructure.
+
+	# Remove the 'lib' prefix.
+	set_target_properties(clowndoom PROPERTIES PREFIX "")
+
+	# Append the given suffix.
+	set_target_properties(clowndoom PROPERTIES OUTPUT_NAME "clowndoom${LIBRETRO_SUFFIX}")
+
+	# Emscripten builds are expected to use the '.bc' file extension instead of '.a'.
+	if(LIBRETRO_STATIC AND EMSCRIPTEN)
+		set_target_properties(clowndoom PROPERTIES SUFFIX ".bc")
+	endif()
+
+	# Obtain the Git revision so that it can be displayed in the core's version string.
+	find_package(Git)
+	if(GIT_FOUND)
+		execute_process(
+			COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+			OUTPUT_VARIABLE GIT_VERSION
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+		)
+		if(GIT_VERSION)
+			target_compile_definitions(clowndoom PRIVATE GIT_VERSION=" ${GIT_VERSION}")
+		endif()
 	endif()
 elseif(BACKEND STREQUAL "Null")
 	target_sources(clowndoom PRIVATE

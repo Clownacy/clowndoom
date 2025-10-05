@@ -7,3 +7,6 @@
 [submodule "linuxdoom-1.10/clownlibs/clowncommon"]
 	path = linuxdoom-1.10/clownlibs/clowncommon
 	url = https://github.com/Clownacy/clowncommon
+[submodule "external/libretro-common"]
+	path = external/libretro-common
+	url = https://github.com/libretro/libretro-common
