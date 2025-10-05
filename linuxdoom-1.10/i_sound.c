@@ -433,7 +433,7 @@ static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 
 #ifdef WILDMIDI
 	if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) != 0)
-		I_Info("I_StartupSound: Failed to initialize WildMIDI. Error message was '%s'", WildMidi_GetError());
+		I_Info("I_StartupSound: Failed to initialize WildMIDI. Error message was '%s'\n", WildMidi_GetError());
 	else
 		music_initialised = d_true;
 #endif
