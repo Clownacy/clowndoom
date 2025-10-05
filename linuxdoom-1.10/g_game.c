@@ -1285,14 +1285,8 @@ static size_t ArchiveToBuffer(unsigned char* const buffer)
 
 void G_DoSaveGame (void)
 {
-	char           name[100];
 	size_t         length;
 	unsigned char *savebuffer;
-
-	if (M_CheckParm("-cdrom"))
-		sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",savegameslot);
-	else
-		sprintf (name,SAVEGAMENAME"%d.dsg",savegameslot);
 
 	length = ArchiveToBuffer(NULL);
 
@@ -1301,7 +1295,7 @@ void G_DoSaveGame (void)
 	if (savebuffer != NULL)
 	{
 		ArchiveToBuffer(savebuffer);
-		M_WriteFile(name, savebuffer, length);
+		M_WriteFile(M_GetSaveFilePath(savegameslot), savebuffer, length);
 		Z_Free(savebuffer);
 	}
 

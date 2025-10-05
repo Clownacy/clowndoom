@@ -66,4 +66,6 @@ d_bool M_FileExists(const char* const filename);
 int M_BytesToShort(const unsigned char * const data);
 long M_BytesToLong(const unsigned char * const data);
 
+const char* M_GetSaveFilePath(int i);
+
 #endif

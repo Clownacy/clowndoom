@@ -41,6 +41,7 @@
 #include "g_game.h"
 
 #include "m_argv.h"
+#include "m_misc.h"
 #include "m_swap.h"
 
 #include "s_sound.h"
@@ -484,16 +485,10 @@ void M_ReadSaveStrings(void)
 {
 	FILE*           handle;
 	int             i;
-	char    name[256];
 
 	for (i = 0;i < load_end;i++)
 	{
-		if (M_CheckParm("-cdrom"))
-			sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",i);
-		else
-			sprintf(name,SAVEGAMENAME"%d.dsg",i);
-
-		handle = fopen (name, "rb");
+		handle = fopen (M_GetSaveFilePath(i), "rb");
 		if (handle == NULL)
 		{
 			strcpy(&savegamestrings[i][0],EMPTYSTRING);
@@ -543,13 +538,7 @@ void M_DrawSaveLoadBorder(int x,int y)
 /* User wants to load this game */
 void M_LoadSelect(int choice)
 {
-	char    name[256];
-
-	if (M_CheckParm("-cdrom"))
-		sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",choice);
-	else
-		sprintf(name,SAVEGAMENAME"%d.dsg",choice);
-	G_LoadGame (name);
+	G_LoadGame (M_GetSaveFilePath(choice));
 	M_ClearMenus ();
 }
 

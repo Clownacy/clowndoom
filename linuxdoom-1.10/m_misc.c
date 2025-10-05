@@ -645,3 +645,15 @@ long M_BytesToLong(const unsigned char * const data)
 
 	return (long)SIGN_EXTEND_LONG(result);
 }
+
+const char* M_GetSaveFilePath(const int i)
+{
+	static char name[0x100];
+
+	if (M_CheckParm("-cdrom"))
+		sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",i);
+	else
+		sprintf(name,SAVEGAMENAME"%d.dsg",i);
+
+	return name;
+}
