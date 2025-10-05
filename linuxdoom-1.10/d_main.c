@@ -873,16 +873,6 @@ void D_DoomMain (int argc, char **argv)
 	if (devparm)
 		I_Info(D_DEVSTR);
 
-#if 0
-	/* Strange old junk. */
-	if (M_CheckParm("-cdrom"))
-	{
-		I_Info(D_CDROM);
-		mkdir("c:\\doomdata",0);
-		strcpy (basedefault,"c:/doomdata/default.cfg");
-	}
-#endif
-
 	/* turbo option */
 	if ( (p=M_CheckParm ("-turbo")) )
 	{

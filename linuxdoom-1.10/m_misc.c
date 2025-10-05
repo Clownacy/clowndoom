@@ -650,10 +650,7 @@ const char* M_GetSaveFilePath(const int i)
 {
 	static char name[0x100];
 
-	if (M_CheckParm("-cdrom"))
-		sprintf(name,"c:\\doomdata\\"SAVEGAMENAME"%d.dsg",i);
-	else
-		sprintf(name,SAVEGAMENAME"%d.dsg",i);
+	sprintf(name,SAVEGAMENAME"%d.dsg",i);
 
 	return name;
 }
