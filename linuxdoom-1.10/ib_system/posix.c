@@ -21,8 +21,15 @@
 
 #include "../doomdef.h"
 
+#include "../d_main.h"
+
 #include "../ib_system.h"
 
+int main(int argc, char **argv)
+{
+	D_DoomMain(argc, argv);
+	return 0;
+}
 
 /* IB_GetTime */
 /* returns time in 1/70th second tics */

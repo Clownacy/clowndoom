@@ -760,10 +760,13 @@ void FindResponseFile (void)
 
 
 /* D_DoomMain */
-void D_DoomMain (void)
+void D_DoomMain (int argc, char **argv)
 {
 	int             p;
 	char                    file[256];
+
+	myargc = argc;
+	myargv = argv;
 
 	FindResponseFile ();
 

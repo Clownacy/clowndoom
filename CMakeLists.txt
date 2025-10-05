@@ -45,7 +45,6 @@ add_executable(clowndoom WIN32
 	"linuxdoom-1.10/ib_sound.h"
 	"linuxdoom-1.10/ib_system.h"
 	"linuxdoom-1.10/ib_video.h"
-	"linuxdoom-1.10/i_main.c"
 	"linuxdoom-1.10/i_net.c"
 	"linuxdoom-1.10/i_net.h"
 	"linuxdoom-1.10/info.c"
@@ -223,8 +222,6 @@ elseif(BACKEND STREQUAL "SDL2")
 	else()
 		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
 	endif()
-
-	target_compile_definitions(clowndoom PRIVATE INCLUDE_SDL2_MAIN)
 else()
 	message(FATAL_ERROR "Invalid BACKEND")
 endif()

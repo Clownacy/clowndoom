@@ -18,11 +18,21 @@
 
 #include "SDL.h"
 
+#if SDL_MAJOR_VERSION >= 2
+#include "SDL_main.h"
+#endif
+
 #include "../doomdef.h"
+#include "../d_main.h"
 #include "../m_misc.h"
 
 #include "../ib_system.h"
 
+int main(int argc, char **argv)
+{
+	D_DoomMain(argc, argv);
+	return 0;
+}
 
 /* IB_GetTime */
 /* returns time in 1/70th second tics */
