@@ -232,7 +232,7 @@ void IB_Init (void)
 /* IB_Quit */
 void IB_Quit (void)
 {
-	exit(0);
+	
 }
 
 
