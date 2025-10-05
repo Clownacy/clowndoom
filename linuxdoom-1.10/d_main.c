@@ -578,7 +578,7 @@ void IdentifyVersion (void)
 	const char *doomwaddir;
 
 	{
-		const size_t length = IB_GetConfigPath(basedefault, D_COUNT_OF(basedefault));
+		const size_t length = I_GetConfigPath(basedefault, D_COUNT_OF(basedefault));
 		M_StringCopyOffset(basedefault, D_COUNT_OF(basedefault), length, "default.cfg");
 	}
 
