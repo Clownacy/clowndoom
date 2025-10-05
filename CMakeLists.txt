@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 
 project(clowndoom LANGUAGES C)
 
-set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, or SDL2")
+set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, SDL2, or Null")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 option(FRENCH "Change the language of various strings to French" OFF)
 
@@ -222,6 +222,12 @@ elseif(BACKEND STREQUAL "SDL2")
 	else()
 		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
 	endif()
+elseif(BACKEND STREQUAL "Null")
+	target_sources(clowndoom PRIVATE
+		"linuxdoom-1.10/ib_sound/null.c"
+		"linuxdoom-1.10/ib_system/null.c"
+		"linuxdoom-1.10/ib_video/null.c"
+	)
 else()
 	message(FATAL_ERROR "Invalid BACKEND")
 endif()
