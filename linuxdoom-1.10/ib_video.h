@@ -25,11 +25,14 @@
 
 #include "doomtype.h"
 
+/* TODO: Find a better place for this. */
+extern int aspect_ratio_correction;
+
 void IB_StartTic (void);
 void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch);
 void IB_FinishUpdate (void);
 void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, unsigned char blue);
-void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback)(size_t width, size_t height));
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback)(size_t width, size_t height, d_bool aspect_ratio_correction));
 void IB_ShutdownGraphics(void);
 void IB_GrabMouse(d_bool grab);
 void IB_ToggleFullscreen(void);

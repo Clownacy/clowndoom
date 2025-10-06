@@ -24,6 +24,7 @@
 
 #define D_MIN(a, b) ((a) < (b) ? (a) : (b))
 #define D_MAX(a, b) ((a) > (b) ? (a) : (b))
+#define D_CLAMP(min, max, value) D_MAX(min, D_MIN(max, value))
 #define D_COUNT_OF(x) (sizeof(x) / sizeof(*x))
 
 enum {d_false, d_true};

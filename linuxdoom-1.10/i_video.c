@@ -171,7 +171,7 @@ void I_SetPalette (unsigned char(* const palette)[0x100][3], const size_t total_
 }
 
 
-static void OutputSizeChanged(const size_t width, const size_t height)
+static void OutputSizeChanged(const size_t width, const size_t height, const d_bool aspect_ratio_correction)
 {
 	const size_t aspect_ratio_w = SCREENWIDTH;
 	const size_t aspect_ratio_h = aspect_ratio_correction ? SCREENHEIGHT * 6 / 5 : SCREENHEIGHT;

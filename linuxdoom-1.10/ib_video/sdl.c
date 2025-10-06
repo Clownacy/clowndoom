@@ -408,14 +408,14 @@ void IB_StartTic (void)
 						surface = SDL_GetWindowSurface(window);
 						/* Clear surface of any garbage pixels. */
 						SDL_FillRect(surface, NULL, 0);
-						output_size_changed_callback(surface->w, surface->h);
+						output_size_changed_callback(surface->w, surface->h, aspect_ratio_correction);
 						break;
 				}
 				break;
 			#else
 			case SDL_VIDEORESIZE:
 				surface = SDL_SetVideoMode(sdl_event.resize.w, sdl_event.resize.h, 32, SDL_SWSURFACE | SDL_ANYFORMAT | SDL_RESIZABLE);
-				output_size_changed_callback(sdl_event.resize.w, sdl_event.resize.h);
+				output_size_changed_callback(sdl_event.resize.w, sdl_event.resize.h, aspect_ratio_correction);
 
 				if (surface == NULL)
 					I_Error("Could not create SDL window surface");

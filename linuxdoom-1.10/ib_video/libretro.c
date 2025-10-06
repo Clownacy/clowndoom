@@ -19,16 +19,15 @@
 
 #include "../ib_video.h"
 
-#include <math.h>
 #include <stdlib.h>
-
-#include "../clownlibs/clowncommon/clowncommon.h"
 
 #include "../ib_system/libretro-callbacks.h"
 
 #include "../doomdef.h"
 #include "../d_main.h"
 #include "../d_event.h"
+
+#define ANALOGUE_MAX 0x7FFF
 
 typedef uint16_t Pixel;
 
@@ -51,8 +50,8 @@ static void SubmitJoystickEvent(void)
 	event_t event;
 	event.type = ev_joystick;
 	event.data1 = joystick_button_state;
-	event.data2 = CC_CLAMP(-0x7FFF, 0x7FFF, joystick_x_left + joystick_x_dpad);
-	event.data3 = CC_CLAMP(-0x7FFF, 0x7FFF, joystick_y_left + joystick_y_dpad);
+	event.data2 = D_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_x_left + joystick_x_dpad);
+	event.data3 = D_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_y_left + joystick_y_dpad);
 	event.data4 = joystick_x_right;
 	D_PostEvent(&event);
 }
@@ -69,12 +68,12 @@ static void DoJoypadInput(unsigned int button_index, unsigned int button_id)
 
 static int16_t ApplyDeadzone(const int16_t value)
 {
-	int16_t absolute_value = abs(value);
+	const int16_t threshold = ANALOGUE_MAX / 0x10;
 
-	if (absolute_value < 0x7FFF / 0x10)
-		absolute_value = 0;
+	if (value < threshold && value > -threshold)
+		return 0;
 
-	return value < 0 ? -absolute_value : absolute_value;
+	return value;
 }
 
 /* IB_StartTic */
@@ -95,9 +94,9 @@ void IB_StartTic (void)
 
 	joystick_x_dpad = 0;
 	if (GetJoypadButton(RETRO_DEVICE_ID_JOYPAD_LEFT))
-		--joystick_x_dpad;
+		joystick_x_dpad -= ANALOGUE_MAX;
 	if (GetJoypadButton(RETRO_DEVICE_ID_JOYPAD_RIGHT))
-		++joystick_x_dpad;
+		joystick_x_dpad += ANALOGUE_MAX;
 
 	joystick_y_dpad = 0;
 	if (GetJoypadButton(RETRO_DEVICE_ID_JOYPAD_UP))
@@ -127,28 +126,27 @@ void IB_FinishUpdate (void)
 }
 
 
-#define BITS_PER_SOURCE_COLOUR_CHANNEL 8
-#define BITS_PER_DESTINATION_COLOUR_CHANNEL 5
-
-static unsigned int Get5BitColourChannel(const unsigned int channel)
+static unsigned int Get5BitColourChannel(const unsigned int channel, const unsigned int index)
 {
-	const unsigned int colour_shift = BITS_PER_SOURCE_COLOUR_CHANNEL - BITS_PER_DESTINATION_COLOUR_CHANNEL;
-	const unsigned int colour_mask = (1 << BITS_PER_DESTINATION_COLOUR_CHANNEL) - 1;
+	const unsigned int bits_per_source_colour_channel = 8;
+	const unsigned int bits_per_destination_colour_channel = 5;
+	const unsigned int colour_shift = bits_per_source_colour_channel - bits_per_destination_colour_channel;
+	const unsigned int colour_mask = (1 << bits_per_destination_colour_channel) - 1;
 
-	return (channel >> colour_shift) & colour_mask;
+	return ((channel >> colour_shift) & colour_mask) << (bits_per_destination_colour_channel * index);
 }
 
 void IB_GetColor(unsigned char* const bytes, const unsigned char red, const unsigned char green, const unsigned char blue)
 {
-	const Pixel pixel = (Get5BitColourChannel(red)   << (BITS_PER_DESTINATION_COLOUR_CHANNEL * 2))
-	                  | (Get5BitColourChannel(green) << (BITS_PER_DESTINATION_COLOUR_CHANNEL * 1))
-	                  | (Get5BitColourChannel(blue)  << (BITS_PER_DESTINATION_COLOUR_CHANNEL * 0));
+	const Pixel pixel = Get5BitColourChannel(red,   2)
+	                  | Get5BitColourChannel(green, 1)
+	                  | Get5BitColourChannel(blue,  0);
 
 	/* Do this trick to write the pixel in native-endian byte ordering, as required by the libretro API. */
 	*(Pixel*)bytes = pixel;
 }
 
-void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback)(size_t width, size_t height))
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback)(size_t width, size_t height, d_bool aspect_ratio_correction))
 {
 	(void)title;
 
@@ -156,18 +154,21 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	(void)screen_width;
 	(void)screen_height;
 
+	/* TODO: Handle failed allocation. */
 	framebuffer = (Pixel*)malloc(SCREENWIDTH * SCREENHEIGHT * sizeof(*framebuffer));
 
 	*bytes_per_pixel = sizeof(Pixel);
 
-	output_size_changed_callback(SCREENWIDTH, SCREENHEIGHT);
+	output_size_changed_callback(SCREENWIDTH, SCREENHEIGHT, d_false);
 
 	/* Update the frontend with the game's chosen resolution. */
 	{
 		struct retro_game_geometry geometry;
 		geometry.base_width = SCREENWIDTH;
 		geometry.base_height = SCREENHEIGHT;
-		geometry.aspect_ratio = 0.0f;
+		geometry.aspect_ratio = (float)SCREENWIDTH / SCREENHEIGHT;
+		if (aspect_ratio_correction)
+			geometry.aspect_ratio = geometry.aspect_ratio * 5 / 6;
 		libretro.environment(RETRO_ENVIRONMENT_SET_GEOMETRY, &geometry);
 	}
 }
