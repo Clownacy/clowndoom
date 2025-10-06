@@ -253,7 +253,7 @@ void IB_WaitVBL(int count)
 
 void IB_Sleep(void)
 {
-	co_switch(main_coroutine);
+	
 }
 
 
@@ -269,4 +269,9 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 	}
 
 	return 0;
+}
+
+void IB_Yield(void)
+{
+	co_switch(main_coroutine);
 }

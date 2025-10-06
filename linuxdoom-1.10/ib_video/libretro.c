@@ -123,6 +123,8 @@ void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 void IB_FinishUpdate (void)
 {
 	libretro.video(framebuffer, SCREENWIDTH, SCREENHEIGHT, SCREENWIDTH * sizeof(*framebuffer));
+
+	IB_Yield();
 }
 
 

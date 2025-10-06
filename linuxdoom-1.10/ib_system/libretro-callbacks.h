@@ -25,4 +25,6 @@ typedef struct LibretroCallbacks
 
 extern LibretroCallbacks libretro;
 
+void IB_Yield(void);
+
 #endif /* CLOWNDOOM_LIBRETRO_H */
