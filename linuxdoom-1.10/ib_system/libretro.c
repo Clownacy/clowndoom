@@ -247,7 +247,8 @@ void IB_Quit (void)
 
 void IB_WaitVBL(int count)
 {
-	(void)count;
+	while (count-- != 0)
+		IB_Yield();
 }
 
 
