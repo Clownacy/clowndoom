@@ -230,8 +230,7 @@ elseif(BACKEND STREQUAL "SDL2")
 	endif()
 elseif(BACKEND STREQUAL "libretro")
 	target_sources(clowndoom PRIVATE
-		"linuxdoom-1.10/ib_sound/miniaudio.c"
-		"linuxdoom-1.10/ib_sound/miniaudio.h"
+		"linuxdoom-1.10/ib_sound/libretro.c"
 		"linuxdoom-1.10/ib_system/libretro.c"
 		"linuxdoom-1.10/ib_video/libretro.c"
 		"external/libretro-common/libco/libco.c"

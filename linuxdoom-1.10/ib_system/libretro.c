@@ -95,7 +95,7 @@ void retro_get_system_av_info(struct retro_system_av_info* const info)
 	info->geometry.aspect_ratio = 0.0f;
 
 	info->timing.fps            = TICRATE;
-	info->timing.sample_rate    = 0.0;
+	info->timing.sample_rate    = LIBRETRO_SAMPLE_RATE;
 }
 
 void retro_set_environment(const retro_environment_t cb)
@@ -135,10 +135,16 @@ void retro_reset(void)
 
 void retro_run(void)
 {
+	/* TODO: Use 'libretro.audio' instead, so that this buffer is not needed. */
+	int16_t audio_buffer[LIBRETRO_SAMPLE_RATE / TICRATE][LIBRETRO_CHANNEL_COUNT];
+
 	/* `libretro.h` says this must be called every time that `retro_run` is called. */
 	libretro.input_poll();
 
 	co_switch(game_coroutine);
+
+	libretro.generate_audio.callback(&audio_buffer[0][0], D_COUNT_OF(audio_buffer), libretro.generate_audio.user_data);
+	libretro.audio_batch(&audio_buffer[0][0], D_COUNT_OF(audio_buffer));
 }
 
 bool retro_load_game(const struct retro_game_info* const info)
@@ -148,6 +154,7 @@ bool retro_load_game(const struct retro_game_info* const info)
 
 void retro_unload_game(void)
 {
+	/* Shut-down the game. */
 	I_Quit();
 }
 
@@ -159,6 +166,7 @@ unsigned int retro_get_region(void)
 
 bool retro_load_game_special(const unsigned int type, const struct retro_game_info* const info, const size_t num)
 {
+	/* TODO: Allow PWADs to be loaded here. */
 	(void)type;
 	(void)num;
 
@@ -169,6 +177,7 @@ bool retro_load_game_special(const unsigned int type, const struct retro_game_in
 
 size_t retro_serialize_size(void)
 {
+	/* TODO: Use Doom's save system for this? Those are basically save states. */
 	return 0;
 }
 

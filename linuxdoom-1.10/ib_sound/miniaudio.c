@@ -9,7 +9,7 @@
 #include "miniaudio.h"
 
 /* The function that actually produces the output audio */
-static void (*audio_callback)(short* output_buffer, size_t frames_to_do, void *user_data);
+static IB_AudioCallback audio_callback;
 
 /* miniaudio context */
 static ma_context       context;
@@ -31,7 +31,7 @@ static void Callback(ma_device* device, void* output_buffer, const void* input_b
 	ma_mutex_unlock(&mutex);
 }
 
-int IB_StartupSound(void (*initial_callback)(unsigned int output_sample_rate, void *user_data), void (*_audio_callback)(short* output_buffer, size_t frames_to_do, void *user_data), void *user_data)
+int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio_callback, void *user_data)
 {
 	ma_device_config config;
 
