@@ -34,15 +34,26 @@ typedef uint16_t Pixel;
 static Pixel *framebuffer;
 
 static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right, joystick_x_dpad, joystick_y_dpad;
+static int mouse_button_state;
 
-static void SetJoystickButton(const unsigned int button_index, const d_bool pressed)
+static void SetButton(const unsigned int button_index, const d_bool pressed, int* const state)
 {
 	const unsigned int mask = 1U << button_index;
 
 	if (pressed)
-		joystick_button_state |= mask;
+		*state |= mask;
 	else
-		joystick_button_state &= ~mask;
+		*state &= ~mask;
+}
+
+static void SetJoystickButton(const unsigned int button_index, const d_bool pressed)
+{
+	SetButton(button_index, pressed, &joystick_button_state);
+}
+
+static void SetMouseButton(const unsigned int button_index, const d_bool pressed)
+{
+	SetButton(button_index, pressed, &mouse_button_state);
 }
 
 static void SubmitJoystickEvent(void)
@@ -64,6 +75,11 @@ static int16_t GetJoypadButton(unsigned int button_id)
 static void DoJoypadInput(unsigned int button_index, unsigned int button_id)
 {
 	SetJoystickButton(button_index, GetJoypadButton(button_id));
+}
+
+static void DoMouseInput(unsigned int button_index, unsigned int button_id)
+{
+	SetMouseButton(button_index, libretro.input_state(0, RETRO_DEVICE_MOUSE, 0, button_id));
 }
 
 static int16_t ApplyDeadzone(const int16_t value)
@@ -109,6 +125,19 @@ void IB_StartTic (void)
 	joystick_x_right = ApplyDeadzone(libretro.input_state(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X));
 
 	SubmitJoystickEvent();
+
+	DoMouseInput(0, RETRO_DEVICE_ID_MOUSE_LEFT);
+	DoMouseInput(1, RETRO_DEVICE_ID_MOUSE_RIGHT);
+	DoMouseInput(2, RETRO_DEVICE_ID_MOUSE_MIDDLE);
+
+	{
+		event_t event;
+		event.type = ev_mouse;
+		event.data1 = mouse_button_state;
+		event.data2 =  libretro.input_state(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_X) * (1 << 5);
+		event.data3 = -libretro.input_state(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_Y) * (1 << 5);
+		D_PostEvent(&event);
+	}
 }
 
 

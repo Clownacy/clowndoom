@@ -98,9 +98,101 @@ void retro_get_system_av_info(struct retro_system_av_info* const info)
 	info->timing.sample_rate    = LIBRETRO_SAMPLE_RATE;
 }
 
+static unsigned int KeycodeToNative(const unsigned int keycode)
+{
+	switch (keycode)
+	{
+		default:
+			/* ASCII that can be passed through unmodified. */
+			if (keycode < ' ' || keycode > '~')
+				break;
+
+			return keycode;
+
+		case RETROK_RIGHT:
+			return KEY_RIGHTARROW;
+		case RETROK_LEFT:
+			return KEY_LEFTARROW;
+		case RETROK_UP:
+			return KEY_UPARROW;
+		case RETROK_DOWN:
+			return KEY_DOWNARROW;
+		case RETROK_ESCAPE:
+			return KEY_ESCAPE;
+		case RETROK_RETURN:
+			return KEY_ENTER;
+		case RETROK_TAB:
+			return KEY_TAB;
+		case RETROK_F1:
+			return KEY_F1;
+		case RETROK_F2:
+			return KEY_F2;
+		case RETROK_F3:
+			return KEY_F3;
+		case RETROK_F4:
+			return KEY_F4;
+		case RETROK_F5:
+			return KEY_F5;
+		case RETROK_F6:
+			return KEY_F6;
+		case RETROK_F7:
+			return KEY_F7;
+		case RETROK_F8:
+			return KEY_F8;
+		case RETROK_F9:
+			return KEY_F9;
+		case RETROK_F10:
+			return KEY_F10;
+		case RETROK_F11:
+			return KEY_F11;
+		case RETROK_F12:
+			return KEY_F12;
+
+		case RETROK_BACKSPACE:
+			return KEY_BACKSPACE;
+		case RETROK_PAUSE:
+			return KEY_PAUSE;
+
+		case RETROK_EQUALS:
+			return KEY_EQUALS;
+		case RETROK_MINUS:
+			return KEY_MINUS;
+
+		case RETROK_RSHIFT:
+			return KEY_RSHIFT;
+		case RETROK_RCTRL:
+			return KEY_RCTRL;
+		case RETROK_RALT:
+			return KEY_RALT;
+	}
+
+	return 0;
+}
+
+static void KeyboardCallback(const bool down, const unsigned int keycode, const uint32_t character, const uint16_t key_modifiers)
+{
+	event_t event;
+
+	(void)character;
+	(void)key_modifiers;
+
+	event.type = down ? ev_keydown : ev_keyup;
+	event.data1 = KeycodeToNative(keycode);
+
+	if (event.data1 != 0)
+		D_PostEvent(&event);
+}
+
 void retro_set_environment(const retro_environment_t cb)
 {
 	libretro.environment = cb;
+
+	{
+		const struct retro_keyboard_callback callback = {KeyboardCallback};
+
+		/* TODO: Handle this not being available! */
+		libretro.environment(RETRO_ENVIRONMENT_SET_KEYBOARD_CALLBACK, (void*)&callback);
+	}
 }
 
 void retro_set_audio_sample(const retro_audio_sample_t cb)
@@ -156,6 +248,8 @@ void retro_unload_game(void)
 {
 	/* Shut-down the game. */
 	I_Quit();
+
+	free(iwad_path);
 }
 
 unsigned int retro_get_region(void)
@@ -241,7 +335,8 @@ void IB_Init (void)
 /* IB_Quit */
 void IB_Quit (void)
 {
-	
+	libretro.environment(RETRO_ENVIRONMENT_SHUTDOWN, NULL);
+	IB_Yield();
 }
 
 
