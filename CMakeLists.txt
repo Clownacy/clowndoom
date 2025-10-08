@@ -13,8 +13,6 @@ else()
 endif()
 
 target_sources(clowndoom PRIVATE
-	"external/libretro-helper/libretro-helper.c"
-	"external/libretro-helper/libretro-helper.h"
 	"linuxdoom-1.10/clownlibs/clowncommon/clowncommon.h"
 	"linuxdoom-1.10/clownlibs/dictionary.c"
 	"linuxdoom-1.10/clownlibs/dictionary.h"
@@ -236,6 +234,8 @@ elseif(BACKEND STREQUAL "libretro")
 		"linuxdoom-1.10/ib_system/libretro.c"
 		"linuxdoom-1.10/ib_video/libretro.c"
 		"external/libretro-common/libco/libco.c"
+		"external/libretro-helper/libretro-helper.c"
+		"external/libretro-helper/libretro-helper.h"
 	)
 
 	############################################

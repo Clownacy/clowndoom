@@ -449,7 +449,7 @@ static void I_Quit_Wrapper(int dummy)
 	I_Quit();
 }
 
-void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback)(size_t width, size_t height))
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, IB_OutputSizeChangedCallback output_size_changed_callback)
 {
 
 	char*               displayname;

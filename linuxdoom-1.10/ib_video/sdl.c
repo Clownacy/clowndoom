@@ -39,7 +39,7 @@ static SDL_Window *window;
 #endif
 static SDL_Surface *surface;
 
-static void (*output_size_changed_callback)(size_t width, size_t height);
+static IB_OutputSizeChangedCallback output_size_changed_callback;
 
 #if SDL_MAJOR_VERSION >= 2
 static int SDLKeyToNative(const SDL_Keycode keycode, const SDL_Scancode scancode)
@@ -460,7 +460,7 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 }
 
 
-void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback_p)(size_t width, size_t height))
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, IB_OutputSizeChangedCallback output_size_changed_callback_p)
 {
 	output_size_changed_callback = output_size_changed_callback_p;
 #if SDL_MAJOR_VERSION >= 2
@@ -490,7 +490,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 
 	*bytes_per_pixel = surface->format->BytesPerPixel;
 
-	output_size_changed_callback(surface->w, surface->h);
+	output_size_changed_callback(surface->w, surface->h, aspect_ratio_correction);
 }
 
 
@@ -529,4 +529,69 @@ void IB_ToggleFullscreen(void)
 #else
 	SDL_WM_ToggleFullScreen(surface);
 #endif
+}
+
+I_File* I_FileOpen(const char* const path, const I_FileMode mode)
+{
+	const char *rw_mode = "";
+
+	switch (mode)
+	{
+		case I_FILE_MODE_READ:
+			rw_mode = "rb";
+			break;
+
+		case I_FILE_MODE_WRITE:
+			rw_mode = "wb";
+			break;
+	}
+
+	return (I_File*)SDL_RWFromFile(path, rw_mode);
+}
+
+void I_FileClose(I_File* const file)
+{
+	SDL_RWclose((SDL_RWops*)file);
+}
+
+size_t I_FileSize(I_File* const file)
+{
+	return SDL_RWsize((SDL_RWops*)file);
+}
+
+size_t I_FileRead(I_File* const file, void* const buffer, const size_t size)
+{
+	return SDL_RWread((SDL_RWops*)file, buffer, 1, size);
+}
+
+size_t I_FileWrite(I_File* const file, const void* const buffer, const size_t size)
+{
+	return SDL_RWwrite((SDL_RWops*)file, buffer, 1, size);
+}
+
+size_t I_FilePut(I_File* const file, const char character)
+{
+	return I_FileWrite(file, &character, 1);
+}
+
+size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
+{
+	int rw_position;
+
+	switch (position)
+	{
+		case I_FILE_POSITION_START:
+			rw_position = RW_SEEK_SET;
+			break;
+
+		case I_FILE_POSITION_CURRENT:
+			rw_position = RW_SEEK_CUR;
+			break;
+
+		case I_FILE_POSITION_END:
+			rw_position = RW_SEEK_END;
+			break;
+	}
+
+	return SDL_RWseek((SDL_RWops*)file, offset, rw_position);
 }

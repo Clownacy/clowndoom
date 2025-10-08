@@ -177,7 +177,7 @@ void IB_GetColor(unsigned char* const bytes, const unsigned char red, const unsi
 	*(Pixel*)bytes = pixel;
 }
 
-void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, void (*output_size_changed_callback)(size_t width, size_t height, d_bool aspect_ratio_correction))
+void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, const IB_OutputSizeChangedCallback output_size_changed_callback)
 {
 	(void)title;
 
