@@ -40,7 +40,7 @@ void I_UpdateNoBlit (void);
 void I_FinishUpdate (void);
 
 /* Wait for vertical retrace or pause a bit. */
-void I_WaitVBL(int count);
+void I_WaitFrames(int count);
 
 void I_ReadScreen (colourindex_t* scr);
 

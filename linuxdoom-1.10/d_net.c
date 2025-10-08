@@ -580,7 +580,7 @@ void D_QuitNetGame (void)
 		for (j=1 ; j<doomcom->numnodes ; j++)
 			if (nodeingame[j])
 				HSendPacket (j, NCMD_EXIT);
-		I_WaitVBL (1);
+		I_WaitFrames (1);
 	}
 
 	I_DeinitNetwork();

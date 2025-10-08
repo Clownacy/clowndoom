@@ -59,9 +59,9 @@ void IB_Quit (void)
 }
 
 
-void IB_WaitVBL(int count)
+void IB_WaitFrames(int count)
 {
-	SDL_Delay(count * 1000 / 70);
+	SDL_Delay(count * 1000 / TICRATE);
 }
 
 

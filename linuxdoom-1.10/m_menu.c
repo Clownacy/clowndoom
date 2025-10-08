@@ -1018,7 +1018,7 @@ void M_QuitResponse(int ch)
 			S_StartSound(NULL,quitsounds2[(gametic>>2)%D_COUNT_OF(quitsounds2)]);
 		else
 			S_StartSound(NULL,quitsounds[(gametic>>2)%D_COUNT_OF(quitsounds)]);
-		I_WaitVBL(TICRATE*3);
+		I_WaitFrames(TICRATE*3/2);
 	}
 	I_Quit ();
 }

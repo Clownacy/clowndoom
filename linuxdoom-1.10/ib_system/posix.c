@@ -62,7 +62,7 @@ void IB_Quit (void)
 }
 
 
-void IB_WaitVBL(int count)
+void IB_WaitFrames(int count)
 {
 #ifdef SGI
 	sginap(1);
@@ -70,7 +70,7 @@ void IB_WaitVBL(int count)
 #ifdef SUN
 	sleep(0);
 #else
-	usleep (count * (1000000/70) );
+	usleep (count * (1000000/TICRATE) );
 #endif
 #endif
 }

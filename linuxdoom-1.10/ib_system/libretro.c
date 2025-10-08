@@ -355,7 +355,7 @@ void IB_Quit (void)
 }
 
 
-void IB_WaitVBL(int count)
+void IB_WaitFrames(int count)
 {
 	while (count-- != 0)
 		IB_Yield();

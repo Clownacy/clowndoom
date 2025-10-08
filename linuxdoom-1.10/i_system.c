@@ -95,9 +95,9 @@ void I_Quit (void)
 	IB_Quit();
 }
 
-void I_WaitVBL(int count)
+void I_WaitFrames(int count)
 {
-	IB_WaitVBL(count);
+	IB_WaitFrames(count);
 }
 
 void I_BeginRead(void)
