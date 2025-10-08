@@ -93,16 +93,16 @@ M_WriteFile
   void*         source,
   int           length )
 {
-	FILE*       handle;
+	I_File*     handle;
 	int         count;
 
-	handle = fopen ( name, "wb");
+	handle = I_FileOpen ( name, I_FILE_MODE_WRITE);
 
 	if (handle == NULL)
 		return d_false;
 
-	count = fwrite (source, 1, length, handle);
-	fclose (handle);
+	count = I_FileWrite (handle, source, length);
+	I_FileClose (handle);
 
 	if (count < length)
 		return d_false;
@@ -117,21 +117,19 @@ M_ReadFile
 ( char const*   name,
   unsigned char**        buffer )
 {
-	FILE*       handle;
+	I_File*     handle;
 	long        count, length;
 	unsigned char                *buf;
 
-	handle = fopen (name, "rb");
+	handle = I_FileOpen (name, I_FILE_MODE_READ);
 	if (handle != NULL)
 	{
-		fseek(handle, 0, SEEK_END);
-		length = ftell(handle);
+		length = I_FileSize(handle);
 		if (length != -1)
 		{
 			buf = (unsigned char*)Z_Malloc (length, PU_STATIC, NULL);
-			rewind(handle);
-			count = fread (buf, 1, length, handle);
-			fclose (handle);
+			count = I_FileRead (handle, buf, length);
+			I_FileClose (handle);
 
 			if (count == length)
 			{
@@ -603,11 +601,11 @@ size_t M_StringCopyOffset(char* const dest, const size_t destsz, const size_t de
 
 d_bool M_FileExists(const char* const filename)
 {
-	FILE* const file = fopen(filename, "rb");
+	I_File* const file = I_FileOpen(filename, I_FILE_MODE_READ);
 
 	if (file != NULL)
 	{
-		fclose(file);
+		I_FileClose(file);
 		return d_true;
 	}
 	else

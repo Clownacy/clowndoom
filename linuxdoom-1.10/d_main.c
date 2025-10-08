@@ -721,7 +721,7 @@ void FindResponseFile (void)
 	for (i = 1;i < myargc;i++)
 		if (myargv[i][0] == '@')
 		{
-			FILE *          handle;
+			I_File *        handle;
 			int             size;
 			int             k;
 			int             index;
@@ -732,19 +732,17 @@ void FindResponseFile (void)
 			char    *firstargv;
 
 			/* READ THE RESPONSE FILE INTO MEMORY */
-			handle = fopen (&myargv[i][1],"rb");
+			handle = I_FileOpen (&myargv[i][1],I_FILE_MODE_READ);
 			if (!handle)
 			{
 				I_Info ("\nNo such response file!");
 				exit(1);
 			}
 			I_Info("Found response file %s!\n",&myargv[i][1]);
-			fseek (handle,0,SEEK_END);
-			size = ftell(handle);
-			fseek (handle,0,SEEK_SET);
+			size = I_FileSize(handle);
 			file = (char*)malloc (size);
-			fread (file,size,1,handle);
-			fclose (handle);
+			I_FileRead (handle,file,size);
+			I_FileClose (handle);
 
 			/* KEEP ALL CMDLINE ARGS FOLLOWING @RESPONSEFILE ARG */
 			for (index = 0,k = i+1; k < myargc; k++)
