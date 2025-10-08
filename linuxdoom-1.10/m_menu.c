@@ -483,20 +483,20 @@ menu_t  SaveDef =
 /*  read the strings from the savegame files */
 void M_ReadSaveStrings(void)
 {
-	FILE*           handle;
+	I_File*         handle;
 	int             i;
 
 	for (i = 0;i < load_end;i++)
 	{
-		handle = fopen (M_GetSaveFilePath(i), "rb");
+		handle = I_FileOpen (M_GetSaveFilePath(i), I_FILE_MODE_READ);
 		if (handle == NULL)
 		{
 			strcpy(&savegamestrings[i][0],EMPTYSTRING);
 			LoadMenu[i].status = 0;
 			continue;
 		}
-		fread (&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
-		fclose (handle);
+		I_FileRead (handle, &savegamestrings[i], SAVESTRINGSIZE);
+		I_FileClose (handle);
 		LoadMenu[i].status = 1;
 	}
 }
