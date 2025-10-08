@@ -48,19 +48,6 @@ size_t                  numlumps;
 void**                  lumpcache;
 
 
-static long filelength (FILE* handle)
-{
-	long previous_position, length;
-
-	previous_position = ftell(handle);
-	fseek(handle, 0, SEEK_END);
-	length = ftell(handle);
-	fseek(handle, previous_position, SEEK_SET);
-
-	return length;
-}
-
-
 static void
 ExtractFileBase
 ( const char*   path,
@@ -92,13 +79,13 @@ ExtractFileBase
 	}
 }
 
-static unsigned long Read32LE(FILE* handle)
+static unsigned long Read32LE(I_File* handle)
 {
 	unsigned char bytes[4];
 	unsigned long value;
 	unsigned int i;
 
-	fread(bytes, 1, 4, handle);
+	I_FileRead(handle, bytes, 4);
 
 	value = 0;
 
@@ -134,10 +121,10 @@ void W_AddFile (const char *filename)
 	wadinfo_t           header;
 	lumpinfo_t*         lump_p;
 	size_t              i;
-	FILE*               handle;
+	I_File*             handle;
 	size_t              startlump;
 	lumpinfo_t          singleinfo;
-	FILE*               storehandle;
+	I_File*             storehandle;
 	d_bool              singlelump;
 	Dictionary_Entry*   dictionary_entry;
 
@@ -151,7 +138,7 @@ void W_AddFile (const char *filename)
 		reloadlump = numlumps;
 	}
 
-	if ((handle = fopen (filename,"rb")) == NULL)
+	if ((handle = I_FileOpen (filename,I_FILE_MODE_READ)) == NULL)
 	{
 		I_Info(" couldn't open %s\n",filename);
 		return;
@@ -167,14 +154,14 @@ void W_AddFile (const char *filename)
 		/* single lump file */
 		singleinfo.handle = handle;
 		singleinfo.position = 0;
-		singleinfo.size = filelength(handle);
+		singleinfo.size = I_FileSize(handle);
 		ExtractFileBase (filename, singleinfo.name);
 		numlumps++;
 	}
 	else
 	{
 		/* WAD file */
-		fread(header.identification, 1, sizeof(header.identification), handle);
+		I_FileRead(handle, header.identification, sizeof(header.identification));
 		header.numlumps = Read32LE(handle);
 		header.infotableofs = Read32LE(handle);
 
@@ -189,7 +176,7 @@ void W_AddFile (const char *filename)
 
 			/* ???modifiedgame = true; */
 		}
-		fseek (handle, header.infotableofs, SEEK_SET);
+		I_FileSeek (handle, header.infotableofs, I_FILE_POSITION_START);
 		numlumps += header.numlumps;
 	}
 
@@ -221,7 +208,7 @@ void W_AddFile (const char *filename)
 			lump_p->handle = storehandle;
 			lump_p->position = Read32LE(storehandle);
 			lump_p->size = Read32LE(storehandle);
-			fread(lump_p->name, 1, 8, storehandle);
+			I_FileRead(storehandle, lump_p->name, 8);
 
 			/* overwrite existing entries so patch lump files take precedence */
 			if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, lump_p->name, 8, &dictionary_entry))
@@ -232,7 +219,7 @@ void W_AddFile (const char *filename)
 	}
 
 	if (reloadname)
-		fclose(handle);
+		I_FileClose(handle);
 }
 
 
@@ -245,20 +232,20 @@ void W_Reload (void)
 {
 	lumpinfo_t*         lump_p;
 	size_t              i;
-	FILE*               handle;
+	I_File*             handle;
 	size_t              numlumps;
 	size_t              infotableofs;
 
 	if (!reloadname)
 		return;
 
-	if ((handle = fopen(reloadname,"rb")) == NULL)
+	if ((handle = I_FileOpen(reloadname,I_FILE_MODE_READ)) == NULL)
 		I_Error ("W_Reload: couldn't open %s",reloadname);
 
-	fseek(handle, 4, SEEK_CUR);
+	I_FileSeek(handle, 4, I_FILE_POSITION_CURRENT);
 	numlumps = Read32LE(handle);
 	infotableofs = Read32LE(handle);
-	fseek (handle, infotableofs, SEEK_SET);
+	I_FileSeek (handle, infotableofs, I_FILE_POSITION_START);
 
 	/* Fill in lumpinfo */
 	lump_p = &lumpinfo[reloadlump];
@@ -272,10 +259,10 @@ void W_Reload (void)
 
 		lump_p->position = Read32LE(handle);
 		lump_p->size = Read32LE(handle);
-		fseek(handle, 8, SEEK_CUR);
+		I_FileSeek(handle, 8, I_FILE_POSITION_CURRENT);
 	}
 
-	fclose(handle);
+	I_FileClose(handle);
 }
 
 
@@ -409,7 +396,7 @@ W_ReadLump
 {
 	size_t      c;
 	lumpinfo_t* l;
-	FILE*       handle;
+	I_File*     handle;
 
 	if (lump >= numlumps)
 		I_Error ("W_ReadLump: %li >= numlumps",(unsigned long)lump);
@@ -421,21 +408,21 @@ W_ReadLump
 	if (l->handle == NULL)
 	{
 		/* reloadable file, so use open / read / close */
-		if ( (handle = fopen (reloadname,"rb")) == NULL)
+		if ( (handle = I_FileOpen (reloadname,I_FILE_MODE_READ)) == NULL)
 			I_Error ("W_ReadLump: couldn't open %s",reloadname);
 	}
 	else
 		handle = l->handle;
 
-	fseek (handle, l->position, SEEK_SET);
-	c = fread (dest, 1, l->size, handle);
+	I_FileSeek (handle, l->position, I_FILE_POSITION_START);
+	c = I_FileRead (handle, dest, l->size);
 
 	if (c < l->size)
 		I_Error ("W_ReadLump: only read %li of %li on lump %li",
 				 (unsigned long)c,(unsigned long)l->size,(unsigned long)lump);
 
 	if (l->handle == NULL)
-		fclose (handle);
+		I_FileClose (handle);
 
 	/* ??? I_EndRead (); */
 }

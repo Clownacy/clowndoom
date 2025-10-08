@@ -23,6 +23,8 @@
 
 #include <stddef.h>
 
+#include "doomtype.h"
+
 int  IB_GetTime (void);
 void IB_Init (void);
 void IB_Quit (void);
@@ -30,5 +32,23 @@ void IB_WaitVBL(int count);
 void IB_Sleep(void);
 size_t IB_GetConfigPath(char *buffer, size_t size);
 
+typedef enum I_FileMode
+{
+	I_FILE_MODE_READ,
+	I_FILE_MODE_WRITE
+} I_FileMode;
+
+typedef enum I_FilePosition
+{
+	I_FILE_POSITION_START,
+	I_FILE_POSITION_CURRENT,
+	I_FILE_POSITION_END
+} I_FilePosition;
+
+I_File* I_FileOpen(const char *path, I_FileMode mode);
+void I_FileClose(I_File *file);
+size_t I_FileSize(I_File *file);
+size_t I_FileRead(I_File *file, void *buffer, size_t size);
+size_t I_FileSeek(I_File *file, size_t offset, I_FilePosition position);
 
 #endif

@@ -25,6 +25,7 @@
 
 #include "d_ticcmd.h"
 #include "d_event.h"
+#include "ib_system.h"
 
 
 /* Called by DoomMain. */
@@ -76,6 +77,5 @@ size_t I_GetConfigPath(char *buffer, size_t size);
 
 void I_BeginRead (void);
 void I_EndRead (void);
-
 
 #endif

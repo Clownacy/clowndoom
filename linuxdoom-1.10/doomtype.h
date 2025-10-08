@@ -33,4 +33,6 @@ typedef unsigned int d_bool;
 /* An indexed pixel. Currently `short` to enable true-colour rendering. */
 typedef unsigned short colourindex_t;
 
+typedef struct I_File I_File;
+
 #endif

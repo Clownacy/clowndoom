@@ -22,6 +22,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "../../external/libretro-helper/libretro-helper.h"
 #include "libretro-callbacks.h"
 
 #include "../doomdef.h"
@@ -39,6 +40,7 @@ LibretroCallbacks libretro;
 
 static cothread_t main_coroutine, game_coroutine;
 static char *iwad_path;
+static struct retro_vfs_interface *vfs;
 
 static void GameEntryPoint(void)
 {
@@ -192,6 +194,19 @@ void retro_set_environment(const retro_environment_t cb)
 
 		/* TODO: Handle this not being available! */
 		libretro.environment(RETRO_ENVIRONMENT_SET_KEYBOARD_CALLBACK, (void*)&callback);
+	}
+
+	/* Get filesystem callbacks. */
+	{
+		struct retro_vfs_interface_info info;
+		info.required_interface_version = 1;
+
+		if (!libretro_helper_get_vfs_interface(libretro.environment, &info))
+		{
+			/* TODO: Do something here. */
+		}
+
+		vfs = info.iface;
 	}
 }
 
@@ -370,4 +385,59 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 void IB_Yield(void)
 {
 	co_switch(main_coroutine);
+}
+
+I_File* I_FileOpen(const char* const path, const I_FileMode mode)
+{
+	unsigned int vfs_mode = 0;
+
+	switch (mode)
+	{
+		case I_FILE_MODE_READ:
+			vfs_mode = RETRO_VFS_FILE_ACCESS_READ;
+			break;
+
+		case I_FILE_MODE_WRITE:
+			vfs_mode = RETRO_VFS_FILE_ACCESS_WRITE;
+			break;
+	}
+
+	return (I_File*)vfs->open(path, vfs_mode, 0);
+}
+
+void I_FileClose(I_File* const file)
+{
+	vfs->close((struct retro_vfs_file_handle*)file);
+}
+
+size_t I_FileSize(I_File* const file)
+{
+	return vfs->size((struct retro_vfs_file_handle*)file);
+}
+
+size_t I_FileRead(I_File* const file, void* const buffer, const size_t size)
+{
+	return vfs->read((struct retro_vfs_file_handle*)file, buffer, size);
+}
+
+size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
+{
+	int vfs_position;
+
+	switch (position)
+	{
+		case I_FILE_POSITION_START:
+			vfs_position = RETRO_VFS_SEEK_POSITION_START;
+			break;
+
+		case I_FILE_POSITION_CURRENT:
+			vfs_position = RETRO_VFS_SEEK_POSITION_CURRENT;
+			break;
+
+		case I_FILE_POSITION_END:
+			vfs_position = RETRO_VFS_SEEK_POSITION_END;
+			break;
+	}
+
+	return vfs->seek((struct retro_vfs_file_handle*)file, offset, vfs_position);
 }

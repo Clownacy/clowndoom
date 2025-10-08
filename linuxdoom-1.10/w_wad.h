@@ -23,7 +23,8 @@
 
 
 #include <stddef.h>
-#include <stdio.h>
+
+#include "doomtype.h"
 
 /* TYPES */
 typedef struct
@@ -40,7 +41,7 @@ typedef struct
 typedef struct
 {
 	char        name[8];
-	FILE*       handle;
+	I_File*     handle;
 	size_t      position;
 	size_t      size;
 } lumpinfo_t;
