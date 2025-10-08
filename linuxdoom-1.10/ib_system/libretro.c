@@ -420,6 +420,16 @@ size_t I_FileRead(I_File* const file, void* const buffer, const size_t size)
 	return vfs->read((struct retro_vfs_file_handle*)file, buffer, size);
 }
 
+size_t I_FileWrite(I_File* const file, const void* const buffer, const size_t size)
+{
+	return vfs->write((struct retro_vfs_file_handle*)file, buffer, size);
+}
+
+size_t I_FilePut(I_File* const file, const char character)
+{
+	return I_FileWrite(file, &character, 1);
+}
+
 size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
 {
 	int vfs_position;

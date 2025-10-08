@@ -478,9 +478,9 @@ void W_Profile (void)
 	memblock_t* block;
 	void*       ptr;
 	char        ch;
-	FILE*       f;
+	I_File*     f;
 	size_t      j;
-	char        name[9];
+	char        name[8];
 
 
 	for (i=0 ; i<numlumps ; i++)
@@ -503,28 +503,34 @@ void W_Profile (void)
 	}
 	profilecount++;
 
-	f = fopen ("waddump.txt","w");
-	name[8] = 0;
+	f = I_FileOpen ("waddump.txt",I_FILE_MODE_WRITE);
 
 	for (i=0 ; i<numlumps ; i++)
 	{
-		memcpy (name,lumpinfo[i].name,8);
+		memcpy (name,lumpinfo[i].name,sizeof(name));
 
-		for (j=0 ; j<8 ; j++)
-			if (!name[j])
+		for (j=0 ; j<D_COUNT_OF(name) ; j++)
+			if (name[j] == '\0')
 				break;
 
-		for ( ; j<8 ; j++)
+		for ( ; j<D_COUNT_OF(name) ; j++)
 			name[j] = ' ';
 
-		fprintf (f,"%s ",name);
+		I_FileWrite (f,name,sizeof(name));
+		I_FilePut (f,' ');
 
 		for (j=0 ; j<profilecount ; j++)
-			fprintf (f,"    %c",info[i][j]);
+		{
+			I_FilePut (f,' ');
+			I_FilePut (f,' ');
+			I_FilePut (f,' ');
+			I_FilePut (f,' ');
+			I_FilePut (f,info[i][j]);
+		}
 
-		fprintf (f,"\n");
+		I_FilePut (f,'\n');
 	}
-	fclose (f);
+	I_FileClose (f);
 }
 
 
