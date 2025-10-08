@@ -333,7 +333,7 @@ void retro_cheat_set(const unsigned int index, const bool enabled, const char* c
 /**************/
 
 /* IB_GetTime */
-/* returns time in 1/70th second tics */
+/* returns time in 1/35th second tics */
 int  IB_GetTime (void)
 {
 	return clock() / (CLOCKS_PER_SEC / TICRATE);

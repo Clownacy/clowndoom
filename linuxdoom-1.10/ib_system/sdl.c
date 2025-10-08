@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 }
 
 /* IB_GetTime */
-/* returns time in 1/70th second tics */
+/* returns time in 1/35th second tics */
 int  IB_GetTime (void)
 {
 	return SDL_GetTicks() * TICRATE / 1000;

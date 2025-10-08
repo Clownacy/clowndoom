@@ -67,7 +67,7 @@ unsigned char* I_ZoneBase (size_t* size)
 
 
 /* I_GetTime */
-/* returns time in 1/70th second tics */
+/* returns time in 1/35th second tics */
 int  I_GetTime (void)
 {
 	return IB_GetTime();
