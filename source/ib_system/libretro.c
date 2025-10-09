@@ -262,7 +262,7 @@ bool retro_load_game(const struct retro_game_info* const info)
 void retro_unload_game(void)
 {
 	/* Shut-down the game. */
-	I_Quit();
+	I_Quit(0);
 
 	free(iwad_path);
 }
@@ -348,8 +348,10 @@ void IB_Init (void)
 
 
 /* IB_Quit */
-void IB_Quit (void)
+void IB_Quit (int exit_code)
 {
+	(void)exit_code;
+
 	libretro.environment(RETRO_ENVIRONMENT_SHUTDOWN, NULL);
 	IB_Yield();
 }

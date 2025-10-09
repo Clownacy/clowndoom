@@ -706,7 +706,7 @@ void IdentifyVersion (void)
 			I_Info("Game mode indeterminate.\n");
 
 			/* We don't abort. Let's see what the PWAD contains. */
-			/* exit(1); */
+			/* I_Quit(1); */
 			/* I_Error ("Game mode indeterminate\n"); */
 		}
 	}
@@ -737,7 +737,7 @@ void FindResponseFile (void)
 			if (!handle)
 			{
 				I_Info ("\nNo such response file!");
-				exit(1);
+				I_Quit(1);
 			}
 			I_Info("Found response file %s!\n",&myargv[i][1]);
 			size = I_FileSize(handle);

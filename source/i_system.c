@@ -85,14 +85,14 @@ void I_Init (void)
 }
 
 /* I_Quit */
-void I_Quit (void)
+void I_Quit (int exit_code)
 {
 	D_QuitNetGame ();
 	I_ShutdownSound();
 	M_SaveDefaults ();
 	I_ShutdownGraphics();
 
-	IB_Quit();
+	IB_Quit(exit_code);
 }
 
 void I_WaitFrames(int count)
@@ -133,7 +133,7 @@ void I_Error (const char *error, ...)
 	D_QuitNetGame ();
 	I_ShutdownGraphics();
 
-	exit(-1);
+	I_Quit(-1);
 }
 
 void I_Info (const char *error, ...)

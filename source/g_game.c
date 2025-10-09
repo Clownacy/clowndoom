@@ -1670,7 +1670,7 @@ d_bool G_CheckDemoStatus (void)
 		int i;
 
 		if (singledemo)
-			I_Quit ();
+			I_Quit (0);
 
 		Z_ChangeTag (demobuffer, PU_CACHE);
 		demoplayback = d_false;

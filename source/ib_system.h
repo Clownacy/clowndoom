@@ -27,7 +27,7 @@
 
 int  IB_GetTime (void);
 void IB_Init (void);
-void IB_Quit (void);
+void IB_Quit (int exit_code);
 void IB_WaitFrames(int count);
 void IB_Sleep(void);
 size_t IB_GetConfigPath(char *buffer, size_t size);

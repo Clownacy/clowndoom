@@ -52,10 +52,10 @@ void IB_Init (void)
 
 
 /* IB_Quit */
-void IB_Quit (void)
+void IB_Quit (int exit_code)
 {
 	SDL_Quit();
-	exit(0);
+	exit(exit_code);
 }
 
 
