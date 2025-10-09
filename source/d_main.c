@@ -648,7 +648,7 @@ void IdentifyVersion (void)
 		gamemission = none;
 		language = english;
 
-		if (p != 0)
+		if (p != 0 && p < myargc - 1)
 		{
 			const char* const path = myargv[p + 1];
 			const char* const basename = M_basename(path);
@@ -719,17 +719,18 @@ void FindResponseFile (void)
 #define MAXARGVS        100
 
 	for (i = 1;i < myargc;i++)
+	{
 		if (myargv[i][0] == '@')
 		{
-			I_File *        handle;
-			int             size;
-			int             k;
-			int             index;
-			int             indexinfile;
-			char    *infile;
-			char    *file;
-			char    *moreargs[20];
-			char    *firstargv;
+			I_File *handle;
+			int     size;
+			int     k;
+			int     index;
+			int     indexinfile;
+			char   *infile;
+			char   *file;
+			char   *moreargs[20];
+			char   *firstargv;
 
 			/* READ THE RESPONSE FILE INTO MEMORY */
 			handle = I_FileOpen (&myargv[i][1],I_FILE_MODE_READ);
@@ -758,13 +759,11 @@ void FindResponseFile (void)
 			indexinfile++;  /* SKIP PAST ARGV[0] (KEEP IT) */
 			do
 			{
-				myargv[indexinfile++] = infile+k;
-				while(k < size &&
-					  ((*(infile+k)>= ' '+1) && (*(infile+k)<='z')))
+				myargv[indexinfile++] = &infile[k];
+				while(k < size && ((infile[k]>= ' '+1) && (infile[k]<='z')))
 					k++;
-				*(infile+k) = 0;
-				while(k < size &&
-					  ((*(infile+k)<= ' ') || (*(infile+k)>'z')))
+				infile[k] = '\0';
+				while(k < size && ((infile[k]<= ' ') || (infile[k]>'z')))
 					k++;
 			} while(k < size);
 
@@ -779,14 +778,15 @@ void FindResponseFile (void)
 
 			break;
 		}
+	}
 }
 
 
 /* D_DoomMain */
 void D_DoomMain (int argc, char **argv)
 {
-	int             p;
-	char                    file[256];
+	int  p;
+	char file[256];
 
 	myargc = argc;
 	myargv = argv;
@@ -987,7 +987,9 @@ void D_DoomMain (int argc, char **argv)
 	if (p && p < myargc-1)
 	{
 		if (gamemode == commercial)
+		{
 			startmap = atoi (myargv[p+1]);
+		}
 		else
 		{
 			startepisode = myargv[p+1][0]-'0';
@@ -1015,13 +1017,13 @@ void D_DoomMain (int argc, char **argv)
 	{
 		/* These are the lumps that will be checked in IWAD, */
 		/* if any one is not present, execution will be aborted. */
-		char name[23][9]=
+		static const char name[23][9]=
 		{
 			"e2m1","e2m2","e2m3","e2m4","e2m5","e2m6","e2m7","e2m8","e2m9",
 			"e3m1","e3m3","e3m3","e3m4","e3m5","e3m6","e3m7","e3m8","e3m9",
 			"dphoof","bfgga0","heada1","cybra1","spida1d1"
 		};
-		int i;
+		size_t i;
 
 		if ( gamemode == shareware)
 			I_Error("\nYou cannot -file with the shareware "
@@ -1030,9 +1032,16 @@ void D_DoomMain (int argc, char **argv)
 		/* Check for fake IWAD with right name, */
 		/* but w/o all the lumps of the registered version. */
 		if (gamemode == registered)
-			for (i = 0;i < 23; i++)
+		{
+			for (i = 0;i < D_COUNT_OF(name); i++)
+			{
 				if (W_CheckNumForName(name[i])<0)
+				{
 					I_Error("\nThis is not the registered version.");
+					break;
+				}
+			}
+		}
 	}
 
 	/* Iff additonal PWAD files are used, print modified banner */

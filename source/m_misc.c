@@ -316,7 +316,7 @@ void M_LoadDefaults (void)
 	d_bool      isstring;
 
 	/* set everything to base values */
-	numdefaults = sizeof(defaults)/sizeof(defaults[0]);
+	numdefaults = D_COUNT_OF(defaults);
 	for (i=0 ; i<numdefaults ; i++)
 	{
 		if (defaults[i].is_string)
@@ -333,7 +333,9 @@ void M_LoadDefaults (void)
 		I_Info ("       default file: %s\n",defaultfile);
 	}
 	else
+	{
 		defaultfile = basedefault;
+	}
 
 	/* read the file in, overriding any set defaults */
 	f = fopen (defaultfile, "r");
@@ -351,17 +353,22 @@ void M_LoadDefaults (void)
 					newstring = M_strndup(strparm+1, strlen(strparm+1)-1);
 				}
 				else
+				{
 					sscanf(strparm, "%i", &parm);
+				}
+
 				for (i=0 ; i<numdefaults ; i++)
+				{
 					if (!strcmp(def, defaults[i].name))
 					{
 						if (!isstring)
 							*defaults[i].location = parm;
 						else
-							*(const char**)defaults[i].location =
-								newstring;
+							*(const char**)defaults[i].location = newstring;
+
 						break;
 					}
+				}
 			}
 		}
 
