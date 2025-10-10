@@ -233,9 +233,15 @@ elseif(BACKEND STREQUAL "libretro")
 		"source/ib_sound/libretro.c"
 		"source/ib_system/libretro.c"
 		"source/ib_video/libretro.c"
+		"external/libretro-common/compat/compat_strl.c"
+		"external/libretro-common/encodings/encoding_utf.c"
+		"external/libretro-common/file/file_path.c"
+		"external/libretro-common/file/file_path_io.c"
 		"external/libretro-common/libco/libco.c"
-		"external/libretro-helper/libretro-helper.c"
-		"external/libretro-helper/libretro-helper.h"
+		"external/libretro-common/streams/file_stream.c"
+		"external/libretro-common/string/stdstring.c"
+		"external/libretro-common/time/rtime.c"
+		"external/libretro-common/vfs/vfs_implementation.c"
 	)
 
 	############################################

@@ -22,8 +22,8 @@
 #include <string.h>
 #include <time.h>
 
-#include "../../external/libretro-helper/libretro-helper.h"
 #include "libretro-callbacks.h"
+#include "streams/file_stream.h"
 
 #include "../doomdef.h"
 #include "../d_main.h"
@@ -40,7 +40,6 @@ LibretroCallbacks libretro;
 
 static cothread_t main_coroutine, game_coroutine;
 static char *iwad_path;
-static struct retro_vfs_interface *vfs;
 static bool game_exited;
 
 static void GameEntryPoint(void)
@@ -205,12 +204,8 @@ void retro_set_environment(const retro_environment_t cb)
 		struct retro_vfs_interface_info info;
 		info.required_interface_version = 1;
 
-		if (!libretro_helper_get_vfs_interface(libretro.environment, &info))
-		{
-			/* TODO: Do something here. */
-		}
-
-		vfs = info.iface;
+		if (libretro.environment(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &info))
+			filestream_vfs_init(&info);
 	}
 }
 
@@ -407,32 +402,32 @@ I_File* I_FileOpen(const char* const path, const I_FileMode mode)
 			break;
 	}
 
-	return (I_File*)vfs->open(path, vfs_mode, 0);
+	return (I_File*)filestream_open(path, vfs_mode, 0);
 }
 
 void I_FileClose(I_File* const file)
 {
-	vfs->close((struct retro_vfs_file_handle*)file);
+	filestream_close((RFILE*)file);
 }
 
 size_t I_FileSize(I_File* const file)
 {
-	return vfs->size((struct retro_vfs_file_handle*)file);
+	return filestream_get_size((RFILE*)file);
 }
 
 size_t I_FileRead(I_File* const file, void* const buffer, const size_t size)
 {
-	return vfs->read((struct retro_vfs_file_handle*)file, buffer, size);
+	return filestream_read((RFILE*)file, buffer, size);
 }
 
 size_t I_FileWrite(I_File* const file, const void* const buffer, const size_t size)
 {
-	return vfs->write((struct retro_vfs_file_handle*)file, buffer, size);
+	return filestream_write((RFILE*)file, buffer, size);
 }
 
 size_t I_FilePut(I_File* const file, const char character)
 {
-	return I_FileWrite(file, &character, 1);
+	return filestream_putc((RFILE*)file, character) == character ? 1 : 0;
 }
 
 size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
@@ -454,5 +449,5 @@ size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition 
 			break;
 	}
 
-	return vfs->seek((struct retro_vfs_file_handle*)file, offset, vfs_position);
+	return filestream_seek((RFILE*)file, offset, vfs_position);
 }
