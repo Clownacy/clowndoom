@@ -119,22 +119,26 @@ static int RETRO_CALLCONV File_RemoveDefault(const char* const path)
 	return remove(path);
 }
 
+static const struct retro_vfs_interface default_iface = {
+	NULL,
+	File_OpenDefault,
+	File_CloseDefault,
+	File_GetSizeDefault,
+	File_TellDefault,
+	File_SeekDefault,
+	File_ReadDefault,
+	File_WriteDefault,
+	NULL,
+	File_RemoveDefault,
+};
+
 bool libretro_helper_get_vfs_interface(const retro_environment_t environment, struct retro_vfs_interface_info* const info)
 {
 	if (info->required_interface_version != 1)
 		return false;
 
 	if (!environment(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, info))
-	{
-		info->iface->open   = File_OpenDefault;
-		info->iface->close  = File_CloseDefault;
-		info->iface->size   = File_GetSizeDefault;
-		info->iface->tell   = File_TellDefault;
-		info->iface->seek   = File_SeekDefault;
-		info->iface->read   = File_ReadDefault;
-		info->iface->write  = File_WriteDefault;
-		info->iface->remove = File_RemoveDefault;
-	}
+		info->iface = &default_iface;
 
 	return true;
 }

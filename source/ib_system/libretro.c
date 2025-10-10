@@ -41,6 +41,7 @@ LibretroCallbacks libretro;
 static cothread_t main_coroutine, game_coroutine;
 static char *iwad_path;
 static struct retro_vfs_interface *vfs;
+static bool game_exited;
 
 static void GameEntryPoint(void)
 {
@@ -61,6 +62,9 @@ void retro_init(void)
 
 void retro_deinit(void)
 {
+	if (!game_exited)
+		I_Quit(0);
+
 	co_delete(game_coroutine);
 }
 
@@ -261,9 +265,6 @@ bool retro_load_game(const struct retro_game_info* const info)
 
 void retro_unload_game(void)
 {
-	/* Shut-down the game. */
-	I_Quit(0);
-
 	free(iwad_path);
 }
 
@@ -351,6 +352,8 @@ void IB_Init (void)
 void IB_Quit (int exit_code)
 {
 	(void)exit_code;
+
+	game_exited = true;
 
 	libretro.environment(RETRO_ENVIRONMENT_SHUTDOWN, NULL);
 	IB_Yield();
