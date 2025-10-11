@@ -58,13 +58,13 @@ struct retro_core_option_v2_category option_cats_us[] = {
 struct retro_core_option_v2_definition option_defs_us[] = {
 	{
 		/* Key. */
-		"clowndoom_full_colour",
+		"clowndoom_move_with_mouse",
 		/* Label. */
-		"Full Colour",
+		"Move with Mouse",
 		/* Categorised label. */
 		NULL,
 		/* Description. */
-		"Renders using more than 256 colours.",
+		"Allow the player to move forward and backward with the mouse.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
@@ -77,6 +77,50 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		},
 		/* Default value. */
 		"disabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_always_run",
+		/* Label. */
+		"Run by Default",
+		/* Categorised label. */
+		NULL,
+		/* Description. */
+		"Makes the run button make the player character walk instead.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		NULL,
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"enabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_always_strafe",
+		/* Label. */
+		"Strafe by Default",
+		/* Categorised label. */
+		NULL,
+		/* Description. */
+		"Makes the left and right buttons make the player character strafe instead.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		NULL,
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"enabled"
 	},
 	{
 		/* Key. */
@@ -99,6 +143,50 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		},
 		/* Default value. */
 		"enabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_full_colour",
+		/* Label. */
+		"Full Colour",
+		/* Categorised label. */
+		NULL,
+		/* Description. */
+		"Renders using more than 256 colours.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		NULL,
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"disabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_prototype_light_amplification_visor_effect",
+		/* Label. */
+		"Prototype Light Amplification Visor Effect",
+		/* Categorised label. */
+		NULL,
+		/* Description. */
+		"Uses the night-vision effect from the Press Release prototype.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		NULL,
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"disabled"
 	},
 	{NULL, NULL, NULL, NULL, NULL, NULL, {{NULL, NULL}}, NULL}
 };

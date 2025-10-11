@@ -54,15 +54,15 @@ static bool DoOptionBoolean(const char* const key, const char* const true_value)
 	return libretro.environment(RETRO_ENVIRONMENT_GET_VARIABLE, &variable) && variable.value != NULL && strcmp(variable.value, true_value) == 0;
 }
 
-static void DoOptionBooleanWithCallback(const bool initial, int* const option, const char* const name, void (* const callback)(void))
+static void DoOptionBooleanWithCallback(const bool initial, int* const option, const char* const name, const char* const true_value, void (* const callback)(void))
 {
-	const bool new_setting = DoOptionBoolean(name, "enabled");
+	const bool new_setting = DoOptionBoolean(name, true_value);
 
 	if (*option != new_setting)
 	{
 		*option = new_setting;
 
-		if (!initial)
+		if (!initial && callback != NULL)
 			callback();
 	}
 }
@@ -79,12 +79,46 @@ static void OptionChanged_AspectRatioCorrection(void)
 	R_InitColormaps();
 }
 
+static void OptionChanged_PrototypeLightAmplificationVisorEffect(void)
+{
+	R_InitColormaps();
+}
+
 static void UpdateOptions(const bool initial)
 {
-	extern int full_colour;
+	extern int novert, always_run, always_strafe, full_colour, prototype_light_amplification_visor_effect;
 
-	DoOptionBooleanWithCallback(initial, &full_colour, "clowndoom_full_colour", OptionChanged_FullColor);
-	DoOptionBooleanWithCallback(initial, &aspect_ratio_correction, "clowndoom_aspect_ratio_correction", OptionChanged_AspectRatioCorrection);
+	DoOptionBooleanWithCallback(initial,
+		&novert,
+		"clowndoom_move_with_mouse",
+		"disabled",
+		NULL);
+	DoOptionBooleanWithCallback(initial,
+		&always_run,
+		"clowndoom_always_run",
+		"enabled",
+		NULL);
+	DoOptionBooleanWithCallback(initial,
+		&always_strafe,
+		"clowndoom_always_strafe",
+		"enabled",
+		NULL);
+	DoOptionBooleanWithCallback(initial,
+		&aspect_ratio_correction,
+		"clowndoom_aspect_ratio_correction",
+		"enabled",
+		OptionChanged_AspectRatioCorrection);
+	DoOptionBooleanWithCallback(initial,
+		&full_colour,
+		"clowndoom_full_colour",
+		"enabled",
+		OptionChanged_FullColor);
+	DoOptionBooleanWithCallback(initial,
+		&prototype_light_amplification_visor_effect,
+		"clowndoom_prototype_light_amplification_visor_effect",
+		"enabled",
+		OptionChanged_PrototypeLightAmplificationVisorEffect);
+	
 }
 
 static void GameEntryPoint(void)
