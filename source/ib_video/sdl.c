@@ -203,7 +203,7 @@ void IB_StartTic (void)
 		switch (sdl_event.type)
 		{
 			case SDL_QUIT:
-				I_Quit();
+				I_Quit(0);
 				break;
 
 			case SDL_KEYDOWN:
