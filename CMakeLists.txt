@@ -234,6 +234,7 @@ elseif(BACKEND STREQUAL "libretro")
 		"source/ib_system/libretro.c"
 		"source/ib_video/libretro.c"
 		"external/libretro-common/compat/compat_strl.c"
+		"external/libretro-common/compat/fopen_utf8.c"
 		"external/libretro-common/encodings/encoding_utf.c"
 		"external/libretro-common/file/file_path.c"
 		"external/libretro-common/file/file_path_io.c"
