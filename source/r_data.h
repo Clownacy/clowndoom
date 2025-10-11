@@ -33,6 +33,7 @@ R_GetColumn
 
 
 /* I/O, setting up the stuff. */
+void R_InitColormaps (void);
 void R_InitData (void);
 void R_PrecacheLevel (void);
 

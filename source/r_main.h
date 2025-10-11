@@ -139,10 +139,14 @@ R_AddPointToBox
 /* Called by G_Drawer. */
 void R_RenderPlayerView (player_t *player);
 
+void R_InitLightTables (void);
+
 /* Called by startup code. */
 void R_Init (void);
 
 /* Called by M_Responder. */
 void R_SetViewSize (int blocks, int detail, int new_screen_width, int new_screen_height, int new_hud_scale);
+
+void R_ExecuteSetViewSize (void);
 
 #endif

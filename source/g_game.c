@@ -1150,7 +1150,6 @@ void G_DoWorldDone (void)
 /* G_InitFromSavegame */
 /* Can be called by the startup code or the menu task. */
 extern d_bool setsizeneeded;
-void R_ExecuteSetViewSize (void);
 
 char    savename[256];
 

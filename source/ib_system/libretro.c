@@ -24,11 +24,16 @@
 
 #include "libretro-callbacks.h"
 #include "streams/file_stream.h"
+#include "libretro_core_options.h"
 
 #include "../doomdef.h"
 #include "../d_main.h"
-#include "../m_misc.h"
 #include "../i_system.h"
+#include "../ib_video.h"
+#include "../m_misc.h"
+#include "../r_data.h"
+#include "../r_main.h"
+#include "../v_video.h"
 
 /******************/
 /* libretro stuff */
@@ -41,6 +46,46 @@ LibretroCallbacks libretro;
 static cothread_t main_coroutine, game_coroutine;
 static char *iwad_path;
 static bool game_exited;
+
+static bool DoOptionBoolean(const char* const key, const char* const true_value)
+{
+	struct retro_variable variable;
+	variable.key = key;
+	return libretro.environment(RETRO_ENVIRONMENT_GET_VARIABLE, &variable) && variable.value != NULL && strcmp(variable.value, true_value) == 0;
+}
+
+static void DoOptionBooleanWithCallback(const bool initial, int* const option, const char* const name, void (* const callback)(void))
+{
+	const bool new_setting = DoOptionBoolean(name, "enabled");
+
+	if (*option != new_setting)
+	{
+		*option = new_setting;
+
+		if (!initial)
+			callback();
+	}
+}
+
+static void OptionChanged_FullColor(void)
+{
+	V_ReloadPalette();
+	R_InitColormaps();
+}
+
+static void OptionChanged_AspectRatioCorrection(void)
+{
+	V_ReloadPalette();
+	R_InitColormaps();
+}
+
+static void UpdateOptions(const bool initial)
+{
+	extern int full_colour;
+
+	DoOptionBooleanWithCallback(initial, &full_colour, "clowndoom_full_colour", OptionChanged_FullColor);
+	DoOptionBooleanWithCallback(initial, &aspect_ratio_correction, "clowndoom_aspect_ratio_correction", OptionChanged_AspectRatioCorrection);
+}
 
 static void GameEntryPoint(void)
 {
@@ -57,6 +102,8 @@ void retro_init(void)
 	   So, we use libretro's 'libco' library to work-around this issue with coroutines. */
 	main_coroutine = co_active();
 	game_coroutine = co_create(64 * 1024, GameEntryPoint);
+
+	UpdateOptions(true);
 }
 
 void retro_deinit(void)
@@ -97,7 +144,9 @@ void retro_get_system_av_info(struct retro_system_av_info* const info)
 	info->geometry.base_height  = ORIGINAL_SCREEN_HEIGHT;
 	info->geometry.max_width    = MAXIMUM_SCREENWIDTH;
 	info->geometry.max_height   = MAXIMUM_SCREENHEIGHT;
-	info->geometry.aspect_ratio = 0.0f;
+	info->geometry.aspect_ratio = (float)ORIGINAL_SCREEN_WIDTH / ORIGINAL_SCREEN_HEIGHT;
+	if (aspect_ratio_correction)
+		info->geometry.aspect_ratio = info->geometry.aspect_ratio * 5 / 6;
 
 	info->timing.fps            = TICRATE;
 	info->timing.sample_rate    = LIBRETRO_SAMPLE_RATE;
@@ -208,6 +257,8 @@ void retro_set_environment(const retro_environment_t cb)
 {
 	libretro.environment = cb;
 
+	libretro_set_core_options(libretro.environment);
+
 	{
 		const struct retro_keyboard_callback callback = {KeyboardCallback};
 
@@ -257,8 +308,13 @@ void retro_reset(void)
 
 void retro_run(void)
 {
+	bool options_updated;
+
 	/* TODO: Use 'libretro.audio' instead, so that this buffer is not needed. */
 	int16_t audio_buffer[LIBRETRO_SAMPLE_RATE / TICRATE][LIBRETRO_CHANNEL_COUNT];
+
+	if (libretro.environment(RETRO_ENVIRONMENT_GET_VARIABLE_UPDATE, &options_updated) && options_updated)
+		UpdateOptions(false);
 
 	/* `libretro.h` says this must be called every time that `retro_run` is called. */
 	libretro.input_poll();

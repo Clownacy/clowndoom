@@ -125,5 +125,6 @@ V_GetBlock
 /* Selects palette to display. */
 unsigned char((*V_GetPalette(size_t *length))[0x100][3]);
 void V_SetPalette(const int palette_id);
+void V_ReloadPalette(void);
 
 #endif

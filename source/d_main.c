@@ -220,7 +220,6 @@ void D_ProcessEvents (void)
 gamestate_t     wipegamestate = GS_DEMOSCREEN;
 extern  d_bool setsizeneeded; /* TODO: This is such spaghetti code bullshit */
 extern  int             showMessages;
-void R_ExecuteSetViewSize (void);
 
 void D_Display (void)
 {

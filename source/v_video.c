@@ -476,10 +476,15 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 
 void V_SetPalette(const int palette_id)
 {
+	current_palette_id = palette_id;
+
+	V_ReloadPalette();
+}
+
+void V_ReloadPalette(void)
+{
 	unsigned char(*palette)[0x100][3];
 	size_t palette_length;
-
-	current_palette_id = palette_id;
 
 	palette = V_GetPalette(&palette_length);
 	I_SetPalette(palette, palette_length);
