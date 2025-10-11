@@ -146,50 +146,50 @@ M_ReadFile
 
 /* DEFAULTS */
 /* Show messages has default, 0 = off, 1 = on */
-int             showMessages;
+int             showMessages = 1;
 
-int             novert;
-int             always_run;
-int             always_strafe;
+int             novert = 1;
+int             always_run = 1;
+int             always_strafe = 1;
 
 /* controls (have defaults) */
-int             key_right;
-int             key_left;
-int             key_up;
-int             key_down;
+int             key_right = 'd';
+int             key_left = 'a';
+int             key_up = 'w';
+int             key_down = 's';
 
-int             key_strafeleft;
-int             key_straferight;
+int             key_strafeleft = ',';
+int             key_straferight = '.';
 
-int             key_fire;
-int             key_use;
-int             key_strafe;
-int             key_speed;
+int             key_fire = KEY_RCTRL;
+int             key_use = ' ';
+int             key_strafe = KEY_RALT;
+int             key_speed = KEY_RSHIFT;
 
-int             mousebfire;
-int             mousebstrafe;
-int             mousebforward;
-int             mouseSensitivity;
+int             mousebfire = 0;
+int             mousebstrafe = 1;
+int             mousebforward = 2;
+int             mouseSensitivity = 5;
 
-int             joybfire;
-int             joybstrafe;
-int             joybuse;
-int             joybspeed;
-int             joybweaponprevious;
-int             joybweaponnext;
+int             joybfire = 11;
+int             joybstrafe = 2;
+int             joybuse = 3;
+int             joybspeed = 10;
+int             joybweaponprevious = 1;
+int             joybweaponnext = 0;
 
-int             screenblocks;
+int             screenblocks = 10;
 /* Blocky mode, has default, 0 = high, 1 = normal */
-int             detailLevel;
-int             usegamma;
-int             aspect_ratio_correction;
-int             full_colour;
-int             prototype_light_amplification_visor_effect;
+int             detailLevel = 0;
+int             usegamma = 0;
+int             aspect_ratio_correction = 1;
+int             full_colour = 0;
+int             prototype_light_amplification_visor_effect = 0;
 
-int             musicVolume = 15;
-int             sfxVolume = 15;
-int             numChannels;
-const char     *wildmidi_config_path;
+int             musicVolume = 8;
+int             sfxVolume = 8;
+int             numChannels = 8;
+const char     *wildmidi_config_path = "wildmidi.cfg";
 
 const char     *chat_macros[10] =
 {
@@ -210,7 +210,6 @@ typedef struct
 {
 	const char* name;
 	int*        location;
-	size_t      defaultvalue;
 	d_bool      is_string;
 	/*int               scantranslate;*/        /* PC scan code hack */
 	/*int               untranslated;*/         /* lousy hack */
@@ -219,67 +218,67 @@ typedef struct
 static const default_t       defaults[] =
 {
 	/* General */
-	{"show_messages",&showMessages, 1, d_false},
-	{"novert",&novert, 1, d_false},
-	{"always_run",&always_run, 1, d_false},
-	{"always_strafe",&always_strafe, 1, d_false},
+	{"show_messages",&showMessages, d_false},
+	{"novert",&novert, d_false},
+	{"always_run",&always_run, d_false},
+	{"always_strafe",&always_strafe, d_false},
 
 	/* Keyboard */
 	/* Movement */
-	{"key_right",&key_right, 'd', d_false},
-	{"key_left",&key_left, 'a', d_false},
-	{"key_up",&key_up, 'w', d_false},
-	{"key_down",&key_down, 's', d_false},
-	{"key_strafeleft",&key_strafeleft, ',', d_false},
-	{"key_straferight",&key_straferight, '.', d_false},
+	{"key_right",&key_right, d_false},
+	{"key_left",&key_left, d_false},
+	{"key_up",&key_up, d_false},
+	{"key_down",&key_down, d_false},
+	{"key_strafeleft",&key_strafeleft, d_false},
+	{"key_straferight",&key_straferight, d_false},
 	/* Actions */
-	{"key_fire",&key_fire, KEY_RCTRL, d_false},
-	{"key_use",&key_use, ' ', d_false},
-	{"key_strafe",&key_strafe, KEY_RALT, d_false},
-	{"key_speed",&key_speed, KEY_RSHIFT, d_false},
+	{"key_fire",&key_fire, d_false},
+	{"key_use",&key_use, d_false},
+	{"key_strafe",&key_strafe, d_false},
+	{"key_speed",&key_speed, d_false},
 
 	/* Mouse */
-	{"mouseb_fire",&mousebfire,0, d_false},
-	{"mouseb_strafe",&mousebstrafe,1, d_false},
-	{"mouseb_forward",&mousebforward,2, d_false},
-	{"mouse_sensitivity",&mouseSensitivity, 5, d_false},
+	{"mouseb_fire",&mousebfire, d_false},
+	{"mouseb_strafe",&mousebstrafe, d_false},
+	{"mouseb_forward",&mousebforward, d_false},
+	{"mouse_sensitivity",&mouseSensitivity, d_false},
 
 	/* Joystick */
-	{"joyb_fire",&joybfire,11, d_false},
-	{"joyb_strafe",&joybstrafe,2, d_false},
-	{"joyb_use",&joybuse,3, d_false},
-	{"joyb_speed",&joybspeed,10, d_false},
-	{"joyb_weaponprevious",&joybweaponprevious,1, d_false},
-	{"joyb_weaponnext",&joybweaponnext,0, d_false},
+	{"joyb_fire",&joybfire, d_false},
+	{"joyb_strafe",&joybstrafe, d_false},
+	{"joyb_use",&joybuse, d_false},
+	{"joyb_speed",&joybspeed, d_false},
+	{"joyb_weaponprevious",&joybweaponprevious, d_false},
+	{"joyb_weaponnext",&joybweaponnext, d_false},
 
 	/* Video */
-	{"screenblocks",&screenblocks, 10, d_false},
-	{"detaillevel",&detailLevel, 0, d_false},
-	{"usegamma",&usegamma, 0, d_false},
-	{"aspect_ratio_correction",&aspect_ratio_correction, 1, d_false},
-	{"full_colour",&full_colour, 0, d_false},
-	{"prototype_light_amplification_visor_effect",&prototype_light_amplification_visor_effect, 0, d_false},
-	{"screen_width",&SCREENWIDTH, ORIGINAL_SCREEN_WIDTH, d_false},
-	{"screen_height",&SCREENHEIGHT, ORIGINAL_SCREEN_HEIGHT, d_false},
-	{"hud_scale",&HUD_SCALE, 1, d_false},
+	{"screenblocks",&screenblocks, d_false},
+	{"detaillevel",&detailLevel, d_false},
+	{"usegamma",&usegamma, d_false},
+	{"aspect_ratio_correction",&aspect_ratio_correction, d_false},
+	{"full_colour",&full_colour, d_false},
+	{"prototype_light_amplification_visor_effect",&prototype_light_amplification_visor_effect, d_false},
+	{"screen_width",&SCREENWIDTH, d_false},
+	{"screen_height",&SCREENHEIGHT, d_false},
+	{"hud_scale",&HUD_SCALE, d_false},
 
 	/* Audio */
-	{"music_volume",&musicVolume, 8, d_false},
-	{"sfx_volume",&sfxVolume, 8, d_false},
-	{"snd_channels",&numChannels, 8, d_false},
-	{"wildmidi_config_path", (int*)&wildmidi_config_path, (size_t)"wildmidi.cfg", d_true },
+	{"music_volume",&musicVolume, d_false},
+	{"sfx_volume",&sfxVolume, d_false},
+	{"snd_channels",&numChannels, d_false},
+	{"wildmidi_config_path", (int*)&wildmidi_config_path, d_true },
 
 	/* Chat macros */
-	{"chatmacro0", (int *) &chat_macros[0], (size_t) HUSTR_CHATMACRO0, d_true },
-	{"chatmacro1", (int *) &chat_macros[1], (size_t) HUSTR_CHATMACRO1, d_true },
-	{"chatmacro2", (int *) &chat_macros[2], (size_t) HUSTR_CHATMACRO2, d_true },
-	{"chatmacro3", (int *) &chat_macros[3], (size_t) HUSTR_CHATMACRO3, d_true },
-	{"chatmacro4", (int *) &chat_macros[4], (size_t) HUSTR_CHATMACRO4, d_true },
-	{"chatmacro5", (int *) &chat_macros[5], (size_t) HUSTR_CHATMACRO5, d_true },
-	{"chatmacro6", (int *) &chat_macros[6], (size_t) HUSTR_CHATMACRO6, d_true },
-	{"chatmacro7", (int *) &chat_macros[7], (size_t) HUSTR_CHATMACRO7, d_true },
-	{"chatmacro8", (int *) &chat_macros[8], (size_t) HUSTR_CHATMACRO8, d_true },
-	{"chatmacro9", (int *) &chat_macros[9], (size_t) HUSTR_CHATMACRO9, d_true }
+	{"chatmacro0", (int *) &chat_macros[0], d_true },
+	{"chatmacro1", (int *) &chat_macros[1], d_true },
+	{"chatmacro2", (int *) &chat_macros[2], d_true },
+	{"chatmacro3", (int *) &chat_macros[3], d_true },
+	{"chatmacro4", (int *) &chat_macros[4], d_true },
+	{"chatmacro5", (int *) &chat_macros[5], d_true },
+	{"chatmacro6", (int *) &chat_macros[6], d_true },
+	{"chatmacro7", (int *) &chat_macros[7], d_true },
+	{"chatmacro8", (int *) &chat_macros[8], d_true },
+	{"chatmacro9", (int *) &chat_macros[9], d_true }
 };
 
 int     numdefaults;
@@ -323,16 +322,6 @@ void M_LoadDefaults (void)
 	char*       newstring;
 	int         parm;
 	d_bool      isstring;
-
-	/* set everything to base values */
-	numdefaults = D_COUNT_OF(defaults);
-	for (i=0 ; i<numdefaults ; i++)
-	{
-		if (defaults[i].is_string)
-			*(const char**)defaults[i].location = (const char*)defaults[i].defaultvalue;
-		else
-			*defaults[i].location = defaults[i].defaultvalue;
-	}
 
 	/* check for a custom default file */
 	i = M_CheckParm ("-config");
