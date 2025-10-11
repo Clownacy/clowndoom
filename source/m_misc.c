@@ -37,9 +37,11 @@
 
 #include "i_system.h"
 #include "i_video.h"
+#include "s_sound.h"
 #include "v_video.h"
 
 #include "hu_stuff.h"
+#include "r_main.h"
 
 /* State. */
 #include "doomstat.h"
@@ -206,6 +208,7 @@ const char     *chat_macros[10] =
 };
 
 
+#ifndef __LIBRETRO__
 typedef struct
 {
 	const char* name;
@@ -280,6 +283,7 @@ static const default_t       defaults[] =
 	{"chatmacro8", (int *) &chat_macros[8], d_true },
 	{"chatmacro9", (int *) &chat_macros[9], d_true }
 };
+#endif
 
 int     numdefaults;
 char*   defaultfile;
@@ -288,6 +292,7 @@ char*   defaultfile;
 /* M_SaveDefaults */
 void M_SaveDefaults (void)
 {
+#ifndef __LIBRETRO__
 	int         i;
 	int         v;
 	FILE*       f;
@@ -309,12 +314,14 @@ void M_SaveDefaults (void)
 	}
 
 	fclose (f);
+#endif
 }
 
 
 /* M_LoadDefaults */
 void M_LoadDefaults (void)
 {
+#ifndef __LIBRETRO__
 	int         i;
 	FILE*       f;
 	char        def[80];
@@ -372,6 +379,105 @@ void M_LoadDefaults (void)
 
 		fclose (f);
 	}
+#endif
+}
+
+void M_ChangedShowMessages(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedShowMessages(void);
+	IB_ChangedShowMessages();
+#endif
+}
+
+void M_ChangedMouseSensitivity(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedMouseSensitivity(void);
+	IB_ChangedMouseSensitivity();
+#endif
+}
+
+void M_ChangedGraphicDetail(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedGraphicDetail(void);
+	IB_ChangedGraphicDetail();
+#endif
+
+	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
+}
+
+void M_ChangedScreenBlocks(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedScreenBlocks(void);
+	IB_ChangedScreenBlocks();
+#endif
+
+	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
+}
+
+void M_ChangedUseGamma(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedUseGamma(void);
+	IB_ChangedUseGamma();
+#endif
+
+	V_SetPalette(0);
+}
+
+void M_ChangedAspectRatioCorrection(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedAspectRatioCorrection(void);
+	IB_ChangedAspectRatioCorrection();
+#endif
+
+	V_ReloadPalette();
+	R_InitColormaps();
+}
+
+void M_ChangedFullColour(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedFullColour(void);
+	IB_ChangedFullColour();
+#endif
+
+	V_ReloadPalette();
+	R_InitColormaps();
+}
+
+void M_ChangedPrototypeLightAmplificationVisorEffect(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedPrototypeLightAmplificationVisorEffect(void);
+	IB_ChangedPrototypeLightAmplificationVisorEffect();
+#endif
+
+	R_InitColormaps();
+}
+
+void M_ChangedSFXVolume(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedSFXVolume(void);
+	IB_ChangedSFXVolume();
+#endif
+
+	S_SetSfxVolume(sfxVolume);
+}
+
+void M_ChangedMusicVolume(void)
+{
+#ifdef __LIBRETRO__
+	void IB_ChangedMusicVolume(void);
+	IB_ChangedMusicVolume();
+#endif
+
+	S_SetMusicVolume(musicVolume);
 }
 
 

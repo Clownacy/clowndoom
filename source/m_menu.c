@@ -60,9 +60,6 @@ extern d_bool           message_dontfuckwithme;
 
 extern d_bool           chat_on;                /* in heads-up code */
 
-/* temp for screenblocks (0-9) */
-int                     screenSize;
-
 /* -1 = no quicksave slot picked! */
 int                     quickSaveSlot;
 
@@ -742,7 +739,7 @@ void M_SfxVol(int choice)
 	switch(choice)
 	{
 	  case 0:
-		if (sfxVolume)
+		if (sfxVolume > 0)
 			sfxVolume--;
 		break;
 	  case 1:
@@ -751,7 +748,7 @@ void M_SfxVol(int choice)
 		break;
 	}
 
-	S_SetSfxVolume(sfxVolume);
+	M_ChangedSFXVolume();
 }
 
 void M_MusicVol(int choice)
@@ -759,7 +756,7 @@ void M_MusicVol(int choice)
 	switch(choice)
 	{
 	  case 0:
-		if (musicVolume)
+		if (musicVolume > 0)
 			musicVolume--;
 		break;
 	  case 1:
@@ -768,7 +765,7 @@ void M_MusicVol(int choice)
 		break;
 	}
 
-	S_SetMusicVolume(musicVolume);
+	M_ChangedMusicVolume();
 }
 
 
@@ -879,7 +876,7 @@ void M_DrawOptions(void)
 				 10,mouseSensitivity);
 
 	M_DrawThermo(X_CENTRE(OptionsDef.xRaw),Y_CENTRE(OptionsDef.yRaw)+LINEHEIGHT*(scrnsize+1),
-				 9,screenSize);
+				 9,screenblocks - 3);
 }
 
 void M_Options(int choice)
@@ -902,6 +899,8 @@ void M_ChangeMessages(int choice)
 	players[consoleplayer].message = showMessages ? MSGON : MSGOFF;
 
 	message_dontfuckwithme = d_true;
+
+	M_ChangedShowMessages();
 }
 
 
@@ -1054,7 +1053,7 @@ void M_ChangeSensitivity(int choice)
 	switch(choice)
 	{
 	  case 0:
-		if (mouseSensitivity)
+		if (mouseSensitivity > 0)
 			mouseSensitivity--;
 		break;
 	  case 1:
@@ -1062,6 +1061,8 @@ void M_ChangeSensitivity(int choice)
 			mouseSensitivity++;
 		break;
 	}
+
+	M_ChangedMouseSensitivity();
 }
 
 
@@ -1073,7 +1074,7 @@ void M_ChangeDetail(int choice)
 
 	detailLevel = 1 - detailLevel;
 
-	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
+	M_ChangedGraphicDetail();
 
 	if (!detailLevel)
 		players[consoleplayer].message = DETAILHI;
@@ -1082,29 +1083,23 @@ void M_ChangeDetail(int choice)
 }
 
 
-
-
 void M_SizeDisplay(int choice)
 {
 	switch(choice)
 	{
 	  case 0:
-		if (screenSize > 0)
-		{
+		if (screenblocks > 3)
 			screenblocks--;
-			screenSize--;
-		}
+
 		break;
 	  case 1:
-		if (screenSize < 8)
-		{
+		if (screenblocks < 11)
 			screenblocks++;
-			screenSize++;
-		}
+
 		break;
 	}
 
-	R_SetViewSize (screenblocks, detailLevel, SCREENWIDTH, SCREENHEIGHT, HUD_SCALE);
+	M_ChangedScreenBlocks();
 }
 
 
@@ -1520,7 +1515,7 @@ d_bool M_Responder (event_t* ev)
 			if (usegamma > 4)
 				usegamma = 0;
 			players[consoleplayer].message = gammamsg[usegamma];
-			V_SetPalette(0);
+			M_ChangedUseGamma();
 			return d_true;
 
 		}
@@ -1756,7 +1751,6 @@ void M_Init (void)
 	itemOn = currentMenu->lastOn;
 	whichSkull = 0;
 	skullAnimCounter = 10;
-	screenSize = screenblocks - 3;
 	messageToPrint = 0;
 	messageString = NULL;
 	messageLastMenuActive = menuactive;

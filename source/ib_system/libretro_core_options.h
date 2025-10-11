@@ -52,23 +52,99 @@ extern "C" {
  *   frontend language definition */
 
 struct retro_core_option_v2_category option_cats_us[] = {
+	{
+		/* Key. */
+		"general",
+		/* Label. */
+		"General",
+		/* Description. */
+		"Options related to gameplay."
+	},
+	{
+		/* Key. */
+		"video",
+		/* Label. */
+		"Video",
+		/* Description. */
+		"Options related to graphical output."
+	},
+	{
+		/* Key. */
+		"audio",
+		/* Label. */
+		"Audio",
+		/* Description. */
+		"Options related to sound output."
+	},
 	{NULL, NULL, NULL}
 };
 
 struct retro_core_option_v2_definition option_defs_us[] = {
 	{
 		/* Key. */
+		"clowndoom_show_messages",
+		/* Label. */
+		"General > Show Messages",
+		/* Categorised label. */
+		"Show Messages",
+		/* Description. */
+		"Display messages in the top-left corner of the screen.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"general",
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"enabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_mouse_sensitivity",
+		/* Label. */
+		"General > Mouse Sensitivity",
+		/* Categorised label. */
+		"Mouse Sensitivity",
+		/* Description. */
+		"Adjusts the sensitivity of the first-person aiming.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"general",
+		/* Values. */
+		{
+			{"0", NULL},
+			{"1", NULL},
+			{"2", NULL},
+			{"3", NULL},
+			{"4", NULL},
+			{"5", NULL},
+			{"6", NULL},
+			{"7", NULL},
+			{"8", NULL},
+			{"9", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"5"
+	},
+	{
+		/* Key. */
 		"clowndoom_move_with_mouse",
 		/* Label. */
-		"Move with Mouse",
+		"General > Move with Mouse",
 		/* Categorised label. */
-		NULL,
+		"Move with Mouse",
 		/* Description. */
 		"Allow the player to move forward and backward with the mouse.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
-		NULL,
+		"general",
 		/* Values. */
 		{
 			{"enabled", NULL},
@@ -82,15 +158,15 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		/* Key. */
 		"clowndoom_always_run",
 		/* Label. */
-		"Run by Default",
+		"General > Run by Default",
 		/* Categorised label. */
-		NULL,
+		"Run by Default",
 		/* Description. */
 		"Makes the run button make the player character walk instead.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
-		NULL,
+		"general",
 		/* Values. */
 		{
 			{"enabled", NULL},
@@ -104,15 +180,15 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		/* Key. */
 		"clowndoom_always_strafe",
 		/* Label. */
-		"Strafe by Default",
+		"General > Strafe by Default",
 		/* Categorised label. */
-		NULL,
+		"Strafe by Default",
 		/* Description. */
 		"Makes the left and right buttons make the player character strafe instead.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
-		NULL,
+		"general",
 		/* Values. */
 		{
 			{"enabled", NULL},
@@ -124,17 +200,93 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 	},
 	{
 		/* Key. */
+		"clowndoom_graphic_detail",
+		/* Label. */
+		"Video > Graphic Detail",
+		/* Categorised label. */
+		"Graphic Detail",
+		/* Description. */
+		"Lower to improve performance.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"video",
+		/* Values. */
+		{
+			{ "Low", NULL},
+			{ "High", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"High"
+	},
+	{
+		/* Key. */
+		"clowndoom_screen_size",
+		/* Label. */
+		"Video > Screen Size",
+		/* Categorised label. */
+		"Screen Size",
+		/* Description. */
+		"Shrink the screen to improve performance.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"video",
+		/* Values. */
+		{
+			{ "3", NULL},
+			{ "4", NULL},
+			{ "5", NULL},
+			{ "6", NULL},
+			{ "7", NULL},
+			{ "8", NULL},
+			{ "9", NULL},
+			{"10", NULL},
+			{"11", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"10"
+	},
+	{
+		/* Key. */
+		"clowndoom_use_gamma",
+		/* Label. */
+		"Video > Gamma Correction",
+		/* Categorised label. */
+		"Gamma Correction",
+		/* Description. */
+		"Adjust display brightness.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"video",
+		/* Values. */
+		{
+			{"0", "Off"},
+			{"1", "Level 1"},
+			{"2", "Level 2"},
+			{"3", "Level 3"},
+			{"4", "Level 4"},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"0"
+	},
+	{
+		/* Key. */
 		"clowndoom_aspect_ratio_correction",
 		/* Label. */
-		"Aspect Ratio Correction",
+		"Video > Aspect Ratio Correction",
 		/* Categorised label. */
-		NULL,
+		"Aspect Ratio Correction",
 		/* Description. */
 		"Makes the pixels non-square to restore the DOS release's aspect ratio.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
-		NULL,
+		"video",
 		/* Values. */
 		{
 			{"enabled", NULL},
@@ -148,15 +300,15 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		/* Key. */
 		"clowndoom_full_colour",
 		/* Label. */
-		"Full Colour",
+		"Video > Full Colour",
 		/* Categorised label. */
-		NULL,
+		"Full Colour",
 		/* Description. */
 		"Renders using more than 256 colours.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
-		NULL,
+		"video",
 		/* Values. */
 		{
 			{"enabled", NULL},
@@ -170,15 +322,15 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		/* Key. */
 		"clowndoom_prototype_light_amplification_visor_effect",
 		/* Label. */
-		"Prototype Light Amplification Visor Effect",
+		"Video > Prototype Light Amplification Visor Effect",
 		/* Categorised label. */
-		NULL,
+		"Prototype Light Amplification Visor Effect",
 		/* Description. */
 		"Uses the night-vision effect from the Press Release prototype.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
-		NULL,
+		"video",
 		/* Values. */
 		{
 			{"enabled", NULL},
@@ -187,6 +339,148 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		},
 		/* Default value. */
 		"disabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_horizontal_resolution",
+		/* Label. */
+		"Video > Horizontal Resolution",
+		/* Categorised label. */
+		"Horizontal Resolution",
+		/* Description. */
+		"Vertical resolution is automatically adjusted. Restart to apply.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"video",
+		/* Values. */
+		{
+			{ "320", NULL},
+			{ "640", NULL},
+			{"1280", NULL},
+			{"1920", NULL},
+			{"2560", NULL},
+			{"3200", NULL},
+		},
+		/* Default value. */
+		"320"
+	},
+	{
+		/* Key. */
+		"clowndoom_aspect_ratio",
+		/* Label. */
+		"Video > Aspect Ratio",
+		/* Categorised label. */
+		"Aspect Ratio",
+		/* Description. */
+		"Aspect ratio of video output. Restart to apply.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"video",
+		/* Values. */
+		{
+			{"1.25",                "5:4"},
+			{"1.333333333333333",   "4:3"},
+			{"1.6",               "16:10"},
+			{"1.777777777777778",  "16:9"},
+			{"2.333333333333333",  "21:9"},
+		},
+		/* Default value. */
+		"1.333333333333333"
+	},
+	{
+		/* Key. */
+		"clowndoom_hud_scale",
+		/* Label. */
+		"Video > HUD Scale",
+		/* Categorised label. */
+		"HUD Scale",
+		/* Description. */
+		"Scaling to counteract increased internal resolution. Restart to apply.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"video",
+		/* Values. */
+		{
+			{"1", NULL},
+			{"2", NULL},
+			{"4", NULL},
+			{"8", NULL},
+		},
+		/* Default value. */
+		"1"
+	},
+	{
+		/* Key. */
+		"clowndoom_sfx_volume",
+		/* Label. */
+		"Audio > SFX Volume",
+		/* Categorised label. */
+		"SFX Volume",
+		/* Description. */
+		NULL,
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"audio",
+		/* Values. */
+		{
+			{ "0", NULL},
+			{ "1", NULL},
+			{ "2", NULL},
+			{ "3", NULL},
+			{ "4", NULL},
+			{ "5", NULL},
+			{ "6", NULL},
+			{ "7", NULL},
+			{ "8", NULL},
+			{ "9", NULL},
+			{"10", NULL},
+			{"11", NULL},
+			{"12", NULL},
+			{"13", NULL},
+			{"14", NULL},
+			{"15", NULL},
+		},
+		/* Default value. */
+		"8"
+	},
+	{
+		/* Key. */
+		"clowndoom_music_volume",
+		/* Label. */
+		"Audio > Music Volume",
+		/* Categorised label. */
+		"Music Volume",
+		/* Description. */
+		NULL,
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"audio",
+		/* Values. */
+		{
+			{ "0", NULL},
+			{ "1", NULL},
+			{ "2", NULL},
+			{ "3", NULL},
+			{ "4", NULL},
+			{ "5", NULL},
+			{ "6", NULL},
+			{ "7", NULL},
+			{ "8", NULL},
+			{ "9", NULL},
+			{"10", NULL},
+			{"11", NULL},
+			{"12", NULL},
+			{"13", NULL},
+			{"14", NULL},
+			{"15", NULL},
+		},
+		/* Default value. */
+		"8"
 	},
 	{NULL, NULL, NULL, NULL, NULL, NULL, {{NULL, NULL}}, NULL}
 };

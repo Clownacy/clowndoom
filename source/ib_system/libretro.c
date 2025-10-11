@@ -30,6 +30,7 @@
 #include "../d_main.h"
 #include "../i_system.h"
 #include "../ib_video.h"
+#include "../m_menu.h"
 #include "../m_misc.h"
 #include "../r_data.h"
 #include "../r_main.h"
@@ -47,11 +48,37 @@ static cothread_t main_coroutine, game_coroutine;
 static char *iwad_path;
 static bool game_exited;
 
+static int SCREENWIDTH_OPTION;
+static int HUD_SCALE_OPTION;
+static double aspect_ratio_option;
+
 static bool DoOptionBoolean(const char* const key, const char* const true_value)
 {
 	struct retro_variable variable;
 	variable.key = key;
 	return libretro.environment(RETRO_ENVIRONMENT_GET_VARIABLE, &variable) && variable.value != NULL && strcmp(variable.value, true_value) == 0;
+}
+
+static int DoOptionNumerical(const char* const key)
+{
+	struct retro_variable variable;
+
+	variable.key = key;
+	if (libretro.environment(RETRO_ENVIRONMENT_GET_VARIABLE, &variable) && variable.value != NULL)
+		return atoi(variable.value);
+
+	return 0;
+}
+
+static double DoOptionFloating(const char* const key)
+{
+	struct retro_variable variable;
+
+	variable.key = key;
+	if (libretro.environment(RETRO_ENVIRONMENT_GET_VARIABLE, &variable) && variable.value != NULL)
+		return atof(variable.value);
+
+	return 0;
 }
 
 static void DoOptionBooleanWithCallback(const bool initial, int* const option, const char* const name, const char* const true_value, void (* const callback)(void))
@@ -67,27 +94,44 @@ static void DoOptionBooleanWithCallback(const bool initial, int* const option, c
 	}
 }
 
-static void OptionChanged_FullColor(void)
+static void DoOptionNumericalWithCallback(const bool initial, int* const option, const char* const name, void (* const callback)(void))
 {
-	V_ReloadPalette();
-	R_InitColormaps();
+	const int new_setting = DoOptionNumerical(name);
+
+	if (*option != new_setting)
+	{
+		*option = new_setting;
+
+		if (!initial && callback != NULL)
+			callback();
+	}
 }
 
-static void OptionChanged_AspectRatioCorrection(void)
+static void DoOptionFloatingWithCallback(const bool initial, double* const option, const char* const name, void (* const callback)(void))
 {
-	V_ReloadPalette();
-	R_InitColormaps();
-}
+	const double new_setting = DoOptionFloating(name);
 
-static void OptionChanged_PrototypeLightAmplificationVisorEffect(void)
-{
-	R_InitColormaps();
+	if (*option != new_setting)
+	{
+		*option = new_setting;
+
+		if (!initial && callback != NULL)
+			callback();
+	}
 }
 
 static void UpdateOptions(const bool initial)
 {
-	extern int novert, always_run, always_strafe, full_colour, prototype_light_amplification_visor_effect;
-
+	/* General. */
+	DoOptionBooleanWithCallback(initial,
+		&showMessages,
+		"clowndoom_show_messages",
+		"enabled",
+		M_ChangedShowMessages);
+	DoOptionNumericalWithCallback(initial,
+		&mouseSensitivity,
+		"clowndoom_mouse_sensitivity",
+		M_ChangedMouseSensitivity);
 	DoOptionBooleanWithCallback(initial,
 		&novert,
 		"clowndoom_move_with_mouse",
@@ -103,22 +147,168 @@ static void UpdateOptions(const bool initial)
 		"clowndoom_always_strafe",
 		"enabled",
 		NULL);
+
+	/* Video. */
+	DoOptionBooleanWithCallback(initial,
+		&detailLevel,
+		"clowndoom_graphic_detail",
+		"Low",
+		M_ChangedGraphicDetail);
+	DoOptionNumericalWithCallback(initial,
+		&screenblocks,
+		"clowndoom_screen_size",
+		M_ChangedScreenBlocks);
+	DoOptionNumericalWithCallback(initial,
+		&usegamma,
+		"clowndoom_use_gamma",
+		M_ChangedUseGamma);
 	DoOptionBooleanWithCallback(initial,
 		&aspect_ratio_correction,
 		"clowndoom_aspect_ratio_correction",
 		"enabled",
-		OptionChanged_AspectRatioCorrection);
+		M_ChangedAspectRatioCorrection);
 	DoOptionBooleanWithCallback(initial,
 		&full_colour,
 		"clowndoom_full_colour",
 		"enabled",
-		OptionChanged_FullColor);
+		M_ChangedFullColour);
 	DoOptionBooleanWithCallback(initial,
 		&prototype_light_amplification_visor_effect,
 		"clowndoom_prototype_light_amplification_visor_effect",
 		"enabled",
-		OptionChanged_PrototypeLightAmplificationVisorEffect);
-	
+		M_ChangedPrototypeLightAmplificationVisorEffect);
+	DoOptionNumericalWithCallback(initial,
+		&SCREENWIDTH_OPTION,
+		"clowndoom_horizontal_resolution",
+		NULL);
+	DoOptionNumericalWithCallback(initial,
+		&HUD_SCALE_OPTION,
+		"clowndoom_hud_scale",
+		NULL);
+	DoOptionFloatingWithCallback(initial,
+		&aspect_ratio_option,
+		"clowndoom_aspect_ratio",
+		NULL);
+
+	/* Audio. */
+	DoOptionNumericalWithCallback(initial,
+		&sfxVolume,
+		"clowndoom_sfx_volume",
+		M_ChangedSFXVolume);
+	DoOptionNumericalWithCallback(initial,
+		&musicVolume,
+		"clowndoom_music_volume",
+		M_ChangedMusicVolume);
+}
+
+void IB_ChangedShowMessages(void)
+{
+	struct retro_variable variable;
+	variable.key = "clowndoom_show_messages";
+	variable.value = showMessages ? "enabled" : "disabled";
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedMouseSensitivity(void)
+{
+	char buffer[2];
+	struct retro_variable variable;
+
+	sprintf(buffer, "%d", mouseSensitivity);
+
+	variable.key = "clowndoom_mouse_sensitivity";
+	variable.value = buffer;
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedGraphicDetail(void)
+{
+	struct retro_variable variable;
+	variable.key = "clowndoom_graphic_detail";
+	variable.value = detailLevel ? "Low" : "High";
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedScreenBlocks(void)
+{
+	char buffer[3];
+	struct retro_variable variable;
+
+	sprintf(buffer, "%d", screenblocks);
+
+	variable.key = "clowndoom_screen_size";
+	variable.value = buffer;
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedUseGamma(void)
+{
+	char buffer[2];
+	struct retro_variable variable;
+
+	sprintf(buffer, "%d", usegamma);
+
+	variable.key = "clowndoom_use_gamma";
+	variable.value = buffer;
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedAspectRatioCorrection(void)
+{
+	struct retro_variable variable;
+	variable.key = "clowndoom_aspect_ratio_correction";
+	variable.value = aspect_ratio_correction ? "enabled" : "disabled";
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedFullColour(void)
+{
+	struct retro_variable variable;
+	variable.key = "clowndoom_full_colour";
+	variable.value = full_colour ? "enabled" : "disabled";
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedPrototypeLightAmplificationVisorEffect(void)
+{
+	struct retro_variable variable;
+	variable.key = "clowndoom_prototype_light_amplification_visor_effect";
+	variable.value = prototype_light_amplification_visor_effect ? "enabled" : "disabled";
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedSFXVolume(void)
+{
+	char buffer[3];
+	struct retro_variable variable;
+
+	sprintf(buffer, "%d", sfxVolume);
+
+	variable.key = "clowndoom_sfx_volume";
+	variable.value = buffer;
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
+}
+
+void IB_ChangedMusicVolume(void)
+{
+	char buffer[3];
+	struct retro_variable variable;
+
+	sprintf(buffer, "%d", musicVolume);
+
+	variable.key = "clowndoom_music_volume";
+	variable.value = buffer;
+
+	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
 }
 
 static void GameEntryPoint(void)
@@ -138,6 +328,13 @@ void retro_init(void)
 	game_coroutine = co_create(64 * 1024, GameEntryPoint);
 
 	UpdateOptions(true);
+
+	SCREENWIDTH = SCREENWIDTH_OPTION;
+	SCREENHEIGHT = SCREENWIDTH / aspect_ratio_option;
+	if (aspect_ratio_correction)
+		SCREENHEIGHT = SCREENHEIGHT * 5 / 6;
+
+	HUD_SCALE = HUD_SCALE_OPTION;
 }
 
 void retro_deinit(void)
@@ -174,11 +371,11 @@ void retro_get_system_info(struct retro_system_info* const info)
 
 void retro_get_system_av_info(struct retro_system_av_info* const info)
 {
-	info->geometry.base_width   = ORIGINAL_SCREEN_WIDTH;
-	info->geometry.base_height  = ORIGINAL_SCREEN_HEIGHT;
+	info->geometry.base_width   = SCREENWIDTH;
+	info->geometry.base_height  = SCREENHEIGHT;
 	info->geometry.max_width    = MAXIMUM_SCREENWIDTH;
 	info->geometry.max_height   = MAXIMUM_SCREENHEIGHT;
-	info->geometry.aspect_ratio = (float)ORIGINAL_SCREEN_WIDTH / ORIGINAL_SCREEN_HEIGHT;
+	info->geometry.aspect_ratio = (float)info->geometry.base_width / info->geometry.base_height;
 	if (aspect_ratio_correction)
 		info->geometry.aspect_ratio = info->geometry.aspect_ratio * 5 / 6;
 
