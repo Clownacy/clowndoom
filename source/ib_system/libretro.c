@@ -46,6 +46,7 @@ LibretroCallbacks libretro;
 
 static cothread_t main_coroutine, game_coroutine;
 static char *iwad_path;
+static char *pwad_paths[1];
 static bool game_exited;
 
 static int SCREENWIDTH_OPTION;
@@ -313,11 +314,19 @@ void IB_ChangedMusicVolume(void)
 
 static void GameEntryPoint(void)
 {
-	static char *argv[3];
-	argv[0] = "";
-	argv[1] = "-iwad";
-	argv[2] = iwad_path;
-	D_DoomMain(D_COUNT_OF(argv), argv);
+	static char *argv[5];
+	size_t argc = 0;
+
+	argv[ 0] = "";
+	argv[ 1] = "-iwad";
+	argv[ 2] = iwad_path;
+	argv[ 3] = "-file";
+	argv[ 4] = pwad_paths[0];
+
+	while (argc < D_COUNT_OF(argv) && argv[argc] != NULL)
+		++argc;
+
+	D_DoomMain(argc, argv);
 }
 
 void retro_init(void)
@@ -505,6 +514,21 @@ void retro_set_environment(const retro_environment_t cb)
 		if (libretro.environment(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &info))
 			filestream_vfs_init(&info);
 	}
+
+	/* Declare subsystems. */
+	{
+		static const struct retro_subsystem_rom_info rom_info[] = {
+			{ "IWAD", "wad", true, false,  true, NULL, 0 },
+			{ "PWAD", "wad", true, false, false, NULL, 0 },
+		};
+
+		static const struct retro_subsystem_info info[] = {
+			{ "Mod", "mod", rom_info, D_COUNT_OF(rom_info), 0 },
+			{ NULL, NULL, NULL, 0, 0 }
+		};
+
+		libretro.environment(RETRO_ENVIRONMENT_SET_SUBSYSTEM_INFO, (void*)&info);
+	}
 }
 
 void retro_set_audio_sample(const retro_audio_sample_t cb)
@@ -563,7 +587,12 @@ bool retro_load_game(const struct retro_game_info* const info)
 
 void retro_unload_game(void)
 {
+	size_t i;
+
 	free(iwad_path);
+
+	for (i = 0; i < D_COUNT_OF(pwad_paths); ++i)
+		free(pwad_paths[i]);
 }
 
 unsigned int retro_get_region(void)
@@ -574,11 +603,18 @@ unsigned int retro_get_region(void)
 
 bool retro_load_game_special(const unsigned int type, const struct retro_game_info* const info, const size_t num)
 {
-	/* TODO: Allow PWADs to be loaded here. */
+	size_t i;
+	char **pwad_path;
+
 	(void)type;
-	(void)num;
 
 	iwad_path = M_strdup(info[0].path);
+
+	pwad_path = pwad_paths;
+
+	for (i = 1; i < num; ++i)
+		if (info[i].path != NULL)
+			*pwad_path++ = M_strdup(info[i].path);
 
 	return true;
 }
