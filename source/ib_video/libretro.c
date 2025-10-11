@@ -19,6 +19,7 @@
 
 #include "../ib_video.h"
 
+#include <assert.h>
 #include <stdlib.h>
 
 #include "../ib_system/libretro-callbacks.h"
@@ -29,9 +30,10 @@
 
 #define ANALOGUE_MAX 0x7FFF
 
-typedef uint16_t Pixel;
+typedef uint16_t Pixel16;
+typedef uint32_t Pixel32;
 
-static Pixel *framebuffer;
+static void *framebuffer;
 
 static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right, joystick_x_dpad, joystick_y_dpad;
 static int mouse_button_state;
@@ -141,40 +143,89 @@ void IB_StartTic (void)
 }
 
 
+static unsigned int GetPixelSize(void)
+{
+	switch (libretro.framebuffer_format)
+	{
+		default:
+			assert(false);
+			/* Fallthrough */
+		case RETRO_PIXEL_FORMAT_0RGB1555:
+		case RETRO_PIXEL_FORMAT_RGB565:
+			return sizeof(Pixel16);
+
+		case RETRO_PIXEL_FORMAT_XRGB8888:
+			return sizeof(Pixel32);
+	}
+}
+
+
 void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch)
 {
 	*pixels = (unsigned char*)framebuffer;
-	*pitch = SCREENWIDTH * sizeof(*framebuffer);
+	*pitch = SCREENWIDTH * GetPixelSize();
 }
 
 
 /* IB_FinishUpdate */
 void IB_FinishUpdate (void)
 {
-	libretro.video(framebuffer, SCREENWIDTH, SCREENHEIGHT, SCREENWIDTH * sizeof(*framebuffer));
+	libretro.video(framebuffer, SCREENWIDTH, SCREENHEIGHT, SCREENWIDTH * GetPixelSize());
 
 	IB_Yield();
 }
 
 
-static unsigned int Get5BitColourChannel(const unsigned int channel, const unsigned int index)
+static unsigned int TruncateColourChannel(const unsigned int channel, const unsigned int bits_per_destination_colour_channel)
 {
 	const unsigned int bits_per_source_colour_channel = 8;
-	const unsigned int bits_per_destination_colour_channel = 5;
 	const unsigned int colour_shift = bits_per_source_colour_channel - bits_per_destination_colour_channel;
 	const unsigned int colour_mask = (1 << bits_per_destination_colour_channel) - 1;
 
-	return ((channel >> colour_shift) & colour_mask) << (bits_per_destination_colour_channel * index);
+	return (channel >> colour_shift) & colour_mask;
 }
+
 
 void IB_GetColor(unsigned char* const bytes, const unsigned char red, const unsigned char green, const unsigned char blue)
 {
-	const Pixel pixel = Get5BitColourChannel(red,   2)
-	                  | Get5BitColourChannel(green, 1)
-	                  | Get5BitColourChannel(blue,  0);
+	switch (libretro.framebuffer_format)
+	{
+		default:
+			assert(false);
+			/* Fallthrough */
+		case RETRO_PIXEL_FORMAT_0RGB1555:
+		{
+			const Pixel16 pixel = TruncateColourChannel(red,   5) << (5 * 2)
+			                    | TruncateColourChannel(green, 5) << (5 * 1)
+			                    | TruncateColourChannel(blue,  5) << (5 * 0);
 
-	/* Do this trick to write the pixel in native-endian byte ordering, as required by the libretro API. */
-	*(Pixel*)bytes = pixel;
+			/* Do this trick to write the pixel in native-endian byte ordering, as required by the libretro API. */
+			*(Pixel16*)bytes = pixel;
+			break;
+		}
+
+		case RETRO_PIXEL_FORMAT_RGB565:
+		{
+			const Pixel16 pixel = TruncateColourChannel(red,   5) << (0 + 5 + 6)
+			                    | TruncateColourChannel(green, 6) << (0 + 5)
+			                    | TruncateColourChannel(blue,  5) << (0);
+
+			/* Do this trick to write the pixel in native-endian byte ordering, as required by the libretro API. */
+			*(Pixel16*)bytes = pixel;
+			break;
+		}
+
+		case RETRO_PIXEL_FORMAT_XRGB8888:
+		{
+			const Pixel32 pixel = TruncateColourChannel(red,   8) << (8 * 2)
+			                    | TruncateColourChannel(green, 8) << (8 * 1)
+			                    | TruncateColourChannel(blue,  8) << (8 * 0);
+
+			/* Do this trick to write the pixel in native-endian byte ordering, as required by the libretro API. */
+			*(Pixel32*)bytes = pixel;
+			break;
+		}
+	}
 }
 
 void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, const IB_OutputSizeChangedCallback output_size_changed_callback)
@@ -185,10 +236,10 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	(void)screen_width;
 	(void)screen_height;
 
-	/* TODO: Handle failed allocation. */
-	framebuffer = (Pixel*)malloc(SCREENWIDTH * SCREENHEIGHT * sizeof(*framebuffer));
+	*bytes_per_pixel = GetPixelSize();
 
-	*bytes_per_pixel = sizeof(Pixel);
+	/* TODO: Handle failed allocation. */
+	framebuffer = malloc(SCREENWIDTH * SCREENHEIGHT * *bytes_per_pixel);
 
 	output_size_changed_callback(SCREENWIDTH, SCREENHEIGHT, d_false);
 

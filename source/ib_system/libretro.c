@@ -101,6 +101,22 @@ void retro_get_system_av_info(struct retro_system_av_info* const info)
 
 	info->timing.fps            = TICRATE;
 	info->timing.sample_rate    = LIBRETRO_SAMPLE_RATE;
+
+	{
+		enum retro_pixel_format format;
+
+		format = RETRO_PIXEL_FORMAT_XRGB8888;
+		if (!libretro.environment(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &format))
+		{
+			format = RETRO_PIXEL_FORMAT_RGB565;
+			if (!libretro.environment(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &format))
+			{
+				format = RETRO_PIXEL_FORMAT_0RGB1555;
+			}
+		}
+
+		libretro.framebuffer_format = format;
+	}
 }
 
 static unsigned int KeycodeToNative(const unsigned int keycode)

@@ -21,6 +21,7 @@ typedef struct LibretroCallbacks
 		IB_AudioCallback callback;
 		void *user_data;
 	} generate_audio;
+	enum retro_pixel_format framebuffer_format;
 } LibretroCallbacks;
 
 extern LibretroCallbacks libretro;
