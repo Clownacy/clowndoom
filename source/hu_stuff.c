@@ -28,6 +28,7 @@
 #include "am_map.h"
 #include "hu_stuff.h"
 #include "hu_lib.h"
+#include "m_misc.h"
 #include "w_wad.h"
 #include "v_video.h"
 
@@ -60,20 +61,6 @@
 
 
 
-const char*     chat_macros[] =
-{
-	HUSTR_CHATMACRO0,
-	HUSTR_CHATMACRO1,
-	HUSTR_CHATMACRO2,
-	HUSTR_CHATMACRO3,
-	HUSTR_CHATMACRO4,
-	HUSTR_CHATMACRO5,
-	HUSTR_CHATMACRO6,
-	HUSTR_CHATMACRO7,
-	HUSTR_CHATMACRO8,
-	HUSTR_CHATMACRO9
-};
-
 const char* const       player_names[] =
 {
 	HUSTR_PLRGREEN,
@@ -99,8 +86,6 @@ static d_bool           message_nottobefuckedwith;
 
 static hu_stext_t       w_message;
 static int              message_counter;
-
-extern int              showMessages;
 
 static d_bool           headsupactive = d_false;
 

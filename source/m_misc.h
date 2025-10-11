@@ -25,7 +25,49 @@
 #include "doomtype.h"
 /* MISC */
 
+extern int showMessages;
+extern int novert;
+extern int always_run;
+extern int always_strafe;
 
+extern int key_right;
+extern int key_left;
+extern int key_up;
+extern int key_down;
+
+extern int key_strafeleft;
+extern int key_straferight;
+
+extern int key_fire;
+extern int key_use;
+extern int key_strafe;
+extern int key_speed;
+
+extern int mousebfire;
+extern int mousebstrafe;
+extern int mousebforward;
+extern int mouseSensitivity;
+
+extern int joybfire;
+extern int joybstrafe;
+extern int joybuse;
+extern int joybspeed;
+extern int joybweaponprevious;
+extern int joybweaponnext;
+
+extern int screenblocks;
+extern int detailLevel;
+extern int usegamma;
+extern int aspect_ratio_correction;
+extern int full_colour;
+extern int prototype_light_amplification_visor_effect;
+
+extern int musicVolume;
+extern int sfxVolume;
+extern int numChannels;
+extern const char *wildmidi_config_path;
+
+extern const char *chat_macros[10];
 
 d_bool
 M_WriteFile

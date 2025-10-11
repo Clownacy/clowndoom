@@ -28,6 +28,7 @@
 #include "doomdata.h"
 
 #include "m_bbox.h"
+#include "m_misc.h"
 #include "m_swap.h"
 #include "w_wad.h"
 #include "z_zone.h"
@@ -126,10 +127,6 @@ const unsigned char gammatable[5][256] =
 	 243,243,244,244,245,245,246,246,247,247,248,248,249,249,250,250,251,
 	 251,252,252,253,254,254,255,255}
 };
-
-
-
-int     usegamma;
 
 
 /* V_CopyRect */
@@ -382,7 +379,6 @@ static int current_palette_id;
 
 unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's syntax is insane sometimes. */
 {
-	extern int full_colour;
 	unsigned char(*calculated_palette)[0x100][3];
 	unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
 

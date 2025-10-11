@@ -27,6 +27,7 @@
 
 #include "z_zone.h"
 #include "m_random.h"
+#include "m_misc.h"
 #include "w_wad.h"
 
 #include "doomdef.h"
@@ -106,11 +107,6 @@ static d_bool           mus_paused;
 
 /* music currently being played */
 static musicinfo_t*     mus_playing;
-
-/* following is set */
-/*  by the defaults code in M_misc: */
-/* number of channels available */
-int                     numChannels;
 
 static int              nextcleanup;
 

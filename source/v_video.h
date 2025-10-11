@@ -55,7 +55,6 @@ typedef enum screen_t
 extern  colourindex_t screens[5][MAXIMUM_SCREENWIDTH * MAXIMUM_SCREENHEIGHT];
 
 extern  const unsigned char      gammatable[5][256];
-extern  int     usegamma;
 
 
 

@@ -131,35 +131,6 @@ wbstartstruct_t wminfo;                 /* parms for world map / intermission */
 
 short           consistancy[MAXPLAYERS][BACKUPTICS];
 
-int             always_run;
-int             always_strafe;
-
-
-/* controls (have defaults) */
-int             key_right;
-int             key_left;
-
-int             key_up;
-int             key_down;
-int             key_strafeleft;
-int             key_straferight;
-int             key_fire;
-int             key_use;
-int             key_strafe;
-int             key_speed;
-
-int             mousebfire;
-int             mousebstrafe;
-int             mousebforward;
-
-int             joybfire;
-int             joybstrafe;
-int             joybuse;
-int             joybspeed;
-int             joybweaponprevious;
-int             joybweaponnext;
-
-
 
 #define MAXPLMOVE               (forwardmove[1])
 
@@ -209,8 +180,6 @@ int             bodyqueslot;
 #if 0
 void*           statcopy;                               /* for statistics driver */
 #endif
-
-int             novert;
 
 
 /* G_BuildTiccmd */

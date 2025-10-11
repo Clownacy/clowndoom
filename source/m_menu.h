@@ -27,12 +27,6 @@
 
 /* MENUS */
 
-/*  Sound FX volume has default, 0 - 15 */
-/*  Music volume has default, 0 - 15 */
-/* These are multiplied by 8. */
-extern int sfxVolume;      /* maximum volume for sound */
-extern int musicVolume;    /* maximum volume for music */
-
 /* Called by main loop, */
 /* saves config file and calls I_Quit when user exits. */
 /* Even when the menu is not displayed, */

@@ -603,9 +603,6 @@ void R_InitSpriteLumps (void)
 /* R_InitColormaps */
 void R_InitColormaps (void)
 {
-	extern int full_colour;
-	extern int prototype_light_amplification_visor_effect;
-
 	size_t i, j;
 	unsigned char(* const original_colour_maps)[0x100] = (unsigned char(*)[0x100])W_CacheLumpName("COLORMAP", PU_STATIC);
 

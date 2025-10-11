@@ -145,56 +145,65 @@ M_ReadFile
 
 
 /* DEFAULTS */
+/* Show messages has default, 0 = off, 1 = on */
+int             showMessages;
+
+int             novert;
+int             always_run;
+int             always_strafe;
+
+/* controls (have defaults) */
+int             key_right;
+int             key_left;
+int             key_up;
+int             key_down;
+
+int             key_strafeleft;
+int             key_straferight;
+
+int             key_fire;
+int             key_use;
+int             key_strafe;
+int             key_speed;
+
+int             mousebfire;
+int             mousebstrafe;
+int             mousebforward;
+int             mouseSensitivity;
+
+int             joybfire;
+int             joybstrafe;
+int             joybuse;
+int             joybspeed;
+int             joybweaponprevious;
+int             joybweaponnext;
+
+int             screenblocks;
+/* Blocky mode, has default, 0 = high, 1 = normal */
+int             detailLevel;
+int             usegamma;
+int             aspect_ratio_correction;
 int             full_colour;
 int             prototype_light_amplification_visor_effect;
 
-extern int      key_right;
-extern int      key_left;
-extern int      key_up;
-extern int      key_down;
+int             musicVolume = 15;
+int             sfxVolume = 15;
+int             numChannels;
+const char     *wildmidi_config_path;
 
-extern int      key_strafeleft;
-extern int      key_straferight;
-
-extern int      key_fire;
-extern int      key_use;
-extern int      key_strafe;
-extern int      key_speed;
-
-extern int      mousebfire;
-extern int      mousebstrafe;
-extern int      mousebforward;
-
-extern int      joybfire;
-extern int      joybstrafe;
-extern int      joybuse;
-extern int      joybspeed;
-extern int      joybweaponprevious;
-extern int      joybweaponnext;
-
-extern int      viewwidth;
-extern int      viewheight;
-
-extern int      mouseSensitivity;
-extern int      showMessages;
-
-extern int      novert;
-extern int      always_run;
-extern int      always_strafe;
-
-extern int      detailLevel;
-
-extern int      screenblocks;
-
-extern int      aspect_ratio_correction;
-
-/* machine-independent sound params */
-extern  int     numChannels;
-
-extern const char*      wildmidi_config_path;
-
-extern const char*      chat_macros[];
-
+const char     *chat_macros[10] =
+{
+	HUSTR_CHATMACRO0,
+	HUSTR_CHATMACRO1,
+	HUSTR_CHATMACRO2,
+	HUSTR_CHATMACRO3,
+	HUSTR_CHATMACRO4,
+	HUSTR_CHATMACRO5,
+	HUSTR_CHATMACRO6,
+	HUSTR_CHATMACRO7,
+	HUSTR_CHATMACRO8,
+	HUSTR_CHATMACRO9
+};
 
 
 typedef struct

@@ -26,14 +26,13 @@
 #include "v_video.h"
 #include "m_argv.h"
 #include "d_main.h"
+#include "m_misc.h"
 
 #include "doomdef.h"
 
 #include "i_video.h"
 
 #define MAX_PALETTES (32*8)
-
-int aspect_ratio_correction;
 
 static unsigned char *colors;
 

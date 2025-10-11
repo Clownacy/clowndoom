@@ -30,6 +30,7 @@
 #include "m_bbox.h"
 
 #include "am_map.h"
+#include "m_misc.h"
 #include "r_local.h"
 #include "r_sky.h"
 #include "st_stuff.h"
@@ -765,11 +766,6 @@ void R_ExecuteSetViewSize (void)
 
 
 /* R_Init */
-extern int      detailLevel;
-extern int      screenblocks;
-
-
-
 void R_Init (void)
 {
 	R_InitData ();

@@ -27,9 +27,6 @@
 
 typedef void (*IB_OutputSizeChangedCallback)(size_t width, size_t height, d_bool aspect_ratio_correction);
 
-/* TODO: Find a better place for this. */
-extern int aspect_ratio_correction;
-
 void IB_StartTic (void);
 void IB_GetFramebuffer(unsigned char **pixels, size_t *pitch);
 void IB_FinishUpdate (void);

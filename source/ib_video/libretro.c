@@ -27,6 +27,7 @@
 #include "../doomdef.h"
 #include "../d_main.h"
 #include "../d_event.h"
+#include "../m_misc.h"
 
 #define ANALOGUE_MAX 0x7FFF
 
