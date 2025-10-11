@@ -923,7 +923,7 @@ void D_DoomMain (int argc, char **argv)
 	}
 
 	p = M_CheckParm ("-file");
-	if (p)
+	if (p && p < myargc-1)
 	{
 		/* the parms after p are wadfile/lump names, */
 		/* until end of parms or another - preceded parm */
