@@ -146,12 +146,14 @@ void W_AddFile (const char *filename)
 	I_Info(" adding %s\n",filename);
 	startlump = numlumps;
 
+	storehandle = reloadname ? NULL : handle;
+
 	singlelump = M_strcasecmp(filename+strlen(filename)-3 , "wad" );
 
 	if (singlelump)
 	{
 		/* single lump file */
-		singleinfo.handle = handle;
+		singleinfo.handle = storehandle;
 		singleinfo.position = 0;
 		singleinfo.size = I_FileSize(handle);
 		ExtractFileBase (filename, singleinfo.name);
@@ -175,7 +177,6 @@ void W_AddFile (const char *filename)
 
 			/* ???modifiedgame = true; */
 		}
-		I_FileSeek (handle, header.infotableofs, I_FILE_POSITION_START);
 		numlumps += header.numlumps;
 	}
 
@@ -187,8 +188,6 @@ void W_AddFile (const char *filename)
 		I_Error ("Couldn't realloc lumpinfo");
 
 	lump_p = &lumpinfo[startlump];
-
-	storehandle = reloadname ? NULL : handle;
 
 	if (singlelump)
 	{
@@ -202,12 +201,14 @@ void W_AddFile (const char *filename)
 	}
 	else
 	{
+		I_FileSeek (handle, header.infotableofs, I_FILE_POSITION_START);
+
 		for (i=startlump; i<numlumps; i++, lump_p++)
 		{
 			lump_p->handle = storehandle;
-			lump_p->position = Read32LE(storehandle);
-			lump_p->size = Read32LE(storehandle);
-			I_FileRead(storehandle, lump_p->name, sizeof(lump_p->name));
+			lump_p->position = Read32LE(handle);
+			lump_p->size = Read32LE(handle);
+			I_FileRead(handle, lump_p->name, sizeof(lump_p->name));
 
 			/* Emulate the behaviour of the original code, which fills everything after the terminator byte with null characters. */
 			/* The original code use `strncpy` here, and PWADs such as Hell Revealed rely on its behaviour. */
