@@ -42,6 +42,7 @@
 #include "../i_video.h"
 #include "../v_video.h"
 #include "../m_argv.h"
+#include "../m_misc.h"
 #include "../d_main.h"
 
 #include "../doomdef.h"
