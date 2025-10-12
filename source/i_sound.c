@@ -20,6 +20,7 @@
 #include <math.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #ifdef WILDMIDI
@@ -422,6 +423,45 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
 
 
 
+#ifdef WILDMIDI
+static void* AllocateFileForWildMIDI(const char* const file_path, uint32_t* const file_size_output)
+{
+	I_File* const file = I_FileOpen(file_path, I_FILE_MODE_READ);
+
+	if (file != NULL)
+	{
+		const size_t file_size = I_FileSize(file);
+
+		if (file_size <= 0xFFFFFFFF)
+		{
+			char* const buffer = (char*)malloc(file_size + 1);
+
+			if (buffer != NULL)
+			{
+				if (I_FileRead(file, buffer, file_size) == file_size)
+				{
+					buffer[file_size] = '\0';
+					*file_size_output = file_size;
+
+					I_FileClose(file);
+					return buffer;
+				}
+
+				free(buffer);
+			}
+		}
+
+		I_FileClose(file);
+	}
+
+	return NULL;
+}
+
+static void FreeFileForWildMIDI(void* const file_buffer)
+{
+	free(file_buffer);
+}
+#endif
 
 static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 {
@@ -430,10 +470,17 @@ static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 	output_sample_rate = _output_sample_rate;
 
 #ifdef WILDMIDI
-	if (WildMidi_Init(wildmidi_config_path, output_sample_rate, 0) != 0)
-		I_Info("I_StartupSound: Failed to initialize WildMIDI. Error message was '%s'\n", WildMidi_GetError());
-	else
-		music_initialised = d_true;
+	{
+		struct _WM_VIO vio = {
+			AllocateFileForWildMIDI,
+			FreeFileForWildMIDI
+		};
+
+		if (WildMidi_InitVIO(&vio, wildmidi_config_path, output_sample_rate, 0) != 0)
+			I_Info("I_StartupSound: Failed to initialize WildMIDI. Error message was '%s'\n", WildMidi_GetError());
+		else
+			music_initialised = d_true;
+	}
 #endif
 }
 
