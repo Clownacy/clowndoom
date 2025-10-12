@@ -207,7 +207,20 @@ void W_AddFile (const char *filename)
 			lump_p->handle = storehandle;
 			lump_p->position = Read32LE(storehandle);
 			lump_p->size = Read32LE(storehandle);
-			I_FileRead(storehandle, lump_p->name, 8);
+			I_FileRead(storehandle, lump_p->name, sizeof(lump_p->name));
+
+			/* Emulate the behaviour of the original code, which fills everything after the terminator byte with null characters. */
+			/* The original code use `strncpy` here, and PWADs such as Hell Revealed rely on its behaviour. */
+			{
+				size_t j = 0;
+
+				while (j < D_COUNT_OF(lump_p->name))
+					if (lump_p->name[j++] == '\0')
+						break;
+
+				while (j < D_COUNT_OF(lump_p->name))
+					lump_p->name[j++] = '\0';
+			}
 
 			/* overwrite existing entries so patch lump files take precedence */
 			if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, lump_p->name, 8, &dictionary_entry))
