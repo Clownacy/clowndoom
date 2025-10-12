@@ -468,10 +468,15 @@ static unsigned int KeycodeToNative(const unsigned int keycode)
 		case RETROK_MINUS:
 			return KEY_MINUS;
 
+		case RETROK_LSHIFT:
 		case RETROK_RSHIFT:
 			return KEY_RSHIFT;
+		case RETROK_LCTRL:
 		case RETROK_RCTRL:
 			return KEY_RCTRL;
+		case RETROK_LMETA:
+		case RETROK_RMETA:
+		case RETROK_LALT:
 		case RETROK_RALT:
 			return KEY_RALT;
 	}
