@@ -327,8 +327,8 @@ void R_GenerateLookup (int texnum)
 	{
 		if (!patchcount[x])
 		{
-			I_Info ("R_GenerateLookup: column without a patch (%s)\n",
-					texture->name);
+			I_Info ("R_GenerateLookup: column without a patch (%.*s)\n",
+					(int)D_COUNT_OF(texture->name), texture->name);
 			break;
 		}
 		/* I_Error ("R_GenerateLookup: column without a patch"); */
@@ -516,8 +516,8 @@ void R_InitTextures (void)
 			patch->patch = patchlookup[M_BytesToShort(&mpatch[MAPPATCH_PATCH])];
 			if (patch->patch == -1)
 			{
-				I_Error ("R_InitTextures: Missing patch in texture %s",
-						 texture->name);
+				I_Error ("R_InitTextures: Missing patch in texture %.*s",
+						 (int)D_COUNT_OF(texture->name), texture->name);
 			}
 		}
 		texturecolumnlump[i] = (short*)Z_Malloc (texture->width*2, PU_STATIC, NULL);
