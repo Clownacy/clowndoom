@@ -904,15 +904,20 @@ void M_ChangeMessages(int choice)
 }
 
 
+void M_ResetGame(void)
+{
+	currentMenu->lastOn = itemOn;
+	M_ClearMenus ();
+	D_StartTitle ();
+}
+
 /* M_EndGame */
 void M_EndGameResponse(int ch)
 {
 	if (ch != 'y')
 		return;
 
-	currentMenu->lastOn = itemOn;
-	M_ClearMenus ();
-	D_StartTitle ();
+	M_ResetGame();
 }
 
 void M_EndGame(int choice)

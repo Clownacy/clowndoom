@@ -558,7 +558,7 @@ void retro_set_video_refresh(const retro_video_refresh_t cb)
 
 void retro_reset(void)
 {
-	/* TODO: It would be a good idea to return to the title screen here. */
+	M_ResetGame();
 }
 
 void retro_run(void)
