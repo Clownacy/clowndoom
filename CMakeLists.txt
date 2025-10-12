@@ -157,6 +157,12 @@ if(FRENCH)
 	target_compile_definitions(clowndoom PRIVATE FRENCH)
 endif()
 
+include(CheckLibraryExists)
+check_library_exists(m pow "" LIBM)
+if(LIBM)
+	target_link_libraries(clowndoom PRIVATE m)
+endif()
+
 # Handling linking/building WildMIDI
 if(WILDMIDI)
 	target_compile_definitions(clowndoom PRIVATE WILDMIDI)
@@ -192,7 +198,7 @@ if(BACKEND STREQUAL "Xlib")
 	target_link_libraries(clowndoom PRIVATE Xext X11)
 
 	# These are for miniaudio.
-	target_link_libraries(clowndoom PRIVATE m ${CMAKE_DL_LIBS} pthread)
+	target_link_libraries(clowndoom PRIVATE ${CMAKE_DL_LIBS} pthread)
 elseif(BACKEND STREQUAL "SDL1")
 	target_sources(clowndoom PRIVATE
 		"source/ib_sound/sdl.c"
