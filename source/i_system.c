@@ -58,7 +58,7 @@ ticcmd_t*       I_BaseTiccmd(void)
 unsigned char* I_ZoneBase (size_t* size)
 {
 	/* According to PCDOOM, the DOS version of Doom would use between 1.5MiB and 8MiB of zone memory, depending on what was available. */
-	static unsigned char buffer[6 * 1024 * 1024]; /* 6MiB of zone memory! */
+	static unsigned char buffer[8 * 1024 * 1024]; /* 6MiB of zone memory! */
 
 	*size = sizeof(buffer);
 	return buffer;
