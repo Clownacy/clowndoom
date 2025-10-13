@@ -319,6 +319,8 @@ typedef enum
 /* The utility was written by Dave Taylor. */
 /* #include "sounds.h" */
 
+/* TODO: There is surely a more portable thing that we could use here? */
+#define D_ALIGNMENT D_MAX(sizeof(size_t), sizeof(void*))
 
 
 

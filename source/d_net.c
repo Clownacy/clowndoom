@@ -77,7 +77,7 @@ doomdata_t      reboundstore;
 
 size_t NetbufferSize (void)
 {
-	return (size_t)&(((doomdata_t *)0)->cmds[netbuffer->numtics]);
+	return offsetof(doomdata_t, cmds) + sizeof(netbuffer->cmds[0]) * netbuffer->numtics;
 }
 
 /* Checksum */
@@ -89,7 +89,7 @@ unsigned NetbufferChecksum (void)
 	c = 0x1234567;
 
 	/* FIXME -endianess? */
-	l = (NetbufferSize () - (size_t)&(((doomdata_t *)0)->retransmitfrom))/4;
+	l = (NetbufferSize() - offsetof(doomdata_t, retransmitfrom)) / sizeof(unsigned);
 	for (i=0 ; i<l ; i++)
 		c += ((unsigned *)&netbuffer->retransmitfrom)[i] * (i+1);
 

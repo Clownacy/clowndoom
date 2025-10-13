@@ -28,7 +28,7 @@
 /* Pads save_p to a 4-byte boundary */
 /*  so that the load/save works on SGI&Gecko. */
 /* TODO: Remove this. This is stupid: memcpy should work regardless of what address it begins at, so SGI&Gecko can go fuck themselves. */
-#define PADSAVEP()      index += (4 - (index & 3)) & 3
+#define PADSAVEP()      index += (D_ALIGNMENT - (index % D_ALIGNMENT)) % D_ALIGNMENT
 
 
 
@@ -113,12 +113,12 @@ size_t P_ArchiveWorld (unsigned char* const buffer, size_t index)
 	side_t*             si;
 	short*              put;
 
-	put = (short *)&buffer[index];
+	put = buffer == NULL ? NULL : (short *)&buffer[index];
 
 	/* do sectors */
 	for (i=0, sec = sectors ; i<numsectors ; i++,sec++)
 	{
-		if (buffer != NULL)
+		if (put != NULL)
 		{
 			*put++ = sec->floorheight >> FRACBITS;
 			*put++ = sec->ceilingheight >> FRACBITS;
@@ -136,7 +136,7 @@ size_t P_ArchiveWorld (unsigned char* const buffer, size_t index)
 	/* do lines */
 	for (i=0, li = lines ; i<numlines ; i++,li++)
 	{
-		if (buffer != NULL)
+		if (put != NULL)
 		{
 			*put++ = li->flags;
 			*put++ = li->special;
@@ -150,7 +150,7 @@ size_t P_ArchiveWorld (unsigned char* const buffer, size_t index)
 			if (li->sidenum[j] == -1)
 				continue;
 
-			if (buffer != NULL)
+			if (put != NULL)
 			{
 				si = &sides[li->sidenum[j]];
 

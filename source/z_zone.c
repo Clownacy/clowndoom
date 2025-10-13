@@ -160,10 +160,6 @@ void Z_Free (void* ptr)
 /* You can pass a NULL user if the tag is < PU_PURGELEVEL. */
 #define MINFRAGMENT             64
 
-/* TODO: There is surely a more portable thing that we could use here? */
-#define Z_ALIGNMENT D_MAX(sizeof(size_t), sizeof(void*))
-
-
 void*
 Z_Malloc
 ( size_t        size,
@@ -176,8 +172,8 @@ Z_Malloc
 	memblock_t* newblock;
 	memblock_t* base;
 
-	size += Z_ALIGNMENT - 1;
-	size -= size % Z_ALIGNMENT;
+	size += D_ALIGNMENT - 1;
+	size -= size % D_ALIGNMENT;
 
 	/* scan through the block list, */
 	/* looking for the first free block */
