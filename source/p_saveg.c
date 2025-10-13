@@ -25,9 +25,6 @@
 #include "doomstat.h"
 #include "r_state.h"
 
-/* Pads save_p to a 4-byte boundary */
-/*  so that the load/save works on SGI&Gecko. */
-/* TODO: Remove this. This is stupid: memcpy should work regardless of what address it begins at, so SGI&Gecko can go fuck themselves. */
 #define PADSAVEP()      index += (D_ALIGNMENT - (index % D_ALIGNMENT)) % D_ALIGNMENT
 
 
@@ -49,7 +46,7 @@ size_t P_ArchivePlayers (unsigned char* const buffer, size_t index)
 		if (buffer != NULL)
 		{
 			dest = (player_t *)&buffer[index];
-			memcpy (dest,&players[i],sizeof(player_t));
+			*dest = players[i];
 			for (j=0 ; j<NUMPSPRITES ; j++)
 			{
 				if (dest->psprites[j].state)
@@ -81,7 +78,7 @@ size_t P_UnArchivePlayers (const unsigned char* const buffer, size_t index)
 
 		PADSAVEP();
 
-		memcpy (&players[i],&buffer[index], sizeof(player_t));
+		players[i] = *(player_t*)&buffer[index];
 		index += sizeof(player_t);
 
 		/* will be set when unarc thinker */
@@ -253,7 +250,7 @@ size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				mobj = (mobj_t *)&buffer[index];
-				memcpy (mobj, th, sizeof(*mobj));
+				*mobj = *(mobj_t *)th;
 				mobj->state = (state_t *)(mobj->state - states);
 
 				if (mobj->player)
@@ -310,7 +307,7 @@ size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 		  case tc_mobj:
 			PADSAVEP();
 			mobj = (mobj_t*)Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
-			memcpy (mobj, &buffer[index], sizeof(*mobj));
+			*mobj = *(mobj_t*)&buffer[index];
 			index += sizeof(*mobj);
 			mobj->state = &states[(size_t)mobj->state];
 			mobj->target = NULL;
@@ -391,7 +388,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 				if (buffer != NULL)
 				{
 					ceiling = (ceiling_t *)&buffer[index];
-					memcpy (ceiling, th, sizeof(*ceiling));
+					*ceiling = *(ceiling_t *)th;
 					ceiling->sector = (sector_t *)(ceiling->sector - sectors);
 				}
 				index += sizeof(*ceiling);
@@ -408,7 +405,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				ceiling = (ceiling_t *)&buffer[index];
-				memcpy (ceiling, th, sizeof(*ceiling));
+				*ceiling = *(ceiling_t *)th;
 				ceiling->sector = (sector_t *)(ceiling->sector - sectors);
 			}
 			index += sizeof(*ceiling);
@@ -424,7 +421,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				door = (vldoor_t *)&buffer[index];
-				memcpy (door, th, sizeof(*door));
+				*door = *(vldoor_t *)th;
 				door->sector = (sector_t *)(door->sector - sectors);
 			}
 			index += sizeof(*door);
@@ -440,7 +437,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				floor = (floormove_t *)&buffer[index];
-				memcpy (floor, th, sizeof(*floor));
+				*floor = *(floormove_t *)th;
 				floor->sector = (sector_t *)(floor->sector - sectors);
 			}
 			index += sizeof(*floor);
@@ -456,7 +453,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				plat = (plat_t *)&buffer[index];
-				memcpy (plat, th, sizeof(*plat));
+				*plat = *(plat_t *)th;
 				plat->sector = (sector_t *)(plat->sector - sectors);
 			}
 			index += sizeof(*plat);
@@ -472,7 +469,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				flash = (lightflash_t *)&buffer[index];
-				memcpy (flash, th, sizeof(*flash));
+				*flash = *(lightflash_t *)th;
 				flash->sector = (sector_t *)(flash->sector - sectors);
 			}
 			index += sizeof(*flash);
@@ -488,7 +485,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				strobe = (strobe_t *)&buffer[index];
-				memcpy (strobe, th, sizeof(*strobe));
+				*strobe = *(strobe_t *)th;
 				strobe->sector = (sector_t *)(strobe->sector - sectors);
 			}
 			index += sizeof(*strobe);
@@ -504,7 +501,7 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			if (buffer != NULL)
 			{
 				glow = (glow_t *)&buffer[index];
-				memcpy (glow, th, sizeof(*glow));
+				*glow = *(glow_t *)th;
 				glow->sector = (sector_t *)(glow->sector - sectors);
 			}
 			index += sizeof(*glow);
@@ -544,7 +541,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		  case tc_ceiling:
 			PADSAVEP();
 			ceiling = (ceiling_t*)Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL);
-			memcpy (ceiling, &buffer[index], sizeof(*ceiling));
+			*ceiling = *(ceiling_t*)&buffer[index];
 			index += sizeof(*ceiling);
 			ceiling->sector = &sectors[(size_t)ceiling->sector];
 			ceiling->sector->specialdata = ceiling;
@@ -559,7 +556,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		  case tc_door:
 			PADSAVEP();
 			door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVEL, NULL);
-			memcpy (door, &buffer[index], sizeof(*door));
+			*door = *(vldoor_t*)&buffer[index];
 			index += sizeof(*door);
 			door->sector = &sectors[(size_t)door->sector];
 			door->sector->specialdata = door;
@@ -570,7 +567,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		  case tc_floor:
 			PADSAVEP();
 			floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVEL, NULL);
-			memcpy (floor, &buffer[index], sizeof(*floor));
+			*floor = *(floormove_t*)&buffer[index];
 			index += sizeof(*floor);
 			floor->sector = &sectors[(size_t)floor->sector];
 			floor->sector->specialdata = floor;
@@ -581,7 +578,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		  case tc_plat:
 			PADSAVEP();
 			plat = (plat_t*)Z_Malloc (sizeof(*plat), PU_LEVEL, NULL);
-			memcpy (plat, &buffer[index], sizeof(*plat));
+			*plat = *(plat_t*)&buffer[index];
 			index += sizeof(*plat);
 			plat->sector = &sectors[(size_t)plat->sector];
 			plat->sector->specialdata = plat;
@@ -596,7 +593,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		  case tc_flash:
 			PADSAVEP();
 			flash = (lightflash_t*)Z_Malloc (sizeof(*flash), PU_LEVEL, NULL);
-			memcpy (flash, &buffer[index], sizeof(*flash));
+			*flash = *(lightflash_t*)&buffer[index];
 			index += sizeof(*flash);
 			flash->sector = &sectors[(size_t)flash->sector];
 			flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
@@ -606,7 +603,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		  case tc_strobe:
 			PADSAVEP();
 			strobe = (strobe_t*)Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL);
-			memcpy (strobe, &buffer[index], sizeof(*strobe));
+			*strobe = *(strobe_t*)&buffer[index];
 			index += sizeof(*strobe);
 			strobe->sector = &sectors[(size_t)strobe->sector];
 			strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
@@ -616,7 +613,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		  case tc_glow:
 			PADSAVEP();
 			glow = (glow_t*)Z_Malloc (sizeof(*glow), PU_LEVEL, NULL);
-			memcpy (glow, &buffer[index], sizeof(*glow));
+			*glow = *(glow_t*)&buffer[index];
 			index += sizeof(*glow);
 			glow->sector = &sectors[(size_t)glow->sector];
 			glow->thinker.function.acp1 = (actionf_p1)T_Glow;
