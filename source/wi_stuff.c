@@ -48,7 +48,7 @@
 /* Loads of by-pixel layout and placement, offsets etc. */
 
 
-/* Different vetween registered DOOM (1994) and */
+/* Different between registered DOOM (1994) and */
 /*  Ultimate DOOM - Final edition (retail, 1995?). */
 /* This is supposedly ignored for commercial */
 /*  release (aka DOOM II), which had 34 maps */
@@ -162,28 +162,28 @@ typedef struct
 } anim_t;
 
 
-static point_t lnodes[NUMEPISODES][NUMMAPS] =
+static const point_t lnodes[NUMEPISODES][NUMMAPS] =
 {
 	/* Episode 0 World Map */
 	{
 		{ 185, 164 },   /* location of level 0 (CJ) */
 		{ 148, 143 },   /* location of level 1 (CJ) */
-		{ 69 , 122 },   /* location of level 2 (CJ) */
+		{  69, 122 },   /* location of level 2 (CJ) */
 		{ 209, 102 },   /* location of level 3 (CJ) */
-		{ 116, 89  },   /* location of level 4 (CJ) */
-		{ 166, 55  },   /* location of level 5 (CJ) */
-		{ 71 , 56  },   /* location of level 6 (CJ) */
-		{ 135, 29  },   /* location of level 7 (CJ) */
-		{ 71 , 24  }    /* location of level 8 (CJ) */
+		{ 116,  89 },   /* location of level 4 (CJ) */
+		{ 166,  55 },   /* location of level 5 (CJ) */
+		{  71,  56 },   /* location of level 6 (CJ) */
+		{ 135,  29 },   /* location of level 7 (CJ) */
+		{  71,  24 }    /* location of level 8 (CJ) */
 	},
 
 	/* Episode 1 World Map should go here */
 	{
-		{ 254, 25  },   /* location of level 0 (CJ) */
-		{ 97 , 50  },   /* location of level 1 (CJ) */
-		{ 188, 64  },   /* location of level 2 (CJ) */
-		{ 128, 78  },   /* location of level 3 (CJ) */
-		{ 214, 92  },   /* location of level 4 (CJ) */
+		{ 254,  25 },   /* location of level 0 (CJ) */
+		{  97,  50 },   /* location of level 1 (CJ) */
+		{ 188,  64 },   /* location of level 2 (CJ) */
+		{ 128,  78 },   /* location of level 3 (CJ) */
+		{ 214,  92 },   /* location of level 4 (CJ) */
 		{ 133, 130 },   /* location of level 5 (CJ) */
 		{ 208, 136 },   /* location of level 6 (CJ) */
 		{ 148, 140 },   /* location of level 7 (CJ) */
@@ -193,13 +193,13 @@ static point_t lnodes[NUMEPISODES][NUMMAPS] =
 	/* Episode 2 World Map should go here */
 	{
 		{ 156, 168 },   /* location of level 0 (CJ) */
-		{ 48 , 154 },   /* location of level 1 (CJ) */
-		{ 174, 95  },   /* location of level 2 (CJ) */
-		{ 265, 75  },   /* location of level 3 (CJ) */
-		{ 130, 48  },   /* location of level 4 (CJ) */
-		{ 279, 23  },   /* location of level 5 (CJ) */
-		{ 198, 48  },   /* location of level 6 (CJ) */
-		{ 140, 25  },   /* location of level 7 (CJ) */
+		{  48, 154 },   /* location of level 1 (CJ) */
+		{ 174,  95 },   /* location of level 2 (CJ) */
+		{ 265,  75 },   /* location of level 3 (CJ) */
+		{ 130,  48 },   /* location of level 4 (CJ) */
+		{ 279,  23 },   /* location of level 5 (CJ) */
+		{ 198,  48 },   /* location of level 6 (CJ) */
+		{ 140,  25 },   /* location of level 7 (CJ) */
 		{ 281, 136 }    /* location of level 8 (CJ) */
 	}
 
@@ -214,13 +214,13 @@ static anim_t epsd0animinfo[] =
 	{ ANIM_ALWAYS, TICRATE/3, 3, { 224, 104 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
 	{ ANIM_ALWAYS, TICRATE/3, 3, { 184, 160 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
 	{ ANIM_ALWAYS, TICRATE/3, 3, { 112, 136 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 72 , 112 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 88 , 96  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 64 , 48  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 192, 40  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 136, 16  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 80 , 16  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 64 , 24  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, {  72, 112 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, {  88,  96 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, {  64,  48 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 192,  40 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 136,  16 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, {  80,  16 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, {  64,  24 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
 static anim_t epsd1animinfo[] =
@@ -239,21 +239,21 @@ static anim_t epsd1animinfo[] =
 static anim_t epsd2animinfo[] =
 {
 	{ ANIM_ALWAYS, TICRATE/3, 3, { 104, 168 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 40 , 136 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 160, 96  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 104, 80  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/3, 3, { 120, 32  }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
-	{ ANIM_ALWAYS, TICRATE/4, 3, { 40 , 0   }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
+	{ ANIM_ALWAYS, TICRATE/3, 3, {  40, 136 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 160,  96 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 104,  80 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/3, 3, { 120,  32 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 },
+	{ ANIM_ALWAYS, TICRATE/4, 3, {  40,   0 }, 0, 0, {NULL, NULL, NULL}, 0, 0, 0, 0 }
 };
 
-static int NUMANIMS[NUMEPISODES] =
+static const int NUMANIMS[NUMEPISODES] =
 {
-	sizeof(epsd0animinfo)/sizeof(anim_t),
-	sizeof(epsd1animinfo)/sizeof(anim_t),
-	sizeof(epsd2animinfo)/sizeof(anim_t)
+	D_COUNT_OF(epsd0animinfo),
+	D_COUNT_OF(epsd1animinfo),
+	D_COUNT_OF(epsd2animinfo)
 };
 
-static anim_t *anims[NUMEPISODES] =
+static anim_t* const anims[NUMEPISODES] =
 {
 	epsd0animinfo,
 	epsd1animinfo,
@@ -479,8 +479,8 @@ WI_drawOnLnode
 
 void WI_initAnimatedBack(void)
 {
-	int         i;
-	anim_t*     a;
+	int     i;
+	anim_t *a;
 
 	if (gamemode == commercial)
 		return;
