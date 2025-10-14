@@ -28,7 +28,7 @@
 #define D_COUNT_OF(x) (sizeof(x) / sizeof(*x))
 
 enum {d_false, d_true};
-typedef unsigned int d_bool;
+typedef unsigned char d_bool;
 
 /* An indexed pixel. Currently `short` to enable true-colour rendering. */
 typedef unsigned short colourindex_t;
