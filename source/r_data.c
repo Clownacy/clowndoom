@@ -54,31 +54,28 @@
 /* The lumps are referenced by number, and patched */
 /* into the rectangular texture space using origin */
 /* and possibly other attributes. */
-enum
+typedef struct
 {
-	MAPPATCH_ORIGIN_X  = 0,
-	MAPPATCH_ORIGIN_Y  = 2,
-	MAPPATCH_PATCH     = 4,
-	MAPPATCH_STEP_DIR  = 6,
-	MAPPATCH_COLOR_MAP = 8,
-	MAPPATCH_SIZEOF    = 10
-};
-
+    unsigned char originx[2];
+    unsigned char originy[2];
+    unsigned char patch[2];
+    unsigned char stepdir[2];
+    unsigned char colormap[2];
+} mappatch_t;
 
 /* Texture definition. */
 /* A DOOM wall texture is a list of patches */
 /* which are to be combined in a predefined order. */
-enum
+typedef struct
 {
-	MAPTEXTURE_NAME             = 0,
-	MAPTEXTURE_MASKED           = 8,
-	MAPTEXTURE_WIDTH            = 12,
-	MAPTEXTURE_HEIGHT           = 14,
-	MAPTEXTURE_COLUMN_DIRECTORY = 16,
-	MAPTEXTURE_PATCH_COUNT      = 20,
-	MAPTEXTURE_PATCHES          = 22
-};
-
+    char          name[8];
+    unsigned char masked[4];
+    unsigned char width[2];
+    unsigned char height[2];
+    unsigned char columndirectory[4]; /* OBSOLETE */
+    unsigned char patchcount[2];
+    mappatch_t    patches[1];
+} maptexture_t;
 
 /* A single patch from a texture definition, */
 /*  basically a rectangular area within */
@@ -108,7 +105,6 @@ typedef struct
 	/*  are drawn back to front into the cached texture. */
 	short       patchcount;
 	texpatch_t  patches[1];
-
 } texture_t;
 
 
@@ -385,9 +381,9 @@ R_GetColumn
 /*  with the textures from the world map. */
 void R_InitTextures (void)
 {
-	unsigned char*      mtexture;
+	const maptexture_t* mtexture;
 	texture_t*          texture;
-	unsigned char*      mpatch;
+	const mappatch_t*   mpatch;
 	texpatch_t*         patch;
 
 	int                 i;
@@ -403,7 +399,6 @@ void R_InitTextures (void)
 
 	int*                patchlookup;
 
-	int                 totalwidth;
 	int                 nummappatches;
 	int                 offset;
 	int                 maxoff;
@@ -462,8 +457,6 @@ void R_InitTextures (void)
 	texturewidthmask = (int*)Z_Malloc (numtextures*sizeof(*texturewidthmask), PU_STATIC, NULL);
 	textureheight = (fixed_t*)Z_Malloc (numtextures*sizeof(*textureheight), PU_STATIC, NULL);
 
-	totalwidth = 0;
-
 	/*  Really complex printing shit... */
 	temp1 = W_GetNumForName ("S_START");  /* P_??????? */
 	temp2 = W_GetNumForName ("S_END") - 1;
@@ -494,26 +487,26 @@ void R_InitTextures (void)
 		if (offset > maxoff)
 			I_Error ("R_InitTextures: bad texture directory");
 
-		mtexture = maptex + offset;
+		mtexture = (maptexture_t*)(maptex + offset);
 
 		texture = textures[i] =
 			(texture_t*)Z_Malloc (sizeof(texture_t)
-					  + sizeof(texpatch_t)*(M_BytesToShort(&mtexture[MAPTEXTURE_PATCH_COUNT])-1),
+					  + sizeof(texpatch_t)*(M_BytesToShort(mtexture->patchcount)-1),
 					  PU_STATIC, NULL);
 
-		texture->width = M_BytesToShort(&mtexture[MAPTEXTURE_WIDTH]);
-		texture->height = M_BytesToShort(&mtexture[MAPTEXTURE_HEIGHT]);
-		texture->patchcount = M_BytesToShort(&mtexture[MAPTEXTURE_PATCH_COUNT]);
+		texture->width = M_BytesToShort(mtexture->width);
+		texture->height = M_BytesToShort(mtexture->height);
+		texture->patchcount = M_BytesToShort(mtexture->patchcount);
 
-		memcpy (texture->name, &mtexture[MAPTEXTURE_NAME], sizeof(texture->name));
-		mpatch = &mtexture[MAPTEXTURE_PATCHES];
+		memcpy (texture->name, mtexture->name, sizeof(texture->name));
+		mpatch = mtexture->patches;
 		patch = &texture->patches[0];
 
-		for (j=0 ; j<texture->patchcount ; j++, mpatch += MAPPATCH_SIZEOF, patch++)
+		for (j=0 ; j<texture->patchcount ; j++, ++mpatch, patch++)
 		{
-			patch->originx = M_BytesToShort(&mpatch[MAPPATCH_ORIGIN_X]);
-			patch->originy = M_BytesToShort(&mpatch[MAPPATCH_ORIGIN_Y]);
-			patch->patch = patchlookup[M_BytesToShort(&mpatch[MAPPATCH_PATCH])];
+			patch->originx = M_BytesToShort(mpatch->originx);
+			patch->originy = M_BytesToShort(mpatch->originy);
+			patch->patch = patchlookup[M_BytesToShort(mpatch->patch)];
 			if (patch->patch == -1)
 			{
 				I_Error ("R_InitTextures: Missing patch in texture %.*s",
@@ -529,8 +522,6 @@ void R_InitTextures (void)
 
 		texturewidthmask[i] = j-1;
 		textureheight[i] = texture->height<<FRACBITS;
-
-		totalwidth += texture->width;
 	}
 
 	Z_Free(patchlookup);
