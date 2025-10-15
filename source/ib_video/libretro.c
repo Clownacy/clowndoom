@@ -137,8 +137,8 @@ void IB_StartTic (void)
 		event_t event;
 		event.type = ev_mouse;
 		event.data1 = mouse_button_state;
-		event.data2 =  libretro.input_state(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_X) * (1 << 5);
-		event.data3 = -libretro.input_state(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_Y) * (1 << 5);
+		event.data2 =  libretro.input_state(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_X) * (1 << 3);
+		event.data3 = -libretro.input_state(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_Y) * (1 << 3);
 		D_PostEvent(&event);
 	}
 }
