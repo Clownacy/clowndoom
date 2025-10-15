@@ -163,28 +163,6 @@ if(LIBM)
 	target_link_libraries(clowndoom PRIVATE m)
 endif()
 
-# Handling linking/building WildMIDI
-if(WILDMIDI)
-	target_compile_definitions(clowndoom PRIVATE WILDMIDI)
-
-	find_package(WildMidi)
-
-	if(WildMidi_FOUND)
-		target_link_libraries(clowndoom PRIVATE WildMidi::libwildmidi)
-	else()
-		# Set and hide these internal options
-		set(WANT_ALSA OFF CACHE INTERNAL "" FORCE)
-		set(WANT_DEVTEST OFF CACHE INTERNAL "" FORCE)
-		set(WANT_OPENAL OFF CACHE INTERNAL "" FORCE)
-		set(WANT_OSS OFF CACHE INTERNAL "" FORCE)
-		set(WANT_OSX_DEPLOYMENT OFF CACHE INTERNAL "" FORCE)
-		set(WANT_STATIC ON CACHE INTERNAL "" FORCE)
-
-		add_subdirectory("external/wildmidi" EXCLUDE_FROM_ALL)
-		target_link_libraries(clowndoom PRIVATE libwildmidi-static)
-	endif()
-endif()
-
 # Handle backends
 if(BACKEND STREQUAL "Xlib")
 	target_sources(clowndoom PRIVATE
@@ -305,4 +283,26 @@ elseif(BACKEND STREQUAL "Null")
 	)
 else()
 	message(FATAL_ERROR "Invalid BACKEND")
+endif()
+
+# Handling linking/building WildMIDI
+if(WILDMIDI)
+	target_compile_definitions(clowndoom PRIVATE WILDMIDI)
+
+	find_package(WildMidi)
+
+	if(WildMidi_FOUND)
+		target_link_libraries(clowndoom PRIVATE WildMidi::libwildmidi)
+	else()
+		# Set and hide these internal options
+		set(WANT_ALSA OFF CACHE INTERNAL "" FORCE)
+		set(WANT_DEVTEST OFF CACHE INTERNAL "" FORCE)
+		set(WANT_OPENAL OFF CACHE INTERNAL "" FORCE)
+		set(WANT_OSS OFF CACHE INTERNAL "" FORCE)
+		set(WANT_OSX_DEPLOYMENT OFF CACHE INTERNAL "" FORCE)
+		set(WANT_STATIC ON CACHE INTERNAL "" FORCE)
+
+		add_subdirectory("external/wildmidi" EXCLUDE_FROM_ALL)
+		target_link_libraries(clowndoom PRIVATE libwildmidi-static)
+	endif()
 endif()
