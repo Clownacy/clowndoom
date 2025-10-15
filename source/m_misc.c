@@ -285,7 +285,6 @@ static const default_t       defaults[] =
 };
 #endif
 
-int     numdefaults;
 char*   defaultfile;
 
 
@@ -301,7 +300,7 @@ void M_SaveDefaults (void)
 	if (!f)
 		return; /* can't write the file, but don't complain */
 
-	for (i=0 ; i<numdefaults ; i++)
+	for (i=0 ; i<(int)D_COUNT_OF(defaults) ; i++)
 	{
 		if (!defaults[i].is_string)
 		{
@@ -367,7 +366,7 @@ void M_LoadDefaults (void)
 					sscanf(strparm, "%i", &parm);
 				}
 
-				for (i=0 ; i<numdefaults ; i++)
+				for (i=0 ; i<(int)D_COUNT_OF(defaults) ; i++)
 				{
 					if (!strcmp(def, defaults[i].name))
 					{
