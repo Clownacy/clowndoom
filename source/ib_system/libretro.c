@@ -20,7 +20,6 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
 
 #include "libretro-callbacks.h"
 #include "streams/file_stream.h"
@@ -48,6 +47,7 @@ static cothread_t main_coroutine, game_coroutine;
 static char *iwad_path;
 static char *pwad_paths[1];
 static bool game_exited;
+static unsigned int current_tic;
 
 static int SCREENWIDTH_OPTION;
 static int HUD_SCALE_OPTION;
@@ -676,7 +676,9 @@ void retro_cheat_set(const unsigned int index, const bool enabled, const char* c
 /* returns time in 1/35th second tics */
 int  IB_GetTime (void)
 {
-	return clock() / (CLOCKS_PER_SEC / TICRATE);
+	/* We fake the timing, since otherwise the game would hog the CPU and not
+	   yield to the libretro frontend often enough, causing crackling audio. */
+	return current_tic;
 }
 
 
@@ -708,7 +710,11 @@ void IB_WaitFrames(int count)
 
 void IB_Sleep(void)
 {
-	
+	/* Let the game think that time is progressing slowly; we don't want it getting ahead of itself! */
+	static unsigned int subticks;
+
+	if ((++subticks & 7) == 0)
+		++current_tic;
 }
 
 
