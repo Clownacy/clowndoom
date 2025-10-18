@@ -24,10 +24,6 @@
 
 #define MAXVISSPRITES   128
 
-extern vissprite_t      vissprites[MAXVISSPRITES];
-extern vissprite_t*     vissprite_p;
-extern vissprite_t      vsprsortedhead;
-
 /* Constant arrays used for psprite clipping */
 /*  and initializing clipping. */
 extern short            negonearray[MAXIMUM_SCREENWIDTH];
@@ -45,8 +41,6 @@ extern fixed_t          pspriteiscale;
 
 void R_DrawMaskedColumn (column_t* column);
 
-
-void R_SortVisSprites (void);
 
 void R_AddSprites (sector_t* sec);
 void R_AddPSprites (void);
