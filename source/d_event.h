@@ -80,9 +80,9 @@ typedef enum
 	BT_CHANGE           = 1<<2,
 	/* The 3bit weapon mask and shift, convenience. */
 	BT_WEAPONMASK       = 7,
-	BT_WEAPONSHIFT      = 4,
+	BT_WEAPONSHIFT      = 3,
 
-	BT_CYCLE            = 1<<3,
+	BT_CYCLE            = 1<<6,
 
 	/* Pause the game. */
 	BTS_PAUSE           = 1,
