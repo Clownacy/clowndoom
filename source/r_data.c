@@ -655,6 +655,7 @@ int R_CheckTextureNumForName(const char *name)
 	if (name[0] == '-')
 		return 0;
 
+	/* TODO: Use a hash map or binary search tree to speed this up. */
 	for (i = 0; i < numtextures; ++i)
 		if (!M_strncasecmp(textures[i]->name, name, D_COUNT_OF(textures[i]->name)))
 			return i;
