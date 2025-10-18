@@ -268,7 +268,7 @@ void R_InitSpriteDefs (const char* const *namelist)
 /* GAME FUNCTIONS */
 static vissprite_t     vissprites[MAXVISSPRITES];
 static vissprite_t*    vissprites_p[MAXVISSPRITES];
-static int             totalvissprite;
+static unsigned int    totalvissprite;
 
 
 
@@ -297,19 +297,11 @@ void R_ClearSprites (void)
 
 
 /* R_NewVisSprite */
-vissprite_t     overflowsprite;
-
-vissprite_t* R_NewVisSprite (void)
+static vissprite_t* R_NewVisSprite (void)
 {
-	vissprite_t* sprite;
-
-	if (totalvissprite == D_COUNT_OF(vissprites))
-		return &overflowsprite;
-
-	sprite = &vissprites[totalvissprite];
+	vissprite_t* const sprite = &vissprites[totalvissprite];
 	vissprites_p[totalvissprite] = sprite;
-	++totalvissprite;
-
+	totalvissprite += totalvissprite < D_COUNT_OF(vissprites) - 1;
 	return sprite;
 }
 
@@ -760,12 +752,12 @@ static void R_SortVisSprites (void)
 
 	#define LEFT_CHILD(A) ((A) * 2 + 1)
 
-	int start = totalvissprite / 2;
-	int end = totalvissprite;
+	unsigned int start = totalvissprite / 2;
+	unsigned int end = totalvissprite;
 
 	while (end > 1)
 	{
-		int root, child;
+		unsigned int root, child;
 
 		if (start > 0)
 		{
@@ -912,7 +904,7 @@ void R_DrawSprite (vissprite_t* spr)
 /* R_DrawMasked */
 void R_DrawMasked (void)
 {
-	int                 i;
+	unsigned int        i;
 	drawseg_t*          ds;
 
 	R_SortVisSprites ();
