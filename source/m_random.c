@@ -70,3 +70,10 @@ int M_GetRndIndex(void)
 {
 	return rndindex;
 }
+
+int P_SubRandom(void)
+{
+	const int value1 = P_Random();
+	const int value2 = P_Random();
+	return value1 - value2;
+}

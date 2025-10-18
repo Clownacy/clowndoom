@@ -32,4 +32,6 @@ void M_ClearRandom(void);
 
 int M_GetRndIndex(void);
 
+int P_SubRandom(void);
+
 #endif

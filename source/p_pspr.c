@@ -430,7 +430,7 @@ A_Punch
 		damage *= 10;
 
 	angle = player->mo->angle;
-	angle += (P_Random()-P_Random())<<18;
+	angle += P_SubRandom()<<18;
 	slope = P_AimLineAttack (player->mo, angle, MELEERANGE);
 	P_LineAttack (player->mo, angle, MELEERANGE, slope, damage);
 
@@ -460,7 +460,7 @@ A_Saw
 
 	damage = 2*(P_Random ()%10+1);
 	angle = player->mo->angle;
-	angle += (P_Random()-P_Random())<<18;
+	angle += P_SubRandom()<<18;
 
 	/* use meleerange + 1 se the puff doesn't skip the flash */
 	slope = P_AimLineAttack (player->mo, angle, MELEERANGE+1);
@@ -581,7 +581,7 @@ P_GunShot
 	angle = mo->angle;
 
 	if (!accurate)
-		angle += (P_Random()-P_Random())<<18;
+		angle += P_SubRandom()<<18;
 
 	P_LineAttack (mo, angle, MISSILERANGE, bulletslope, damage);
 }
@@ -663,11 +663,11 @@ A_FireShotgun2
 	{
 		damage = 5*(P_Random ()%3+1);
 		angle = player->mo->angle;
-		angle += (P_Random()-P_Random())<<19;
+		angle += P_SubRandom()<<19;
 		P_LineAttack (player->mo,
 					  angle,
 					  MISSILERANGE,
-					  bulletslope + ((P_Random()-P_Random())<<5), damage);
+					  bulletslope + (P_SubRandom()<<5), damage);
 	}
 }
 
