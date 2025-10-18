@@ -56,7 +56,7 @@ typedef struct
 	int last;
 } cliprange_t;
 
-#define MAXSEGS 32
+#define MAXSEGS (MAXIMUM_SCREENWIDTH / 2 + 1) /* Formerly 32. */
 
 /* newend is one past the last valid seg */
 cliprange_t    *newend;
