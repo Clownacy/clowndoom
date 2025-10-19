@@ -26,6 +26,7 @@
 
 #include "doomdef.h"
 #include "p_local.h"
+#include "p_map.h"
 
 #include "s_sound.h"
 
@@ -226,11 +227,6 @@ d_bool P_CheckMissileRange (mobj_t* actor)
 /* returns false if the move is blocked. */
 fixed_t xspeed[8] = {FRACUNIT,47000,0,-47000,-FRACUNIT,-47000,0,47000};
 fixed_t yspeed[8] = {0,47000,FRACUNIT,47000,0,-47000,-FRACUNIT,-47000};
-
-#define MAXSPECIALCROSS 8
-
-extern  line_t* spechit[MAXSPECIALCROSS];
-extern  int     numspechit;
 
 d_bool P_Move (mobj_t* actor)
 {
