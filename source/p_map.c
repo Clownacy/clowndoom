@@ -221,8 +221,16 @@ d_bool PIT_CheckLine (line_t* ld)
 	/* if contacted a special line, add it to the list */
 	if (ld->special)
 	{
-		spechit[numspechit] = ld;
-		numspechit++;
+		/* TODO: Use a larger 'spechit' array so that maps behave as intended, albeit without vanilla-accurate behaviour? */
+		if (numspechit == MAXSPECIALCROSS)
+		{
+			I_Info("'spechit' overflow has occurred! Demo will desync!\n");
+		}
+		else
+		{
+			spechit[numspechit] = ld;
+			numspechit++;
+		}
 	}
 
 	return d_true;
