@@ -393,13 +393,13 @@ typedef struct
 	/* If false use 0 for any position. */
 	/* Note: as eight entries are available, */
 	/*  we might as well insert the same name eight times. */
-	d_bool      rotate;
+	signed char rotate;
 
 	/* Lump to use for view angles 0-7. */
 	short       lump[8];
 
 	/* Flip bit (1 = flip) to use for view angles 0-7. */
-	unsigned char        flip[8];
+	d_bool      flip[8];
 
 } spriteframe_t;
 

@@ -574,7 +574,7 @@ void F_CastDrawer (void)
 	sprdef = &sprites[caststate->sprite];
 	sprframe = &sprdef->spriteframes[ caststate->frame & FF_FRAMEMASK];
 	lump = sprframe->lump[0];
-	flip = (d_bool)sprframe->flip[0];
+	flip = sprframe->flip[0];
 
 	patch = (patch_t*)W_CacheLumpNum (lump+firstspritelump, PU_CACHE);
 	V_DrawPatchFlipped (X_CENTRE(160),Y_CENTRE(170),SCREEN_FRAMEBUFFER,patch,flip);
