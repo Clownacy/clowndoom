@@ -60,9 +60,10 @@ extern int              loopcount;
 
 #define LIGHTINGRESOLUTIONSCALE       4
 #define MAXLIGHTSCALE           (48*LIGHTINGRESOLUTIONSCALE)
-#define LIGHTSCALESHIFT         ((1<<12)/LIGHTINGRESOLUTIONSCALE*(SCREENWIDTH/ORIGINAL_SCREEN_WIDTH)) /* TODO: This will break when I eventually allow adjustable FOV. */
 #define MAXLIGHTZ              (128*LIGHTINGRESOLUTIONSCALE)
 #define LIGHTZSHIFT             ((1<<20)/LIGHTINGRESOLUTIONSCALE)
+
+extern int LIGHTSCALESHIFT;
 
 extern colourindex_t*    scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
 extern colourindex_t*    scalelightfixed[MAXLIGHTSCALE];

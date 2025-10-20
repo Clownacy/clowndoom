@@ -43,12 +43,10 @@
 
 
 
-/* The original FOV is 90 degrees. Do some messy math here to increase it to suit the aspect ratio. */
-#define HORIZONTAL_FIELD_OF_VIEW_IN_DEGREES (unsigned int)CC_RADIAN_TO_DEGREE(atan(tan(CC_DEGREE_TO_RADIAN(90) / 2.0) * ORIGINAL_SCREEN_HEIGHT / ORIGINAL_SCREEN_WIDTH * SCREENWIDTH / SCREENHEIGHT) * 2.0)
 /* Fineangles in the SCREENWIDTH wide window. */
-#define FIELDOFVIEW             (FINEANGLES * HORIZONTAL_FIELD_OF_VIEW_IN_DEGREES / 360)
+static unsigned int     FIELDOFVIEW;
 
-
+int                     LIGHTSCALESHIFT;
 
 int                     viewangleoffset;
 
@@ -668,6 +666,7 @@ void R_ExecuteSetViewSize (void)
 	SCREENWIDTH = setscreenwidth;
 	SCREENHEIGHT = setscreenheight;
 	HUD_SCALE = sethudscale;
+
 	ST_setRefreshPending();
 	AM_resolutionChanged();
 	I_RenderSizeChanged();
@@ -768,6 +767,16 @@ void R_ExecuteSetViewSize (void)
 /* R_Init */
 void R_Init (void)
 {
+	{
+		/* The original FOV is 90 degrees. Do some messy math here to increase it to suit the aspect ratio. */
+		/* TODO: Make this less disgusting. */
+		const unsigned int horizontal_field_of_view_in_degrees = (unsigned int)CC_RADIAN_TO_DEGREE(atan(tan(CC_DEGREE_TO_RADIAN(90) / 2.0) * ORIGINAL_SCREEN_HEIGHT / ORIGINAL_SCREEN_WIDTH * SCREENWIDTH / SCREENHEIGHT) * 2.0);
+		FIELDOFVIEW = FINEANGLES * horizontal_field_of_view_in_degrees / 360;
+	}
+
+	/* TODO: This will break when I eventually allow adjustable FOV. */
+	LIGHTSCALESHIFT = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENWIDTH << FRACBITS) / ORIGINAL_SCREEN_WIDTH);
+
 	R_InitData ();
 	I_Info ("\nR_InitData");
 	R_InitPointToAngle ();
