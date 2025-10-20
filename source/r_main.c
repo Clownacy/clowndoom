@@ -44,9 +44,9 @@
 
 
 /* Fineangles in the SCREENWIDTH wide window. */
-static unsigned int     FIELDOFVIEW;
+static unsigned int     field_of_view;
 
-int                     LIGHTXSCALESHIFT, LIGHTYSCALESHIFT;
+int                     light_x_scale, light_y_scale;
 
 int                     viewangleoffset;
 
@@ -533,9 +533,9 @@ void R_InitTextureMapping (void)
 	/*  viewangletox will give the next greatest x */
 	/*  after the view angle. */
 	/* Calc focallength */
-	/*  so FIELDOFVIEW angles covers SCREENWIDTH. */
+	/*  so field_of_view angles covers SCREENWIDTH. */
 	focallength = FixedDiv (centerxfrac,
-							finetangent[FINEANGLES/4+FIELDOFVIEW/2] );
+							finetangent[FINEANGLES/4+field_of_view/2] );
 
 	for (i=0 ; i<FINEANGLES/2 ; i++)
 	{
@@ -605,7 +605,7 @@ void R_InitLightTables (void)
 		for (j=0 ; j<MAXLIGHTZ ; j++)
 		{
 			scale = FixedDiv ((SCREENWIDTH/2*FRACUNIT)*NUMLIGHTCOLORMAPS_MUL, (j+1)*LIGHTZSHIFT);
-			scale /= LIGHTXSCALESHIFT;
+			scale /= light_x_scale;
 			level = startmap - scale/DISTMAP;
 
 			if (level < 0)
@@ -771,12 +771,12 @@ void R_Init (void)
 		/* The original FOV is 90 degrees. Do some messy math here to increase it to suit the aspect ratio. */
 		/* TODO: Make this less disgusting. */
 		const unsigned int horizontal_field_of_view_in_degrees = (unsigned int)CC_RADIAN_TO_DEGREE(atan(tan(CC_DEGREE_TO_RADIAN(90) / 2.0) * ORIGINAL_SCREEN_HEIGHT / ORIGINAL_SCREEN_WIDTH * SCREENWIDTH / SCREENHEIGHT) * 2.0);
-		FIELDOFVIEW = FINEANGLES * horizontal_field_of_view_in_degrees / 360;
+		field_of_view = FINEANGLES * horizontal_field_of_view_in_degrees / 360;
 	}
 
 	/* TODO: This will break when I eventually allow adjustable FOV. */
-	LIGHTXSCALESHIFT = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENWIDTH << FRACBITS) / ORIGINAL_SCREEN_WIDTH);
-	LIGHTYSCALESHIFT = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENHEIGHT << FRACBITS) / ORIGINAL_SCREEN_HEIGHT);
+	light_x_scale = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENWIDTH << FRACBITS) / ORIGINAL_SCREEN_WIDTH);
+	light_y_scale = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENHEIGHT << FRACBITS) / ORIGINAL_SCREEN_HEIGHT);
 
 	R_InitData ();
 	I_Info ("\nR_InitData");

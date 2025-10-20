@@ -63,7 +63,7 @@ extern int              loopcount;
 #define MAXLIGHTZ              (128*LIGHTINGRESOLUTIONSCALE)
 #define LIGHTZSHIFT             ((1<<20)/LIGHTINGRESOLUTIONSCALE)
 
-extern int LIGHTXSCALESHIFT, LIGHTYSCALESHIFT;
+extern int light_x_scale, light_y_scale;
 
 extern colourindex_t*    scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
 extern colourindex_t*    scalelightfixed[MAXLIGHTSCALE];

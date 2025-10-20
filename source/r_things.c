@@ -557,7 +557,7 @@ void R_ProjectSprite (mobj_t* thing)
 	else
 	{
 		/* diminished light */
-		index = xscale/(LIGHTYSCALESHIFT>>detailshift);
+		index = xscale/(light_y_scale>>detailshift);
 
 		if (index >= MAXLIGHTSCALE)
 			index = MAXLIGHTSCALE-1;
