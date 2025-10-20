@@ -404,13 +404,13 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		"video",
 		/* Values. */
 		{
-			{"1", NULL},
-			{"2", NULL},
-			{"4", NULL},
-			{"8", NULL},
+			{"1x", NULL},
+			{"2x", NULL},
+			{"4x", NULL},
+			{"8x", NULL},
 		},
 		/* Default value. */
-		"1"
+		"1x"
 	},
 	{
 		/* Key. */
