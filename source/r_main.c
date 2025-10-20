@@ -109,7 +109,7 @@ angle_t                 xtoviewangle[MAXIMUM_SCREENWIDTH+1];
 /* fixed_t              finetangent[FINEANGLES/2]; */
 
 /* fixed_t              finesine[5*FINEANGLES/4]; */
-fixed_t*                finecosine = &finesine[FINEANGLES/4];
+const fixed_t*          finecosine = &finesine[FINEANGLES/4];
 
 
 colourindex_t*           scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
