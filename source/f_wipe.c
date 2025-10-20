@@ -137,7 +137,7 @@ wipe_doMelt
 
 	while (ticks--)
 	{
-		for (i=0;i<SCREENWIDTH/PIXELS_PER_COLUMN;i++)
+		for (i=0;i<CC_DIVIDE_CEILING(SCREENWIDTH,PIXELS_PER_COLUMN);i++)
 		{
 			if (y[i]<0)
 			{
@@ -155,6 +155,9 @@ wipe_doMelt
 				for (j=0;j<PIXELS_PER_COLUMN;++j)
 				{
 					const int x_offset = (i * PIXELS_PER_COLUMN + j) * SCREENHEIGHT;
+
+					if (x_offset >= SCREENWIDTH * SCREENHEIGHT)
+						break;
 
 					memcpy(&wipe_scr[x_offset + y_offset], &wipe_scr_end[x_offset + y_offset], dy * sizeof(colourindex_t));
 					memcpy(&wipe_scr[x_offset + y_offset_incremented], &wipe_scr_start[x_offset], (SCREENHEIGHT - y_offset_incremented) * sizeof(colourindex_t));
