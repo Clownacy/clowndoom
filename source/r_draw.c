@@ -175,7 +175,8 @@ void R_DrawColumnLow (void)
 
 /* Spectre/Invisibility. */
 #define FUZZTABLE 50
-#define FUZZOFF (SCREENWIDTH / ORIGINAL_SCREEN_WIDTH) /* TODO: This will break when alternate FOVs are added. */
+/* TODO: This is a bit awkward. Should resolution increases be limited to integer multiples to prevent this from becoming a problem? */
+#define FUZZOFF (SCREENHEIGHT / ORIGINAL_SCREEN_HEIGHT) /* TODO: This will break when alternate FOVs are added. */
 
 
 static const signed char fuzzoffset[FUZZTABLE] =
