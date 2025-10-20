@@ -22,10 +22,13 @@
 #ifndef __DOOMTYPE__
 #define __DOOMTYPE__
 
-#define D_MIN(a, b) ((a) < (b) ? (a) : (b))
-#define D_MAX(a, b) ((a) > (b) ? (a) : (b))
-#define D_CLAMP(min, max, value) D_MAX(min, D_MIN(max, value))
-#define D_COUNT_OF(x) (sizeof(x) / sizeof(*x))
+#include "clownlibs/clowncommon/clowncommon.h"
+
+/* TODO: Eliminate these shim and just use the ClownCommon macros directly. */
+#define D_MIN(a, b) CC_MIN(a, b)
+#define D_MAX(a, b) CC_MAX(a, b)
+#define D_CLAMP(min, max, value) CC_CLAMP(min, max, value)
+#define D_COUNT_OF(x) CC_COUNT_OF(x)
 
 enum {d_false, d_true};
 typedef unsigned char d_bool;
