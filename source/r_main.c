@@ -46,7 +46,7 @@
 /* Fineangles in the SCREENWIDTH wide window. */
 static unsigned int     FIELDOFVIEW;
 
-int                     LIGHTSCALESHIFT;
+int                     LIGHTXSCALESHIFT, LIGHTYSCALESHIFT;
 
 int                     viewangleoffset;
 
@@ -605,7 +605,7 @@ void R_InitLightTables (void)
 		for (j=0 ; j<MAXLIGHTZ ; j++)
 		{
 			scale = FixedDiv ((SCREENWIDTH/2*FRACUNIT)*NUMLIGHTCOLORMAPS_MUL, (j+1)*LIGHTZSHIFT);
-			scale /= LIGHTSCALESHIFT;
+			scale /= LIGHTXSCALESHIFT;
 			level = startmap - scale/DISTMAP;
 
 			if (level < 0)
@@ -775,7 +775,8 @@ void R_Init (void)
 	}
 
 	/* TODO: This will break when I eventually allow adjustable FOV. */
-	LIGHTSCALESHIFT = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENWIDTH << FRACBITS) / ORIGINAL_SCREEN_WIDTH);
+	LIGHTXSCALESHIFT = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENWIDTH << FRACBITS) / ORIGINAL_SCREEN_WIDTH);
+	LIGHTYSCALESHIFT = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENHEIGHT << FRACBITS) / ORIGINAL_SCREEN_HEIGHT);
 
 	R_InitData ();
 	I_Info ("\nR_InitData");

@@ -142,7 +142,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2)
 		{
 			if (!fixedcolormap)
 			{
-				index = spryscale/LIGHTSCALESHIFT;
+				index = spryscale/LIGHTYSCALESHIFT;
 
 				if (index >=  MAXLIGHTSCALE )
 					index = MAXLIGHTSCALE - 1;
@@ -237,7 +237,7 @@ void R_RenderSegLoop (void)
 			texturecolumn = rw_offset - FixedMul(finetangent[angle & (FINEANGLES / 2 - 1)], rw_distance);
 			texturecolumn >>= FRACBITS;
 			/* calculate lighting */
-			index = rw_scale/LIGHTSCALESHIFT;
+			index = rw_scale/LIGHTYSCALESHIFT;
 
 			if (index >=  MAXLIGHTSCALE )
 				index = MAXLIGHTSCALE - 1;
