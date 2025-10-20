@@ -5,6 +5,7 @@ project(clowndoom LANGUAGES C)
 set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, SDL2, libretro, or Null")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 option(FRENCH "Change the language of various strings to French" OFF)
+option(LOW_END "Exchange visual fidelity for resource usage, reducing RAM usage and CPU usage" OFF)
 
 if(BACKEND STREQUAL "libretro")
 	add_library(clowndoom)
@@ -155,6 +156,14 @@ endif()
 
 if(FRENCH)
 	target_compile_definitions(clowndoom PRIVATE FRENCH)
+endif()
+
+if(LOW_END)
+	target_compile_definitions(clowndoom PRIVATE
+		FAST_BASE_SCALE
+		MAXIMUM_SCREENWIDTH=320
+		MAXIMUM_SCREENHEIGHT=200
+	)
 endif()
 
 include(CheckLibraryExists)
