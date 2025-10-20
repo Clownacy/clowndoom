@@ -481,6 +481,9 @@ unsigned char*          ds_source;
 /* just for profiling */
 /*int                     dscount;*/
 
+#define SPAN_DIMENSION_SHIFT 6
+#define SPAN_DIMENSION (1 << SPAN_DIMENSION_SHIFT)
+#define SPAN_DIMENSION_MASK (SPAN_DIMENSION - 1)
 
 /* Draws the actual span. */
 void R_DrawSpan (void)
@@ -514,7 +517,7 @@ void R_DrawSpan (void)
 	do
 	{
 		/* Current texture index in u,v. */
-		spot = ((yfrac>>(16-6))&(63*64)) + ((xfrac>>16)&63);
+		spot = ((yfrac>>(16-SPAN_DIMENSION_SHIFT))&(SPAN_DIMENSION_MASK*SPAN_DIMENSION)) + ((xfrac>>16)&SPAN_DIMENSION_MASK);
 
 		/* Lookup pixel from flat texture tile, */
 		/*  re-index using light/colormap. */
@@ -564,7 +567,7 @@ void R_DrawSpanLow (void)
 	{
 		colourindex_t pixel;
 		/* Current texture index in u,v. */
-		spot = ((yfrac>>(16-6))&(63*64)) + ((xfrac>>16)&63);
+		spot = ((yfrac>>(16-SPAN_DIMENSION_SHIFT))&(SPAN_DIMENSION_MASK*SPAN_DIMENSION)) + ((xfrac>>16)&SPAN_DIMENSION_MASK);
 		/* Lowres/blocky mode does it twice, */
 		/*  while scale is adjusted appropriately. */
 		pixel = ds_colormap[ds_source[spot]];
