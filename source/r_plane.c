@@ -33,6 +33,9 @@
 #include "r_local.h"
 #include "r_sky.h"
 
+/* Replaces a division with a fixed-point multiplication to improve performance. */
+/* This is disabled because it causes flats to 'wobble' at high resolutions as the camera is turned. */
+/*#define FAST_BASE_SCALE*/
 
 
 planefunction_t         floorfunc;
@@ -70,8 +73,13 @@ fixed_t                 planeheight;
 
 fixed_t                 yslope[MAXIMUM_SCREENHEIGHT];
 fixed_t                 distscale[MAXIMUM_SCREENWIDTH];
+#ifdef FAST_BASE_SCALE
 fixed_t                 basexscale;
 fixed_t                 baseyscale;
+#else
+long                    basexscale;
+long                    baseyscale;
+#endif
 
 fixed_t                 cachedheight[MAXIMUM_SCREENHEIGHT];
 fixed_t                 cacheddistance[MAXIMUM_SCREENHEIGHT];
@@ -122,8 +130,13 @@ R_MapPlane
 	{
 		cachedheight[y] = planeheight;
 		distance = cacheddistance[y] = FixedMul (planeheight, yslope[y]);
+#ifdef FAST_BASE_SCALE
 		ds_xstep = cachedxstep[y] = FixedMul (distance,basexscale);
 		ds_ystep = cachedystep[y] = FixedMul (distance,baseyscale);
+#else
+		ds_xstep = cachedxstep[y] = distance / basexscale;
+		ds_ystep = cachedystep[y] = distance / baseyscale;
+#endif
 	}
 	else
 	{
@@ -182,8 +195,13 @@ void R_ClearPlanes (void)
 	angle = (viewangle-ANG90)>>ANGLETOFINESHIFT;
 
 	/* scale will be unit scale at SCREENWIDTH/2 distance */
+#ifdef FAST_BASE_SCALE
 	basexscale = FixedDiv (finecosine[angle], WIDESCREENIFY(centerxfrac));
-	baseyscale = -FixedDiv (finesine[angle],WIDESCREENIFY(centerxfrac));
+	baseyscale = -FixedDiv (finesine[angle], WIDESCREENIFY(centerxfrac));
+#else
+	basexscale = FixedDiv (WIDESCREENIFY(centerx), finecosine[angle]);
+	baseyscale = -FixedDiv (WIDESCREENIFY(centerx), finesine[angle]);
+#endif
 }
 
 
