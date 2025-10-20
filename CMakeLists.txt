@@ -159,11 +159,7 @@ if(FRENCH)
 endif()
 
 if(LOW_END)
-	target_compile_definitions(clowndoom PRIVATE
-		FAST_BASE_SCALE
-		MAXIMUM_SCREENWIDTH=320
-		MAXIMUM_SCREENHEIGHT=200
-	)
+	target_compile_definitions(clowndoom PRIVATE LOW_END)
 endif()
 
 include(CheckLibraryExists)

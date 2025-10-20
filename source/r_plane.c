@@ -35,7 +35,9 @@
 
 /* Replaces a division with a fixed-point multiplication to improve performance. */
 /* This is disabled because it causes flats to 'wobble' at high resolutions as the camera is turned. */
-/*#define FAST_BASE_SCALE*/
+#ifdef LOW_END
+#define FAST_BASE_SCALE
+#endif
 
 
 planefunction_t         floorfunc;
