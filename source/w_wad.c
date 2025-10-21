@@ -49,49 +49,45 @@ void**                  lumpcache;
 
 static void
 ExtractFileBase
-( const char*   path,
-  char*         dest )
+( char*         dest,
+  size_t        dest_length,
+  const char*   path )
 {
 	const char* src;
-	int         length;
+	size_t      length;
 
 	src = path + strlen(path) - 1;
 
-	/* back up until a \ or the start */
+	/* back up until a '\' or the start */
 	while (src != path
-		   && *(src-1) != '\\'
-		   && *(src-1) != '/')
+#ifdef _WIN32
+		&& src[-1] != '\\'
+#endif
+		&& src[-1] != '/')
 	{
-		src--;
+		--src;
 	}
 
-	/* copy up to eight characters */
-	memset (dest,'\0',8);
 	length = 0;
 
 	while (*src != '\0' && *src != '.')
 	{
-		if (++length == 9)
-			I_Error ("Filename base of %s >8 chars",path);
+		if (length++ == dest_length)
+			I_Error("Filename base of '%s' is too long", path);
 
 		*dest++ = toupper(*src++);
 	}
+
+	memset(dest, '\0', dest_length - length);
 }
 
-static unsigned long Read32LE(I_File* handle)
+#define MAKE_U32LE(A, B, C, D) ((unsigned long)(A) << (8 * 0) | (unsigned long)(B) << (8 * 1) | (unsigned long)(C) << (8 * 2) | (unsigned long)(D) << (8 * 3))
+
+static unsigned long ReadU32LE(I_File* handle)
 {
 	unsigned char bytes[4];
-	unsigned long value;
-	unsigned int i;
-
-	I_FileRead(handle, bytes, 4);
-
-	value = 0;
-
-	for (i = 0; i < 4; ++i)
-		value |= (unsigned long)bytes[i] << (8 * i);
-
-	return value;
+	I_FileRead(handle, bytes, sizeof(bytes));
+	return MAKE_U32LE(bytes[0], bytes[1], bytes[2], bytes[3]);
 }
 
 
@@ -117,7 +113,6 @@ const char*             reloadname;
 
 void W_AddFile (const char *filename)
 {
-	wadinfo_t           header;
 	lumpinfo_t*         lump_p;
 	size_t              i;
 	I_File*             handle;
@@ -137,7 +132,7 @@ void W_AddFile (const char *filename)
 		reloadlump = numlumps;
 	}
 
-	if ((handle = I_FileOpen (filename,I_FILE_MODE_READ)) == NULL)
+	if ((handle = I_FileOpen(filename,I_FILE_MODE_READ)) == NULL)
 	{
 		I_Info(" couldn't open %s\n",filename);
 		return;
@@ -148,7 +143,7 @@ void W_AddFile (const char *filename)
 
 	storehandle = reloadname ? NULL : handle;
 
-	singlelump = M_strcasecmp(filename+strlen(filename)-3 , "wad" );
+	singlelump = M_strcasecmp(filename + strlen(filename) - 3 , "wad") != 0;
 
 	if (singlelump)
 	{
@@ -156,36 +151,43 @@ void W_AddFile (const char *filename)
 		singleinfo.handle = storehandle;
 		singleinfo.position = 0;
 		singleinfo.size = I_FileSize(handle);
-		ExtractFileBase (filename, singleinfo.name);
+		ExtractFileBase(singleinfo.name, D_COUNT_OF(singleinfo.name), filename);
 		numlumps++;
 	}
 	else
 	{
 		/* WAD file */
-		I_FileRead(handle, header.identification, sizeof(header.identification));
-		header.numlumps = Read32LE(handle);
-		header.infotableofs = Read32LE(handle);
+		const unsigned long identification    = ReadU32LE(handle);
+		const unsigned long lumps_in_wad      = ReadU32LE(handle);
+		const unsigned long info_table_offset = ReadU32LE(handle);
 
-		if (memcmp(header.identification,"IWAD",4))
+		I_FileSeek(handle, info_table_offset, I_FILE_POSITION_START);
+
+		switch (identification)
 		{
-			/* Homebrew levels? */
-			if (memcmp(header.identification,"PWAD",4))
-			{
-				I_Error ("Wad file %s doesn't have IWAD "
-						 "or PWAD id\n", filename);
-			}
+			case MAKE_U32LE('I', 'W', 'A', 'D'):
+				/* Main game. */
+				break;
 
-			/* ???modifiedgame = true; */
+			case MAKE_U32LE('P', 'W', 'A', 'D'):
+				/* Homebrew levels. */
+				/* ???modifiedgame = true; */
+				break;
+
+			default:
+				I_Error("WAD file %s doesn't have IWAD or PWAD ID\n", filename);
+				break;
 		}
-		numlumps += header.numlumps;
+
+		numlumps += lumps_in_wad;
 	}
 
 
 	/* Fill in lumpinfo */
-	lumpinfo = (lumpinfo_t*)realloc (lumpinfo, numlumps*sizeof(lumpinfo_t));
+	lumpinfo = (lumpinfo_t*)realloc(lumpinfo, numlumps * sizeof(lumpinfo_t));
 
 	if (lumpinfo == NULL)
-		I_Error ("Couldn't realloc lumpinfo");
+		I_Error("Couldn't realloc lumpinfo");
 
 	lump_p = &lumpinfo[startlump];
 
@@ -194,20 +196,18 @@ void W_AddFile (const char *filename)
 		*lump_p = singleinfo;
 
 		/* overwrite existing entries so patch lump files take precedence */
-		if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, singleinfo.name, 8, &dictionary_entry))
+		if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, singleinfo.name, D_COUNT_OF(singleinfo.name), &dictionary_entry))
 			I_Error("Could not create lump dictionary entry");
 
 		dictionary_entry->shared.unsigned_long = startlump;
 	}
 	else
 	{
-		I_FileSeek (handle, header.infotableofs, I_FILE_POSITION_START);
-
 		for (i=startlump; i<numlumps; i++, lump_p++)
 		{
-			lump_p->handle = storehandle;
-			lump_p->position = Read32LE(handle);
-			lump_p->size = Read32LE(handle);
+			lump_p->handle   = storehandle;
+			lump_p->position = ReadU32LE(handle);
+			lump_p->size     = ReadU32LE(handle);
 			I_FileRead(handle, lump_p->name, sizeof(lump_p->name));
 
 			/* Emulate the behaviour of the original code, which fills everything after the terminator byte with null characters. */
@@ -224,7 +224,7 @@ void W_AddFile (const char *filename)
 			}
 
 			/* overwrite existing entries so patch lump files take precedence */
-			if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, lump_p->name, 8, &dictionary_entry))
+			if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, lump_p->name, D_COUNT_OF(lump_p->name), &dictionary_entry))
 				I_Error("Could not create lump dictionary entry");
 
 			dictionary_entry->shared.unsigned_long = i;
@@ -256,8 +256,8 @@ void W_Reload (void)
 		I_Error ("W_Reload: couldn't open %s",reloadname);
 
 	I_FileSeek(handle, 4, I_FILE_POSITION_CURRENT);
-	numlumps = Read32LE(handle);
-	infotableofs = Read32LE(handle);
+	numlumps = ReadU32LE(handle);
+	infotableofs = ReadU32LE(handle);
 	I_FileSeek (handle, infotableofs, I_FILE_POSITION_START);
 
 	/* Fill in lumpinfo */
@@ -270,8 +270,8 @@ void W_Reload (void)
 		if (lumpcache[i] != NULL)
 			Z_Free(lumpcache[i]);
 
-		lump_p->position = Read32LE(handle);
-		lump_p->size = Read32LE(handle);
+		lump_p->position = ReadU32LE(handle);
+		lump_p->size = ReadU32LE(handle);
 		I_FileSeek(handle, 8, I_FILE_POSITION_CURRENT);
 	}
 

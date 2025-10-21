@@ -27,15 +27,6 @@
 #include "doomtype.h"
 
 /* TYPES */
-typedef struct
-{
-	/* Should be "IWAD" or "PWAD". */
-	char                identification[4];
-	size_t              numlumps;
-	size_t              infotableofs;
-
-} wadinfo_t;
-
 
 /* WADFILE I/O related stuff. */
 typedef struct
