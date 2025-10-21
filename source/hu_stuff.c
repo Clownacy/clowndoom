@@ -553,12 +553,12 @@ void HU_Ticker(void)
 		if ((plr->message && !message_nottobefuckedwith)
 			|| (plr->message && message_dontfuckwithme))
 		{
-			HUlib_addMessageToSText(&w_message, 0, plr->message);
-			plr->message = 0;
+			HUlib_addMessageToSText(&w_message, NULL, plr->message);
+			plr->message = NULL;
 			message_on = d_true;
 			message_counter = HU_MSGTIMEOUT;
 			message_nottobefuckedwith = message_dontfuckwithme;
-			message_dontfuckwithme = 0;
+			message_dontfuckwithme = d_false;
 		}
 
 	} /* else message_on = false; */

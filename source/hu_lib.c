@@ -38,7 +38,7 @@ void HUlib_init(void)
 void HUlib_clearTextLine(hu_textline_t* t)
 {
 	t->len = 0;
-	t->l[0] = 0;
+	t->l[0] = '\0';
 	t->needsupdate = d_true;
 }
 
@@ -78,7 +78,7 @@ HUlib_addCharToTextLine
 	else
 	{
 		t->l[t->len++] = ch;
-		t->l[t->len] = 0;
+		t->l[t->len] = '\0';
 		t->needsupdate = 4;
 		return d_true;
 	}
@@ -91,7 +91,7 @@ d_bool HUlib_delCharFromTextLine(hu_textline_t* t)
 	if (!t->len) return d_false;
 	else
 	{
-		t->l[--t->len] = 0;
+		t->l[--t->len] = '\0';
 		t->needsupdate = 4;
 		return d_true;
 	}
