@@ -40,6 +40,7 @@
 #include "p_inter.h"
 
 #include "am_map.h"
+#include "hu_lib.h"
 #include "m_cheat.h"
 
 #include "s_sound.h"
@@ -188,9 +189,6 @@
 #define ST_MAXAMMO3WIDTH        ST_MAXAMMO0WIDTH
 #define ST_MAXAMMO3X            314
 #define ST_MAXAMMO3Y            185
-
-/* Dimensions given in characters. */
-#define ST_MSGWIDTH             52
 
 
 /* main player in game */
@@ -555,7 +553,7 @@ ST_Responder (const event_t* ev)
 	  /* 'mypos' for player position */
 	  else if (cht_CheckCheat(&cheat_mypos, ev->data1))
 	  {
-		static char     buf[ST_MSGWIDTH];
+		static char     buf[HU_MAXLINELENGTH+1];
 		sprintf(buf, "ang=0x%x;x,y=(0x%lx,0x%lx)",
 				players[consoleplayer].mo->angle,
 				players[consoleplayer].mo->x,
