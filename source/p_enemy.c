@@ -1391,13 +1391,13 @@ A_PainShootSkull
 		currentthinker = currentthinker->next;
 	}
 
-	/* if there are allready 20 skulls on the level, */
+	/* if there are already 20 skulls on the level, */
 	/* don't spit another one */
 	if (count > 20)
 		return;
 
 
-	/* okay, there's playe for another one */
+	/* okay, there's place for another one */
 	an = angle >> ANGLETOFINESHIFT;
 
 	prestep =
