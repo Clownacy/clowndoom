@@ -153,6 +153,7 @@ int             showMessages = 1;
 int             novert = 1;
 int             always_run = 1;
 int             always_strafe = 1;
+int             default_compatibility_level = 3; /* Default to Ultimate Doom, since the Linux Doom source release is the closest to it. */
 
 /* controls (have defaults) */
 int             key_right = 'd';
@@ -225,6 +226,7 @@ static const default_t       defaults[] =
 	{"novert",&novert, d_false},
 	{"always_run",&always_run, d_false},
 	{"always_strafe",&always_strafe, d_false},
+	{"default_compatibility_level",&default_compatibility_level, d_false},
 
 	/* Keyboard */
 	/* Movement */
@@ -384,6 +386,9 @@ void M_LoadDefaults (void)
 		fclose (f);
 	}
 #endif
+
+	if (complevel == -1)
+		complevel = default_compatibility_level;
 
 	/* Clamp options to sane values. */
 	SCREENWIDTH  = D_CLAMP(ORIGINAL_SCREEN_WIDTH,  MAXIMUM_SCREENWIDTH,  SCREENWIDTH);

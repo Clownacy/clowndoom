@@ -109,6 +109,7 @@ skill_t         startskill;
 int             startepisode;
 int             startmap;
 d_bool          autostart;
+int             complevel;
 
 FILE*           debugfile;
 
@@ -949,7 +950,7 @@ void D_DoomMain (int argc, char **argv)
 	startepisode = 1;
 	startmap = 1;
 	autostart = d_false;
-
+	complevel = -1;
 
 	p = M_CheckParm ("-skill");
 	if (p && p < myargc-1)
@@ -994,6 +995,15 @@ void D_DoomMain (int argc, char **argv)
 			startmap = myargv[p+2][0]-'0';
 		}
 		autostart = d_true;
+	}
+
+	p = M_CheckParm ("-complevel");
+	if (p && p < myargc - 1)
+	{
+		sscanf(myargv[p + 1], "%i", &complevel);
+
+		if (complevel < 2 || complevel > 4)
+			I_Error("Unsupported complevel '%u'.\n", complevel);
 	}
 
 	/* init subsystems */

@@ -200,6 +200,29 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 	},
 	{
 		/* Key. */
+		"clowndoom_default_compatibility_level",
+		/* Label. */
+		"General > Default Compatibility Level",
+		/* Categorised label. */
+		"Default Compatibility Level",
+		/* Description. */
+		"Set game behaviour to match a particular revision; important for demos. Restart to apply.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"general",
+		/* Values. */
+		{
+			{"2", "Doom v1.9"},
+			{"3", "Ultimate Doom"},
+			{"4", "Final Doom"},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"3"
+	},
+	{
+		/* Key. */
 		"clowndoom_graphic_detail",
 		/* Label. */
 		"Video > Graphic Detail",

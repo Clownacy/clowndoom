@@ -279,10 +279,13 @@ void P_ZMovement (mobj_t* mo)
 	{
 		/* hit the floor */
 
-		/* Note (id): */
-		/*  somebody left this after the setting momz to 0, */
-		/*  kinda useless there. */
-		SkullBounce(mo);
+		if (complevel >= 3)
+		{
+			/* Note (id): */
+			/*  somebody left this after the setting momz to 0, */
+			/*  kinda useless there. */
+			SkullBounce(mo);
+		}
 
 		if (mo->momz < 0)
 		{
@@ -301,6 +304,13 @@ void P_ZMovement (mobj_t* mo)
 		}
 
 		mo->z = mo->floorz;
+
+		if (complevel < 3)
+		{
+			/* BUG: This is done too late, preventing the
+			   Lost Soul from bouncing off the floor. */
+			SkullBounce(mo);
+		}
 
 		if ( (mo->flags & MF_MISSILE)
 			 && !(mo->flags & MF_NOCLIP) )

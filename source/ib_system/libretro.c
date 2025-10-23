@@ -148,6 +148,10 @@ static void UpdateOptions(const bool initial)
 		"clowndoom_always_strafe",
 		"enabled",
 		NULL);
+	DoOptionNumericalWithCallback(initial,
+		&default_compatibility_level,
+		"clowndoom_default_compatibility_level",
+		NULL);
 
 	/* Video. */
 	DoOptionBooleanWithCallback(initial,

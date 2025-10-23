@@ -29,6 +29,7 @@ extern int showMessages;
 extern int novert;
 extern int always_run;
 extern int always_strafe;
+extern int default_compatibility_level;
 
 extern int key_right;
 extern int key_left;
