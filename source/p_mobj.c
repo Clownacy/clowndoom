@@ -227,6 +227,15 @@ void P_XYMovement (mobj_t* mo)
 	}
 }
 
+static void SkullBounce(mobj_t* const mo)
+{
+	if (mo->flags & MF_SKULLFLY)
+	{
+		/* the skull slammed into something */
+		mo->momz = -mo->momz;
+	}
+}
+
 /* P_ZMovement */
 void P_ZMovement (mobj_t* mo)
 {
@@ -273,11 +282,7 @@ void P_ZMovement (mobj_t* mo)
 		/* Note (id): */
 		/*  somebody left this after the setting momz to 0, */
 		/*  kinda useless there. */
-		if (mo->flags & MF_SKULLFLY)
-		{
-			/* the skull slammed into something */
-			mo->momz = -mo->momz;
-		}
+		SkullBounce(mo);
 
 		if (mo->momz < 0)
 		{
@@ -291,8 +296,10 @@ void P_ZMovement (mobj_t* mo)
 				mo->player->deltaviewheight = mo->momz>>3;
 				S_StartSound (mo, sfx_oof);
 			}
+
 			mo->momz = 0;
 		}
+
 		mo->z = mo->floorz;
 
 		if ( (mo->flags & MF_MISSILE)
@@ -312,17 +319,21 @@ void P_ZMovement (mobj_t* mo)
 
 	if (mo->z + mo->height > mo->ceilingz)
 	{
+#ifdef FIX_BUGS
+		SkullBounce(mo);
+#endif
+
 		/* hit the ceiling */
 		if (mo->momz > 0)
 			mo->momz = 0;
-		{
-			mo->z = mo->ceilingz - mo->height;
-		}
 
-		if (mo->flags & MF_SKULLFLY)
-		{       /* the skull slammed into something */
-			mo->momz = -mo->momz;
-		}
+		mo->z = mo->ceilingz - mo->height;
+
+#ifndef FIX_BUGS
+		/* BUG: This is done too late, preventing the
+		   Lost Soul from bouncing off the ceiling. */
+		SkullBounce(mo);
+#endif
 
 		if ( (mo->flags & MF_MISSILE)
 			 && !(mo->flags & MF_NOCLIP) )
