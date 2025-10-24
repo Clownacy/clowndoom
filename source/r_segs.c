@@ -130,7 +130,8 @@ static const struct
 	int clamp;
 	int heightbits;
 } scale_values[8] = {
-	{2048 * FRACUNIT, 12},
+	/* TODO: Implement an equivalent to Killough's 'centeryfrac' fix so that this hack is not necessary. */
+	{/*2048*/1024 * FRACUNIT, 12}, /* Hack to prevent crash when going out-of-bounds. */
 	{1024 * FRACUNIT, 12},
 	{1024 * FRACUNIT, 11},
 	{ 512 * FRACUNIT, 11},
