@@ -44,7 +44,7 @@
 #define SIL_TOP                 2
 #define SIL_BOTH                3
 
-#define MAXDRAWSEGS             256
+#define MAXDRAWSEGS             1280 /* Previously 256, but Plutonia's MAP24 exceeds this when rendering in HD. */
 
 /* Number of diminishing brightness levels. */
 /* There a 0-31, i.e. 32 LUT in the COLORMAP lump. */
