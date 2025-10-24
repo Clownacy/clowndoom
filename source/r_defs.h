@@ -102,6 +102,10 @@ typedef struct
 	short       special;
 	short       tag;
 
+	/* [kb] for R_FixWiggle() */
+	int	    cachedheight;
+	int	    scaleindex;
+
 	/* 0 = untraversed, 1,2 = sndlines -1 */
 	int         soundtraversed;
 

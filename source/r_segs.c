@@ -80,6 +80,100 @@ colourindex_t** walllights;
 
 short*          maskedtexturecol;
 
+/*
+ * R_FixWiggle()
+ * Dynamic wall/texture rescaler, AKA "WiggleHack II"
+ *  by Kurt "kb1" Baumgardner ("kb") and Andrey "Entryway" Budko ("e6y")
+ *
+ *  [kb] When the rendered view is positioned, such that the viewer is
+ *   looking almost parallel down a wall, the result of the scale
+ *   calculation in R_ScaleFromGlobalAngle becomes very large. And, the
+ *   taller the wall, the larger that value becomes. If these large
+ *   values were used as-is, subsequent calculations would overflow,
+ *   causing full-screen HOM, and possible program crashes.
+ *
+ *  Therefore, vanilla Doom clamps this scale calculation, preventing it
+ *   from becoming larger than 0x400000 (64*FRACUNIT). This number was
+ *   chosen carefully, to allow reasonably-tight angles, with reasonably
+ *   tall sectors to be rendered, within the limits of the fixed-point
+ *   math system being used. When the scale gets clamped, Doom cannot
+ *   properly render the wall, causing an undesirable wall-bending
+ *   effect that I call "floor wiggle". Not a crash, but still ugly.
+ *
+ *  Modern source ports offer higher video resolutions, which worsens
+ *   the issue. And, Doom is simply not adjusted for the taller walls
+ *   found in many PWADs.
+ *
+ *  This code attempts to correct these issues, by dynamically
+ *   adjusting the fixed-point math, and the maximum scale clamp,
+ *   on a wall-by-wall basis. This has 2 effects:
+ *
+ *  1. Floor wiggle is greatly reduced and/or eliminated.
+ *  2. Overflow is no longer possible, even in levels with maximum
+ *     height sectors (65535 is the theoretical height, though Doom
+ *     cannot handle sectors > 32767 units in height.
+ *
+ *  The code is not perfect across all situations. Some floor wiggle can
+ *   still be seen, and some texture strips may be slightly misaligned in
+ *   extreme cases. These effects cannot be corrected further, without
+ *   increasing the precision of various renderer variables, and, 
+ *   possibly, creating a noticable performance penalty.
+ */
+
+static int max_rwscale = 64 * FRACUNIT;
+static int heightbits = 12;
+static int heightunit = 1 << 12;
+static int invhgtbits = 4;
+ 
+static const struct
+{
+	int clamp;
+	int heightbits;
+} scale_values[8] = {
+	{2048 * FRACUNIT, 12},
+	{1024 * FRACUNIT, 12},
+	{1024 * FRACUNIT, 11},
+	{ 512 * FRACUNIT, 11},
+	{ 512 * FRACUNIT, 10},
+	{ 256 * FRACUNIT, 10},
+	{ 256 * FRACUNIT,  9},
+	{ 128 * FRACUNIT,  9}
+};
+
+void R_FixWiggle(sector_t* const sector)
+{
+	static int	lastheight = 0;
+	int		height = (sector->ceilingheight - sector->floorheight) >> FRACBITS;
+
+	/* Disallow negative heights. using 1 forces cache initialization. */
+	if (height < 1)
+		height = 1;
+
+	/* Early out? */
+	if (lastheight != height)
+	{
+		lastheight = height;
+
+		/* Initialize, or handle moving sector. */
+		if (sector->cachedheight != height)
+		{
+			sector->cachedheight = height;
+			sector->scaleindex = 0;
+			height /= 128;
+
+			/* Calculate adjustment. */
+			while ((height /= 2) != 0)
+				++sector->scaleindex;
+		}
+
+		/* Fine-tune renderer for this wall. */
+		max_rwscale = scale_values[sector->scaleindex].clamp;
+		heightbits = scale_values[sector->scaleindex].heightbits;
+		heightunit = 1 << heightbits;
+		invhgtbits = FRACBITS - heightbits;
+	}
+}
+
 /* R_RenderMaskedSegRange */
 void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2)
 {
@@ -171,9 +265,6 @@ void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2)
 /* Can draw or mark the starting pixel of floor and ceiling */
 /*  textures. */
 /* CALLED: CORE LOOPING ROUTINE. */
-#define HEIGHTBITS 12
-#define HEIGHTUNIT (1 << HEIGHTBITS)
-
 void R_RenderSegLoop (void)
 {
 	angle_t      angle;
@@ -190,7 +281,7 @@ void R_RenderSegLoop (void)
 	for (; rw_x < rw_stopx; ++rw_x)
 	{
 		/* mark floor / ceiling areas */
-		yl = (topfrac + HEIGHTUNIT - 1) >> HEIGHTBITS;
+		yl = (topfrac + heightunit - 1) >> heightbits;
 
 		/* no space above wall? */
 		if (yl < ceilingclip[rw_x] + 1)
@@ -211,7 +302,7 @@ void R_RenderSegLoop (void)
 			}
 		}
 
-		yh = bottomfrac>>HEIGHTBITS;
+		yh = bottomfrac>>heightbits;
 
 		if (yh >= floorclip[rw_x])
 			yh = floorclip[rw_x] - 1;
@@ -265,7 +356,7 @@ void R_RenderSegLoop (void)
 			if (toptexture)
 			{
 				/* top wall */
-				mid = pixhigh >> HEIGHTBITS;
+				mid = pixhigh >> heightbits;
 				pixhigh += pixhighstep;
 
 				if (mid >= floorclip[rw_x])
@@ -293,7 +384,7 @@ void R_RenderSegLoop (void)
 			if (bottomtexture)
 			{
 				/* bottom wall */
-				mid = (pixlow + HEIGHTUNIT - 1) >> HEIGHTBITS;
+				mid = (pixlow + heightunit - 1) >> heightbits;
 				pixlow += pixlowstep;
 
 				/* no space above wall? */
@@ -331,6 +422,64 @@ void R_RenderSegLoop (void)
 		topfrac += topstep;
 		bottomfrac += bottomstep;
 	}
+}
+
+/* R_ScaleFromGlobalAngle */
+/* Returns the texture mapping scale */
+/*  for the current line (horizontal span) */
+/*  at the given angle. */
+/* rw_distance must be calculated first. */
+static fixed_t R_ScaleFromGlobalAngle (angle_t visangle)
+{
+	fixed_t             scale;
+	angle_t             anglea;
+	angle_t             angleb;
+	int                 sinea;
+	int                 sineb;
+	fixed_t             num;
+	int                 den;
+
+	/* UNUSED */
+#if 0
+{
+	fixed_t             dist;
+	fixed_t             z;
+	fixed_t             sinv;
+	fixed_t             cosv;
+
+	sinv = finesine[(visangle-rw_normalangle)>>ANGLETOFINESHIFT];
+	dist = FixedDiv (rw_distance, sinv);
+	cosv = finecosine[(viewangle-visangle)>>ANGLETOFINESHIFT];
+	z = labs(FixedMul (dist, cosv));
+	scale = FixedDiv(projection, z);
+	return scale;
+}
+#endif
+
+	anglea = ANG90 + (visangle-viewangle);
+	angleb = ANG90 + (visangle-rw_normalangle);
+
+	/* both sines are allways positive */
+	sinea = finesine[anglea>>ANGLETOFINESHIFT];
+	sineb = finesine[angleb>>ANGLETOFINESHIFT];
+	num = FixedMul(projection,sineb)<<detailshift;
+	den = FixedMul(rw_distance,sinea);
+
+	if (den > num>>16)
+	{
+		scale = FixedDiv (num, den);
+
+		/* [kb] When this evaluates True, the scale is clamped,
+		   and there will be some wiggling. */
+		if (scale > max_rwscale)
+			scale = max_rwscale;
+		else if (scale < 256)
+			scale = 256;
+	}
+	else
+		scale = max_rwscale;
+
+	return scale;
 }
 
 /* R_StoreWallRange */
@@ -379,6 +528,8 @@ void R_StoreWallRange(int start, int stop)
 	ds_p->x2 = stop;
 	ds_p->curline = curline;
 	rw_stopx = stop+1;
+
+	R_FixWiggle(frontsector);
 
 	/* calculate scale at both ends and step */
 	ds_p->scale1 = rw_scale = R_ScaleFromGlobalAngle(viewangle + xtoviewangle[start]);
@@ -639,29 +790,29 @@ void R_StoreWallRange(int start, int stop)
 
 
 	/* calculate incremental stepping values for texture edges */
-	worldtop >>= 4;
-	worldbottom >>= 4;
+	worldtop >>= invhgtbits;
+	worldbottom >>= invhgtbits;
 
 	topstep = -FixedMul(rw_scalestep, worldtop);
-	topfrac = (centeryfrac >> 4) - FixedMul(worldtop, rw_scale);
+	topfrac = (centeryfrac >> invhgtbits) - FixedMul(worldtop, rw_scale);
 
 	bottomstep = -FixedMul(rw_scalestep, worldbottom);
-	bottomfrac = (centeryfrac >> 4) - FixedMul(worldbottom, rw_scale);
+	bottomfrac = (centeryfrac >> invhgtbits) - FixedMul(worldbottom, rw_scale);
 
 	if (backsector)
 	{
-		worldhigh >>= 4;
-		worldlow >>= 4;
+		worldhigh >>= invhgtbits;
+		worldlow >>= invhgtbits;
 
 		if (worldhigh < worldtop)
 		{
-			pixhigh = (centeryfrac >> 4) - FixedMul(worldhigh, rw_scale);
+			pixhigh = (centeryfrac >> invhgtbits) - FixedMul(worldhigh, rw_scale);
 			pixhighstep = -FixedMul(rw_scalestep, worldhigh);
 		}
 
 		if (worldlow > worldbottom)
 		{
-			pixlow = (centeryfrac >> 4) - FixedMul(worldlow, rw_scale);
+			pixlow = (centeryfrac >> invhgtbits) - FixedMul(worldlow, rw_scale);
 			pixlowstep = -FixedMul(rw_scalestep, worldlow);
 		}
 	}
