@@ -46,7 +46,7 @@ planefunction_t         ceilingfunc;
 /* opening */
 
 /* Here comes the obnoxious "visplane". */
-#define MAXVISPLANES    128
+#define MAXVISPLANES    384 /* Previously 128, raised because Plutonia MAP17 goes over the limit when rendering in HD. */
 visplane_t              visplanes[MAXVISPLANES];
 visplane_t*             lastvisplane;
 visplane_t*             floorplane;
@@ -310,6 +310,9 @@ R_CheckPlane
 	lastvisplane->height = pl->height;
 	lastvisplane->picnum = pl->picnum;
 	lastvisplane->lightlevel = pl->lightlevel;
+
+	if (lastvisplane - visplanes == MAXVISPLANES)
+		I_Error ("R_CheckPlane: no more visplanes");
 
 	pl = lastvisplane++;
 	pl->minx = start;
