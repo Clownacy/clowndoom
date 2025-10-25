@@ -934,7 +934,7 @@ static const int pars[4][9] =
 		PAR_TIME(2,45),
 		PAR_TIME(3, 0),
 		PAR_TIME(3, 0),
-		PAR_TIME(0,30),
+		PAR_TIME(2,45),
 		PAR_TIME(2,45)
 	},
 	{
@@ -945,7 +945,7 @@ static const int pars[4][9] =
 		PAR_TIME(1,30),
 		PAR_TIME(6, 0),
 		PAR_TIME(4, 0),
-		PAR_TIME(0,30),
+		PAR_TIME(2,15),
 		PAR_TIME(2,50)
 	},
 	{
@@ -956,7 +956,7 @@ static const int pars[4][9] =
 		PAR_TIME(1,30),
 		PAR_TIME(1,30),
 		PAR_TIME(2,45),
-		PAR_TIME(0,30),
+		PAR_TIME(1,45),
 		PAR_TIME(2,15)
 	},
 	{
