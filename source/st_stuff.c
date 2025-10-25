@@ -603,7 +603,12 @@ ST_Responder (const event_t* ev)
 		return d_false;
 
 	  if ((gamemode == commercial)
-		&& (( epsd > 1) || (map > 34)))
+		&& (( epsd > 1) || (map > 32)))
+		return d_false;
+
+	  if ((gamemode == commercial)
+		&& (gamemission == pack_nerve)
+		&& (( epsd > 1) || (map > 9)))
 		return d_false;
 
 	  /* So be it. */
