@@ -921,24 +921,99 @@ void G_ScreenShot (void)
 	gameaction = ga_screenshot;
 }
 
-
+#define PAR_TIME(MIN, SEC) ((MIN) * 60 + SEC)
 
 /* DOOM Par Times */
 static const int pars[4][9] =
 {
-	{30,75,120,90,165,180,180,30,165},
-	{90,90,90,120,90,360,240,30,170},
-	{90,45,90,150,90,90,165,30,135},
-	{165,255,135,150,180,390,135,360,180}
+	{
+		PAR_TIME(0,30),
+		PAR_TIME(1,15),
+		PAR_TIME(2, 0),
+		PAR_TIME(1,30),
+		PAR_TIME(2,45),
+		PAR_TIME(3, 0),
+		PAR_TIME(3, 0),
+		PAR_TIME(0,30),
+		PAR_TIME(2,45)
+	},
+	{
+		PAR_TIME(1,30),
+		PAR_TIME(1,30),
+		PAR_TIME(1,30),
+		PAR_TIME(2, 0),
+		PAR_TIME(1,30),
+		PAR_TIME(6, 0),
+		PAR_TIME(4, 0),
+		PAR_TIME(0,30),
+		PAR_TIME(2,50)
+	},
+	{
+		PAR_TIME(1,30),
+		PAR_TIME(0,45),
+		PAR_TIME(1,30),
+		PAR_TIME(2,30),
+		PAR_TIME(1,30),
+		PAR_TIME(1,30),
+		PAR_TIME(2,45),
+		PAR_TIME(0,30),
+		PAR_TIME(2,15)
+	},
+	{
+		PAR_TIME(2,45),
+		PAR_TIME(4,15),
+		PAR_TIME(2,15),
+		PAR_TIME(2,30),
+		PAR_TIME(3, 0),
+		PAR_TIME(6,30),
+		PAR_TIME(2,15),
+		PAR_TIME(6, 0),
+		PAR_TIME(3, 0)
+	}
 };
 
 /* DOOM II Par Times */
 static const int cpars[32] =
 {
-	30,90,120,120,90,150,120,120,270,90,        /*  1-10 */
-	210,150,150,150,210,150,420,150,210,150,    /* 11-20 */
-	240,150,180,150,150,300,330,420,300,180,    /* 21-30 */
-	120,30                                      /* 31-32 */
+	/*  1-10 */
+	PAR_TIME(0,30),
+	PAR_TIME(1,30),
+	PAR_TIME(2, 0),
+	PAR_TIME(2, 0),
+	PAR_TIME(1,30),
+	PAR_TIME(2,30),
+	PAR_TIME(2, 0),
+	PAR_TIME(2, 0),
+	PAR_TIME(4,30),
+	PAR_TIME(1,30),
+
+	/* 11-20 */
+	PAR_TIME(3,30),
+	PAR_TIME(2,30),
+	PAR_TIME(2,30),
+	PAR_TIME(2,30),
+	PAR_TIME(3,30),
+	PAR_TIME(2,30),
+	PAR_TIME(7, 0),
+	PAR_TIME(2,30),
+	PAR_TIME(3,30),
+	PAR_TIME(2,30),
+
+	/* 21-30 */
+	PAR_TIME(4, 0),
+	PAR_TIME(2,30),
+	PAR_TIME(3, 0),
+	PAR_TIME(2,30),
+	PAR_TIME(2,30),
+	PAR_TIME(5, 0),
+	PAR_TIME(5,30),
+	PAR_TIME(7, 0),
+	PAR_TIME(5, 0),
+	PAR_TIME(3, 0),
+
+	/* 31-32 */
+	PAR_TIME(2, 0),
+	PAR_TIME(0,30)
 };
 
 
