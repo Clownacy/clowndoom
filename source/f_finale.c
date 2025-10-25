@@ -83,6 +83,8 @@ static const char* const ttext[] = {
 	T6TEXT
 };
 
+static const char nerve_text[] = NERVE_TEXT;
+
 static const char*     finaletext;
 static const char*     finaleflat;
 
@@ -143,56 +145,66 @@ void F_StartFinale (void)
 	{
 		S_ChangeMusic(mus_read_m, d_true);
 
-		switch (gamemap)
+		if (gamemission == pack_nerve)
 		{
-			case 6:
+			if (gamemap == 8)
+			{
 				finaleflat = "SLIME16";
-				finaletextindex = 0;
-				break;
-			case 11:
-				finaleflat = "RROCK14";
-				finaletextindex = 1;
-				break;
-			case 20:
-				finaleflat = "RROCK07";
-				finaletextindex = 2;
-				break;
-			case 30:
-				finaleflat = "RROCK17";
-				finaletextindex = 3;
-				break;
-			case 15:
-				finaleflat = "RROCK13";
-				finaletextindex = 4;
-				break;
-			case 31:
-				finaleflat = "RROCK19";
-				finaletextindex = 5;
-				break;
-			default:
-				/* Ouch. */
-				break;
+				finaletext = nerve_text;
+			}
 		}
-
-		switch (gamemission)
+		else
 		{
-			case doom2:
-				finaletext = ctext[finaletextindex];
-				break;
-			case pack_tnt:
-				finaletext = ttext[finaletextindex];
-				break;
-			case pack_plut:
-				finaletext = ptext[finaletextindex];
-				break;
-			default:
-				/* Ouch. */
-				break;
-		}
+			switch (gamemap)
+			{
+				case 6:
+					finaleflat = "SLIME16";
+					finaletextindex = 0;
+					break;
+				case 11:
+					finaleflat = "RROCK14";
+					finaletextindex = 1;
+					break;
+				case 20:
+					finaleflat = "RROCK07";
+					finaletextindex = 2;
+					break;
+				case 30:
+					finaleflat = "RROCK17";
+					finaletextindex = 3;
+					break;
+				case 15:
+					finaleflat = "RROCK13";
+					finaletextindex = 4;
+					break;
+				case 31:
+					finaleflat = "RROCK19";
+					finaletextindex = 5;
+					break;
+				default:
+					/* Ouch. */
+					break;
+			}
 
-		break;
+			switch (gamemission)
+			{
+				case doom2:
+					finaletext = ctext[finaletextindex];
+					break;
+				case pack_tnt:
+					finaletext = ttext[finaletextindex];
+					break;
+				case pack_plut:
+					finaletext = ptext[finaletextindex];
+					break;
+				default:
+					/* Ouch. */
+					break;
+			}
+
+			break;
 	}
-
+	}
 
 	/* Indeterminate. */
 	default:
@@ -234,7 +246,8 @@ void F_Ticker (void)
 
 		if (i < MAXPLAYERS)
 		{
-			if (gamemap == 30)
+			if ((gamemission == pack_nerve && gamemap == 8)
+			  || gamemap == 30)
 				F_StartCast ();
 			else
 				gameaction = ga_worlddone;

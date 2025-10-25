@@ -51,6 +51,7 @@ typedef enum
   doom2,        /* DOOM 2 */
   pack_tnt,     /* TNT mission pack */
   pack_plut,    /* Plutonia pack */
+  pack_nerve,   /* No Rest for the Living */
   none
 
 } GameMission_t;

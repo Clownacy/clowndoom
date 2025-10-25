@@ -1006,18 +1006,38 @@ void G_DoCompleted (void)
 	if ( gamemode == commercial)
 	{
 		if (secretexit)
-			switch(gamemap)
+		{
+			if (gamemission == pack_nerve)
 			{
-			  case 15: wminfo.next = 30; break;
-			  case 31: wminfo.next = 31; break;
+				wminfo.next = 8;
 			}
+			else
+			{
+				switch(gamemap)
+				{
+				  case 15: wminfo.next = 30; break;
+				  case 31: wminfo.next = 31; break;
+				}
+			}
+		}
 		else
-			switch(gamemap)
+		{
+			wminfo.next = gamemap;
+
+			if (gamemission == pack_nerve)
 			{
-			  case 31:
-			  case 32: wminfo.next = 15; break;
-			  default: wminfo.next = gamemap;
+				if (gamemap == 9)
+					wminfo.next = 4;
 			}
+			else
+			{
+				switch(gamemap)
+				{
+				  case 31:
+				  case 32: wminfo.next = 15; break;
+				}
+			}
+		}
 	}
 	else
 	{
@@ -1088,19 +1108,27 @@ void G_WorldDone (void)
 
 	if ( gamemode == commercial )
 	{
-		switch (gamemap)
+		if (gamemission == pack_nerve)
 		{
-		  case 15:
-		  case 31:
-			if (!secretexit)
+			if (gamemap == 8)
+				F_StartFinale ();
+		}
+		else
+		{
+			switch (gamemap)
+			{
+			  case 15:
+			  case 31:
+				if (!secretexit)
+					break;
+				/* Fallthrough */
+			  case 6:
+			  case 11:
+			  case 20:
+			  case 30:
+				F_StartFinale ();
 				break;
-			/* Fallthrough */
-		  case 6:
-		  case 11:
-		  case 20:
-		  case 30:
-			F_StartFinale ();
-			break;
+			}
 		}
 	}
 }

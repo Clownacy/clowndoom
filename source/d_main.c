@@ -656,7 +656,7 @@ void IdentifyVersion (void)
 
 			for (i = 0; i < D_COUNT_OF(wads); ++i)
 			{
-				if (strcmp(basename, wads[i].filename) == 0)
+				if (M_strcasecmp(basename, wads[i].filename) == 0)
 				{
 					gamemode = wads[i].gamemode;
 					gamemission = wads[i].gamemission;
@@ -930,7 +930,15 @@ void D_DoomMain (int argc, char **argv)
 		/* until end of parms or another - preceded parm */
 		modifiedgame = d_true;            /* homebrew levels */
 		while (++p != myargc && myargv[p][0] != '-')
-			D_AddFile (myargv[p]);
+		{
+			const char* const path = myargv[p];
+			const char* const basename = M_basename(path);
+
+			if (gamemode == commercial && M_strcasecmp(basename, "nerve.wad") == 0)
+				gamemission = pack_nerve;
+
+			D_AddFile (path);
+		}
 	}
 
 	p = M_CheckParm ("-playdemo");
