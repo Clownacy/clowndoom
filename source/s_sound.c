@@ -185,10 +185,12 @@ void S_Start(void)
 	mus_paused = 0;
 
 	if (gamemode == commercial)
+	{
 		mnum = mus_runnin + gamemap - 1;
+	}
 	else
 	{
-		int spmus[]=
+		static const int spmus[] =
 		{
 			/* Song - Who? - Where? */
 
@@ -196,7 +198,7 @@ void S_Start(void)
 			mus_e3m2, /* Romero       e4m2 */
 			mus_e3m3, /* Shawn        e4m3 */
 			mus_e1m5, /* American     e4m4 */
-			mus_e2m7, /* Tim  e4m5 */
+			mus_e2m7, /* Tim          e4m5 */
 			mus_e2m4, /* Romero       e4m6 */
 			mus_e2m6, /* J.Anderson   e4m7 CHIRON.WAD */
 			mus_e2m5, /* Shawn        e4m8 */
