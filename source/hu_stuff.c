@@ -46,6 +46,7 @@
 #define HU_TITLE2       (mapnames2[gamemap-1])
 #define HU_TITLEP       (mapnamesp[gamemap-1])
 #define HU_TITLET       (mapnamest[gamemap-1])
+#define HU_TITLEN       (mapnamesn[gamemap-1])
 #define HU_YSPACING     ((1 + SHORT(hu_font[0]->height)) * HUD_SCALE)
 #define HU_TITLEHEIGHT  1
 #define HU_TITLEX       0
@@ -257,6 +258,20 @@ const char* const mapnamest[] = /* TNT WAD map names. */
 };
 
 
+const char* const mapnamesn[] = /* No Rest for the Living map names. */
+{
+	THUSTN_1,
+	THUSTN_2,
+	THUSTN_3,
+	THUSTN_4,
+	THUSTN_5,
+	THUSTN_6,
+	THUSTN_7,
+	THUSTN_8,
+	THUSTN_9
+};
+
+
 const char*     shiftxform;
 
 const char french_shiftxform[] =
@@ -431,6 +446,10 @@ void HU_Start(void)
 
 		case pack_tnt:
 			s = HU_TITLET;
+			break;
+
+		case pack_nerve:
+			s = HU_TITLEN;
 			break;
 
 		default:

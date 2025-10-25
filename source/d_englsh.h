@@ -275,6 +275,16 @@
 #define THUSTR_31       "level 31: pharaoh"
 #define THUSTR_32       "level 32: caribbean"
 
+#define THUSTN_1        "level 1: the earth base"
+#define THUSTN_2        "level 2: the pain labs"
+#define THUSTN_3        "level 3: canyon of the dead"
+#define THUSTN_4        "level 4: hell mountain"
+#define THUSTN_5        "level 5: vivisection"
+#define THUSTN_6        "level 6: inferno of blood"
+#define THUSTN_7        "level 7: baron's banquet"
+#define THUSTN_8        "level 8: tomb of malevolence"
+#define THUSTN_9        "level 9: march of the demons"
+
 #define HUSTR_CHATMACRO1        "I'm ready to kick butt!"
 #define HUSTR_CHATMACRO2        "I'm OK."
 #define HUSTR_CHATMACRO3        "I'm not looking too good!"
