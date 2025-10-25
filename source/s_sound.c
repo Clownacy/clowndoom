@@ -186,7 +186,23 @@ void S_Start(void)
 
 	if (gamemode == commercial)
 	{
-		mnum = mus_runnin + gamemap - 1;
+		static const int spmus[] =
+		{
+			mus_messag, /* Level 1: The Earth Base */
+			mus_ddtblu, /* Level 2: The Pain Labs */
+			mus_doom  , /* Level 3: Canyon of the Dead */
+			mus_shawn , /* Level 4: Hell Mountain */
+			mus_in_cit, /* Level 5: Vivisection */
+			mus_the_da, /* Level 6: Inferno of Blood */
+			mus_in_cit, /* Level 7: Baron's Banquet */
+			mus_shawn , /* Level 8: Tomb of Malevolence */
+			mus_ddtblu  /* Level 9: March of the Demons */
+		};
+
+		if (gamemission == pack_nerve)
+			mnum = spmus[gamemap-1];
+		else
+			mnum = mus_runnin + gamemap - 1;
 	}
 	else
 	{
