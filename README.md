@@ -1,10 +1,7 @@
 # ClownDoom
 
-Yet another purist DOOM port.
-
-This project aims to repair the Linux Doom source code, restoring features that
-were lost from the DOS version, and implementing opt-in quality-of-life
-improvements such as widescreen rendering.
+Limit-removing purist Doom port with enhancements and an emphasis on being
+lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
 
 ## Features
 ### Repaired Downgrades
