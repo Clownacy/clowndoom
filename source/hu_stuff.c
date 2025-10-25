@@ -454,7 +454,7 @@ void HU_Start(void)
 
 		default:
 		case none:
-			s = "???";
+			s = "";
 			break;
 	}
 
