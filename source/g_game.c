@@ -1052,35 +1052,20 @@ void G_DoCompleted (void)
 		AM_Stop ();
 
 	if ( gamemode != commercial)
+	{
 		switch(gamemap)
 		{
 		  case 8:
+			/* victory */
 			gameaction = ga_victory;
 			return;
 		  case 9:
+			/* exit secret level */
 			for (i=0 ; i<MAXPLAYERS ; i++)
 				players[i].didsecret = d_true;
 			break;
 		}
-
-/* #if 0  Hmmm - why? */
-	if ( (gamemap == 8)
-		 && (gamemode != commercial) )
-	{
-		/* victory */
-		gameaction = ga_victory;
-		return;
 	}
-
-	if ( (gamemap == 9)
-		 && (gamemode != commercial) )
-	{
-		/* exit secret level */
-		for (i=0 ; i<MAXPLAYERS ; i++)
-			players[i].didsecret = d_true;
-	}
-/* #endif */
-
 
 	wminfo.didsecret = players[consoleplayer].didsecret;
 	wminfo.epsd = gameepisode -1;
