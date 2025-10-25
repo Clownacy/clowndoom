@@ -1079,10 +1079,21 @@ void G_DoCompleted (void)
 	wminfo.maxitems = totalitems;
 	wminfo.maxsecret = totalsecret;
 	wminfo.maxfrags = 0;
-	if ( gamemode == commercial )
-		wminfo.partime = TICRATE*cpars[gamemap-1];
-	else
-		wminfo.partime = TICRATE*pars[gameepisode-1][gamemap-1];
+
+	switch (gamemission)
+	{
+		case doom:
+			wminfo.partime = TICRATE*pars[gameepisode-1][gamemap-1];
+			break;
+
+		case doom2:
+			wminfo.partime = TICRATE*cpars[gamemap-1];
+			break;
+
+		default:
+			wminfo.partime = 0;
+			break;
+	}
 	wminfo.pnum = consoleplayer;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)

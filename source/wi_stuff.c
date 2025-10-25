@@ -1428,8 +1428,11 @@ void WI_drawStats(void)
 	V_DrawPatch(SP_TIMEX, SP_TIMEY, SCREEN_FRAMEBUFFER, time);
 	WI_drawTime(SCREENWIDTH - SP_TIMEX - ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, cnt_time);
 
-	V_DrawPatch(SP_TIMEX + ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, SCREEN_FRAMEBUFFER, par);
-	WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
+	if (wbs->partime != 0)
+	{
+		V_DrawPatch(SP_TIMEX + ORIGINAL_SCREEN_WIDTH*HUD_SCALE/2, SP_TIMEY, SCREEN_FRAMEBUFFER, par);
+		WI_drawTime(SCREENWIDTH - SP_TIMEX, SP_TIMEY, cnt_par);
+	}
 }
 
 void WI_checkForAccelerate(void)
