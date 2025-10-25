@@ -1809,7 +1809,8 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 
 	for (i = 0; i < MAXPLAYERS; ++i)
 	{
-		/* The original would treat 0/0 as 0%. */
+		/* BUGFIX: The original would treat 0/0 as 0%. */
+		/* TODO: Apparently this breaks compatibility with multi-level demos. */
 		kill_percent[i] = wbs->maxkills == 0 ? 100 : plrs[i].skills * 100 / wbs->maxkills;
 		item_percent[i] = wbs->maxitems == 0 ? 100 : plrs[i].sitems * 100 / wbs->maxitems;
 		secret_percent[i] = wbs->maxsecret == 0 ? 100 : plrs[i].ssecret * 100 / wbs->maxsecret;
