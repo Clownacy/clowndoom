@@ -42,21 +42,21 @@
 
 /* Stage of animation: */
 /*  0 = text, 1 = art screen, 2 = character cast */
-int             finalestage;
+static int             finalestage;
 
-int             finalecount;
+static int             finalecount;
 
 #define TEXTSPEED       3
 #define TEXTWAIT        250
 
-const char*     e1text = E1TEXT;
-const char*     e2text = E2TEXT;
-const char*     e3text = E3TEXT;
-const char*     e4text = E4TEXT;
+static const char*     e1text = E1TEXT;
+static const char*     e2text = E2TEXT;
+static const char*     e3text = E3TEXT;
+static const char*     e4text = E4TEXT;
 
 static const char c2text[] = C2TEXT;
 
-const char* ctext[] = {
+static const char* const ctext[] = {
 	C1TEXT,
 	c2text,
 	C3TEXT,
@@ -65,7 +65,7 @@ const char* ctext[] = {
 	C6TEXT
 };
 
-const char* ptext[] = {
+static const char* const ptext[] = {
 	P1TEXT,
 	P2TEXT,
 	P3TEXT,
@@ -74,7 +74,7 @@ const char* ptext[] = {
 	P6TEXT
 };
 
-const char* ttext[] = {
+static const char* const ttext[] = {
 	T1TEXT,
 	T2TEXT,
 	T3TEXT,
@@ -83,8 +83,8 @@ const char* ttext[] = {
 	T6TEXT
 };
 
-const char*     finaletext;
-const char*     finaleflat;
+static const char*     finaletext;
+static const char*     finaleflat;
 
 void    F_StartCast (void);
 void    F_CastTicker (void);
@@ -106,97 +106,96 @@ void F_StartFinale (void)
 	/*  some stuff might have changed in the process. */
 	switch ( gamemode )
 	{
-
-	  /* DOOM 1 - E1, E3 or E4, but each nine missions */
-	  case shareware:
-	  case registered:
-	  case retail:
-	  {
-		S_ChangeMusic(mus_victor, d_true);
-
-		switch (gameepisode)
+		/* DOOM 1 - E1, E3 or E4, but each nine missions */
+		case shareware:
+		case registered:
+		case retail:
 		{
-		  case 1:
-			finaleflat = "FLOOR4_8";
-			finaletext = e1text;
-			break;
-		  case 2:
-			finaleflat = "SFLR6_1";
-			finaletext = e2text;
-			break;
-		  case 3:
-			finaleflat = "MFLR8_4";
-			finaletext = e3text;
-			break;
-		  case 4:
-			finaleflat = "MFLR8_3";
-			finaletext = e4text;
-			break;
-		  default:
-			/* Ouch. */
-			break;
-		}
+			S_ChangeMusic(mus_victor, d_true);
+
+			switch (gameepisode)
+			{
+				case 1:
+					finaleflat = "FLOOR4_8";
+					finaletext = e1text;
+					break;
+				case 2:
+					finaleflat = "SFLR6_1";
+					finaletext = e2text;
+					break;
+				case 3:
+					finaleflat = "MFLR8_4";
+					finaletext = e3text;
+					break;
+				case 4:
+					finaleflat = "MFLR8_3";
+					finaletext = e4text;
+					break;
+				default:
+					/* Ouch. */
+					break;
+			}
 		break;
-	  }
+	}
 
-	  /* DOOM II and missions packs with E1, M34 */
-	  case commercial:
-	  {
-		  S_ChangeMusic(mus_read_m, d_true);
+	/* DOOM II and missions packs with E1, M34 */
+	case commercial:
+	{
+		S_ChangeMusic(mus_read_m, d_true);
 
-		  switch (gamemap)
-		  {
+		switch (gamemap)
+		{
 			case 6:
-			  finaleflat = "SLIME16";
-			  finaletextindex = 0;
-			  break;
+				finaleflat = "SLIME16";
+				finaletextindex = 0;
+				break;
 			case 11:
-			  finaleflat = "RROCK14";
-			  finaletextindex = 1;
-			  break;
+				finaleflat = "RROCK14";
+				finaletextindex = 1;
+				break;
 			case 20:
-			  finaleflat = "RROCK07";
-			  finaletextindex = 2;
-			  break;
+				finaleflat = "RROCK07";
+				finaletextindex = 2;
+				break;
 			case 30:
-			  finaleflat = "RROCK17";
-			  finaletextindex = 3;
-			  break;
+				finaleflat = "RROCK17";
+				finaletextindex = 3;
+				break;
 			case 15:
-			  finaleflat = "RROCK13";
-			  finaletextindex = 4;
-			  break;
+				finaleflat = "RROCK13";
+				finaletextindex = 4;
+				break;
 			case 31:
-			  finaleflat = "RROCK19";
-			  finaletextindex = 5;
-			  break;
+				finaleflat = "RROCK19";
+				finaletextindex = 5;
+				break;
 			default:
-			  /* Ouch. */
-			  break;
-		  }
+				/* Ouch. */
+				break;
+		}
 
-		  switch (gamemission)
-		  {
+		switch (gamemission)
+		{
 			case doom2:
-			  finaletext = ctext[finaletextindex];
-			  break;
+				finaletext = ctext[finaletextindex];
+				break;
 			case pack_tnt:
-			  finaletext = ttext[finaletextindex];
-			  break;
+				finaletext = ttext[finaletextindex];
+				break;
 			case pack_plut:
-			  finaletext = ptext[finaletextindex];
-			  break;
+				finaletext = ptext[finaletextindex];
+				break;
 			default:
-			  /* Ouch. */
-			  break;
-		  }
+				/* Ouch. */
+				break;
+		}
 
-		  break;
-	  }
+		break;
+	}
 
 
-	  /* Indeterminate. */
-	  default:
+	/* Indeterminate. */
+	default:
 		S_ChangeMusic(mus_read_m, d_true);
 		finaleflat = "F_SKY1"; /* Not used anywhere else. */
 		finaletext = ctext[0];  /* FIXME - other text, music? */
@@ -226,20 +225,20 @@ void F_Ticker (void)
 
 	/* check for skipping */
 	if ( (gamemode == commercial)
-	  && ( finalecount > 50) )
+		&& ( finalecount > 50) )
 	{
-	  /* go on to the next level */
-	  for (i=0 ; i<MAXPLAYERS ; i++)
-		if (players[i].cmd.buttons)
-		  break;
+		/* go on to the next level */
+		for (i=0 ; i<MAXPLAYERS ; i++)
+			if (players[i].cmd.buttons)
+				break;
 
-	  if (i < MAXPLAYERS)
-	  {
-		if (gamemap == 30)
-		  F_StartCast ();
-		else
-		  gameaction = ga_worlddone;
-	  }
+		if (i < MAXPLAYERS)
+		{
+			if (gamemap == 30)
+				F_StartCast ();
+			else
+				gameaction = ga_worlddone;
+		}
 	}
 
 	/* advance animation */
@@ -411,33 +410,33 @@ void F_CastTicker (void)
 		/* sound hacks.... */
 		switch (st)
 		{
-		  case S_PLAY_ATK1:     sfx = sfx_dshtgn; break;
-		  case S_POSS_ATK2:     sfx = sfx_pistol; break;
-		  case S_SPOS_ATK2:     sfx = sfx_shotgn; break;
-		  case S_VILE_ATK2:     sfx = sfx_vilatk; break;
-		  case S_SKEL_FIST2:    sfx = sfx_skeswg; break;
-		  case S_SKEL_FIST4:    sfx = sfx_skepch; break;
-		  case S_SKEL_MISS2:    sfx = sfx_skeatk; break;
-		  case S_FATT_ATK8:
-		  case S_FATT_ATK5:
-		  case S_FATT_ATK2:     sfx = sfx_firsht; break;
-		  case S_CPOS_ATK2:
-		  case S_CPOS_ATK3:
-		  case S_CPOS_ATK4:     sfx = sfx_shotgn; break;
-		  case S_TROO_ATK3:     sfx = sfx_claw; break;
-		  case S_SARG_ATK2:     sfx = sfx_sgtatk; break;
-		  case S_BOSS_ATK2:
-		  case S_BOS2_ATK2:
-		  case S_HEAD_ATK2:     sfx = sfx_firsht; break;
-		  case S_SKULL_ATK2:    sfx = sfx_sklatk; break;
-		  case S_SPID_ATK2:
-		  case S_SPID_ATK3:     sfx = sfx_shotgn; break;
-		  case S_BSPI_ATK2:     sfx = sfx_plasma; break;
-		  case S_CYBER_ATK2:
-		  case S_CYBER_ATK4:
-		  case S_CYBER_ATK6:    sfx = sfx_rlaunc; break;
-		  case S_PAIN_ATK3:     sfx = sfx_sklatk; break;
-		  default: sfx = 0; break;
+			case S_PLAY_ATK1:     sfx = sfx_dshtgn; break;
+			case S_POSS_ATK2:     sfx = sfx_pistol; break;
+			case S_SPOS_ATK2:     sfx = sfx_shotgn; break;
+			case S_VILE_ATK2:     sfx = sfx_vilatk; break;
+			case S_SKEL_FIST2:    sfx = sfx_skeswg; break;
+			case S_SKEL_FIST4:    sfx = sfx_skepch; break;
+			case S_SKEL_MISS2:    sfx = sfx_skeatk; break;
+			case S_FATT_ATK8:
+			case S_FATT_ATK5:
+			case S_FATT_ATK2:     sfx = sfx_firsht; break;
+			case S_CPOS_ATK2:
+			case S_CPOS_ATK3:
+			case S_CPOS_ATK4:     sfx = sfx_shotgn; break;
+			case S_TROO_ATK3:     sfx = sfx_claw; break;
+			case S_SARG_ATK2:     sfx = sfx_sgtatk; break;
+			case S_BOSS_ATK2:
+			case S_BOS2_ATK2:
+			case S_HEAD_ATK2:     sfx = sfx_firsht; break;
+			case S_SKULL_ATK2:    sfx = sfx_sklatk; break;
+			case S_SPID_ATK2:
+			case S_SPID_ATK3:     sfx = sfx_shotgn; break;
+			case S_BSPI_ATK2:     sfx = sfx_plasma; break;
+			case S_CYBER_ATK2:
+			case S_CYBER_ATK4:
+			case S_CYBER_ATK6:    sfx = sfx_rlaunc; break;
+			case S_PAIN_ATK3:     sfx = sfx_sklatk; break;
+			default: sfx = 0; break;
 		}
 
 		if (sfx)
@@ -655,28 +654,25 @@ void F_Drawer (void)
 		V_ClearScreen(SCREEN_FRAMEBUFFER);
 		switch (gameepisode)
 		{
-		  case 1:
-			if ( gamemode == retail )
-			  V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
-						 (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
-			else
-			  V_DrawPatch(X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
-						 (patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
-			break;
-		  case 2:
-			V_DrawPatch(X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
-						(patch_t*)W_CacheLumpName("VICTORY2",PU_CACHE));
-			break;
-		  case 3:
-			F_BunnyScroll ();
-			break;
-		  case 4:
-			V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
-						 (patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
-			break;
+			case 1:
+				if ( gamemode == retail )
+					V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
+							 (patch_t*)W_CacheLumpName("CREDIT",PU_CACHE));
+				else
+					V_DrawPatch(X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
+							 (patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
+				break;
+			case 2:
+				V_DrawPatch(X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
+							(patch_t*)W_CacheLumpName("VICTORY2",PU_CACHE));
+				break;
+			case 3:
+				F_BunnyScroll ();
+				break;
+			case 4:
+				V_DrawPatch (X_CENTRE(0), Y_CENTRE(0), SCREEN_FRAMEBUFFER,
+							 (patch_t*)W_CacheLumpName("ENDPIC",PU_CACHE));
+				break;
 		}
 	}
-
 }
-
-
