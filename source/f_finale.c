@@ -201,9 +201,8 @@ void F_StartFinale (void)
 					/* Ouch. */
 					break;
 			}
-
-			break;
-	}
+		}
+		break;
 	}
 
 	/* Indeterminate. */
