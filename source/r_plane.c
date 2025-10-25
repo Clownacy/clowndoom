@@ -46,7 +46,7 @@ planefunction_t         ceilingfunc;
 /* opening */
 
 /* Here comes the obnoxious "visplane". */
-#define MAXVISPLANES    384 /* Previously 128, raised because Plutonia MAP17 goes over the limit when rendering in HD. */
+#define MAXVISPLANES    512 /* Previously 128, raised because No Rest for the Living MAP03 goes over the limit when rendering in HD. */
 visplane_t              visplanes[MAXVISPLANES];
 visplane_t*             lastvisplane;
 visplane_t*             floorplane;
