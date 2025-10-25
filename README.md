@@ -28,7 +28,7 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
   - The codebase can be compiled with MSVC.
   - Windows networking code has been added.
 - Eliminated reliance on C99 and C extensions, making the codebase pure ANSI C.
-- Avoided reliance on implementation-defined order of `M_Random` calls.
+- Avoided reliance on implementation-defined order of `P_Random` calls.
 - Experimental libretro port.
 ### Quality-of-Life Improvements
 - New configuration options:
