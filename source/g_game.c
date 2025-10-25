@@ -924,17 +924,16 @@ void G_ScreenShot (void)
 
 
 /* DOOM Par Times */
-int pars[5][10] =
+static const int pars[4][9] =
 {
-	{0},
-	{0,30,75,120,90,165,180,180,30,165},
-	{0,90,90,90,120,90,360,240,30,170},
-	{0,90,45,90,150,90,90,165,30,135},
-	{0,165,255,135,150,180,390,135,360,180}
+	{30,75,120,90,165,180,180,30,165},
+	{90,90,90,120,90,360,240,30,170},
+	{90,45,90,150,90,90,165,30,135},
+	{165,255,135,150,180,390,135,360,180}
 };
 
 /* DOOM II Par Times */
-int cpars[32] =
+static const int cpars[32] =
 {
 	30,90,120,120,90,150,120,120,270,90,        /*  1-10 */
 	210,150,150,150,210,150,420,150,210,150,    /* 11-20 */
@@ -1083,7 +1082,7 @@ void G_DoCompleted (void)
 	if ( gamemode == commercial )
 		wminfo.partime = TICRATE*cpars[gamemap-1];
 	else
-		wminfo.partime = TICRATE*pars[gameepisode][gamemap];
+		wminfo.partime = TICRATE*pars[gameepisode-1][gamemap-1];
 	wminfo.pnum = consoleplayer;
 
 	for (i=0 ; i<MAXPLAYERS ; i++)
