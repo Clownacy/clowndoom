@@ -1051,20 +1051,30 @@ void G_DoCompleted (void)
 	if (automapactive)
 		AM_Stop ();
 
-	if ( gamemode != commercial)
+	switch (gamemission)
 	{
-		switch(gamemap)
-		{
-		  case 8:
-			/* victory */
-			gameaction = ga_victory;
-			return;
-		  case 9:
-			/* exit secret level */
-			for (i=0 ; i<MAXPLAYERS ; i++)
-				players[i].didsecret = d_true;
+		case doom:
+			switch(gamemap)
+			{
+			  case 8:
+				/* victory */
+				gameaction = ga_victory;
+				return;
+			  case 9:
+				/* exit secret level */
+				for (i=0 ; i<MAXPLAYERS ; i++)
+					players[i].didsecret = d_true;
+				break;
+			}
 			break;
-		}
+		case pack_nerve:
+			if (gamemap == 8)
+			{
+				/* victory */
+				gameaction = ga_victory;
+				return;
+			}
+			break;
 	}
 
 	wminfo.didsecret = players[consoleplayer].didsecret;
