@@ -699,10 +699,10 @@ void ST_updateFaceWidget(void)
 			/* This was previously incorrect. */
 			/* https://doomwiki.org/wiki/Ouch_face */
 			/* What the wiki doesn't tell you is that there's a second bug here,
-			   which prevents the ouch face for showing more than a single frame
-			   when hurt by an enemy. This bug is caused by `priority` always being
-			   set to 7, allowing this block of code to override itself, ending
-			   off the ouch face early. */
+			   which prevents the ouch face from showing for more than a single
+			   frame when hurt by an enemy. This bug is caused by `priority`
+			   always being set to 7, allowing this block of code to override
+			   itself, ending off the ouch face early. */
 			if (st_oldhealth - plyr->health > ST_MUCHPAIN)
 			{
 				priority = 8;
