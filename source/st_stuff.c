@@ -411,212 +411,209 @@ void ST_refreshBackground(void)
 d_bool
 ST_Responder (const event_t* ev)
 {
-  int           i;
+	int i;
 
-  /* Filter automap on/off. */
-  if (ev->type == ev_keyup
-	  && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
-  {
-	switch(ev->data1)
+	/* Filter automap on/off. */
+	if (ev->type == ev_keyup && ((ev->data1 & 0xffff0000) == AM_MSGHEADER))
 	{
-	case AM_MSGENTERED:
-		st_firsttime = d_true;
-		break;
-
-	case AM_MSGEXITED:
-		/*      I_Info("AM exited\n"); */
-		break;
-	}
-  }
-
-  /* if a user keypress... */
-  else if (ev->type == ev_keydown)
-  {
-	/* This Nightmare check was removed in the source code release. */
-	if (!netgame && gameskill != sk_nightmare)
-	{
-	  /* 'dqd' cheat for toggleable god mode */
-	  if (cht_CheckCheat(&cheat_god, ev->data1))
-	  {
-		plyr->cheats ^= CF_GODMODE;
-		if (plyr->cheats & CF_GODMODE)
+		switch(ev->data1)
 		{
-		  if (plyr->mo)
-			plyr->mo->health = 100;
+			case AM_MSGENTERED:
+				st_firsttime = d_true;
+				break;
 
-		  plyr->health = 100;
-		  plyr->message = STSTR_DQDON;
+			case AM_MSGEXITED:
+				/* I_Info("AM exited\n"); */
+				break;
 		}
-		else
-		  plyr->message = STSTR_DQDOFF;
-	  }
-	  /* 'fa' cheat for killer fucking arsenal */
-	  else if (cht_CheckCheat(&cheat_ammonokey, ev->data1))
-	  {
-		plyr->armorpoints = 200;
-		plyr->armortype = 2;
-
-		for (i=0;i<NUMWEAPONS;i++)
-		  plyr->weaponowned[i] = d_true;
-
-		for (i=0;i<NUMAMMO;i++)
-		  plyr->ammo[i] = plyr->maxammo[i];
-
-		plyr->message = STSTR_FAADDED;
-	  }
-	  /* 'kfa' cheat for key full ammo */
-	  else if (cht_CheckCheat(&cheat_ammo, ev->data1))
-	  {
-		plyr->armorpoints = 200;
-		plyr->armortype = 2;
-
-		for (i=0;i<NUMWEAPONS;i++)
-		  plyr->weaponowned[i] = d_true;
-
-		for (i=0;i<NUMAMMO;i++)
-		  plyr->ammo[i] = plyr->maxammo[i];
-
-		for (i=0;i<NUMCARDS;i++)
-		  plyr->cards[i] = d_true;
-
-		plyr->message = STSTR_KFAADDED;
-	  }
-	  /* 'mus' cheat for changing music */
-	  else if (cht_CheckCheat(&cheat_mus, ev->data1))
-	  {
-
-		char    buf[3];
-		int             musnum;
-
-		plyr->message = STSTR_MUS;
-		cht_GetParam(&cheat_mus, buf);
-
-		if (gamemode == commercial)
-		{
-		  musnum = (buf[0]-'0')*10 + buf[1]-'0' - 1;
-
-		  if (musnum > 35 || musnum < 0)
-			plyr->message = STSTR_NOMUS;
-		  else
-			S_ChangeMusic(mus_runnin + musnum, d_true);
-		}
-		else
-		{
-		  musnum = (buf[0]-'1')*9 + (buf[1]-'1');
-
-		  if (musnum > 31 || musnum < 0)
-			plyr->message = STSTR_NOMUS;
-		  else
-			S_ChangeMusic(mus_e1m1 + musnum, d_true);
-		}
-	  }
-	  /* Simplified, accepting both "noclip" and "idspispopd". */
-	  /* no clipping mode cheat */
-	  else if ( cht_CheckCheat(&cheat_noclip, ev->data1)
-				|| cht_CheckCheat(&cheat_commercial_noclip,ev->data1) )
-	  {
-		plyr->cheats ^= CF_NOCLIP;
-
-		if (plyr->cheats & CF_NOCLIP)
-		  plyr->message = STSTR_NCON;
-		else
-		  plyr->message = STSTR_NCOFF;
-	  }
-	  /* 'behold?' power-up cheats */
-	  for (i=0;i<6;i++)
-	  {
-		if (cht_CheckCheat(&cheat_powerup[i], ev->data1))
-		{
-		  if (!plyr->powers[i])
-			P_GivePower( plyr, i);
-		  else if (i!=pw_strength)
-			plyr->powers[i] = 1;
-		  else
-			plyr->powers[i] = 0;
-
-		  plyr->message = STSTR_BEHOLDX;
-		}
-	  }
-
-	  /* 'behold' power-up menu */
-	  if (cht_CheckCheat(&cheat_powerup[6], ev->data1))
-	  {
-		plyr->message = STSTR_BEHOLD;
-	  }
-	  /* 'choppers' invulnerability & chainsaw */
-	  else if (cht_CheckCheat(&cheat_choppers, ev->data1))
-	  {
-		plyr->weaponowned[wp_chainsaw] = d_true;
-		plyr->powers[pw_invulnerability] = d_true;
-		plyr->message = STSTR_CHOPPERS;
-	  }
-	  /* 'mypos' for player position */
-	  else if (cht_CheckCheat(&cheat_mypos, ev->data1))
-	  {
-		static char     buf[HU_MAXLINELENGTH+1];
-		sprintf(buf, "ang=0x%x;x,y=(0x%lx,0x%lx)",
-				players[consoleplayer].mo->angle,
-				players[consoleplayer].mo->x,
-				players[consoleplayer].mo->y);
-		plyr->message = buf;
-	  }
 	}
 
-	/* 'clev' change-level cheat */
-	if (cht_CheckCheat(&cheat_clev, ev->data1))
+	/* if a user keypress... */
+	else if (ev->type == ev_keydown)
 	{
-	  char              buf[3];
-	  int               epsd;
-	  int               map;
+		/* This Nightmare check was removed in the source code release. */
+		if (!netgame && gameskill != sk_nightmare)
+		{
+			/* 'dqd' cheat for toggleable god mode */
+			if (cht_CheckCheat(&cheat_god, ev->data1))
+			{
+				plyr->cheats ^= CF_GODMODE;
+				if (plyr->cheats & CF_GODMODE)
+				{
+					if (plyr->mo)
+						plyr->mo->health = 100;
 
-	  cht_GetParam(&cheat_clev, buf);
+					plyr->health = 100;
+					plyr->message = STSTR_DQDON;
+				}
+				else
+					plyr->message = STSTR_DQDOFF;
+			}
+			/* 'fa' cheat for killer fucking arsenal */
+			else if (cht_CheckCheat(&cheat_ammonokey, ev->data1))
+			{
+				plyr->armorpoints = 200;
+				plyr->armortype = 2;
 
-	  if (gamemode == commercial)
-	  {
-		epsd = 1;
-		map = (buf[0] - '0')*10 + buf[1] - '0';
-	  }
-	  else
-	  {
-		epsd = buf[0] - '0';
-		map = buf[1] - '0';
-	  }
+				for (i=0;i<NUMWEAPONS;i++)
+					plyr->weaponowned[i] = d_true;
 
-	  /* Catch invalid maps. */
-	  if (epsd < 1)
-		return d_false;
+				for (i=0;i<NUMAMMO;i++)
+					plyr->ammo[i] = plyr->maxammo[i];
 
-	  if (map < 1)
-		return d_false;
+				plyr->message = STSTR_FAADDED;
+			}
+			/* 'kfa' cheat for key full ammo */
+			else if (cht_CheckCheat(&cheat_ammo, ev->data1))
+			{
+				plyr->armorpoints = 200;
+				plyr->armortype = 2;
 
-	  /* Ohmygod - this is not going to work. */
-	  if ((gamemode == retail)
-		  && ((epsd > 4) || (map > 9)))
-		return d_false;
+				for (i=0;i<NUMWEAPONS;i++)
+					plyr->weaponowned[i] = d_true;
 
-	  if ((gamemode == registered)
-		  && ((epsd > 3) || (map > 9)))
-		return d_false;
+				for (i=0;i<NUMAMMO;i++)
+					plyr->ammo[i] = plyr->maxammo[i];
 
-	  if ((gamemode == shareware)
-		  && ((epsd > 1) || (map > 9)))
-		return d_false;
+				for (i=0;i<NUMCARDS;i++)
+					plyr->cards[i] = d_true;
 
-	  if ((gamemode == commercial)
-		&& (( epsd > 1) || (map > 32)))
-		return d_false;
+				plyr->message = STSTR_KFAADDED;
+			}
+			/* 'mus' cheat for changing music */
+			else if (cht_CheckCheat(&cheat_mus, ev->data1))
+			{
+				char buf[3];
+				int musnum;
 
-	  if ((gamemode == commercial)
-		&& (gamemission == pack_nerve)
-		&& (( epsd > 1) || (map > 9)))
-		return d_false;
+				plyr->message = STSTR_MUS;
+				cht_GetParam(&cheat_mus, buf);
 
-	  /* So be it. */
-	  plyr->message = STSTR_CLEV;
-	  G_DeferedInitNew(gameskill, epsd, map);
+				if (gamemode == commercial)
+				{
+					musnum = (buf[0]-'0')*10 + buf[1]-'0' - 1;
+
+					if (musnum > 35 || musnum < 0)
+						plyr->message = STSTR_NOMUS;
+					else
+						S_ChangeMusic(mus_runnin + musnum, d_true);
+				}
+				else
+				{
+					musnum = (buf[0]-'1')*9 + (buf[1]-'1');
+
+					if (musnum > 31 || musnum < 0)
+						plyr->message = STSTR_NOMUS;
+					else
+						S_ChangeMusic(mus_e1m1 + musnum, d_true);
+				}
+			}
+			/* Simplified, accepting both "noclip" and "idspispopd". */
+			/* no clipping mode cheat */
+			else if ( cht_CheckCheat(&cheat_noclip, ev->data1) || cht_CheckCheat(&cheat_commercial_noclip,ev->data1) )
+			{
+				plyr->cheats ^= CF_NOCLIP;
+
+				if (plyr->cheats & CF_NOCLIP)
+					plyr->message = STSTR_NCON;
+				else
+					plyr->message = STSTR_NCOFF;
+			}
+			/* 'behold?' power-up cheats */
+			for (i=0;i<6;i++)
+			{
+				if (cht_CheckCheat(&cheat_powerup[i], ev->data1))
+				{
+					if (!plyr->powers[i])
+						P_GivePower( plyr, i);
+					else if (i!=pw_strength)
+						plyr->powers[i] = 1;
+					else
+						plyr->powers[i] = 0;
+
+					plyr->message = STSTR_BEHOLDX;
+				}
+			}
+
+			/* 'behold' power-up menu */
+			if (cht_CheckCheat(&cheat_powerup[6], ev->data1))
+			{
+				plyr->message = STSTR_BEHOLD;
+			}
+			/* 'choppers' invulnerability & chainsaw */
+			else if (cht_CheckCheat(&cheat_choppers, ev->data1))
+			{
+				plyr->weaponowned[wp_chainsaw] = d_true;
+				plyr->powers[pw_invulnerability] = d_true;
+				plyr->message = STSTR_CHOPPERS;
+			}
+			/* 'mypos' for player position */
+			else if (cht_CheckCheat(&cheat_mypos, ev->data1))
+			{
+				static char buf[HU_MAXLINELENGTH+1];
+				sprintf(buf, "ang=0x%x;x,y=(0x%lx,0x%lx)",
+					players[consoleplayer].mo->angle,
+					players[consoleplayer].mo->x,
+					players[consoleplayer].mo->y);
+				plyr->message = buf;
+			}
+		}
+
+		/* 'clev' change-level cheat */
+		if (cht_CheckCheat(&cheat_clev, ev->data1))
+		{
+			char buf[3];
+			int epsd;
+			int map;
+
+			cht_GetParam(&cheat_clev, buf);
+
+			if (gamemode == commercial)
+			{
+				epsd = 1;
+				map = (buf[0] - '0')*10 + buf[1] - '0';
+			}
+			else
+			{
+				epsd = buf[0] - '0';
+				map = buf[1] - '0';
+			}
+
+			/* Catch invalid maps. */
+			if (epsd < 1)
+				return d_false;
+
+			if (map < 1)
+				return d_false;
+
+			/* Ohmygod - this is not going to work. */
+			if ((gamemode == retail)
+				&& ((epsd > 4) || (map > 9)))
+				return d_false;
+
+			if ((gamemode == registered)
+				&& ((epsd > 3) || (map > 9)))
+				return d_false;
+
+			if ((gamemode == shareware)
+				&& ((epsd > 1) || (map > 9)))
+				return d_false;
+
+			if ((gamemode == commercial)
+				&& (( epsd > 1) || (map > 32)))
+				return d_false;
+
+			if ((gamemode == commercial)
+				&& (gamemission == pack_nerve)
+				&& (( epsd > 1) || (map > 9)))
+				return d_false;
+
+			/* So be it. */
+			plyr->message = STSTR_CLEV;
+			G_DeferedInitNew(gameskill, epsd, map);
+		}
 	}
-  }
-  return d_false;
+	return d_false;
 }
 
 
