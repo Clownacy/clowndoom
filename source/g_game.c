@@ -415,24 +415,46 @@ void G_DoLoadLevel (void)
 
 	/* DOOM determines the sky texture to be used */
 	/* depending on the current episode, and the game version. */
-	if (gamemode == commercial)
+	switch (gamemission)
 	{
-		if (gamemission == pack_nerve)
-		{
-			if (gamemap < 4 || gamemap == 9)
+		case doom:
+			switch (gameepisode)
+			{
+				case 1:
 					skytexture = R_TextureNumForName ("SKY1");
-			else
+					break;
+				case 2:
+					skytexture = R_TextureNumForName ("SKY2");
+					break;
+				case 3:
 					skytexture = R_TextureNumForName ("SKY3");
-		}
-		else
-		{
+					break;
+				case 4:       /* Special Edition sky */
+					skytexture = R_TextureNumForName ("SKY4");
+					break;
+			}
+			break;
+
+		case doom2:
+		case pack_tnt:
+		case pack_plut:
 			if (gamemap < 12)
 				skytexture = R_TextureNumForName ("SKY1");
 			else if (gamemap < 21)
 				skytexture = R_TextureNumForName ("SKY2");
 			else
 				skytexture = R_TextureNumForName ("SKY3");
-		}
+			break;
+
+		case pack_nerve:
+			if (gamemap < 4 || gamemap == 9)
+				skytexture = R_TextureNumForName ("SKY1");
+			else
+				skytexture = R_TextureNumForName ("SKY3");
+			break;
+
+		case none:
+			break;
 	}
 
 	levelstarttic = gametic;        /* for time calculation */
@@ -1534,45 +1556,6 @@ G_InitNew
 	gameepisode = episode;
 	gamemap = map;
 	gameskill = skill;
-
-	/* set the sky map for the episode */
-	if ( gamemode == commercial)
-	{
-		if (gamemission == pack_nerve)
-		{
-			if (gamemap < 4 || gamemap == 9)
-					skytexture = R_TextureNumForName ("SKY1");
-			else
-					skytexture = R_TextureNumForName ("SKY3");
-		}
-		else
-		{
-			if (gamemap < 12)
-				skytexture = R_TextureNumForName ("SKY1");
-			else if (gamemap < 21)
-				skytexture = R_TextureNumForName ("SKY2");
-			else
-				skytexture = R_TextureNumForName ("SKY3");
-		}
-	}
-	else
-	{
-		switch (episode)
-		{
-		  case 1:
-			skytexture = R_TextureNumForName ("SKY1");
-			break;
-		  case 2:
-			skytexture = R_TextureNumForName ("SKY2");
-			break;
-		  case 3:
-			skytexture = R_TextureNumForName ("SKY3");
-			break;
-		  case 4:       /* Special Edition sky */
-			skytexture = R_TextureNumForName ("SKY4");
-			break;
-		}
-	}
 
 	G_DoLoadLevel ();
 }
