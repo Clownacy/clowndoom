@@ -281,7 +281,7 @@ void T_Glow(glow_t*     g)
 {
 	switch(g->direction)
 	{
-	  case -1:
+	case -1:
 		/* DOWN */
 		g->sector->lightlevel -= GLOWSPEED;
 		if (g->sector->lightlevel <= g->minlight)
@@ -291,7 +291,7 @@ void T_Glow(glow_t*     g)
 		}
 		break;
 
-	  case 1:
+	case 1:
 		/* UP */
 		g->sector->lightlevel += GLOWSPEED;
 		if (g->sector->lightlevel >= g->maxlight)

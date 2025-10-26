@@ -301,10 +301,10 @@ size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 		tclass = (thinkerclass_t)buffer[index++];
 		switch (tclass)
 		{
-		  case tc_end:
+		case tc_end:
 			return index;     /* end of list */
 
-		  case tc_mobj:
+		case tc_mobj:
 			PADSAVEP();
 			mobj = (mobj_t*)Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
 			*mobj = *(mobj_t*)&buffer[index];
@@ -535,10 +535,10 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		tclass = (specials_e)buffer[index++];
 		switch (tclass)
 		{
-		  case tc_endspecials:
+		case tc_endspecials:
 			return index;     /* end of list */
 
-		  case tc_ceiling:
+		case tc_ceiling:
 			PADSAVEP();
 			ceiling = (ceiling_t*)Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL);
 			*ceiling = *(ceiling_t*)&buffer[index];
@@ -553,7 +553,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 			P_AddActiveCeiling(ceiling);
 			break;
 
-		  case tc_door:
+		case tc_door:
 			PADSAVEP();
 			door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVEL, NULL);
 			*door = *(vldoor_t*)&buffer[index];
@@ -564,7 +564,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 			P_AddThinker (&door->thinker);
 			break;
 
-		  case tc_floor:
+		case tc_floor:
 			PADSAVEP();
 			floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVEL, NULL);
 			*floor = *(floormove_t*)&buffer[index];
@@ -575,7 +575,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 			P_AddThinker (&floor->thinker);
 			break;
 
-		  case tc_plat:
+		case tc_plat:
 			PADSAVEP();
 			plat = (plat_t*)Z_Malloc (sizeof(*plat), PU_LEVEL, NULL);
 			*plat = *(plat_t*)&buffer[index];
@@ -590,7 +590,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 			P_AddActivePlat(plat);
 			break;
 
-		  case tc_flash:
+		case tc_flash:
 			PADSAVEP();
 			flash = (lightflash_t*)Z_Malloc (sizeof(*flash), PU_LEVEL, NULL);
 			*flash = *(lightflash_t*)&buffer[index];
@@ -600,7 +600,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 			P_AddThinker (&flash->thinker);
 			break;
 
-		  case tc_strobe:
+		case tc_strobe:
 			PADSAVEP();
 			strobe = (strobe_t*)Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL);
 			*strobe = *(strobe_t*)&buffer[index];
@@ -610,7 +610,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 			P_AddThinker (&strobe->thinker);
 			break;
 
-		  case tc_glow:
+		case tc_glow:
 			PADSAVEP();
 			glow = (glow_t*)Z_Malloc (sizeof(*glow), PU_LEVEL, NULL);
 			*glow = *(glow_t*)&buffer[index];

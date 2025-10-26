@@ -571,36 +571,36 @@ AM_Responder
 		rc = d_true;
 		switch(ev->data1)
 		{
-		  case AM_PANRIGHTKEY: /* pan right */
+		case AM_PANRIGHTKEY: /* pan right */
 			if (!followplayer) m_paninc.x = FTOM(F_PANINC);
 			else rc = d_false;
 			break;
-		  case AM_PANLEFTKEY: /* pan left */
+		case AM_PANLEFTKEY: /* pan left */
 			if (!followplayer) m_paninc.x = -FTOM(F_PANINC);
 			else rc = d_false;
 			break;
-		  case AM_PANUPKEY: /* pan up */
+		case AM_PANUPKEY: /* pan up */
 			if (!followplayer) m_paninc.y = FTOM(F_PANINC);
 			else rc = d_false;
 			break;
-		  case AM_PANDOWNKEY: /* pan down */
+		case AM_PANDOWNKEY: /* pan down */
 			if (!followplayer) m_paninc.y = -FTOM(F_PANINC);
 			else rc = d_false;
 			break;
-		  case AM_ZOOMOUTKEY: /* zoom out */
+		case AM_ZOOMOUTKEY: /* zoom out */
 			mtof_zoommul = M_ZOOMOUT;
 			ftom_zoommul = M_ZOOMIN;
 			break;
-		  case AM_ZOOMINKEY: /* zoom in */
+		case AM_ZOOMINKEY: /* zoom in */
 			mtof_zoommul = M_ZOOMIN;
 			ftom_zoommul = M_ZOOMOUT;
 			break;
-		  case AM_ENDKEY:
+		case AM_ENDKEY:
 			bigstate = 0;
 			viewactive = d_true;
 			AM_Stop ();
 			break;
-		  case AM_GOBIGKEY:
+		case AM_GOBIGKEY:
 			bigstate = !bigstate;
 			if (bigstate)
 			{
@@ -609,21 +609,21 @@ AM_Responder
 			}
 			else AM_restoreScaleAndLoc();
 			break;
-		  case AM_FOLLOWKEY:
+		case AM_FOLLOWKEY:
 			followplayer = !followplayer;
 			f_oldloc.x = INT_MAX;
 			plr->message = followplayer ? AMSTR_FOLLOWON : AMSTR_FOLLOWOFF;
 			break;
-		  case AM_GRIDKEY:
+		case AM_GRIDKEY:
 			grid = !grid;
 			plr->message = grid ? AMSTR_GRIDON : AMSTR_GRIDOFF;
 			break;
-		  case AM_MARKKEY:
+		case AM_MARKKEY:
 			sprintf(buffer, "%s %d", AMSTR_MARKEDSPOT, markpointnum);
 			plr->message = buffer;
 			AM_addMark();
 			break;
-		  case AM_CLEARMARKKEY:
+		case AM_CLEARMARKKEY:
 			AM_clearMarks();
 			plr->message = AMSTR_MARKSCLEARED;
 			break;
@@ -642,20 +642,20 @@ AM_Responder
 		rc = d_false;
 		switch (ev->data1)
 		{
-		  case AM_PANRIGHTKEY:
+		case AM_PANRIGHTKEY:
 			if (!followplayer) m_paninc.x = 0;
 			break;
-		  case AM_PANLEFTKEY:
+		case AM_PANLEFTKEY:
 			if (!followplayer) m_paninc.x = 0;
 			break;
-		  case AM_PANUPKEY:
+		case AM_PANUPKEY:
 			if (!followplayer) m_paninc.y = 0;
 			break;
-		  case AM_PANDOWNKEY:
+		case AM_PANDOWNKEY:
 			if (!followplayer) m_paninc.y = 0;
 			break;
-		  case AM_ZOOMOUTKEY:
-		  case AM_ZOOMINKEY:
+		case AM_ZOOMOUTKEY:
+		case AM_ZOOMINKEY:
 			mtof_zoommul = FRACUNIT;
 			ftom_zoommul = FRACUNIT;
 			break;

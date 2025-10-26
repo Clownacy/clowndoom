@@ -232,17 +232,17 @@ void R_InitSpriteDefs (const char* const *namelist)
 		{
 			switch (sprtemp[frame].rotate)
 			{
-			  case -1:
+			case -1:
 				/* no rotations were found for that frame at all */
 				I_Error ("R_InitSprites: No patches found "
 						 "for %s frame %c", namelist[i], frame+'A');
 				break;
 
-			  case 0:
+			case 0:
 				/* only the first rotation is needed */
 				break;
 
-			  case 1:
+			case 1:
 				/* must have all 8 frames */
 				for (rotation=0 ; rotation<8 ; rotation++)
 					if (sprtemp[frame].lump[rotation] == -1)

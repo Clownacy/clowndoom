@@ -580,14 +580,14 @@ void A_Look (mobj_t* actor)
 
 		switch (actor->info->seesound)
 		{
-		  case sfx_posit1:
-		  case sfx_posit2:
-		  case sfx_posit3:
+		case sfx_posit1:
+		case sfx_posit2:
+		case sfx_posit3:
 			sound = sfx_posit1+P_Random()%3;
 			break;
 
-		  case sfx_bgsit1:
-		  case sfx_bgsit2:
+		case sfx_bgsit1:
+		case sfx_bgsit2:
 			sound = sfx_bgsit1+P_Random()%2;
 			break;
 
@@ -1454,17 +1454,17 @@ void A_Scream (mobj_t* actor)
 
 	switch (actor->info->deathsound)
 	{
-	  case 0:
+	case 0:
 		return;
 
-	  case sfx_podth1:
-	  case sfx_podth2:
-	  case sfx_podth3:
+	case sfx_podth1:
+	case sfx_podth2:
+	case sfx_podth3:
 		sound = sfx_podth1 + P_Random ()%3;
 		break;
 
-	  case sfx_bgdth1:
-	  case sfx_bgdth2:
+	case sfx_bgdth1:
+	case sfx_bgdth2:
 		sound = sfx_bgdth1 + P_Random ()%2;
 		break;
 
@@ -1538,7 +1538,7 @@ void A_BossDeath (mobj_t* mo)
 	{
 		switch(gameepisode)
 		{
-		  case 1:
+		case 1:
 			if (gamemap != 8)
 				return;
 
@@ -1546,7 +1546,7 @@ void A_BossDeath (mobj_t* mo)
 				return;
 			break;
 
-		  case 2:
+		case 2:
 			if (gamemap != 8)
 				return;
 
@@ -1554,7 +1554,7 @@ void A_BossDeath (mobj_t* mo)
 				return;
 			break;
 
-		  case 3:
+		case 3:
 			if (gamemap != 8)
 				return;
 
@@ -1563,15 +1563,15 @@ void A_BossDeath (mobj_t* mo)
 
 			break;
 
-		  case 4:
+		case 4:
 			switch(gamemap)
 			{
-			  case 6:
+			case 6:
 				if (mo->type != MT_CYBORG)
 					return;
 				break;
 
-			  case 8:
+			case 8:
 				if (mo->type != MT_SPIDER)
 					return;
 				break;
@@ -1640,22 +1640,22 @@ void A_BossDeath (mobj_t* mo)
 	{
 		switch(gameepisode)
 		{
-		  case 1:
+		case 1:
 			junk.tag = 666;
 			EV_DoFloor (&junk, lowerFloorToLowest);
 			return;
 			break;
 
-		  case 4:
+		case 4:
 			switch(gamemap)
 			{
-			  case 6:
+			case 6:
 				junk.tag = 666;
 				EV_DoDoor (&junk, blazeOpen);
 				return;
 				break;
 
-			  case 8:
+			case 8:
 				junk.tag = 666;
 				EV_DoFloor (&junk, lowerFloorToLowest);
 				return;

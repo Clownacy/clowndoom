@@ -525,12 +525,12 @@ void WI_updateAnimatedBack(void)
 		{
 			switch (a->type)
 			{
-			  case ANIM_ALWAYS:
+			case ANIM_ALWAYS:
 				if (++a->ctr >= a->nanims) a->ctr = 0;
 				a->nexttic = bcnt + a->period;
 				break;
 
-			  case ANIM_RANDOM:
+			case ANIM_RANDOM:
 				a->ctr++;
 				if (a->ctr == a->nanims)
 				{
@@ -540,7 +540,7 @@ void WI_updateAnimatedBack(void)
 				else a->nexttic = bcnt + a->period;
 				break;
 
-			  case ANIM_LEVEL:
+			case ANIM_LEVEL:
 				/* gawd-awful hack for level anims */
 				if (!(state == StatCount && i == 7)
 					&& wbs->next == a->data1)
@@ -1496,17 +1496,17 @@ void WI_Ticker(void)
 
 	switch (state)
 	{
-	  case StatCount:
+	case StatCount:
 		if (deathmatch != DM_OFF) WI_updateDeathmatchStats();
 		else if (netgame) WI_updateNetgameStats();
 		else WI_updateStats();
 		break;
 
-	  case ShowNextLoc:
+	case ShowNextLoc:
 		WI_updateShowNextLoc();
 		break;
 
-	  case NoState:
+	case NoState:
 		WI_updateNoState();
 		break;
 	}
@@ -1767,7 +1767,7 @@ void WI_Drawer (void)
 {
 	switch (state)
 	{
-	  case StatCount:
+	case StatCount:
 		if (deathmatch != DM_OFF)
 			WI_drawDeathmatchStats();
 		else if (netgame)
@@ -1776,11 +1776,11 @@ void WI_Drawer (void)
 			WI_drawStats();
 		break;
 
-	  case ShowNextLoc:
+	case ShowNextLoc:
 		WI_drawShowNextLoc();
 		break;
 
-	  case NoState:
+	case NoState:
 		WI_drawNoState();
 		break;
 	}

@@ -52,25 +52,25 @@ void T_VerticalDoor (vldoor_t* door)
 
 	switch(door->direction)
 	{
-	  case 0:
+	case 0:
 		/* WAITING */
 		if (!--door->topcountdown)
 		{
 			switch(door->type)
 			{
-			  case blazeRaise:
+			case blazeRaise:
 				door->direction = -1; /* time to go back down */
 				S_StartSound((mobj_t *)&door->sector->soundorg,
 							 sfx_bdcls);
 				break;
 
-			  case normal:
+			case normal:
 				door->direction = -1; /* time to go back down */
 				S_StartSound((mobj_t *)&door->sector->soundorg,
 							 sfx_dorcls);
 				break;
 
-			  case close30ThenOpen:
+			case close30ThenOpen:
 				door->direction = 1;
 				S_StartSound((mobj_t *)&door->sector->soundorg,
 							 sfx_doropn);
@@ -82,13 +82,13 @@ void T_VerticalDoor (vldoor_t* door)
 		}
 		break;
 
-	  case 2:
+	case 2:
 		/*  INITIAL WAIT */
 		if (!--door->topcountdown)
 		{
 			switch(door->type)
 			{
-			  case raiseIn5Mins:
+			case raiseIn5Mins:
 				door->direction = 1;
 				door->type = normal;
 				S_StartSound((mobj_t *)&door->sector->soundorg,
@@ -101,7 +101,7 @@ void T_VerticalDoor (vldoor_t* door)
 		}
 		break;
 
-	  case -1:
+	case -1:
 		/* DOWN */
 		res = T_MovePlane(door->sector,
 						  door->speed,
@@ -111,21 +111,21 @@ void T_VerticalDoor (vldoor_t* door)
 		{
 			switch(door->type)
 			{
-			  case blazeRaise:
-			  case blazeClose:
+			case blazeRaise:
+			case blazeClose:
 				door->sector->specialdata = NULL;
 				P_RemoveThinker (&door->thinker);  /* unlink and free */
 				S_StartSound((mobj_t *)&door->sector->soundorg,
 							 sfx_bdcls);
 				break;
 
-			  case normal:
-			  case close:
+			case normal:
+			case close:
 				door->sector->specialdata = NULL;
 				P_RemoveThinker (&door->thinker);  /* unlink and free */
 				break;
 
-			  case close30ThenOpen:
+			case close30ThenOpen:
 				door->direction = 0;
 				door->topcountdown = 35*30;
 				break;
@@ -138,8 +138,8 @@ void T_VerticalDoor (vldoor_t* door)
 		{
 			switch(door->type)
 			{
-			  case blazeClose:
-			  case close:               /* DO NOT GO BACK UP! */
+			case blazeClose:
+			case close:               /* DO NOT GO BACK UP! */
 				break;
 
 			  default:
@@ -151,7 +151,7 @@ void T_VerticalDoor (vldoor_t* door)
 		}
 		break;
 
-	  case 1:
+	case 1:
 		/* UP */
 		res = T_MovePlane(door->sector,
 						  door->speed,
@@ -162,15 +162,15 @@ void T_VerticalDoor (vldoor_t* door)
 		{
 			switch(door->type)
 			{
-			  case blazeRaise:
-			  case normal:
+			case blazeRaise:
+			case normal:
 				door->direction = 0; /* wait at top */
 				door->topcountdown = door->topwait;
 				break;
 
-			  case close30ThenOpen:
-			  case blazeOpen:
-			  case open:
+			case close30ThenOpen:
+			case blazeOpen:
+			case open:
 				door->sector->specialdata = NULL;
 				P_RemoveThinker (&door->thinker);  /* unlink and free */
 				break;
@@ -202,8 +202,8 @@ EV_DoLockedDoor
 
 	switch(line->special)
 	{
-	  case 99:  /* Blue Lock */
-	  case 133:
+	case 99:  /* Blue Lock */
+	case 133:
 		if ( !p )
 			return 0;
 		if (!p->cards[it_bluecard] && !p->cards[it_blueskull])
@@ -214,8 +214,8 @@ EV_DoLockedDoor
 		}
 		break;
 
-	  case 134: /* Red Lock */
-	  case 135:
+	case 134: /* Red Lock */
+	case 135:
 		if ( !p )
 			return 0;
 		if (!p->cards[it_redcard] && !p->cards[it_redskull])
@@ -226,8 +226,8 @@ EV_DoLockedDoor
 		}
 		break;
 
-	  case 136: /* Yellow Lock */
-	  case 137:
+	case 136: /* Yellow Lock */
+	case 137:
 		if ( !p )
 			return 0;
 		if (!p->cards[it_yellowcard] &&
@@ -277,7 +277,7 @@ EV_DoDoor
 
 		switch(type)
 		{
-		  case blazeClose:
+		case blazeClose:
 			door->topheight = P_FindLowestCeilingSurrounding(sec);
 			door->topheight -= 4*FRACUNIT;
 			door->direction = -1;
@@ -286,7 +286,7 @@ EV_DoDoor
 						 sfx_bdcls);
 			break;
 
-		  case close:
+		case close:
 			door->topheight = P_FindLowestCeilingSurrounding(sec);
 			door->topheight -= 4*FRACUNIT;
 			door->direction = -1;
@@ -294,15 +294,15 @@ EV_DoDoor
 						 sfx_dorcls);
 			break;
 
-		  case close30ThenOpen:
+		case close30ThenOpen:
 			door->topheight = sec->ceilingheight;
 			door->direction = -1;
 			S_StartSound((mobj_t *)&door->sector->soundorg,
 						 sfx_dorcls);
 			break;
 
-		  case blazeRaise:
-		  case blazeOpen:
+		case blazeRaise:
+		case blazeOpen:
 			door->direction = 1;
 			door->topheight = P_FindLowestCeilingSurrounding(sec);
 			door->topheight -= 4*FRACUNIT;
@@ -312,8 +312,8 @@ EV_DoDoor
 							 sfx_bdopn);
 			break;
 
-		  case normal:
-		  case open:
+		case normal:
+		case open:
 			door->direction = 1;
 			door->topheight = P_FindLowestCeilingSurrounding(sec);
 			door->topheight -= 4*FRACUNIT;
@@ -349,8 +349,8 @@ EV_VerticalDoor
 
 	switch(line->special)
 	{
-	  case 26: /* Blue Lock */
-	  case 32:
+	case 26: /* Blue Lock */
+	case 32:
 		if ( !player )
 			return;
 
@@ -362,8 +362,8 @@ EV_VerticalDoor
 		}
 		break;
 
-	  case 27: /* Yellow Lock */
-	  case 34:
+	case 27: /* Yellow Lock */
+	case 34:
 		if ( !player )
 			return;
 
@@ -376,8 +376,8 @@ EV_VerticalDoor
 		}
 		break;
 
-	  case 28: /* Red Lock */
-	  case 33:
+	case 28: /* Red Lock */
+	case 33:
 		if ( !player )
 			return;
 
@@ -398,11 +398,11 @@ EV_VerticalDoor
 		door = (vldoor_t*)sec->specialdata;
 		switch(line->special)
 		{
-		  case  1: /* ONLY FOR "RAISE" DOORS, NOT "OPEN"s */
-		  case  26:
-		  case  27:
-		  case  28:
-		  case  117:
+		case  1: /* ONLY FOR "RAISE" DOORS, NOT "OPEN"s */
+		case  26:
+		case  27:
+		case  28:
+		case  117:
 			if (door->direction == -1)
 				door->direction = 1;    /* go back up */
 			else
@@ -419,13 +419,13 @@ EV_VerticalDoor
 	/* for proper sound */
 	switch(line->special)
 	{
-	  case 117: /* BLAZING DOOR RAISE */
-	  case 118: /* BLAZING DOOR OPEN */
+	case 117: /* BLAZING DOOR RAISE */
+	case 118: /* BLAZING DOOR OPEN */
 		S_StartSound((mobj_t *)&sec->soundorg,sfx_bdopn);
 		break;
 
-	  case 1:   /* NORMAL DOOR SOUND */
-	  case 31:
+	case 1:   /* NORMAL DOOR SOUND */
+	case 31:
 		S_StartSound((mobj_t *)&sec->soundorg,sfx_doropn);
 		break;
 
@@ -447,26 +447,26 @@ EV_VerticalDoor
 
 	switch(line->special)
 	{
-	  case 1:
-	  case 26:
-	  case 27:
-	  case 28:
+	case 1:
+	case 26:
+	case 27:
+	case 28:
 		door->type = normal;
 		break;
 
-	  case 31:
-	  case 32:
-	  case 33:
-	  case 34:
+	case 31:
+	case 32:
+	case 33:
+	case 34:
 		door->type = open;
 		line->special = 0;
 		break;
 
-	  case 117: /* blazing door raise */
+	case 117: /* blazing door raise */
 		door->type = blazeRaise;
 		door->speed = VDOORSPEED*4;
 		break;
-	  case 118: /* blazing door open */
+	case 118: /* blazing door open */
 		door->type = blazeOpen;
 		line->special = 0;
 		door->speed = VDOORSPEED*4;
@@ -597,7 +597,7 @@ void T_SlidingDoor (slidedoor_t*        door)
 {
 	switch(door->status)
 	{
-	  case sd_opening:
+	case sd_opening:
 		if (!door->timer--)
 		{
 			if (++door->frame == SNUMFRAMES)
@@ -632,7 +632,7 @@ void T_SlidingDoor (slidedoor_t*        door)
 		}
 		break;
 
-	  case sd_waiting:
+	case sd_waiting:
 		/* IF DOOR IS DONE WAITING... */
 		if (!door->timer--)
 		{
@@ -650,7 +650,7 @@ void T_SlidingDoor (slidedoor_t*        door)
 		}
 		break;
 
-	  case sd_closing:
+	case sd_closing:
 		if (!door->timer--)
 		{
 			if (--door->frame < 0)

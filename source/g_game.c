@@ -546,40 +546,40 @@ d_bool G_Responder (const event_t* ev)
 
 	switch (ev->type)
 	{
-		unsigned int i;
+			unsigned int i;
 
-	  case ev_keydown:
-		if (ev->data1 == KEY_PAUSE)
-		{
-			sendpause = d_true;
-			return d_true;
-		}
-		if (ev->data1 <NUMKEYS)
-			gamekeydown[ev->data1] = d_true;
-		return d_true;    /* eat key down events */
+		case ev_keydown:
+			if (ev->data1 == KEY_PAUSE)
+			{
+				sendpause = d_true;
+				return d_true;
+			}
+			if (ev->data1 <NUMKEYS)
+				gamekeydown[ev->data1] = d_true;
+			return d_true;    /* eat key down events */
 
-	  case ev_keyup:
-		if (ev->data1 <NUMKEYS)
-			gamekeydown[ev->data1] = d_false;
-		return d_false;   /* always let key up events filter down */
+		case ev_keyup:
+			if (ev->data1 <NUMKEYS)
+				gamekeydown[ev->data1] = d_false;
+			return d_false;   /* always let key up events filter down */
 
-	  case ev_mouse:
-		for (i = 0; i < D_COUNT_OF(mousearray) - 1; ++i)
-			mousebuttons[i] = ev->data1 & 1U << i;
-		mousex = ev->data2*(mouseSensitivity+5)/10;
-		mousey = ev->data3*(mouseSensitivity+5)/10;
-		return d_true;    /* eat events */
+		case ev_mouse:
+			for (i = 0; i < D_COUNT_OF(mousearray) - 1; ++i)
+				mousebuttons[i] = ev->data1 & 1U << i;
+			mousex = ev->data2*(mouseSensitivity+5)/10;
+			mousey = ev->data3*(mouseSensitivity+5)/10;
+			return d_true;    /* eat events */
 
-	  case ev_joystick:
-		for (i = 0; i < D_COUNT_OF(joyarray) - 1; ++i)
-			joybuttons[i] = ev->data1 & 1U << i;
-		joyxmove = ev->data2;
-		joyymove = ev->data3;
-		joyxmoveright = ev->data4*(mouseSensitivity+5)/10;
-		return d_true;    /* eat events */
+		case ev_joystick:
+			for (i = 0; i < D_COUNT_OF(joyarray) - 1; ++i)
+				joybuttons[i] = ev->data1 & 1U << i;
+			joyxmove = ev->data2;
+			joyymove = ev->data3;
+			joyxmoveright = ev->data4*(mouseSensitivity+5)/10;
+			return d_true;    /* eat events */
 
-	  default:
-		break;
+		default:
+			break;
 	}
 
 	return d_false;
@@ -605,35 +605,35 @@ void G_Ticker (void)
 	{
 		switch (gameaction)
 		{
-		  case ga_loadlevel:
+		case ga_loadlevel:
 			G_DoLoadLevel ();
 			break;
-		  case ga_newgame:
+		case ga_newgame:
 			G_DoNewGame ();
 			break;
-		  case ga_loadgame:
+		case ga_loadgame:
 			G_DoLoadGame ();
 			break;
-		  case ga_savegame:
+		case ga_savegame:
 			G_DoSaveGame ();
 			break;
-		  case ga_playdemo:
+		case ga_playdemo:
 			G_DoPlayDemo ();
 			break;
-		  case ga_completed:
+		case ga_completed:
 			G_DoCompleted ();
 			break;
-		  case ga_victory:
+		case ga_victory:
 			F_StartFinale ();
 			break;
-		  case ga_worlddone:
+		case ga_worlddone:
 			G_DoWorldDone ();
 			break;
-		  case ga_screenshot:
+		case ga_screenshot:
 			M_ScreenShot ();
 			gameaction = ga_nothing;
 			break;
-		  case ga_nothing:
+		case ga_nothing:
 			break;
 		}
 	}
@@ -690,7 +690,7 @@ void G_Ticker (void)
 			{
 				switch (players[i].cmd.buttons & BT_SPECIALMASK)
 				{
-				  case BTS_PAUSE:
+				case BTS_PAUSE:
 					paused = !paused;
 					if (paused)
 						S_PauseSound ();
@@ -698,7 +698,7 @@ void G_Ticker (void)
 						S_ResumeSound ();
 					break;
 
-				  case BTS_SAVEGAME:
+				case BTS_SAVEGAME:
 					if (!savedescription[0])
 						strcpy (savedescription, "NET GAME");
 					savegameslot =
@@ -713,26 +713,26 @@ void G_Ticker (void)
 	/* do main actions */
 	switch (gamestate)
 	{
-	  case GS_LEVEL:
+	case GS_LEVEL:
 		P_Ticker ();
 		ST_Ticker ();
 		AM_Ticker ();
 		HU_Ticker ();
 		break;
 
-	  case GS_INTERMISSION:
+	case GS_INTERMISSION:
 		WI_Ticker ();
 		break;
 
-	  case GS_FINALE:
+	case GS_FINALE:
 		F_Ticker ();
 		break;
 
-	  case GS_DEMOSCREEN:
+	case GS_DEMOSCREEN:
 		D_PageTicker ();
 		break;
 
-	  case GS_FORCEWIPE:
+	case GS_FORCEWIPE:
 		break;
 	}
 }
@@ -1097,8 +1097,8 @@ void G_DoCompleted (void)
 			{
 				switch(gamemap)
 				{
-				  case 15: wminfo.next = 30; break;
-				  case 31: wminfo.next = 31; break;
+				case 15: wminfo.next = 30; break;
+				case 31: wminfo.next = 31; break;
 				}
 			}
 		}
@@ -1115,8 +1115,8 @@ void G_DoCompleted (void)
 			{
 				switch(gamemap)
 				{
-				  case 31:
-				  case 32: wminfo.next = 15; break;
+				case 31:
+				case 32: wminfo.next = 15; break;
 				}
 			}
 		}
@@ -1130,16 +1130,16 @@ void G_DoCompleted (void)
 			/* returning from secret level */
 			switch (gameepisode)
 			{
-			  case 1:
+			case 1:
 				wminfo.next = 3;
 				break;
-			  case 2:
+			case 2:
 				wminfo.next = 5;
 				break;
-			  case 3:
+			case 3:
 				wminfo.next = 6;
 				break;
-			  case 4:
+			case 4:
 				wminfo.next = 2;
 				break;
 			}
@@ -1212,15 +1212,15 @@ void G_WorldDone (void)
 		case pack_plut:
 			switch (gamemap)
 			{
-			  case 15:
-			  case 31:
+			case 15:
+			case 31:
 				if (!secretexit)
 					break;
 				/* Fallthrough */
-			  case 6:
-			  case 11:
-			  case 20:
-			  case 30:
+			case 6:
+			case 11:
+			case 20:
+			case 30:
 				F_StartFinale ();
 				break;
 			}

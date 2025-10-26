@@ -296,16 +296,16 @@ void P_LoadThings (int lump)
 		{
 			switch(mt->type)
 			{
-			  case 68:  /* Arachnotron */
-			  case 64:  /* Archvile */
-			  case 88:  /* Boss Brain */
-			  case 89:  /* Boss Shooter */
-			  case 69:  /* Hell Knight */
-			  case 67:  /* Mancubus */
-			  case 71:  /* Pain Elemental */
-			  case 65:  /* Former Human Commando */
-			  case 66:  /* Revenant */
-			  case 84:  /* Wolf SS */
+			case 68:  /* Arachnotron */
+			case 64:  /* Archvile */
+			case 88:  /* Boss Brain */
+			case 89:  /* Boss Shooter */
+			case 69:  /* Hell Knight */
+			case 67:  /* Mancubus */
+			case 71:  /* Pain Elemental */
+			case 65:  /* Former Human Commando */
+			case 66:  /* Revenant */
+			case 84:  /* Wolf SS */
 				spawn = d_false;
 				break;
 			}

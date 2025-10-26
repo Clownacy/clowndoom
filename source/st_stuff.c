@@ -419,11 +419,11 @@ ST_Responder (const event_t* ev)
   {
 	switch(ev->data1)
 	{
-	  case AM_MSGENTERED:
+	case AM_MSGENTERED:
 		st_firsttime = d_true;
 		break;
 
-	  case AM_MSGEXITED:
+	case AM_MSGEXITED:
 		/*      I_Info("AM exited\n"); */
 		break;
 	}

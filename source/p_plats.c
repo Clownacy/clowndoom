@@ -45,7 +45,7 @@ void T_PlatRaise(plat_t* plat)
 
 	switch(plat->status)
 	{
-	  case up:
+	case up:
 		res = T_MovePlane(plat->sector,
 						  plat->speed,
 						  plat->high,
@@ -78,13 +78,13 @@ void T_PlatRaise(plat_t* plat)
 
 				switch(plat->type)
 				{
-				  case blazeDWUS:
-				  case downWaitUpStay:
+				case blazeDWUS:
+				case downWaitUpStay:
 					P_RemoveActivePlat(plat);
 					break;
 
-				  case raiseAndChange:
-				  case raiseToNearestAndChange:
+				case raiseAndChange:
+				case raiseToNearestAndChange:
 					P_RemoveActivePlat(plat);
 					break;
 
@@ -95,7 +95,7 @@ void T_PlatRaise(plat_t* plat)
 		}
 		break;
 
-	  case      down:
+	case      down:
 		res = T_MovePlane(plat->sector,plat->speed,plat->low,d_false,0,-1);
 
 		if (res == pastdest)
@@ -106,7 +106,7 @@ void T_PlatRaise(plat_t* plat)
 		}
 		break;
 
-	  case      waiting:
+	case      waiting:
 		if (!--plat->count)
 		{
 			if (plat->sector->floorheight == plat->low)
@@ -115,7 +115,7 @@ void T_PlatRaise(plat_t* plat)
 				plat->status = down;
 			S_StartSound((mobj_t *)&plat->sector->soundorg,sfx_pstart);
 		}
-	  case      in_stasis:
+	case      in_stasis:
 		break;
 	}
 }
@@ -141,7 +141,7 @@ EV_DoPlat
 	/*  Activate all <type> plats that are in_stasis */
 	switch(type)
 	{
-	  case perpetualRaise:
+	case perpetualRaise:
 		P_ActivateInStasis(line->tag);
 		break;
 
@@ -170,7 +170,7 @@ EV_DoPlat
 
 		switch(type)
 		{
-		  case raiseToNearestAndChange:
+		case raiseToNearestAndChange:
 			plat->speed = PLATSPEED/2;
 			sec->floorpic = sides[line->sidenum[0]].sector->floorpic;
 			plat->high = P_FindNextHighestFloor(sec,sec->floorheight);
@@ -182,7 +182,7 @@ EV_DoPlat
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_stnmov);
 			break;
 
-		  case raiseAndChange:
+		case raiseAndChange:
 			plat->speed = PLATSPEED/2;
 			sec->floorpic = sides[line->sidenum[0]].sector->floorpic;
 			plat->high = sec->floorheight + amount*FRACUNIT;
@@ -192,7 +192,7 @@ EV_DoPlat
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_stnmov);
 			break;
 
-		  case downWaitUpStay:
+		case downWaitUpStay:
 			plat->speed = PLATSPEED * 4;
 			plat->low = P_FindLowestFloorSurrounding(sec);
 
@@ -205,7 +205,7 @@ EV_DoPlat
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_pstart);
 			break;
 
-		  case blazeDWUS:
+		case blazeDWUS:
 			plat->speed = PLATSPEED * 8;
 			plat->low = P_FindLowestFloorSurrounding(sec);
 
@@ -218,7 +218,7 @@ EV_DoPlat
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_pstart);
 			break;
 
-		  case perpetualRaise:
+		case perpetualRaise:
 			plat->speed = PLATSPEED;
 			plat->low = P_FindLowestFloorSurrounding(sec);
 

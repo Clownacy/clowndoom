@@ -49,11 +49,11 @@ T_MovePlane
 
 	switch(floorOrCeiling)
 	{
-	  case 0:
+	case 0:
 		/* FLOOR */
 		switch(direction)
 		{
-		  case -1:
+		case -1:
 			/* DOWN */
 			if (sector->floorheight - speed < dest)
 			{
@@ -82,7 +82,7 @@ T_MovePlane
 			}
 			break;
 
-		  case 1:
+		case 1:
 			/* UP */
 			if (sector->floorheight + speed > dest)
 			{
@@ -116,11 +116,11 @@ T_MovePlane
 		}
 		break;
 
-	  case 1:
+	case 1:
 		/* CEILING */
 		switch(direction)
 		{
-		  case -1:
+		case -1:
 			/* DOWN */
 			if (sector->ceilingheight - speed < dest)
 			{
@@ -154,7 +154,7 @@ T_MovePlane
 			}
 			break;
 
-		  case 1:
+		case 1:
 			/* UP */
 			if (sector->ceilingheight + speed > dest)
 			{
@@ -215,7 +215,7 @@ void T_MoveFloor(floormove_t* floor)
 		{
 			switch(floor->type)
 			{
-			  case donutRaise:
+			case donutRaise:
 				floor->sector->special = floor->newspecial;
 				floor->sector->floorpic = floor->texture;
 			  default:
@@ -226,7 +226,7 @@ void T_MoveFloor(floormove_t* floor)
 		{
 			switch(floor->type)
 			{
-			  case lowerAndChange:
+			case lowerAndChange:
 				floor->sector->special = floor->newspecial;
 				floor->sector->floorpic = floor->texture;
 			  default:
@@ -274,7 +274,7 @@ EV_DoFloor
 
 		switch(floortype)
 		{
-		  case lowerFloor:
+		case lowerFloor:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -282,7 +282,7 @@ EV_DoFloor
 				P_FindHighestFloorSurrounding(sec);
 			break;
 
-		  case lowerFloorToLowest:
+		case lowerFloorToLowest:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -290,7 +290,7 @@ EV_DoFloor
 				P_FindLowestFloorSurrounding(sec);
 			break;
 
-		  case turboLower:
+		case turboLower:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED * 4;
@@ -300,10 +300,10 @@ EV_DoFloor
 				floor->floordestheight += 8*FRACUNIT;
 			break;
 
-		  case raiseFloorCrush:
+		case raiseFloorCrush:
 			floor->crush = d_true;
 			/* Fallthrough */
-		  case raiseFloor:
+		case raiseFloor:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -315,7 +315,7 @@ EV_DoFloor
 				(floortype == raiseFloorCrush);
 			break;
 
-		  case raiseFloorTurbo:
+		case raiseFloorTurbo:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED*4;
@@ -323,7 +323,7 @@ EV_DoFloor
 				P_FindNextHighestFloor(sec,sec->floorheight);
 			break;
 
-		  case raiseFloorToNearest:
+		case raiseFloorToNearest:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -331,14 +331,14 @@ EV_DoFloor
 				P_FindNextHighestFloor(sec,sec->floorheight);
 			break;
 
-		  case raiseFloor24:
+		case raiseFloor24:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
 			floor->floordestheight = floor->sector->floorheight +
 				24 * FRACUNIT;
 			break;
-		  case raiseFloor512:
+		case raiseFloor512:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -346,7 +346,7 @@ EV_DoFloor
 				512 * FRACUNIT;
 			break;
 
-		  case raiseFloor24AndChange:
+		case raiseFloor24AndChange:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -356,7 +356,7 @@ EV_DoFloor
 			sec->special = line->frontsector->special;
 			break;
 
-		  case raiseToTexture:
+		case raiseToTexture:
 		  {
 			  int       minsize = INT_MAX;
 			  side_t*   side;
@@ -387,7 +387,7 @@ EV_DoFloor
 		  }
 		  break;
 
-		  case lowerAndChange:
+		case lowerAndChange:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -478,11 +478,11 @@ EV_BuildStairs
 		switch(type)
 		{
 		  default:
-		  case build8:
+		case build8:
 			speed = FLOORSPEED/4;
 			stairsize = 8*FRACUNIT;
 			break;
-		  case turbo16:
+		case turbo16:
 			speed = FLOORSPEED*4;
 			stairsize = 16*FRACUNIT;
 			break;

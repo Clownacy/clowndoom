@@ -265,7 +265,7 @@ void D_Display (void)
 	/* do buffered drawing */
 	switch (gamestate)
 	{
-	  case GS_LEVEL:
+	case GS_LEVEL:
 		if (!gametic)
 			break;
 		if (automapactive)
@@ -278,19 +278,19 @@ void D_Display (void)
 		fullscreen = viewheight == SCREENHEIGHT;
 		break;
 
-	  case GS_INTERMISSION:
+	case GS_INTERMISSION:
 		WI_Drawer ();
 		break;
 
-	  case GS_FINALE:
+	case GS_FINALE:
 		F_Drawer ();
 		break;
 
-	  case GS_DEMOSCREEN:
+	case GS_DEMOSCREEN:
 		D_PageDrawer ();
 		break;
 
-	  case GS_FORCEWIPE:
+	case GS_FORCEWIPE:
 		break;
 	}
 
@@ -477,7 +477,7 @@ void D_AdvanceDemo (void)
 
 	switch (demosequence)
 	{
-	  case 0:
+	case 0:
 		if ( gamemode == commercial )
 			pagetic = TICRATE * 11;
 		else
@@ -489,18 +489,18 @@ void D_AdvanceDemo (void)
 		else
 		  S_StartMusic (mus_intro);
 		break;
-	  case 1:
+	case 1:
 		G_DeferedPlayDemo ("demo1");
 		break;
-	  case 2:
+	case 2:
 		pagetic = TICRATE * 40 / 7;
 		gamestate = GS_DEMOSCREEN;
 		pagename = "CREDIT";
 		break;
-	  case 3:
+	case 3:
 		G_DeferedPlayDemo ("demo2");
 		break;
-	  case 4:
+	case 4:
 		gamestate = GS_DEMOSCREEN;
 		if ( gamemode == commercial)
 		{
@@ -518,16 +518,16 @@ void D_AdvanceDemo (void)
 			  pagename = "HELP2";
 		}
 		break;
-	  case 5:
+	case 5:
 		G_DeferedPlayDemo ("demo3");
 		break;
-	  case 6:
+	case 6:
 		  pagetic = TICRATE * 40 / 7;
 		  gamestate = GS_DEMOSCREEN;
 		  pagename = "CREDIT";
 		  break;
 		/* THE DEFINITIVE DOOM Special Edition demo */
-	  case 7:
+	case 7:
 		G_DeferedPlayDemo ("demo4");
 		break;
 	}
@@ -805,46 +805,46 @@ void D_DoomMain (int argc, char **argv)
 
 	switch ( gamemode )
 	{
-	  case retail:
+	case retail:
 		sprintf (title,
 				 "                         "
 				 "The Ultimate DOOM Startup v%i.%i"
 				 "                           ",
 				 VERSION/100,VERSION%100);
 		break;
-	  case shareware:
+	case shareware:
 		sprintf (title,
 				 "                            "
 				 "DOOM Shareware Startup v%i.%i"
 				 "                           ",
 				 VERSION/100,VERSION%100);
 		break;
-	  case registered:
+	case registered:
 		sprintf (title,
 				 "                            "
 				 "DOOM Registered Startup v%i.%i"
 				 "                           ",
 				 VERSION/100,VERSION%100);
 		break;
-	  case commercial:
+	case commercial:
 		switch (gamemission)
 		{
 		  default:
-		  case doom2:
+		case doom2:
 			sprintf (title,
 					 "                         "
 					 "DOOM 2: Hell on Earth v%i.%i"
 					 "                           ",
 					 VERSION/100,VERSION%100);
 			break;
-		  case pack_plut:
+		case pack_plut:
 			sprintf (title,
 					 "                   "
 					 "DOOM 2: Plutonia Experiment v%i.%i"
 					 "                           ",
 					 VERSION/100,VERSION%100);
 			break;
-		  case pack_tnt:
+		case pack_tnt:
 			sprintf (title,
 					 "                     "
 					 "DOOM 2: TNT - Evilution v%i.%i"
@@ -899,16 +899,16 @@ void D_DoomMain (int argc, char **argv)
 		/* Map name handling. */
 		switch (gamemode )
 		{
-		  case shareware:
-		  case retail:
-		  case registered:
+		case shareware:
+		case retail:
+		case registered:
 			sprintf (file,"~"DEVMAPS"E%cM%c.wad",
 					 myargv[p+1][0], myargv[p+2][0]);
 			I_Info("Warping to Episode %s, Map %s.\n",
 				   myargv[p+1],myargv[p+2]);
 			break;
 
-		  case commercial:
+		case commercial:
 		  default:
 			p = atoi (myargv[p+1]);
 			if (p<10)
