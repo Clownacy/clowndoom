@@ -405,7 +405,6 @@ void HU_Stop(void)
 
 void HU_Start(void)
 {
-
 	int         i;
 	const char* s;
 
@@ -458,8 +457,8 @@ void HU_Start(void)
 			break;
 	}
 
-	while (*s)
-		HUlib_addCharToTextLine(&w_title, *(s++));
+	while (*s != '\0')
+		HUlib_addCharToTextLine(&w_title, *s++);
 
 	/* create the chat widget */
 	HUlib_initIText(&w_chat,
@@ -472,7 +471,6 @@ void HU_Start(void)
 		HUlib_initIText(&w_inputbuffer[i], 0, 0, 0, 0, &always_off);
 
 	headsupactive = d_true;
-
 }
 
 static void
