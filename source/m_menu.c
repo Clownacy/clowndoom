@@ -80,7 +80,7 @@ void    (*messageRoutine)(int response);
 
 #define SAVESTRINGSIZE  24
 
-char gammamsg[5][26] =
+static const char gammamsg[5][26] =
 {
 	GAMMALVL0,
 	GAMMALVL1,
@@ -144,7 +144,7 @@ short           whichSkull;             /* which skull to draw */
 
 /* graphic name of skulls */
 /* warning: initializer-string for array of chars is too long */
-char    skullName[2][/*8*/9] = {"M_SKULL1","M_SKULL2"};
+static const char    skullName[2][/*8*/9] = {"M_SKULL1","M_SKULL2"};
 
 /* current menudef */
 menu_t* currentMenu;
@@ -858,8 +858,8 @@ void M_Episode(int choice)
 
 
 /* M_Options */
-char    detailNames[2][9]       = {"M_GDHIGH","M_GDLOW"};
-char    msgNames[2][9]          = {"M_MSGOFF","M_MSGON"};
+static const char    detailNames[2][9]       = {"M_GDHIGH","M_GDLOW"};
+static const char    msgNames[2][9]          = {"M_MSGOFF","M_MSGON"};
 
 
 void M_DrawOptions(void)

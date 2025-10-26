@@ -296,46 +296,46 @@ static int      st_randomnumber;
 
 
 /* Massive bunches of cheat shit */
-char   cheat_mus_seq[] =
+static char   cheat_mus_seq[] =
 {
 	'i', 'd', 'm', 'u', 's', 1, 0, 0, (char)-1
 };
 
-char   cheat_choppers_seq[] =
+static char   cheat_choppers_seq[] =
 {
 	'i', 'd', 'c', 'h', 'o', 'p', 'p', 'e', 'r', 's', (char)-1 /* id... */
 };
 
-char   cheat_god_seq[] =
+static char   cheat_god_seq[] =
 {
 	'i', 'd', 'd', 'q', 'd', (char)-1  /* iddqd */
 };
 
-char   cheat_ammo_seq[] =
+static char   cheat_ammo_seq[] =
 {
 	'i', 'd', 'k', 'f', 'a', (char)-1  /* idkfa */
 };
 
-char   cheat_ammonokey_seq[] =
+static char   cheat_ammonokey_seq[] =
 {
 	'i', 'd', 'f', 'a', (char)-1        /* idfa */
 };
 
 
 /* Smashing Pumpkins Into Samml Piles Of Putried Debris. */
-char   cheat_noclip_seq[] =
+static char   cheat_noclip_seq[] =
 {
 	'i', 'd', 's', 'p', 'i', 's', 'p', 'o', 'p', 'd', (char)-1       /* idspispopd */
 };
 
-char   cheat_commercial_noclip_seq[] =
+static char   cheat_commercial_noclip_seq[] =
 {
 	'i', 'd', 'c', 'l', 'i', 'p', (char)-1    /* idclip */
 };
 
 
 
-char   cheat_powerup_seq[7][10] =
+static char   cheat_powerup_seq[7][10] =
 {
 	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 'v', (char)-1 },     /* beholdv */
 	{ 'i', 'd', 'b', 'e', 'h', 'o', 'l', 'd', 's', (char)-1 },     /* beholds */
@@ -347,14 +347,14 @@ char   cheat_powerup_seq[7][10] =
 };
 
 
-char   cheat_clev_seq[] =
+static char   cheat_clev_seq[] =
 {
 	'i', 'd', 'c', 'l', 'e', 'v', 1, 0, 0, (char)-1  /* idclev */
 };
 
 
 /* my position cheat */
-char   cheat_mypos_seq[] =
+static char   cheat_mypos_seq[] =
 {
 	'i', 'd', 'm', 'y', 'p', 'o', 's', (char)-1      /* idmypos */
 };
