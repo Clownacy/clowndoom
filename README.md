@@ -56,10 +56,11 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
 - Better than CuckyDOOM.
 
 ## Configuration
-Additional settings are found in the configuration file - 'clowndoomrc'. On
-Unix platforms, it can be found in the user's standard configuration directory
-(`XDG_CONFIG_HOME`, or `~/.config/` if it is undefined) named 'clowndoomrc'. On
-Windows, it can be found in the `%APPDATA%/clownacy/clowndoom` directory.
+Additional settings are found in the configuration file. In POSIX builds, this
+file can be found in the user's standard configuration directory
+(`XDG_CONFIG_HOME`, or `~/.config/` if it is undefined), named `clowndoomrc`.
+In SDL builds, it can be found in the ['pref dir'](https://wiki.libsdl.org/SDL2/SDL_GetPrefPath),
+at `clownacy/clowndoom/default.cfg`.
 
 WildMIDI requires a collection of GUS patches in order to work. The patches
 should come with a Timidity-compatible '.cfg'. file. Set the
