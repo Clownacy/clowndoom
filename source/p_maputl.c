@@ -28,6 +28,7 @@
 
 #include "doomdef.h"
 #include "p_local.h"
+#include "i_system.h"
 
 
 /* State. */
@@ -530,7 +531,10 @@ PIT_AddLineIntercepts (line_t* ld)
 	divline_t           dl;
 
 	if (intercept_p == intercepts + MAXINTERCEPTS)
+	{
+		I_Info("Intercept overflow occurred; demo will probably desync!\n");
 		return d_true;    /* intercept array full */
+	}
 
 	/* avoid precision problems with two routines */
 	if ( trace.dx > FRACUNIT*16
@@ -594,7 +598,10 @@ d_bool PIT_AddThingIntercepts (mobj_t* thing)
 	fixed_t             frac;
 
 	if (intercept_p == intercepts + MAXINTERCEPTS)
+	{
+		I_Info("Intercept overflow occurred; demo will probably desync!\n");
 		return d_true;            /* intercept array full */
+	}
 
 	tracepositive = (trace.dx ^ trace.dy)>0;
 
