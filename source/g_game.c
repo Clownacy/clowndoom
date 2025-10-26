@@ -1544,14 +1544,25 @@ G_InitNew
 	/* set the sky map for the episode */
 	if ( gamemode == commercial)
 	{
-		skytexture = R_TextureNumForName ("SKY3");
-		if (gamemap < 12)
-			skytexture = R_TextureNumForName ("SKY1");
+		if (gamemission == pack_nerve)
+		{
+			if (gamemap < 4 || gamemap == 9)
+					skytexture = R_TextureNumForName ("SKY1");
+			else
+					skytexture = R_TextureNumForName ("SKY3");
+		}
 		else
-			if (gamemap < 21)
+		{
+			if (gamemap < 12)
+				skytexture = R_TextureNumForName ("SKY1");
+			else if (gamemap < 21)
 				skytexture = R_TextureNumForName ("SKY2");
+			else
+				skytexture = R_TextureNumForName ("SKY3");
+		}
 	}
 	else
+	{
 		switch (episode)
 		{
 		  case 1:
@@ -1567,6 +1578,7 @@ G_InitNew
 			skytexture = R_TextureNumForName ("SKY4");
 			break;
 		}
+	}
 
 	G_DoLoadLevel ();
 }
