@@ -101,8 +101,9 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 
 		if (configdir != NULL)
 		{
-			const size_t offset = M_StringCopy(buffer, size, configdir);
-			M_StringCopyOffset(buffer, size, offset, directories[i].path_suffix);
+			size_t offset = M_StringCopy(buffer, size, configdir);
+			offset += M_StringCopyOffset(buffer, size, offset, directories[i].path_suffix);
+			offset += M_StringCopyOffset(buffer, size, offset, "clowndoomrc");
 			return offset;
 		}
 	}

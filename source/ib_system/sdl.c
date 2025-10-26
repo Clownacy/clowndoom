@@ -74,7 +74,8 @@ void IB_Sleep(void)
 size_t IB_GetConfigPath(char* const buffer, const size_t size)
 {
 	char* const path = SDL_GetPrefPath("clownacy", "clowndoom");
-	const size_t path_length = M_StringCopy(buffer, size, path);
+	size_t path_length = M_StringCopy(buffer, size, path);
+	path_length += M_StringCopyOffset(buffer, size, path_length, "default.cfg");
 	SDL_free(path);
 	return path_length;
 }

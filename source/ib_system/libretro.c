@@ -729,7 +729,7 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 	if (libretro.environment(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory))
 	{
 		size_t copy_length = M_StringCopy(buffer, size, system_directory);
-		copy_length += M_StringCopyOffset(buffer, size, copy_length, "/");
+		copy_length += M_StringCopyOffset(buffer, size, copy_length, "/default.cfg");
 		return copy_length;
 	}
 
