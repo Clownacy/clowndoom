@@ -1051,30 +1051,11 @@ void G_DoCompleted (void)
 	if (automapactive)
 		AM_Stop ();
 
-	switch (gamemission)
+	if (gamemission == doom && gamemap == 9)
 	{
-		case doom:
-			switch(gamemap)
-			{
-			  case 8:
-				/* victory */
-				gameaction = ga_victory;
-				return;
-			  case 9:
-				/* exit secret level */
-				for (i=0 ; i<MAXPLAYERS ; i++)
-					players[i].didsecret = d_true;
-				break;
-			}
-			break;
-		case pack_nerve:
-			if (gamemap == 8)
-			{
-				/* victory */
-				gameaction = ga_victory;
-				return;
-			}
-			break;
+		/* exit secret level */
+		for (i=0 ; i<MAXPLAYERS ; i++)
+			players[i].didsecret = d_true;
 	}
 
 	wminfo.didsecret = players[consoleplayer].didsecret;
@@ -1196,15 +1177,17 @@ void G_WorldDone (void)
 	if (secretexit)
 		players[consoleplayer].didsecret = d_true;
 
-	if ( gamemode == commercial )
+	switch (gamemission)
 	{
-		if (gamemission == pack_nerve)
-		{
+		case doom:
+		case pack_nerve:
 			if (gamemap == 8)
-				F_StartFinale ();
-		}
-		else
-		{
+				F_StartFinale();
+			break;
+
+		case doom2:
+		case pack_tnt:
+		case pack_plut:
 			switch (gamemap)
 			{
 			  case 15:
@@ -1219,7 +1202,10 @@ void G_WorldDone (void)
 				F_StartFinale ();
 				break;
 			}
-		}
+			break;
+
+		case none:
+			break;
 	}
 }
 

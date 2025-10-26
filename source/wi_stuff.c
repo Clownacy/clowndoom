@@ -776,9 +776,7 @@ void WI_drawShowNextLoc(void)
 	}
 
 	/* draws which level you are entering.. */
-	if ( (gamemode != commercial)
-		 || wbs->next != 30)
-		WI_drawEL();
+	WI_drawEL();
 
 }
 
@@ -1383,12 +1381,24 @@ void WI_updateStats(void)
 	{
 		if (acceleratestage)
 		{
-			S_StartSound(NULL, sfx_sgcock);
-
-			if (gamemode == commercial)
-				WI_initNoState();
+			if ((gamemission == doom && gamemap == 8)
+			 || (gamemission == doom2 && gamemap == 30)
+			 || (gamemission == pack_tnt && gamemap == 30)
+			 || (gamemission == pack_plut && gamemap == 30)
+			 || (gamemission == pack_nerve && gamemap == 8))
+			{
+				WI_End();
+				G_WorldDone();
+			}
 			else
-				WI_initShowNextLoc();
+			{
+				S_StartSound(NULL, sfx_sgcock);
+
+				if (gamemode == commercial)
+					WI_initNoState();
+				else
+					WI_initShowNextLoc();
+			}
 		}
 	}
 	else if (sp_state & 1)
