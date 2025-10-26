@@ -1437,50 +1437,45 @@ G_InitNew
 		S_ResumeSound ();
 	}
 
-
 	if (skill > sk_nightmare)
 		skill = sk_nightmare;
-
 
 	/* This was quite messy with SPECIAL and commented parts. */
 	/* Supposedly hacks to make the latest edition work. */
 	/* It might not work properly. */
 	if (episode < 1)
-	  episode = 1;
+		episode = 1;
 
 	if ( gamemode == retail )
 	{
-	  if (episode > 4)
-		episode = 4;
+		if (episode > 4)
+			episode = 4;
 	}
 	else if ( gamemode == shareware )
 	{
-	  if (episode > 1)
-		   episode = 1; /* only start episode 1 on shareware */
+		if (episode > 1)
+			episode = 1; /* only start episode 1 on shareware */
 	}
 	else
 	{
-	  if (episode > 3)
-		episode = 3;
+		if (episode > 3)
+			episode = 3;
 	}
-
-
 
 	if (map < 1)
 		map = 1;
 
-	if ( (map > 9)
-		 && ( gamemode != commercial) )
-	  map = 9;
+	if ( (map > 9) && (gamemode != commercial) )
+		map = 9;
 
 	M_ClearRandom ();
 
-	if (skill == sk_nightmare || respawnparm )
+	if (skill == sk_nightmare || respawnparm)
 		respawnmonsters = d_true;
 	else
 		respawnmonsters = d_false;
 
-	if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare) )
+	if (fastparm || (skill == sk_nightmare && gameskill != sk_nightmare))
 	{
 		/*for (i = S_SARG_RUN1; i <= S_SARG_PAIN2; i++)
 			states[i].tics >>= 1;*/
@@ -1526,7 +1521,6 @@ G_InitNew
 		mobjinfo[MT_HEADSHOT].speed = 10*FRACUNIT;
 		mobjinfo[MT_TROOPSHOT].speed = 10*FRACUNIT;
 	}
-
 
 	/* force players to be initialized upon first level load */
 	for (i=0 ; i<MAXPLAYERS ; i++)
