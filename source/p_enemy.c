@@ -1542,25 +1542,43 @@ void A_BossDeath (mobj_t* mo)
 			if (gamemap != 8)
 				return;
 
-			if (mo->type != MT_BRUISER)
-				return;
+			if (complevel >= 3)
+			{
+				if (mo->type != MT_BRUISER)
+					return;
+			}
 			break;
 
 		case 2:
 			if (gamemap != 8)
 				return;
 
-			if (mo->type != MT_CYBORG)
-				return;
+			if (complevel >= 3)
+			{
+				if (mo->type != MT_CYBORG)
+					return;
+			}
+			else
+			{
+				if (mo->type == MT_BRUISER)
+					return;
+			}
 			break;
 
 		case 3:
 			if (gamemap != 8)
 				return;
 
-			if (mo->type != MT_SPIDER)
-				return;
-
+			if (complevel >= 3)
+			{
+				if (mo->type != MT_SPIDER)
+					return;
+			}
+			else
+			{
+				if (mo->type == MT_BRUISER)
+					return;
+			}
 			break;
 
 		case 4:
@@ -1578,7 +1596,6 @@ void A_BossDeath (mobj_t* mo)
 
 			  default:
 				return;
-				break;
 			}
 			break;
 
