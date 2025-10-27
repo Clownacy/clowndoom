@@ -59,7 +59,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 			{
 			case silentCrushAndRaise:
 				break;
-			  default:
+			default:
 				S_StartSound((mobj_t *)&ceiling->sector->soundorg,
 							 sfx_stnmov);
 				/* ? */
@@ -84,7 +84,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 				ceiling->direction = -1;
 				break;
 
-			  default:
+			default:
 				break;
 			}
 
@@ -103,7 +103,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 			switch(ceiling->type)
 			{
 			case silentCrushAndRaise: break;
-			  default:
+			default:
 				S_StartSound((mobj_t *)&ceiling->sector->soundorg,
 							 sfx_stnmov);
 			}
@@ -129,7 +129,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 				P_RemoveActiveCeiling(ceiling);
 				break;
 
-			  default:
+			default:
 				break;
 			}
 		}
@@ -145,7 +145,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 					ceiling->speed = CEILSPEED / 8;
 					break;
 
-				  default:
+				default:
 					break;
 				}
 			}
@@ -177,7 +177,7 @@ EV_DoCeiling
 	case silentCrushAndRaise:
 	case crushAndRaise:
 		P_ActivateInStasisCeiling(line);
-	  default:
+	default:
 		break;
 	}
 

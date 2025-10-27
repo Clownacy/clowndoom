@@ -137,7 +137,7 @@ P_GiveAmmo
 			if (player->weaponowned[wp_missile])
 				player->pendingweapon = wp_missile;
 		}
-	  default:
+	default:
 		break;
 	}
 
@@ -622,7 +622,7 @@ P_TouchSpecialThing
 		sound = sfx_wpnup;
 		break;
 
-	  default:
+	default:
 		I_Error ("P_SpecialThing: Unknown gettable thing");
 	}
 
@@ -721,7 +721,7 @@ P_KillMobj
 		item = MT_CHAINGUN;
 		break;
 
-	  default:
+	default:
 		return;
 	}
 

@@ -218,7 +218,7 @@ void T_MoveFloor(floormove_t* floor)
 			case donutRaise:
 				floor->sector->special = floor->newspecial;
 				floor->sector->floorpic = floor->texture;
-			  default:
+			default:
 				break;
 			}
 		}
@@ -229,7 +229,7 @@ void T_MoveFloor(floormove_t* floor)
 			case lowerAndChange:
 				floor->sector->special = floor->newspecial;
 				floor->sector->floorpic = floor->texture;
-			  default:
+			default:
 				break;
 			}
 		}
@@ -423,7 +423,7 @@ EV_DoFloor
 					}
 				}
 			}
-		  default:
+		default:
 			break;
 		}
 	}
@@ -477,7 +477,7 @@ EV_BuildStairs
 		floor->sector = sec;
 		switch(type)
 		{
-		  default:
+		default:
 		case build8:
 			speed = FLOORSPEED/4;
 			stairsize = 8*FRACUNIT;

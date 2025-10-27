@@ -76,7 +76,7 @@ void T_VerticalDoor (vldoor_t* door)
 							 sfx_doropn);
 				break;
 
-			  default:
+			default:
 				break;
 			}
 		}
@@ -95,7 +95,7 @@ void T_VerticalDoor (vldoor_t* door)
 							 sfx_doropn);
 				break;
 
-			  default:
+			default:
 				break;
 			}
 		}
@@ -130,7 +130,7 @@ void T_VerticalDoor (vldoor_t* door)
 				door->topcountdown = 35*30;
 				break;
 
-			  default:
+			default:
 				break;
 			}
 		}
@@ -142,7 +142,7 @@ void T_VerticalDoor (vldoor_t* door)
 			case close:               /* DO NOT GO BACK UP! */
 				break;
 
-			  default:
+			default:
 				door->direction = 1;
 				S_StartSound((mobj_t *)&door->sector->soundorg,
 							 sfx_doropn);
@@ -175,7 +175,7 @@ void T_VerticalDoor (vldoor_t* door)
 				P_RemoveThinker (&door->thinker);  /* unlink and free */
 				break;
 
-			  default:
+			default:
 				break;
 			}
 		}
@@ -322,7 +322,7 @@ EV_DoDoor
 							 sfx_doropn);
 			break;
 
-		  default:
+		default:
 			break;
 		}
 
@@ -429,7 +429,7 @@ EV_VerticalDoor
 		S_StartSound((mobj_t *)&sec->soundorg,sfx_doropn);
 		break;
 
-	  default:  /* LOCKED DOOR SOUND */
+	default:  /* LOCKED DOOR SOUND */
 		S_StartSound((mobj_t *)&sec->soundorg,sfx_doropn);
 		break;
 	}

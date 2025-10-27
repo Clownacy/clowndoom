@@ -275,7 +275,7 @@ P_UseSpecialLine
 			/* UNUSED? */
 			break;
 
-		  default:
+		default:
 			return d_false;
 			break;
 		}
@@ -297,7 +297,7 @@ P_UseSpecialLine
 		case 34:      /* MANUAL YELLOW */
 			break;
 
-		  default:
+		default:
 			return d_false;
 			break;
 		}

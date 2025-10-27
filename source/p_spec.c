@@ -473,7 +473,7 @@ P_CrossSpecialLine
 			return;
 			break;
 
-		  default: break;
+		default: break;
 		}
 
 		ok = 0;
@@ -1022,7 +1022,7 @@ void P_PlayerInSpecialSector (player_t* player)
 			G_ExitLevel();
 		break;
 
-	  default:
+	default:
 		I_Error ("P_PlayerInSpecialSector: "
 				 "unknown special %i",
 				 sector->special);

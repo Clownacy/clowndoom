@@ -627,7 +627,7 @@ AM_Responder
 			AM_clearMarks();
 			plr->message = AMSTR_MARKSCLEARED;
 			break;
-		  default:
+		default:
 			rc = d_false;
 		}
 		if (deathmatch == DM_OFF && cht_CheckCheat(&cheat_amap, ev->data1))

@@ -88,7 +88,7 @@ void T_PlatRaise(plat_t* plat)
 					P_RemoveActivePlat(plat);
 					break;
 
-				  default:
+				default:
 					break;
 				}
 			}
@@ -145,7 +145,7 @@ EV_DoPlat
 		P_ActivateInStasis(line->tag);
 		break;
 
-	  default:
+	default:
 		break;
 	}
 

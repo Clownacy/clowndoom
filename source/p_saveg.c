@@ -324,7 +324,7 @@ size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 			P_AddThinker (&mobj->thinker);
 			break;
 
-		  default:
+		default:
 			I_Error ("Unknown tclass %i in savegame",tclass);
 		}
 
@@ -620,7 +620,7 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 			P_AddThinker (&glow->thinker);
 			break;
 
-		  default:
+		default:
 			I_Error ("P_UnarchiveSpecials:Unknown tclass %i "
 					 "in savegame",tclass);
 		}

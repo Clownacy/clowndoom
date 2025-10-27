@@ -591,7 +591,7 @@ void A_Look (mobj_t* actor)
 			sound = sfx_bgsit1+P_Random()%2;
 			break;
 
-		  default:
+		default:
 			sound = actor->info->seesound;
 			break;
 		}
@@ -1468,7 +1468,7 @@ void A_Scream (mobj_t* actor)
 		sound = sfx_bgdth1 + P_Random ()%2;
 		break;
 
-	  default:
+	default:
 		sound = actor->info->deathsound;
 		break;
 	}
@@ -1594,12 +1594,12 @@ void A_BossDeath (mobj_t* mo)
 					return;
 				break;
 
-			  default:
+			default:
 				return;
 			}
 			break;
 
-		  default:
+		default:
 			if (gamemap != 8)
 				return;
 			break;

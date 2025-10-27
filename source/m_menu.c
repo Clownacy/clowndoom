@@ -684,7 +684,7 @@ void M_DrawReadThis1(void)
 	case retail:
 		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("HELP1",PU_CACHE));
 		break;
-	  default:
+	default:
 		break;
 	}
 	return;
@@ -708,7 +708,7 @@ void M_DrawReadThis2(void)
 	case registered:
 		V_DrawPatch (X_CENTRE(0),Y_CENTRE(0),SCREEN_FRAMEBUFFER,(patch_t*)W_CacheLumpName("HELP2",PU_CACHE));
 		break;
-	  default:
+	default:
 		break;
 	}
 	return;
@@ -1394,7 +1394,7 @@ d_bool M_Responder (event_t* ev)
 				M_DoSave(saveSlot);
 			break;
 
-		  default:
+		default:
 			ch = toupper(ch);
 			if (ch != 32)
 				if (ch-HU_FONTSTART < 0 || ch-HU_FONTSTART >= HU_FONTSIZE)
@@ -1614,7 +1614,7 @@ d_bool M_Responder (event_t* ev)
 		}
 		return d_true;
 
-	  default:
+	default:
 		for (i = itemOn+1;i < currentMenu->numitems;i++)
 			if (currentMenu->menuitems[i].alphaKey == ch)
 			{
@@ -1789,7 +1789,7 @@ void M_Init (void)
 		break;
 	case retail:
 		/* We are fine. */
-	  default:
+	default:
 		break;
 	}
 

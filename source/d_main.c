@@ -829,7 +829,7 @@ void D_DoomMain (int argc, char **argv)
 	case commercial:
 		switch (gamemission)
 		{
-		  default:
+		default:
 		case doom2:
 			sprintf (title,
 					 "                         "
@@ -853,7 +853,7 @@ void D_DoomMain (int argc, char **argv)
 			break;
 		}
 		break;
-	  default:
+	default:
 		sprintf (title,
 				 "                     "
 				 "Public DOOM - v%i.%i"
@@ -909,7 +909,7 @@ void D_DoomMain (int argc, char **argv)
 			break;
 
 		case commercial:
-		  default:
+		default:
 			p = atoi (myargv[p+1]);
 			if (p<10)
 			  sprintf (file,"~"DEVMAPS"cdata/map0%i.wad", p);
