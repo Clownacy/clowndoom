@@ -46,7 +46,7 @@
 #define HU_TITLE2       (mapnames2[gamemap-1])
 #define HU_TITLEP       (mapnamesp[gamemap-1])
 #define HU_TITLET       (mapnamest[gamemap-1])
-#define HU_TITLEN       (mapnamesn[gamemap-1])
+#define HU_TITLEN       (gamemap-1 < D_COUNT_OF(mapnamesn) ? mapnamesn[gamemap-1] : HU_TITLE2)
 #define HU_YSPACING     ((1 + SHORT(hu_font[0]->height)) * HUD_SCALE)
 #define HU_TITLEHEIGHT  1
 #define HU_TITLEX       0
