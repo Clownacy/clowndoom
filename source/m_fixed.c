@@ -35,16 +35,16 @@ FixedMul
 {
 	const d_bool result_is_negative = (a < 0) != (b < 0);
 
-	const unsigned long a_absolute = labs(a);
-	const unsigned long b_absolute = labs(b);
+	const unsigned int a_absolute = abs(a);
+	const unsigned int b_absolute = abs(b);
 
-	const unsigned long a_upper = a_absolute / FRACUNIT;
-	const unsigned long a_lower = a_absolute % FRACUNIT;
-	const unsigned long b_upper = b_absolute / FRACUNIT;
-	const unsigned long b_lower = b_absolute % FRACUNIT;
+	const unsigned int a_upper = a_absolute / FRACUNIT;
+	const unsigned int a_lower = a_absolute % FRACUNIT;
+	const unsigned int b_upper = b_absolute / FRACUNIT;
+	const unsigned int b_lower = b_absolute % FRACUNIT;
 
 	/* This code is burdened by having to recreate a rounding error in the original code that was caused by right-shifting a signed integer. Stupid. */
-	const long result = (long)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + ((a_lower * b_lower + (result_is_negative ? FRACUNIT-1 : 0)) / FRACUNIT));
+	const int result = (int)((a_upper * b_upper * FRACUNIT) + (a_upper * b_lower) + (a_lower * b_upper) + ((a_lower * b_lower + (result_is_negative ? FRACUNIT-1 : 0)) / FRACUNIT));
 
 	return result_is_negative ? -result : result;
 
@@ -67,13 +67,13 @@ FixedDiv
 	/* This particular algorithm is taken from the Atari Jaguar port. */
 	const d_bool result_is_negative = (a < 0) != (b < 0);
 
-	unsigned long bit = FRACUNIT;
-	unsigned long result = 0;
-	unsigned long dividend_absolute = labs(a);
-	unsigned long divisor_absolute = labs(b);
+	unsigned int bit = FRACUNIT;
+	unsigned int result = 0;
+	unsigned int dividend_absolute = abs(a);
+	unsigned int divisor_absolute = abs(b);
 
 	if ((dividend_absolute >> 14) >= divisor_absolute)
-		return result_is_negative ? LONG_MIN : LONG_MAX;
+		return result_is_negative ? INT_MIN : INT_MAX;
 
 	while (dividend_absolute > divisor_absolute)
 	{
@@ -93,7 +93,7 @@ FixedDiv
 		bit >>= 1;
 	} while (bit != 0 && dividend_absolute != 0);
 
-	return result_is_negative ? -(long)result : (long)result;
+	return result_is_negative ? -(int)result : (int)result;
 }
 
 
@@ -105,8 +105,8 @@ FixedDiv
 ( fixed_t       a,
   fixed_t       b )
 {
-	if ( (labs(a)>>14) >= labs(b))
-		return (a^b)<0 ? LONG_MIN : LONG_MAX;
+	if ( (abs(a)>>14) >= abs(b))
+		return (a^b)<0 ? INT_MIN : INT_MAX;
 	return FixedDiv2 (a,b);
 }
 
