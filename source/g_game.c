@@ -565,14 +565,14 @@ d_bool G_Responder (const event_t* ev)
 
 		case ev_mouse:
 			for (i = 0; i < D_COUNT_OF(mousearray) - 1; ++i)
-				mousebuttons[i] = ev->data1 & 1U << i;
+				mousebuttons[i] = (ev->data1 & 1U << i) != 0;
 			mousex = ev->data2*(mouseSensitivity+5)/10;
 			mousey = ev->data3*(mouseSensitivity+5)/10;
 			return d_true;    /* eat events */
 
 		case ev_joystick:
 			for (i = 0; i < D_COUNT_OF(joyarray) - 1; ++i)
-				joybuttons[i] = ev->data1 & 1U << i;
+				joybuttons[i] = (ev->data1 & 1U << i) != 0;
 			joyxmove = ev->data2;
 			joyymove = ev->data3;
 			joyxmoveright = ev->data4*(mouseSensitivity+5)/10;
