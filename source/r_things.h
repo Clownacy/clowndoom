@@ -22,7 +22,7 @@
 #define __R_THINGS__
 
 
-#define MAXVISSPRITES   128
+#define MAXVISSPRITES   4096 /* Formerly 128, but Master Levels' Bad Dream level hits this limit. */
 
 /* Constant arrays used for psprite clipping */
 /*  and initializing clipping. */
