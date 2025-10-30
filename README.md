@@ -49,7 +49,9 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
 - Command line parameters:
   - `-iwad`, for loading a specific primary WAD file.
   - `-complevel`, supporting options 2, 3, and 4.
-- Support for Doom 2's 'No Rest for the Living' expansion.
+- Supported expansions:
+  - Master Levels for Doom II
+  - No Rest for the Living
 - The 'iddt' cheat enables kill/item/secret totals in the automap, as well as
   notifications when finding secrets.
 - Assorted bug fixes.
