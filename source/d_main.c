@@ -483,7 +483,7 @@ void D_AdvanceDemo (void)
 		else
 			pagetic = TICRATE * 34 / 7;
 		gamestate = GS_DEMOSCREEN;
-		pagename = "TITLEPIC";
+		pagename = W_CheckNumForName("TITLEPIC") == -1 ? "INTERPIC" : "TITLEPIC";
 		if ( gamemode == commercial )
 		  S_StartMusic(mus_dm2ttl);
 		else
@@ -505,7 +505,7 @@ void D_AdvanceDemo (void)
 		if ( gamemode == commercial)
 		{
 			pagetic = TICRATE * 11;
-			pagename = "TITLEPIC";
+			pagename = W_CheckNumForName("TITLEPIC") == -1 ? "INTERPIC" : "TITLEPIC";
 			S_StartMusic(mus_dm2ttl);
 		}
 		else
