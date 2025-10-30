@@ -132,7 +132,7 @@ extern  line_t* linespeciallist[MAXLINEANIMS];
 
 void P_InitPicAnims (void)
 {
-	int         i;
+	size_t i;
 
 
 	/*  Init animation*/

@@ -74,8 +74,8 @@ extern  int             complevel;
 
 /* Selected by user. */
 extern  skill_t         gameskill;
-extern  int             gameepisode;
-extern  int             gamemap;
+extern  unsigned int    gameepisode;
+extern  unsigned int    gamemap;
 
 /* Nightmare mode flag, single player. */
 extern  d_bool          respawnmonsters;

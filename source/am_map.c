@@ -512,7 +512,7 @@ void AM_Stop (void)
 
 void AM_Start (void)
 {
-	static int lastlevel = -1, lastepisode = -1;
+	static unsigned int lastlevel = -1, lastepisode = -1;
 
 	if (!stopped) AM_Stop();
 	stopped = d_false;

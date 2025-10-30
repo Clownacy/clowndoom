@@ -90,8 +90,8 @@ gameaction_t    gameaction;
 gamestate_t     gamestate;
 skill_t         gameskill;
 d_bool          respawnmonsters;
-int             gameepisode;
-int             gamemap;
+unsigned int    gameepisode;
+unsigned int    gamemap;
 
 d_bool          paused;
 d_bool          sendpause;              /* send a pause event next tic */
