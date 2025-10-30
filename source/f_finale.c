@@ -83,6 +83,7 @@ static const char* const ttext[] = {
 	T6TEXT
 };
 
+static const char master_levels_text[] = MASTER_LEVELS_TEXT;
 static const char nerve_text[] = NERVE_TEXT;
 
 static const char*     finaletext;
@@ -103,18 +104,15 @@ void F_StartFinale (void)
 	viewactive = d_false;
 	automapactive = d_false;
 
+	S_ChangeMusic(gamemission == doom ? mus_victor : mus_read_m, d_true);
+
 	/* Okay - IWAD dependend stuff. */
 	/* This has been changed severly, and */
 	/*  some stuff might have changed in the process. */
-	switch ( gamemode )
+	switch ( gamemission )
 	{
 		/* DOOM 1 - E1, E3 or E4, but each nine missions */
-		case shareware:
-		case registered:
-		case retail:
-		{
-			S_ChangeMusic(mus_victor, d_true);
-
+		case doom:
 			switch (gameepisode)
 			{
 				case 1:
@@ -137,24 +135,12 @@ void F_StartFinale (void)
 					/* Ouch. */
 					break;
 			}
-		break;
-	}
+			break;
 
-	/* DOOM II and missions packs with E1, M34 */
-	case commercial:
-	{
-		S_ChangeMusic(mus_read_m, d_true);
-
-		if (gamemission == pack_nerve)
-		{
-			if (gamemap == 8)
-			{
-				finaleflat = "SLIME16";
-				finaletext = nerve_text;
-			}
-		}
-		else
-		{
+		/* DOOM II and missions packs with E1, M34 */
+		case doom2:
+		case pack_tnt:
+		case pack_plut:
 			switch (gamemap)
 			{
 				case 6:
@@ -201,21 +187,33 @@ void F_StartFinale (void)
 					/* Ouch. */
 					break;
 			}
-		}
-		break;
-	}
+			break;
 
-	/* Indeterminate. */
-	default:
-		S_ChangeMusic(mus_read_m, d_true);
-		finaleflat = "F_SKY1"; /* Not used anywhere else. */
-		finaletext = ctext[0];  /* FIXME - other text, music? */
-		break;
+		case pack_master:
+			if (gamemap == 21)
+			{
+				finaleflat = "SLIME16";
+				finaletext = master_levels_text;
+			}
+			break;
+
+		case pack_nerve:
+			if (gamemap == 8)
+			{
+				finaleflat = "SLIME16";
+				finaletext = nerve_text;
+			}
+			break;
+
+		/* Indeterminate. */
+		default:
+			finaleflat = "F_SKY1"; /* Not used anywhere else. */
+			finaletext = ctext[0];  /* FIXME - other text, music? */
+			break;
 	}
 
 	finalestage = 0;
 	finalecount = 0;
-
 }
 
 
@@ -245,7 +243,8 @@ void F_Ticker (void)
 
 		if (i < MAXPLAYERS)
 		{
-			if ((gamemission == pack_nerve && gamemap == 8)
+			if ((gamemission == pack_master && gamemap == 21)
+			 || (gamemission == pack_nerve && gamemap == 8)
 			  || gamemap == 30)
 				F_StartCast ();
 			else

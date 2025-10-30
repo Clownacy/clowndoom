@@ -931,7 +931,9 @@ void D_DoomMain (int argc, char **argv)
 			const char* const path = myargv[p];
 			const char* const basename = M_basename(path);
 
-			if (gamemode == commercial && M_strcasecmp(basename, "nerve.wad") == 0)
+			if (gamemode == commercial && M_strcasecmp(basename, "masterlevels.wad") == 0)
+				gamemission = pack_master;
+			else if (gamemode == commercial && M_strcasecmp(basename, "nerve.wad") == 0)
 				gamemission = pack_nerve;
 
 			D_AddFile (path);

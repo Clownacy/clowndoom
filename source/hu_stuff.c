@@ -46,6 +46,7 @@
 #define HU_TITLE2       (mapnames2[gamemap-1])
 #define HU_TITLEP       (mapnamesp[gamemap-1])
 #define HU_TITLET       (mapnamest[gamemap-1])
+#define HU_TITLEM       (gamemap-1 < D_COUNT_OF(mapnamesm) ? mapnamesm[gamemap-1] : HU_TITLE2)
 #define HU_TITLEN       (gamemap-1 < D_COUNT_OF(mapnamesn) ? mapnamesn[gamemap-1] : HU_TITLE2)
 #define HU_YSPACING     ((1 + SHORT(hu_font[0]->height)) * HUD_SCALE)
 #define HU_TITLEHEIGHT  1
@@ -258,6 +259,32 @@ const char* const mapnamest[] = /* TNT WAD map names. */
 };
 
 
+const char* const mapnamesm[] = /* Master Levels map names. */
+{
+	THUSTM_1,
+	THUSTM_2,
+	THUSTM_3,
+	THUSTM_4,
+	THUSTM_5,
+	THUSTM_6,
+	THUSTM_7,
+	THUSTM_8,
+	THUSTM_9,
+	THUSTM_10,
+	THUSTM_11,
+	THUSTM_12,
+	THUSTM_13,
+	THUSTM_14,
+	THUSTM_15,
+	THUSTM_16,
+	THUSTM_17,
+	THUSTM_18,
+	THUSTM_19,
+	THUSTM_20,
+	THUSTM_21
+};
+
+
 const char* const mapnamesn[] = /* No Rest for the Living map names. */
 {
 	THUSTN_1,
@@ -445,6 +472,10 @@ void HU_Start(void)
 
 		case pack_tnt:
 			s = HU_TITLET;
+			break;
+
+		case pack_master:
+			s = HU_TITLEM;
 			break;
 
 		case pack_nerve:

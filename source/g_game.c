@@ -438,6 +438,7 @@ void G_DoLoadLevel (void)
 		case doom2:
 		case pack_tnt:
 		case pack_plut:
+		case pack_master:
 			if (gamemap < 12)
 				skytexture = R_TextureNumForName ("SKY1");
 			else if (gamemap < 21)
@@ -1224,6 +1225,11 @@ void G_WorldDone (void)
 				F_StartFinale ();
 				break;
 			}
+			break;
+
+		case pack_master:
+			if (gamemap == 21)
+				F_StartFinale();
 			break;
 
 		case none:

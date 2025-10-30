@@ -263,6 +263,28 @@
 #define THUSTR_31       "level 31: pharaoh"
 #define THUSTR_32       "level 32: caribbean"
 
+#define THUSTM_1        "level 1: attack"
+#define THUSTM_2        "level 2: canyon"
+#define THUSTM_3        "level 3: the catwalk"
+#define THUSTM_4        "level 4: the combine"
+#define THUSTM_5        "level 5: the fistula"
+#define THUSTM_6        "level 6: the garrison"
+#define THUSTM_7        "level 7: titan manor"
+#define THUSTM_8        "level 8: paradox"
+#define THUSTM_9        "level 9: subspace"
+#define THUSTM_10       "level 10: subterra"
+#define THUSTM_11       "level 11: trapped on titan"
+#define THUSTM_12       "level 12: virgil's lead"
+#define THUSTM_13       "level 13: minos' judgement"
+#define THUSTM_14       "level 14: bloodsea keep"
+#define THUSTM_15       "level 15: mephisto's maosoleum"
+#define THUSTM_16       "level 16: nessus"
+#define THUSTM_17       "level 17: geryon"
+#define THUSTM_18       "level 18: vesperas"
+#define THUSTM_19       "level 19: black tower"
+#define THUSTM_20       "level 20: the express elevator to hell"
+#define THUSTM_21       "level 21: bad dream"
+
 #define THUSTN_1        "level 1: the earth base"
 #define THUSTN_2        "level 2: the pain labs"
 #define THUSTN_3        "level 3: canyon of the dead"
@@ -634,6 +656,11 @@
 "\n"\
 "As you step off the transport, you hear\n"\
 "the stomp of a cyberdemon's iron shoe."
+
+
+#define MASTER_LEVELS_TEXT \
+"CONGRATULATIONS YOU HAVE FINISHED... \n\n"\
+"THE MASTER LEVELS"
 
 
 #define NERVE_TEXT \
