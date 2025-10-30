@@ -190,19 +190,13 @@ void F_StartFinale (void)
 			break;
 
 		case pack_master:
-			if (gamemap == 21)
-			{
-				finaleflat = "SLIME16";
-				finaletext = master_levels_text;
-			}
+			finaleflat = "SLIME16";
+			finaletext = master_levels_text;
 			break;
 
 		case pack_nerve:
-			if (gamemap == 8)
-			{
-				finaleflat = "SLIME16";
-				finaletext = nerve_text;
-			}
+			finaleflat = "SLIME16";
+			finaletext = nerve_text;
 			break;
 
 		/* Indeterminate. */

@@ -1385,6 +1385,7 @@ void WI_updateStats(void)
 			 || (gamemission == doom2 && gamemap == 30)
 			 || (gamemission == pack_tnt && gamemap == 30)
 			 || (gamemission == pack_plut && gamemap == 30)
+			 || (gamemission == pack_master && gamemap == 21)
 			 || (gamemission == pack_nerve && gamemap == 8))
 			{
 				WI_End();

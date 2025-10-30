@@ -1082,71 +1082,69 @@ void G_DoCompleted (void)
 	}
 
 	wminfo.didsecret = players[consoleplayer].didsecret;
-	wminfo.epsd = gameepisode -1;
-	wminfo.last = gamemap -1;
+	wminfo.epsd = gameepisode - 1;
+	wminfo.last = gamemap - 1;
+	wminfo.next = gamemap;          /* go to next level */
 
 	/* wminfo.next is 0 biased, unlike gamemap */
-	if ( gamemode == commercial)
+	switch (gamemission)
 	{
-		if (secretexit)
-		{
-			if (gamemission == pack_nerve)
+		case doom:
+			if (secretexit)
 			{
-				wminfo.next = 8;
+				wminfo.next = 8;    /* go to secret level */
 			}
-			else
+			else if (gamemap == 9)
 			{
-				switch(gamemap)
+				/* returning from secret level */
+				switch (gameepisode)
 				{
-				case 15: wminfo.next = 30; break;
-				case 31: wminfo.next = 31; break;
+					case 1:
+						wminfo.next = 3;
+						break;
+					case 2:
+						wminfo.next = 5;
+						break;
+					case 3:
+						wminfo.next = 6;
+						break;
+					case 4:
+						wminfo.next = 2;
+						break;
 				}
 			}
-		}
-		else
-		{
-			wminfo.next = gamemap;
+			break;
 
-			if (gamemission == pack_nerve)
+		case doom2:
+		case pack_tnt:
+		case pack_plut:
+		case pack_master:
+			switch (gamemap)
 			{
-				if (gamemap == 9)
-					wminfo.next = 4;
-			}
-			else
-			{
-				switch(gamemap)
-				{
+				case 15:
+					if (secretexit)
+						wminfo.next = 30;
+					break;
+
 				case 31:
-				case 32: wminfo.next = 15; break;
-				}
+					wminfo.next = secretexit ? 31 : 15;
+					break;
+
+				case 32:
+					wminfo.next = 15;
+					break;
 			}
-		}
-	}
-	else
-	{
-		if (secretexit)
-			wminfo.next = 8;    /* go to secret level */
-		else if (gamemap == 9)
-		{
-			/* returning from secret level */
-			switch (gameepisode)
-			{
-			case 1:
-				wminfo.next = 3;
-				break;
-			case 2:
-				wminfo.next = 5;
-				break;
-			case 3:
-				wminfo.next = 6;
-				break;
-			case 4:
-				wminfo.next = 2;
-				break;
-			}
-		}
-		else
-			wminfo.next = gamemap;          /* go to next level */
+			break;
+
+		case pack_nerve:
+			if (secretexit)
+				wminfo.next = 8;
+			else if (gamemap == 9)
+				wminfo.next = 4;
+			break;
+
+		case none:
+			break;
 	}
 
 	wminfo.maxkills = totalkills;
