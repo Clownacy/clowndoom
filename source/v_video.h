@@ -122,7 +122,7 @@ V_GetBlock
   colourindex_t* dest );
 
 /* Selects palette to display. */
-unsigned char((*V_GetPalette(size_t *length))[0x100][3]);
+palette_t* V_GetPalette(size_t *length);
 void V_SetPalette(const int palette_id);
 void V_ReloadPalette(void);
 

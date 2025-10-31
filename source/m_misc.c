@@ -600,7 +600,7 @@ void M_ScreenShot (void)
 	int i;
 	colourindex_t* linear;
 	char lbmname[12];
-	unsigned char ((* palette)[0x100][3]);
+	palette_t* palette;
 
 	/* find a file name to save it to */
 	strcpy(lbmname,"DOOM00.bmp");

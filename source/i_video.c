@@ -145,7 +145,7 @@ void I_ReadScreen (colourindex_t* scr)
 
 
 /* I_SetPalette */
-void I_SetPalette (unsigned char(* const palette)[0x100][3], const size_t total_palettes)
+void I_SetPalette (palette_t* const palette, const size_t total_palettes)
 {
 	size_t i;
 	const unsigned char* const gamma = gammatable[usegamma];

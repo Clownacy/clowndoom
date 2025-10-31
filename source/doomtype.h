@@ -38,4 +38,6 @@ typedef unsigned short colourindex_t;
 
 typedef struct I_File I_File;
 
+typedef unsigned char palette_t[0x100][3];
+
 #endif

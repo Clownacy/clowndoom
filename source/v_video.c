@@ -377,16 +377,16 @@ void V_Init (void)
 
 static int current_palette_id;
 
-unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's syntax is insane sometimes. */
+palette_t* V_GetPalette(size_t *length)
 {
-	unsigned char(*calculated_palette)[0x100][3];
-	unsigned char(* const palettes)[0x100][3] = (unsigned char(*)[0x100][3])W_CacheLumpName("PLAYPAL", PU_STATIC);
+	palette_t *calculated_palette;
+	palette_t* const palettes = (palette_t*)W_CacheLumpName("PLAYPAL", PU_STATIC);
 
 	if (!full_colour)
 	{
 		if (length != NULL)
 			*length = 1;
-		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(1 * 0x100 * 3, PU_STATIC, NULL);
+		calculated_palette = (palette_t*)Z_Malloc(sizeof(palette_t), PU_STATIC, NULL);
 		memcpy(calculated_palette[0], palettes[current_palette_id], sizeof(calculated_palette[0]));
 	}
 	else
@@ -396,7 +396,7 @@ unsigned char((* V_GetPalette(size_t *length))[0x100][3]) /* Holy fuck; C's synt
 		   to generate palettes with the proper brightness fall-off and tint. */
 		int tint[3], shift, steps;
 		size_t i;
-		calculated_palette = (unsigned char(*)[0x100][3])Z_Malloc(NUMLIGHTCOLORMAPS * 0x100 * 3, PU_STATIC, NULL);
+		calculated_palette = (palette_t*)Z_Malloc(NUMLIGHTCOLORMAPS * sizeof(palette_t), PU_STATIC, NULL);
 
 		if (length != NULL)
 			*length = NUMLIGHTCOLORMAPS;
@@ -479,7 +479,7 @@ void V_SetPalette(const int palette_id)
 
 void V_ReloadPalette(void)
 {
-	unsigned char(*palette)[0x100][3];
+	palette_t *palette;
 	size_t palette_length;
 
 	palette = V_GetPalette(&palette_length);
