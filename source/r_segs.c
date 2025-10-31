@@ -159,10 +159,10 @@ void R_FixWiggle(sector_t* const sector)
 		{
 			sector->cachedheight = height;
 			sector->scaleindex = 0;
-			height /= 128;
+			height >>= 7;
 
 			/* Calculate adjustment. */
-			while ((height /= 2) != 0)
+			while ((height >>= 1) != 0)
 				++sector->scaleindex;
 		}
 
