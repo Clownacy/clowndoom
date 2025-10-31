@@ -1521,16 +1521,10 @@ void WI_loadData(void)
 	char        name[9];
 	anim_t*     a;
 
-	if (gamemode == commercial)
+	if (gamemode == commercial || (gamemode == retail && wbs->epsd == 3))
 		strcpy(name, "INTERPIC");
 	else
 		sprintf(name, "WIMAP%d", wbs->epsd);
-
-	if ( gamemode == retail )
-	{
-	  if (wbs->epsd == 3)
-		strcpy(name,"INTERPIC");
-	}
 
 	/* background */
 	bg = (patch_t*)W_CacheLumpName(name, PU_CACHE);
@@ -1546,7 +1540,7 @@ void WI_loadData(void)
 	/*   *pic = colormaps[25][*pic]; */
 	/*   pic++; */
 	/* } */
-   /* } */
+	/*} */
 
 	if (gamemode == commercial)
 	{
