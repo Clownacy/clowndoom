@@ -1801,6 +1801,9 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 			RNGCHECK(wbs->last, 0, 31);
 			RNGCHECK(wbs->next, 0, 31);
 			break;
+
+		case indetermined:
+			break;
 	}
 
 	RNGCHECK(wbs->pnum, 0, MAXPLAYERS);
