@@ -175,7 +175,7 @@ void W_AddFile (const char *filename)
 				break;
 
 			default:
-				I_Error("WAD file %s doesn't have IWAD or PWAD ID\n", filename);
+				I_Error("WAD file %s doesn't have IWAD or PWAD ID", filename);
 				break;
 		}
 
