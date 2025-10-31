@@ -24,7 +24,7 @@
 
 #include "clownlibs/clowncommon/clowncommon.h"
 
-/* TODO: Eliminate these shim and just use the ClownCommon macros directly. */
+/* TODO: Eliminate these shims and just use the ClownCommon macros directly. */
 #define D_MIN(a, b) CC_MIN(a, b)
 #define D_MAX(a, b) CC_MAX(a, b)
 #define D_CLAMP(min, max, value) CC_CLAMP(min, max, value)
