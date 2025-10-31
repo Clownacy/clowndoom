@@ -78,7 +78,7 @@ fixed_t         bottomstep;
 
 colourindex_t** walllights;
 
-short*          maskedtexturecol;
+int*            maskedtexturecol;
 
 /*
  * R_FixWiggle()
@@ -130,8 +130,7 @@ static const struct
 	int clamp;
 	int heightbits;
 } scale_values[8] = {
-	/* TODO: Implement an equivalent to Killough's 'centeryfrac' fix so that this hack is not necessary. */
-	{/*2048*/1024 * FRACUNIT, 12}, /* Hack to prevent crash when going out-of-bounds. */
+	{2048 * FRACUNIT, 12},
 	{1024 * FRACUNIT, 12},
 	{1024 * FRACUNIT, 11},
 	{ 512 * FRACUNIT, 11},
@@ -233,7 +232,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2)
 	for (dc_x = x1; dc_x <= x2; ++dc_x)
 	{
 		/* calculate lighting */
-		if (maskedtexturecol[dc_x] != SHRT_MAX)
+		if (maskedtexturecol[dc_x] != INT_MAX)
 		{
 			if (!fixedcolormap)
 			{
@@ -252,7 +251,7 @@ void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2)
 			col = (column_t *)(R_GetColumn(texnum, maskedtexturecol[dc_x]) - 3);
 
 			R_DrawMaskedColumn(col);
-			maskedtexturecol[dc_x] = SHRT_MAX;
+			maskedtexturecol[dc_x] = INT_MAX;
 		}
 
 		spryscale += rw_scalestep;

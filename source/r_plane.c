@@ -54,15 +54,15 @@ visplane_t*             ceilingplane;
 
 /* ? */
 #define MAXOPENINGS     (MAXIMUM_SCREENWIDTH*64)
-short                   openings[MAXOPENINGS];
-short*                  lastopening;
+int                     openings[MAXOPENINGS];
+int*                    lastopening;
 
 
 /* Clip values are the solid pixel bounding the range. */
 /*  floorclip starts out SCREENHEIGHT */
 /*  ceilingclip starts out -1 */
-short                   floorclip[MAXIMUM_SCREENWIDTH];
-short                   ceilingclip[MAXIMUM_SCREENWIDTH];
+int                     floorclip[MAXIMUM_SCREENWIDTH];
+int                     ceilingclip[MAXIMUM_SCREENWIDTH];
 
 /* spanstart holds the start of a plane span */
 /* initialized to 0 at start */

@@ -69,8 +69,8 @@ colourindex_t**  spritelights;
 
 /* constant arrays */
 /*  used for psprite clipping and initializing clipping */
-short           negonearray[MAXIMUM_SCREENWIDTH];
-short           screenheightarray[MAXIMUM_SCREENWIDTH];
+int             negonearray[MAXIMUM_SCREENWIDTH];
+int             screenheightarray[MAXIMUM_SCREENWIDTH];
 
 
 /* INITIALIZATION FUNCTIONS */
@@ -311,8 +311,8 @@ static vissprite_t* R_NewVisSprite (void)
 /* Used for sprites and masked mid textures. */
 /* Masked means: partly transparent, i.e. stored */
 /*  in posts/runs of opaque pixels. */
-short*          mfloorclip;
-short*          mceilingclip;
+int*            mfloorclip;
+int*            mceilingclip;
 
 fixed_t         spryscale;
 fixed_t         sprtopscreen;
@@ -791,8 +791,8 @@ static void R_SortVisSprites (void)
 void R_DrawSprite (vissprite_t* spr)
 {
 	drawseg_t*          ds;
-	static short        clipbot[MAXIMUM_SCREENWIDTH];
-	static short        cliptop[MAXIMUM_SCREENWIDTH];
+	static int          clipbot[MAXIMUM_SCREENWIDTH];
+	static int          cliptop[MAXIMUM_SCREENWIDTH];
 	int                 x;
 	int                 r1;
 	int                 r2;
