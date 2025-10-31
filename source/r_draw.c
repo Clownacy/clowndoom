@@ -324,8 +324,8 @@ void R_DrawFuzzColumnLow (void)
 /*  tables, e.g. the lighter colored version */
 /*  of the BaronOfHell, the HellKnight, uses */
 /*  identical sprites, kinda brightened up. */
-unsigned char   *dc_translation;
-unsigned char   translationtables[3][0x100];
+unsigned char     *dc_translation;
+basiccolourmap_t   translationtables[3];
 
 void R_DrawTranslatedColumn (void)
 {

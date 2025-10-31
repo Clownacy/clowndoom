@@ -143,7 +143,7 @@ fixed_t*        spritewidth;
 fixed_t*        spriteoffset;
 fixed_t*        spritetopoffset;
 
-colourindex_t   colormaps[NUMLIGHTCOLORMAPS * 2 + 2][0x100];
+colourmap_t     colormaps[NUMLIGHTCOLORMAPS * 2 + 2];
 
 /* MAPTEXTURE_T CACHING */
 /* When a texture is first needed, */
@@ -550,7 +550,7 @@ void R_InitSpriteLumps(void)
 void R_InitColormaps(void)
 {
 	size_t i, j;
-	unsigned char(* const original_colour_maps)[0x100] = (unsigned char(*)[0x100])W_CacheLumpName("COLORMAP", PU_STATIC);
+	basiccolourmap_t* const original_colour_maps = (basiccolourmap_t*)W_CacheLumpName("COLORMAP", PU_STATIC);
 
 	/* Load the original light tables for the Spectre effect. */
 	for (i = 0; i < 32; ++i)
