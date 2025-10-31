@@ -1779,21 +1779,36 @@ void WI_initVariables(wbstartstruct_t* wbstartstruct)
 
 	wbs = wbstartstruct;
 
-	/* TODO: Figure out what to do with this... */
-#ifdef RANGECHECKING
-	if (gamemode != commercial)
+#ifdef RANGECHECK
+	#define RNGCHECK(variable, min, max) do {if ((variable) < (min) || (variable) > (max)) I_Error("%s=%d in %s:%d", #variable, variable, __FILE__, __LINE__);} while(0)
+
+	switch (gamemode)
 	{
-	  if ( gamemode == retail )
-		RNGCHECK(wbs->epsd, 0, 3);
-	  else
-		RNGCHECK(wbs->epsd, 0, 2);
+		case shareware:
+			RNGCHECK(wbs->epsd, 0, 0);
+			RNGCHECK(wbs->last, 0, 8);
+			RNGCHECK(wbs->next, 0, 8);
+			break;
+
+		case registered:
+			RNGCHECK(wbs->epsd, 0, 2);
+			RNGCHECK(wbs->last, 0, 8);
+			RNGCHECK(wbs->next, 0, 8);
+			break;
+
+		case retail:
+			RNGCHECK(wbs->epsd, 0, 3);
+			RNGCHECK(wbs->last, 0, 8);
+			RNGCHECK(wbs->next, 0, 8);
+			break;
+
+		case commercial:
+			RNGCHECK(wbs->epsd, 0, 0);
+			RNGCHECK(wbs->last, 0, 31);
+			RNGCHECK(wbs->next, 0, 31);
+			break;
 	}
-	else
-	{
-		RNGCHECK(wbs->last, 0, 8);
-		RNGCHECK(wbs->next, 0, 8);
-	}
-	RNGCHECK(wbs->pnum, 0, MAXPLAYERS);
+
 	RNGCHECK(wbs->pnum, 0, MAXPLAYERS);
 #endif
 
