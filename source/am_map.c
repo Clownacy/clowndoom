@@ -160,7 +160,7 @@ mline_t player_arrow[] = {
 	{ { -R+3*R/8, 0 }, { -R+R/8, -R/4 } }
 };
 #undef R
-#define NUMPLYRLINES (sizeof(player_arrow)/sizeof(mline_t))
+#define NUMPLYRLINES D_COUNT_OF(player_arrow)
 
 #define R ((8*PLAYERRADIUS)/7)
 mline_t cheat_player_arrow[] = {
@@ -182,7 +182,7 @@ mline_t cheat_player_arrow[] = {
 	{ { R/6+R/32, -R/7-R/32 }, { R/6+R/10, -R/7 } }
 };
 #undef R
-#define NUMCHEATPLYRLINES (sizeof(cheat_player_arrow)/sizeof(mline_t))
+#define NUMCHEATPLYRLINES D_COUNT_OF(cheat_player_arrow)
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
@@ -191,7 +191,7 @@ mline_t triangle_guy[] = {
 	{ { 0, R }, { -.867*R, -.5*R } }
 };
 #undef R
-#define NUMTRIANGLEGUYLINES (sizeof(triangle_guy)/sizeof(mline_t))
+#define NUMTRIANGLEGUYLINES D_COUNT_OF(triangle_guy)
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
@@ -200,15 +200,15 @@ mline_t thintriangle_guy[] = {
 	{ { -.5*R, .7*R }, { -.5*R, -.7*R } }
 };
 #undef R
-#define NUMTHINTRIANGLEGUYLINES (sizeof(thintriangle_guy)/sizeof(mline_t))
+#define NUMTHINTRIANGLEGUYLINES D_COUNT_OF(thintriangle_guy)
 
 
 
 
 int             automap_cheats = 0;
-static int      grid = 0;
+static d_bool   grid = d_false;
 
-static int      leveljuststarted = 1;   /* kluge until AM_LevelInit() is called */
+static d_bool   leveljuststarted = d_true;   /* kluge until AM_LevelInit() is called */
 
 d_bool          automapactive = d_false;
 #define finit_width SCREENWIDTH
@@ -272,7 +272,7 @@ static patch_t *marknums[10]; /* numbers used for marking by the automap */
 static mpoint_t markpoints[AM_NUMMARKPOINTS]; /* where the points are */
 static int markpointnum = 0; /* next point to be assigned */
 
-static int followplayer = 1; /* specifies whether to follow the player around */
+static d_bool followplayer = d_true; /* specifies whether to follow the player around */
 
 static char cheat_amap_seq[] = {'i', 'd', 'd', 't', (char)-1};
 static cheatseq_t cheat_amap = { cheat_amap_seq, NULL };
@@ -388,7 +388,7 @@ void AM_changeWindowLoc(void)
 {
 	if (m_paninc.x || m_paninc.y)
 	{
-		followplayer = 0;
+		followplayer = d_false;
 		f_oldloc.x = INT_MAX;
 	}
 
@@ -486,7 +486,7 @@ void AM_clearMarks(void)
 /* right now, i figure it out myself */
 void AM_LevelInit(void)
 {
-	leveljuststarted = 0;
+	leveljuststarted = d_false;
 
 	f_x = f_y = 0;
 
@@ -716,7 +716,7 @@ void AM_updateLightLev(void)
 	if (amclock>nexttic)
 	{
 		lightlev = litelevels[litelevelscnt++];
-		if (litelevelscnt == sizeof(litelevels)/sizeof(int)) litelevelscnt = 0;
+		if (litelevelscnt == D_COUNT_OF(litelevels)) litelevelscnt = 0;
 		nexttic = amclock + 6 - (amclock % 6);
 	}
 
