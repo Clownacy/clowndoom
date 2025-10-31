@@ -293,8 +293,6 @@ void W_Reload (void)
 /*  does override all earlier ones. */
 void W_InitMultipleFiles (const char** filenames)
 {
-	size_t      size;
-
 	if (!Dictionary_Init(&lump_dictionary, cc_false))
 		I_Error("Couldn't initialise dictionary");
 
@@ -304,20 +302,17 @@ void W_InitMultipleFiles (const char** filenames)
 	/* will be realloced as lumps are added */
 	lumpinfo = NULL;
 
-	for ( ; *filenames ; filenames++)
-		W_AddFile (*filenames);
+	while (*filenames != NULL)
+		W_AddFile (*filenames++);
 
-	if (!numlumps)
+	if (numlumps == 0)
 		I_Error ("W_InitFiles: no files found");
 
 	/* set up caching */
-	size = numlumps * sizeof(*lumpcache);
-	lumpcache = (void**)malloc (size);
+	lumpcache = (void**)calloc (numlumps, sizeof(*lumpcache));
 
-	if (!lumpcache)
+	if (lumpcache == NULL)
 		I_Error ("Couldn't allocate lumpcache");
-
-	memset (lumpcache,0, size);
 }
 
 
@@ -480,13 +475,13 @@ W_CacheLumpName
 	return W_CacheLumpNum (W_GetNumForName(name), tag);
 }
 
-
+#if 0
 /* W_Profile */
-int             info[2500][10];
-size_t          profilecount;
-
 void W_Profile (void)
 {
+	static int             info[2500][10];
+	static size_t          profilecount;
+
 	size_t      i;
 	memblock_t* block;
 	void*       ptr;
@@ -545,5 +540,5 @@ void W_Profile (void)
 	}
 	I_FileClose (f);
 }
-
+#endif
 

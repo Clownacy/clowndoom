@@ -1555,14 +1555,7 @@ void WI_loadData(void)
 									   PU_STATIC, NULL);
 		for (i=0 ; i<NUMCMAPS ; i++)
 		{
-			name[0] = 'C';
-			name[1] = 'W';
-			name[2] = 'I';
-			name[3] = 'L';
-			name[4] = 'V';
-			name[5] = '0' + (i / 10) % 10;
-			name[6] = '0' + i % 10;
-			name[7] = '\0';
+			sprintf(name, "CWILV%02u", i);
 			lnames[i] = (patch_t*)W_CacheLumpName(name, PU_STATIC);
 		}
 	}
@@ -1572,7 +1565,7 @@ void WI_loadData(void)
 									   PU_STATIC, NULL);
 		for (i=0 ; i<NUMMAPS ; i++)
 		{
-			sprintf(name, "WILV%u%u", wbs->epsd, i);
+			sprintf(name, "WILV%01u%01u", wbs->epsd, i);
 			lnames[i] = (patch_t*)W_CacheLumpName(name, PU_STATIC);
 		}
 
@@ -1596,15 +1589,7 @@ void WI_loadData(void)
 					if (wbs->epsd != 1 || j != 8)
 					{
 						/* animations */
-						name[0] = 'W';
-						name[1] = 'I';
-						name[2] = 'A';
-						name[3] = '0' + wbs->epsd;
-						name[4] = '0' + (j / 10) % 10;
-						name[5] = '0' + j % 10;
-						name[6] = '0' + (i / 10) % 10;
-						name[7] = '0' + i % 10;
-						name[8] = '\0';
+						sprintf(name, "WIA%01u%02u%02u", wbs->epsd, j, i);
 						a->p[i] = (patch_t*)W_CacheLumpName(name, PU_STATIC);
 					}
 					else
