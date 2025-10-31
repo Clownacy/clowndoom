@@ -211,7 +211,7 @@ void W_AddFile (const char *filename)
 			I_FileRead(handle, lump_p->name, sizeof(lump_p->name));
 
 			/* Emulate the behaviour of the original code, which fills everything after the terminator byte with null characters. */
-			/* The original code use `strncpy` here, and PWADs such as Hell Revealed rely on its behaviour. */
+			/* The original code used `strncpy` here, and PWADs such as Hell Revealed rely on its behaviour. */
 			{
 				size_t j = 0;
 
