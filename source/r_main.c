@@ -390,8 +390,8 @@ R_PointToDist
 	fixed_t     temp;
 	fixed_t     dist;
 
-	dx = labs(x - viewx);
-	dy = labs(y - viewy);
+	dx = abs(x - viewx);
+	dy = abs(y - viewy);
 
 	if (dy>dx)
 	{
@@ -674,13 +674,13 @@ void R_ExecuteSetViewSize (void)
 	for (i=0 ; i<viewheight ; i++)
 	{
 		dy = ((i-viewheight/2)<<FRACBITS)+FRACUNIT/2;
-		dy = labs(dy);
+		dy = abs(dy);
 		yslope[i] = FixedDiv ( (WIDESCREENIFY(viewwidth)<<detailshift)/2*FRACUNIT, dy);
 	}
 
 	for (i=0 ; i<viewwidth ; i++)
 	{
-		cosadj = labs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
+		cosadj = abs(finecosine[xtoviewangle[i]>>ANGLETOFINESHIFT]);
 		distscale[i] = FixedDiv (FRACUNIT,cosadj);
 	}
 
