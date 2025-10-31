@@ -921,6 +921,8 @@ void A_BruisAttack (mobj_t* actor)
 	if (!actor->target)
 		return;
 
+	/* BUGFIX: Barons failed to face their target previously! */
+	A_FaceTarget (actor);
 	if (P_CheckMeleeRange (actor))
 	{
 		S_StartSound (actor, sfx_claw);
