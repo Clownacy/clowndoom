@@ -361,18 +361,35 @@ typedef enum
 size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 {
 	thinker_t*          th;
-	ceiling_t*          ceiling;
-	vldoor_t*           door;
-	floormove_t*        floor;
-	plat_t*             plat;
-	lightflash_t*       flash;
-	strobe_t*           strobe;
-	glow_t*             glow;
 	int                 i;
 
 	/* save off the current thinkers */
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
 	{
+		#define ARCHIVE_SPECIAL(TYPE, ENUMERATION) \
+			do \
+			{ \
+				if (buffer != NULL) \
+					buffer[index] = ENUMERATION; \
+				++index; \
+				PADSAVEP(); \
+				if (buffer != NULL) \
+				{ \
+					TYPE* const special = (TYPE *)&buffer[index]; \
+					*special = *(TYPE *)th; \
+					special->sector = (sector_t *)(special->sector - sectors); \
+				} \
+				index += sizeof(TYPE); \
+			} \
+			while (0)
+
+		#define CHECK_AND_ARCHIVE_SPECIAL(FUNCTION, TYPE, ENUMERATION) \
+			if (th->function.acp1 == (actionf_p1)FUNCTION) \
+			{ \
+				ARCHIVE_SPECIAL(TYPE, ENUMERATION); \
+				continue; \
+			}
+
 		if (th->function.acv == (actionf_v)NULL)
 		{
 			for (i = 0; i < MAXCEILINGS;i++)
@@ -380,133 +397,17 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 					break;
 
 			if (i<MAXCEILINGS)
-			{
-				if (buffer != NULL)
-					buffer[index] = tc_ceiling;
-				++index;
-				PADSAVEP();
-				if (buffer != NULL)
-				{
-					ceiling = (ceiling_t *)&buffer[index];
-					*ceiling = *(ceiling_t *)th;
-					ceiling->sector = (sector_t *)(ceiling->sector - sectors);
-				}
-				index += sizeof(*ceiling);
-			}
+				ARCHIVE_SPECIAL(ceiling_t, tc_ceiling);
 			continue;
 		}
 
-		if (th->function.acp1 == (actionf_p1)T_MoveCeiling)
-		{
-			if (buffer != NULL)
-				buffer[index] = tc_ceiling;
-			++index;
-			PADSAVEP();
-			if (buffer != NULL)
-			{
-				ceiling = (ceiling_t *)&buffer[index];
-				*ceiling = *(ceiling_t *)th;
-				ceiling->sector = (sector_t *)(ceiling->sector - sectors);
-			}
-			index += sizeof(*ceiling);
-			continue;
-		}
-
-		if (th->function.acp1 == (actionf_p1)T_VerticalDoor)
-		{
-			if (buffer != NULL)
-				buffer[index] = tc_door;
-			++index;
-			PADSAVEP();
-			if (buffer != NULL)
-			{
-				door = (vldoor_t *)&buffer[index];
-				*door = *(vldoor_t *)th;
-				door->sector = (sector_t *)(door->sector - sectors);
-			}
-			index += sizeof(*door);
-			continue;
-		}
-
-		if (th->function.acp1 == (actionf_p1)T_MoveFloor)
-		{
-			if (buffer != NULL)
-				buffer[index] = tc_floor;
-			++index;
-			PADSAVEP();
-			if (buffer != NULL)
-			{
-				floor = (floormove_t *)&buffer[index];
-				*floor = *(floormove_t *)th;
-				floor->sector = (sector_t *)(floor->sector - sectors);
-			}
-			index += sizeof(*floor);
-			continue;
-		}
-
-		if (th->function.acp1 == (actionf_p1)T_PlatRaise)
-		{
-			if (buffer != NULL)
-				buffer[index] = tc_plat;
-			++index;
-			PADSAVEP();
-			if (buffer != NULL)
-			{
-				plat = (plat_t *)&buffer[index];
-				*plat = *(plat_t *)th;
-				plat->sector = (sector_t *)(plat->sector - sectors);
-			}
-			index += sizeof(*plat);
-			continue;
-		}
-
-		if (th->function.acp1 == (actionf_p1)T_LightFlash)
-		{
-			if (buffer != NULL)
-				buffer[index] = tc_flash;
-			++index;
-			PADSAVEP();
-			if (buffer != NULL)
-			{
-				flash = (lightflash_t *)&buffer[index];
-				*flash = *(lightflash_t *)th;
-				flash->sector = (sector_t *)(flash->sector - sectors);
-			}
-			index += sizeof(*flash);
-			continue;
-		}
-
-		if (th->function.acp1 == (actionf_p1)T_StrobeFlash)
-		{
-			if (buffer != NULL)
-				buffer[index] = tc_strobe;
-			++index;
-			PADSAVEP();
-			if (buffer != NULL)
-			{
-				strobe = (strobe_t *)&buffer[index];
-				*strobe = *(strobe_t *)th;
-				strobe->sector = (sector_t *)(strobe->sector - sectors);
-			}
-			index += sizeof(*strobe);
-			continue;
-		}
-
-		if (th->function.acp1 == (actionf_p1)T_Glow)
-		{
-			if (buffer != NULL)
-				buffer[index] = tc_glow;
-			++index;
-			PADSAVEP();
-			if (buffer != NULL)
-			{
-				glow = (glow_t *)&buffer[index];
-				*glow = *(glow_t *)th;
-				glow->sector = (sector_t *)(glow->sector - sectors);
-			}
-			index += sizeof(*glow);
-			continue;
-		}
+		CHECK_AND_ARCHIVE_SPECIAL(T_MoveCeiling,  ceiling_t,    tc_ceiling);
+		CHECK_AND_ARCHIVE_SPECIAL(T_VerticalDoor, vldoor_t,     tc_door);
+		CHECK_AND_ARCHIVE_SPECIAL(T_MoveFloor,    floormove_t,  tc_floor);
+		CHECK_AND_ARCHIVE_SPECIAL(T_PlatRaise,    plat_t,       tc_plat);
+		CHECK_AND_ARCHIVE_SPECIAL(T_LightFlash,   lightflash_t, tc_flash);
+		CHECK_AND_ARCHIVE_SPECIAL(T_StrobeFlash,  strobe_t,     tc_strobe);
+		CHECK_AND_ARCHIVE_SPECIAL(T_Glow,         glow_t,       tc_glow);
 	}
 
 	/* add a terminating marker */
@@ -520,105 +421,84 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 /* P_UnArchiveSpecials */
 size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 {
-	specials_e          tclass;
-	ceiling_t*          ceiling;
-	vldoor_t*           door;
-	floormove_t*        floor;
-	plat_t*             plat;
-	lightflash_t*       flash;
-	strobe_t*           strobe;
-	glow_t*             glow;
-
 	/* read in saved thinkers */
 	while (1)
 	{
-		tclass = (specials_e)buffer[index++];
+		#define UNARCHIVE_SPECIAL(TYPE) \
+			TYPE *special; \
+			PADSAVEP(); \
+			special = (TYPE*)Z_Malloc (sizeof(*special), PU_LEVEL, NULL); \
+			*special = *(TYPE*)&buffer[index]; \
+			index += sizeof(*special); \
+			special->sector = &sectors[(size_t)special->sector]; \
+			P_AddThinker (&special->thinker)
+
+		const specials_e tclass = (specials_e)buffer[index++];
 		switch (tclass)
 		{
 		case tc_endspecials:
 			return index;     /* end of list */
 
 		case tc_ceiling:
-			PADSAVEP();
-			ceiling = (ceiling_t*)Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL);
-			*ceiling = *(ceiling_t*)&buffer[index];
-			index += sizeof(*ceiling);
-			ceiling->sector = &sectors[(size_t)ceiling->sector];
-			ceiling->sector->specialdata = ceiling;
+		{
+			UNARCHIVE_SPECIAL(ceiling_t);
+			special->sector->specialdata = special;
 
-			if (ceiling->thinker.function.acp1)
-				ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
+			if (special->thinker.function.acp1)
+				special->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
 
-			P_AddThinker (&ceiling->thinker);
-			P_AddActiveCeiling(ceiling);
+			P_AddActiveCeiling(special);
 			break;
+		}
 
 		case tc_door:
-			PADSAVEP();
-			door = (vldoor_t*)Z_Malloc (sizeof(*door), PU_LEVEL, NULL);
-			*door = *(vldoor_t*)&buffer[index];
-			index += sizeof(*door);
-			door->sector = &sectors[(size_t)door->sector];
-			door->sector->specialdata = door;
-			door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
-			P_AddThinker (&door->thinker);
+		{
+			UNARCHIVE_SPECIAL(vldoor_t);
+			special->sector->specialdata = special;
+			special->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
 			break;
+		}
 
 		case tc_floor:
-			PADSAVEP();
-			floor = (floormove_t*)Z_Malloc (sizeof(*floor), PU_LEVEL, NULL);
-			*floor = *(floormove_t*)&buffer[index];
-			index += sizeof(*floor);
-			floor->sector = &sectors[(size_t)floor->sector];
-			floor->sector->specialdata = floor;
-			floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
-			P_AddThinker (&floor->thinker);
+		{
+			UNARCHIVE_SPECIAL(floormove_t);
+			special->sector->specialdata = special;
+			special->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
 			break;
+		}
 
 		case tc_plat:
-			PADSAVEP();
-			plat = (plat_t*)Z_Malloc (sizeof(*plat), PU_LEVEL, NULL);
-			*plat = *(plat_t*)&buffer[index];
-			index += sizeof(*plat);
-			plat->sector = &sectors[(size_t)plat->sector];
-			plat->sector->specialdata = plat;
+		{
+			UNARCHIVE_SPECIAL(plat_t);
+			special->sector->specialdata = special;
 
-			if (plat->thinker.function.acp1)
-				plat->thinker.function.acp1 = (actionf_p1)T_PlatRaise;
+			if (special->thinker.function.acp1)
+				special->thinker.function.acp1 = (actionf_p1)T_PlatRaise;
 
-			P_AddThinker (&plat->thinker);
-			P_AddActivePlat(plat);
+			P_AddActivePlat(special);
 			break;
+		}
 
 		case tc_flash:
-			PADSAVEP();
-			flash = (lightflash_t*)Z_Malloc (sizeof(*flash), PU_LEVEL, NULL);
-			*flash = *(lightflash_t*)&buffer[index];
-			index += sizeof(*flash);
-			flash->sector = &sectors[(size_t)flash->sector];
-			flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
-			P_AddThinker (&flash->thinker);
+		{
+			UNARCHIVE_SPECIAL(lightflash_t);
+			special->thinker.function.acp1 = (actionf_p1)T_LightFlash;
 			break;
+		}
 
 		case tc_strobe:
-			PADSAVEP();
-			strobe = (strobe_t*)Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL);
-			*strobe = *(strobe_t*)&buffer[index];
-			index += sizeof(*strobe);
-			strobe->sector = &sectors[(size_t)strobe->sector];
-			strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
-			P_AddThinker (&strobe->thinker);
+		{
+			UNARCHIVE_SPECIAL(strobe_t);
+			special->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
 			break;
+		}
 
 		case tc_glow:
-			PADSAVEP();
-			glow = (glow_t*)Z_Malloc (sizeof(*glow), PU_LEVEL, NULL);
-			*glow = *(glow_t*)&buffer[index];
-			index += sizeof(*glow);
-			glow->sector = &sectors[(size_t)glow->sector];
-			glow->thinker.function.acp1 = (actionf_p1)T_Glow;
-			P_AddThinker (&glow->thinker);
+		{
+			UNARCHIVE_SPECIAL(glow_t);
+			special->thinker.function.acp1 = (actionf_p1)T_Glow;
 			break;
+		}
 
 		default:
 			I_Error ("P_UnarchiveSpecials:Unknown tclass %i "
