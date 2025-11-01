@@ -110,9 +110,9 @@ angle_t                 xtoviewangle[MAXIMUM_SCREENWIDTH+1];
 const fixed_t*          finecosine = &finesine[FINEANGLES/4];
 
 
-colourindex_t*           scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
-colourindex_t*           scalelightfixed[MAXLIGHTSCALE];
-colourindex_t*           zlight[LIGHTLEVELS][MAXLIGHTZ];
+colourindex_t*          scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
+colourindex_t*          scalelightfixed[MAXLIGHTSCALE];
+colourindex_t*          zlight[LIGHTLEVELS][MAXLIGHTZ];
 
 /* bumped light from gun blasts */
 int                     extralight;

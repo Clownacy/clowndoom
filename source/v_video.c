@@ -173,13 +173,13 @@ V_CopyRect
 
 void
 V_DrawPatchColumnInternal
-( colourindex_t*  desttop,
+( colourindex_t* desttop,
   const patch_t* patch,
   int            col )
 {
 	column_t*      column;
 	unsigned char* source;
-	colourindex_t*  dest;
+	colourindex_t* dest;
 	int            count;
 
 	column = (column_t *)((unsigned char *)patch + LONG(patch->columnofs[col]));
@@ -296,11 +296,11 @@ V_DrawBlock
 /* Gets a linear block of pixels from the view buffer. */
 void
 V_GetBlock
-( int           x,
-  int           y,
-  screen_t      scrn,
-  int           width,
-  int           height,
+( int            x,
+  int            y,
+  screen_t       scrn,
+  int            width,
+  int            height,
   colourindex_t* dest )
 {
 	const colourindex_t* src;

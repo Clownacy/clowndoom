@@ -42,9 +42,9 @@ extern d_bool           skymap;
 extern drawseg_t        drawsegs[MAXDRAWSEGS];
 extern drawseg_t*       ds_p;
 
-extern colourindex_t**   hscalelight;
-extern colourindex_t**   vscalelight;
-extern colourindex_t**   dscalelight;
+extern colourindex_t**  hscalelight;
+extern colourindex_t**  vscalelight;
+extern colourindex_t**  dscalelight;
 
 
 typedef void (*drawfunc_t) (int start, int stop);

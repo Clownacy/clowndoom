@@ -57,7 +57,7 @@ int             scaledviewwidth;
 int             viewheight;
 int             viewwindowx;
 int             viewwindowy;
-colourindex_t*   ylookup[MAXHEIGHT];
+colourindex_t*  ylookup[MAXHEIGHT];
 int             columnofs[MAXWIDTH];
 
 /* Color tables for different players, */
@@ -70,7 +70,7 @@ unsigned char   translations[3][256];
 
 /* R_DrawColumn */
 /* Source is the top of the column to scale. */
-colourindex_t*           dc_colormap;
+colourindex_t*          dc_colormap;
 int                     dc_x;
 int                     dc_yl;
 int                     dc_yh;
@@ -91,7 +91,7 @@ int                     dccount;
 void R_DrawColumn (void)
 {
 	int                 count;
-	colourindex_t*       dest;
+	colourindex_t*      dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -137,7 +137,7 @@ void R_DrawColumn (void)
 void R_DrawColumnLow (void)
 {
 	int                 count;
-	colourindex_t*       dest[2];
+	colourindex_t*      dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -216,7 +216,7 @@ static int GetFuzzOffset(void)
 void R_DrawFuzzColumn (void)
 {
 	int                 count;
-	colourindex_t*       dest;
+	colourindex_t*      dest;
 
 	/* Adjust borders. Low... */
 	if (dc_yl < FUZZOFF)
@@ -266,7 +266,7 @@ void R_DrawFuzzColumn (void)
 void R_DrawFuzzColumnLow (void)
 {
 	int                 count;
-	colourindex_t*       dest[2];
+	colourindex_t*      dest[2];
 
 	/* Adjust borders. Low... */
 	if (dc_yl < FUZZOFF)
@@ -330,7 +330,7 @@ basiccolourmap_t   translationtables[3];
 void R_DrawTranslatedColumn (void)
 {
 	int                 count;
-	colourindex_t*       dest;
+	colourindex_t*      dest;
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -371,7 +371,7 @@ void R_DrawTranslatedColumn (void)
 void R_DrawTranslatedColumnLow (void)
 {
 	int                 count;
-	colourindex_t*       dest[2];
+	colourindex_t*      dest[2];
 	fixed_t             frac;
 	fixed_t             fracstep;
 
@@ -459,7 +459,7 @@ int                     ds_y;
 int                     ds_x1;
 int                     ds_x2;
 
-colourindex_t*           ds_colormap;
+colourindex_t*          ds_colormap;
 
 fixed_t                 ds_xfrac;
 fixed_t                 ds_yfrac;
@@ -481,7 +481,7 @@ void R_DrawSpan (void)
 {
 	fixed_t             xfrac;
 	fixed_t             yfrac;
-	colourindex_t*       dest;
+	colourindex_t*      dest;
 	int                 count;
 	int                 spot;
 
@@ -530,7 +530,7 @@ void R_DrawSpanLow (void)
 {
 	fixed_t             xfrac;
 	fixed_t             yfrac;
-	colourindex_t*       dest;
+	colourindex_t*      dest;
 	int                 count;
 	int                 spot;
 

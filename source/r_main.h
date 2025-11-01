@@ -65,12 +65,12 @@ extern int              loopcount;
 
 extern int light_x_scale, light_y_scale;
 
-extern colourindex_t*    scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
-extern colourindex_t*    scalelightfixed[MAXLIGHTSCALE];
-extern colourindex_t*    zlight[LIGHTLEVELS][MAXLIGHTZ];
+extern colourindex_t*   scalelight[LIGHTLEVELS][MAXLIGHTSCALE];
+extern colourindex_t*   scalelightfixed[MAXLIGHTSCALE];
+extern colourindex_t*   zlight[LIGHTLEVELS][MAXLIGHTZ];
 
 extern int              extralight;
-extern colourindex_t*    fixedcolormap;
+extern colourindex_t*   fixedcolormap;
 
 
 /* Blocky/low detail mode. */

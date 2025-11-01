@@ -75,7 +75,7 @@ V_CopyRect
 
 void
 V_DrawPatchColumnInternal
-( colourindex_t*  desttop,
+( colourindex_t* desttop,
   const patch_t* patch,
   int            col);
 
@@ -114,11 +114,11 @@ V_DrawBlock
 /* Reads a linear block of pixels into the view buffer. */
 void
 V_GetBlock
-( int           x,
-  int           y,
-  screen_t      scrn,
-  int           width,
-  int           height,
+( int            x,
+  int            y,
+  screen_t       scrn,
+  int            width,
+  int            height,
   colourindex_t* dest );
 
 /* Selects palette to display. */

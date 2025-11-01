@@ -372,7 +372,7 @@ typedef struct vissprite_s
 
 	/* for color translation and shadow draw, */
 	/*  maxbright frames as well */
-	colourindex_t*       colormap;
+	colourindex_t*      colormap;
 
 	int                 mobjflags;
 
