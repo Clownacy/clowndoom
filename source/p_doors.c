@@ -111,16 +111,21 @@ void T_VerticalDoor (vldoor_t* door)
 		{
 			switch(door->type)
 			{
+			/* BUGFIX: Disabled redundant code which made blazing doors play their closing sound twice. */
+#if 0
 			case blazeRaise:
 			case blazeClose:
 				door->sector->specialdata = NULL;
 				P_RemoveThinker (&door->thinker);  /* unlink and free */
-				S_StartSound((mobj_t *)&door->sector->soundorg,
+				S_StartSound((mobj_t*)&door->sector->soundorg,
 							 sfx_bdcls);
 				break;
+#endif
 
 			case normal:
 			case close:
+			case blazeRaise:
+			case blazeClose:
 				door->sector->specialdata = NULL;
 				P_RemoveThinker (&door->thinker);  /* unlink and free */
 				break;
@@ -140,6 +145,14 @@ void T_VerticalDoor (vldoor_t* door)
 			{
 			case blazeClose:
 			case close:               /* DO NOT GO BACK UP! */
+				break;
+
+			/* BUGFIX: Added missing code so that blazing doors make the correct sound. */
+			case blazeRaise:
+			case blazeOpen:
+				door->direction = 1;
+				S_StartSound((mobj_t *)&door->sector->soundorg,
+							 sfx_bdopn);
 				break;
 
 			default:
