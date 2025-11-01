@@ -344,6 +344,7 @@ typedef enum
 	tc_flash,
 	tc_strobe,
 	tc_glow,
+	tc_flicker, /* BUGFIX: Added missing special type. */
 	tc_endspecials
 
 } specials_e;
@@ -401,13 +402,14 @@ size_t P_ArchiveSpecials (unsigned char* const buffer, size_t index)
 			continue;
 		}
 
-		CHECK_AND_ARCHIVE_SPECIAL(T_MoveCeiling,  ceiling_t,    tc_ceiling);
-		CHECK_AND_ARCHIVE_SPECIAL(T_VerticalDoor, vldoor_t,     tc_door);
-		CHECK_AND_ARCHIVE_SPECIAL(T_MoveFloor,    floormove_t,  tc_floor);
-		CHECK_AND_ARCHIVE_SPECIAL(T_PlatRaise,    plat_t,       tc_plat);
-		CHECK_AND_ARCHIVE_SPECIAL(T_LightFlash,   lightflash_t, tc_flash);
-		CHECK_AND_ARCHIVE_SPECIAL(T_StrobeFlash,  strobe_t,     tc_strobe);
-		CHECK_AND_ARCHIVE_SPECIAL(T_Glow,         glow_t,       tc_glow);
+		CHECK_AND_ARCHIVE_SPECIAL(T_MoveCeiling,  ceiling_t,     tc_ceiling);
+		CHECK_AND_ARCHIVE_SPECIAL(T_VerticalDoor, vldoor_t,      tc_door);
+		CHECK_AND_ARCHIVE_SPECIAL(T_MoveFloor,    floormove_t,   tc_floor);
+		CHECK_AND_ARCHIVE_SPECIAL(T_PlatRaise,    plat_t,        tc_plat);
+		CHECK_AND_ARCHIVE_SPECIAL(T_LightFlash,   lightflash_t,  tc_flash);
+		CHECK_AND_ARCHIVE_SPECIAL(T_StrobeFlash,  strobe_t,      tc_strobe);
+		CHECK_AND_ARCHIVE_SPECIAL(T_Glow,         glow_t,        tc_glow);
+		CHECK_AND_ARCHIVE_SPECIAL(T_FireFlicker,  fireflicker_t, tc_flicker); /* BUGFIX: Added missing special type. */
 	}
 
 	/* add a terminating marker */
@@ -497,6 +499,14 @@ size_t P_UnArchiveSpecials (const unsigned char* const buffer, size_t index)
 		{
 			UNARCHIVE_SPECIAL(glow_t);
 			special->thinker.function.acp1 = (actionf_p1)T_Glow;
+			break;
+		}
+
+		/* BUGFIX: Added missing special type. */
+		case tc_flicker:
+		{
+			UNARCHIVE_SPECIAL(fireflicker_t);
+			special->thinker.function.acp1 = (actionf_p1)T_FireFlicker;
 			break;
 		}
 
