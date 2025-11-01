@@ -678,10 +678,11 @@ A_FireCGun
 ( player_t*     player,
   pspdef_t*     psp )
 {
-	S_StartSound (player->mo, sfx_pistol);
-
 	if (!player->ammo[weaponinfo[player->readyweapon].ammo])
 		return;
+
+	/* BUGFIX: Fixed two gunshots being heard when only one bullet is fired. */
+	S_StartSound (player->mo, sfx_pistol);
 
 	P_SetMobjState (player->mo, S_PLAY_ATK2);
 	player->ammo[weaponinfo[player->readyweapon].ammo]--;
