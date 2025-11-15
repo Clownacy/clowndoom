@@ -266,6 +266,7 @@ static const default_t       defaults[] =
 	{"screen_width",&SCREENWIDTH, d_false},
 	{"screen_height",&SCREENHEIGHT, d_false},
 	{"hud_scale",&HUD_SCALE, d_false},
+	{"field_of_view",&field_of_view, d_false},
 
 	/* Audio */
 	{"music_volume",&musicVolume, d_false},

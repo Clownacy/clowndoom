@@ -44,7 +44,7 @@
 
 
 /* Fineangles in the SCREENWIDTH wide window. */
-static unsigned int     field_of_view;
+static unsigned int     field_of_view_angles;
 
 int                     light_x_scale, light_y_scale;
 
@@ -475,9 +475,9 @@ void R_InitTextureMapping (void)
 	/*  viewangletox will give the next greatest x */
 	/*  after the view angle. */
 	/* Calc focallength */
-	/*  so field_of_view angles covers SCREENWIDTH. */
+	/*  so field_of_view_angles angles covers SCREENWIDTH. */
 	focallength = FixedDiv (centerxfrac,
-							finetangent[FINEANGLES/4+field_of_view/2] );
+							finetangent[FINEANGLES/4+field_of_view_angles/2] );
 
 	for (i=0 ; i<FINEANGLES/2 ; i++)
 	{
@@ -741,11 +741,11 @@ void R_Init (void)
 		const unsigned int original_vertical_fov = 64; /* Absolutely disgusting! */
 		const unsigned int original_horizontal_fov = FOV_Scale(original_vertical_fov, original_aspect_ratio);
 
-		const unsigned int new_vertical_fov = 64; /* TODO: Make this configurable! */
+		const unsigned int new_vertical_fov = field_of_view;
 		const unsigned int new_horizontal_fov = FOV_Scale(new_vertical_fov, new_aspect_ratio);
 
 		horizontal_fov_correction = FRACUNIT * FOV_DegreesToLinear(original_horizontal_fov) / FOV_DegreesToLinear(new_horizontal_fov);
-		field_of_view = FINEANGLES * new_horizontal_fov / 360;
+		field_of_view_angles = FINEANGLES * new_horizontal_fov / 360;
 	}
 
 	/* TODO: This will break when I eventually allow adjustable FOV. */

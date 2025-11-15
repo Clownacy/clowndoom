@@ -108,6 +108,7 @@ extern int HUD_SCALE;
 #define Y_TOP(x) (x)
 #define Y_BOTTOM(x) (SCREENHEIGHT - ((ORIGINAL_SCREEN_HEIGHT - (x)) * HUD_SCALE))
 
+extern int field_of_view;
 extern fixed_t horizontal_fov_correction;
 
 #define HORIZONTAL_FOV_CORRECTION(x) FixedMul(x, horizontal_fov_correction)
