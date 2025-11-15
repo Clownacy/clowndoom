@@ -46,6 +46,7 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
   - `hud_scale` - Multiplies the size of the user interface. 1 renders elements
     at their native resolutions, 2 renders them at double their resolution,
     etc. The maximum value is 9.
+  - `field_of_view` - The vertical field-of-view.
 - Command line parameters:
   - `-iwad`, for loading a specific primary WAD file.
   - `-complevel`, supporting options 2, 3, and 4.
