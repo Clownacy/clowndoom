@@ -675,7 +675,8 @@ void R_ExecuteSetViewSize (void)
 	{
 		dy = ((i-viewheight/2)<<FRACBITS)+FRACUNIT/2;
 		dy = abs(dy);
-		yslope[i] = FixedDiv ( (HORIZONTAL_FOV_CORRECTION(viewwidth)<<detailshift)/2*FRACUNIT, dy);
+		yslope[i] = FixedDiv ( (viewwidth<<detailshift)/2*FRACUNIT, dy);
+		yslope[i] = HORIZONTAL_FOV_CORRECTION(yslope[i]);
 	}
 
 	for (i=0 ; i<viewwidth ; i++)
