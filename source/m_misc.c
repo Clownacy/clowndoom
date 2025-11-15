@@ -324,9 +324,10 @@ void M_SaveDefaults (void)
 void M_LoadDefaults (void)
 {
 #ifdef __LIBRETRO__
+	size_t IB_GetSystemDirectoryPath(char *buffer, size_t size);
 	static char wildmidi_config_path_buffer[0x100];
-	const size_t written = IB_GetConfigPath(wildmidi_config_path_buffer, D_COUNT_OF(wildmidi_config_path_buffer));
-	M_StringCopyOffset(wildmidi_config_path_buffer, D_COUNT_OF(wildmidi_config_path_buffer), written, "wildmidi/timidity.cfg");
+	const size_t copy_length = IB_GetSystemDirectoryPath(wildmidi_config_path_buffer, D_COUNT_OF(wildmidi_config_path_buffer));
+	M_StringCopyOffset(wildmidi_config_path_buffer, D_COUNT_OF(wildmidi_config_path_buffer), copy_length, "wildmidi/timidity.cfg");
 	wildmidi_config_path = wildmidi_config_path_buffer;
 #else
 	int         i;

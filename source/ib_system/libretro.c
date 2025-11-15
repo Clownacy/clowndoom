@@ -722,19 +722,28 @@ void IB_Sleep(void)
 }
 
 
-size_t IB_GetConfigPath(char* const buffer, const size_t size)
+size_t IB_GetSystemDirectoryPath(char* const buffer, const size_t size)
 {
 	const char *system_directory;
 
 	if (libretro.environment(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_directory))
 	{
 		size_t copy_length = M_StringCopy(buffer, size, system_directory);
-		copy_length += M_StringCopyOffset(buffer, size, copy_length, "/default.cfg");
+		copy_length += M_StringCopyOffset(buffer, size, copy_length, "/");
 		return copy_length;
 	}
 
 	return 0;
 }
+
+
+size_t IB_GetConfigPath(char* const buffer, const size_t size)
+{
+	size_t copy_length = IB_GetSystemDirectoryPath(buffer, size);
+	copy_length += M_StringCopyOffset(buffer, size, copy_length, "default.cfg");
+	return copy_length;
+}
+
 
 void IB_Yield(void)
 {
