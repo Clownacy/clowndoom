@@ -437,6 +437,33 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 	},
 	{
 		/* Key. */
+		"clowndoom_field_of_view",
+		/* Label. */
+		"Video > Field of View",
+		/* Categorised label. */
+		"Field of View",
+		/* Description. */
+		"Vertical. Restart to apply.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"video",
+		/* Values. */
+		{
+			{ "65",  "65°"},
+			{ "70",  "70°"},
+			{ "75",  "75°"},
+			{ "80",  "80°"},
+			{ "85",  "85°"},
+			{ "90",  "90°"},
+			{ "95",  "95°"},
+			{"100", "100°"},
+		},
+		/* Default value. */
+		"65"
+	},
+	{
+		/* Key. */
 		"clowndoom_sfx_volume",
 		/* Label. */
 		"Audio > SFX Volume",
