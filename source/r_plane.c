@@ -198,11 +198,11 @@ void R_ClearPlanes (void)
 
 	/* scale will be unit scale at SCREENWIDTH/2 distance */
 #ifdef FAST_BASE_SCALE
-	basexscale = FixedDiv (finecosine[angle], WIDESCREENIFY(centerxfrac));
-	baseyscale = -FixedDiv (finesine[angle], WIDESCREENIFY(centerxfrac));
+	basexscale = FixedDiv (finecosine[angle], HORIZONTAL_FOV_CORRECTION(centerxfrac));
+	baseyscale = -FixedDiv (finesine[angle], HORIZONTAL_FOV_CORRECTION(centerxfrac));
 #else
-	basexscale = FixedDiv (WIDESCREENIFY(centerx), finecosine[angle]);
-	baseyscale = -FixedDiv (WIDESCREENIFY(centerx), finesine[angle]);
+	basexscale = FixedDiv (HORIZONTAL_FOV_CORRECTION(centerx), finecosine[angle]);
+	baseyscale = -FixedDiv (HORIZONTAL_FOV_CORRECTION(centerx), finesine[angle]);
 #endif
 }
 

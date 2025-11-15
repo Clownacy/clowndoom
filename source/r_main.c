@@ -641,7 +641,7 @@ void R_ExecuteSetViewSize (void)
 	centerx = viewwidth/2;
 	centerxfrac = centerx<<FRACBITS;
 	centeryfrac = centery<<FRACBITS;
-	projection = WIDESCREENIFY(centerxfrac);
+	projection = HORIZONTAL_FOV_CORRECTION(centerxfrac);
 
 	if (!detailshift)
 	{
@@ -663,8 +663,8 @@ void R_ExecuteSetViewSize (void)
 	R_InitTextureMapping ();
 
 	/* psprite scales */
-	pspritescale = FRACUNIT*WIDESCREENIFY(viewwidth)/ORIGINAL_SCREEN_WIDTH;
-	pspriteiscale = FRACUNIT*ORIGINAL_SCREEN_WIDTH/WIDESCREENIFY(viewwidth);
+	pspritescale = FRACUNIT*HORIZONTAL_FOV_CORRECTION(viewwidth)/ORIGINAL_SCREEN_WIDTH;
+	pspriteiscale = FRACUNIT*ORIGINAL_SCREEN_WIDTH/HORIZONTAL_FOV_CORRECTION(viewwidth);
 
 	/* thing clipping */
 	for (i=0 ; i<viewwidth ; i++)
@@ -675,7 +675,7 @@ void R_ExecuteSetViewSize (void)
 	{
 		dy = ((i-viewheight/2)<<FRACBITS)+FRACUNIT/2;
 		dy = abs(dy);
-		yslope[i] = FixedDiv ( (WIDESCREENIFY(viewwidth)<<detailshift)/2*FRACUNIT, dy);
+		yslope[i] = FixedDiv ( (HORIZONTAL_FOV_CORRECTION(viewwidth)<<detailshift)/2*FRACUNIT, dy);
 	}
 
 	for (i=0 ; i<viewwidth ; i++)
@@ -705,15 +705,47 @@ void R_ExecuteSetViewSize (void)
 }
 
 
+static double FOV_RadiansToLinear(const double radians)
+{
+	return tan(radians / 2.0);
+}
+
+static double FOV_LinearToRadians(const double linear)
+{
+	return atan(linear) * 2.0;
+}
+
+static double FOV_DegreesToLinear(const unsigned int degrees)
+{
+	return FOV_RadiansToLinear(CC_DEGREE_TO_RADIAN(degrees));
+}
+
+static unsigned int FOV_LinearToDegrees(const double linear)
+{
+	return (unsigned int)CC_RADIAN_TO_DEGREE(FOV_LinearToRadians(linear));
+}
+
+static unsigned int FOV_Scale(const unsigned int fov, const double scale)
+{
+	return FOV_LinearToDegrees(FOV_DegreesToLinear(fov) * scale);
+}
 
 /* R_Init */
 void R_Init (void)
 {
 	{
-		/* The original FOV is 90 degrees. Do some messy math here to increase it to suit the aspect ratio. */
-		/* TODO: Make this less disgusting. */
-		const unsigned int horizontal_field_of_view_in_degrees = (unsigned int)CC_RADIAN_TO_DEGREE(atan(tan(CC_DEGREE_TO_RADIAN(90) / 2.0) * ORIGINAL_SCREEN_HEIGHT / ORIGINAL_SCREEN_WIDTH * SCREENWIDTH / SCREENHEIGHT) * 2.0);
-		field_of_view = FINEANGLES * horizontal_field_of_view_in_degrees / 360;
+		/* Generate various values which are related to the field-of-view and aspect-ratio. */
+		const double original_aspect_ratio = (double)ORIGINAL_SCREEN_WIDTH / ORIGINAL_SCREEN_HEIGHT;
+		const double new_aspect_ratio = (double)SCREENWIDTH / SCREENHEIGHT;
+
+		const unsigned int original_vertical_fov = 64; /* Absolutely disgusting! */
+		const unsigned int original_horizontal_fov = FOV_Scale(original_vertical_fov, original_aspect_ratio);
+
+		const unsigned int new_vertical_fov = 64; /* TODO: Make this configurable! */
+		const unsigned int new_horizontal_fov = FOV_Scale(new_vertical_fov, new_aspect_ratio);
+
+		horizontal_fov_correction = FRACUNIT * FOV_DegreesToLinear(original_horizontal_fov) / FOV_DegreesToLinear(new_horizontal_fov);
+		field_of_view = FINEANGLES * new_horizontal_fov / 360;
 	}
 
 	/* TODO: This will break when I eventually allow adjustable FOV. */

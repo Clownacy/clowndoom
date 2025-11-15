@@ -27,3 +27,5 @@ int SCREENWIDTH = ORIGINAL_SCREEN_WIDTH, SCREENHEIGHT = ORIGINAL_SCREEN_HEIGHT;
 
 /* Try to keep this to powers of two to prevent rounding errors. */
 int HUD_SCALE = 1;
+
+fixed_t horizontal_fov_correction = FRACUNIT;

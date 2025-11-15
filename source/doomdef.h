@@ -108,7 +108,9 @@ extern int HUD_SCALE;
 #define Y_TOP(x) (x)
 #define Y_BOTTOM(x) (SCREENHEIGHT - ((ORIGINAL_SCREEN_HEIGHT - (x)) * HUD_SCALE))
 
-#define WIDESCREENIFY(x) FixedMul(x, FRACUNIT * SCREENHEIGHT / SCREENWIDTH * ORIGINAL_SCREEN_WIDTH / ORIGINAL_SCREEN_HEIGHT)
+extern fixed_t horizontal_fov_correction;
+
+#define HORIZONTAL_FOV_CORRECTION(x) FixedMul(x, horizontal_fov_correction)
 
 
 
