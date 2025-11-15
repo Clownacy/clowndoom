@@ -194,6 +194,10 @@ static void UpdateOptions(const bool initial)
 		&aspect_ratio_option,
 		"clowndoom_aspect_ratio",
 		NULL);
+	DoOptionNumericalWithCallback(initial,
+		&field_of_view,
+		"clowndoom_field_of_view",
+		NULL);
 
 	/* Audio. */
 	DoOptionNumericalWithCallback(initial,
