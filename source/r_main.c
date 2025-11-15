@@ -745,12 +745,14 @@ void R_Init (void)
 		const unsigned int new_horizontal_fov = FOV_Scale(new_vertical_fov, new_aspect_ratio);
 
 		horizontal_fov_correction = FRACUNIT * FOV_DegreesToLinear(original_horizontal_fov) / FOV_DegreesToLinear(new_horizontal_fov);
+		vertical_fov_correction = FRACUNIT * FOV_DegreesToLinear(original_vertical_fov) / FOV_DegreesToLinear(new_vertical_fov);
+
 		field_of_view_angles = FINEANGLES * new_horizontal_fov / 360;
 	}
 
-	/* TODO: This will break when I eventually allow adjustable FOV. */
 	light_x_scale = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENWIDTH << FRACBITS) / ORIGINAL_SCREEN_WIDTH);
 	light_y_scale = FixedMul((1 << 12) / LIGHTINGRESOLUTIONSCALE, (SCREENHEIGHT << FRACBITS) / ORIGINAL_SCREEN_HEIGHT);
+	light_y_scale = VERTICAL_FOV_CORRECTION(light_y_scale);
 
 	R_InitData ();
 	I_Info ("\nR_InitData");

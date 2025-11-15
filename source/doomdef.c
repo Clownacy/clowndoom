@@ -29,4 +29,4 @@ int SCREENWIDTH = ORIGINAL_SCREEN_WIDTH, SCREENHEIGHT = ORIGINAL_SCREEN_HEIGHT;
 int HUD_SCALE = 1;
 
 int field_of_view = 64;
-fixed_t horizontal_fov_correction = FRACUNIT;
+fixed_t horizontal_fov_correction = FRACUNIT, vertical_fov_correction = FRACUNIT;
