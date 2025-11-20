@@ -1664,7 +1664,6 @@ void A_BossDeath (mobj_t* mo)
 			junk.tag = 666;
 			EV_DoFloor (&junk, lowerFloorToLowest);
 			return;
-			break;
 
 		case 4:
 			switch(gamemap)
@@ -1673,14 +1672,13 @@ void A_BossDeath (mobj_t* mo)
 				junk.tag = 666;
 				EV_DoDoor (&junk, blazeOpen);
 				return;
-				break;
 
 			case 8:
 				junk.tag = 666;
 				EV_DoFloor (&junk, lowerFloorToLowest);
 				return;
-				break;
 			}
+			break;
 		}
 	}
 
