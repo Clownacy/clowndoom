@@ -222,31 +222,30 @@ size_t P_UnArchiveWorld (const unsigned char* const buffer, size_t index)
 
 
 
-/* Thinkers */
-typedef enum
-{
-	tc_end,
-	tc_mobj
-
-} thinkerclass_t;
-
-
-
 /* P_ArchiveThinkers */
 size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 {
 	thinker_t*          th;
 	mobj_t*             mobj;
+	size_t              total_mobjs;
+
+	total_mobjs = 0;
+
+	/* temporarily replace the prev pointer with an index into the thinker list */
+	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
+		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
+			th->prev = (thinker_t*)total_mobjs++;
+
+	if (buffer != NULL)
+		*(size_t*)&buffer[index] = total_mobjs;
+	index += sizeof(size_t);
+	PADSAVEP();
 
 	/* save off the current thinkers */
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
 	{
 		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
 		{
-			if (buffer != NULL)
-				buffer[index] = tc_mobj;
-			++index;
-			PADSAVEP();
 			if (buffer != NULL)
 			{
 				mobj = (mobj_t *)&buffer[index];
@@ -255,18 +254,19 @@ size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 
 				if (mobj->player)
 					mobj->player = (player_t *)((mobj->player-players) + 1);
+
+				if (mobj->target)
+					mobj->target = (mobj_t *)mobj->target->thinker.prev;
 			}
 			index += sizeof(*mobj);
-			continue;
 		}
-
-		/* I_Error ("P_ArchiveThinkers: Unknown thinker function"); */
 	}
 
-	/* add a terminating marker */
-	if (buffer != NULL)
-		buffer[index] = tc_end;
-	++index;
+	/* restore the prev pointers */
+	for (th = &thinkercap ; th != &thinkercap ; th=th->next)
+		if (th->next->function.acp1 == (actionf_p1)P_MobjThinker)
+			th->next->prev = th;
+
 	return index;
 }
 
@@ -275,10 +275,9 @@ size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 /* P_UnArchiveThinkers */
 size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 {
-	thinkerclass_t      tclass;
 	thinker_t*          currentthinker;
 	thinker_t*          next;
-	mobj_t*             mobj;
+	size_t              total_mobjs;
 
 	/* remove all the current thinkers */
 	currentthinker = thinkercap.next;
@@ -295,22 +294,23 @@ size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 	}
 	P_InitThinkers ();
 
-	/* read in saved thinkers */
-	while (1)
-	{
-		tclass = (thinkerclass_t)buffer[index++];
-		switch (tclass)
-		{
-		case tc_end:
-			return index;     /* end of list */
+	total_mobjs = *(size_t*)&buffer[index];
+	index += sizeof(size_t);
+	PADSAVEP();
 
-		case tc_mobj:
-			PADSAVEP();
-			mobj = (mobj_t*)Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+	if (total_mobjs != 0)
+	{
+		size_t i;
+
+		mobj_t** const mobjs = (mobj_t**)Z_Malloc(sizeof(*mobjs) * total_mobjs, PU_STATIC, NULL);
+
+		/* read in saved thinkers */
+		for (i = 0; i < total_mobjs; ++i)
+		{
+			mobj_t* const mobj = mobjs[i] = (mobj_t*)Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
 			*mobj = *(mobj_t*)&buffer[index];
 			index += sizeof(*mobj);
 			mobj->state = &states[(size_t)mobj->state];
-			mobj->target = NULL;
 			if (mobj->player)
 			{
 				mobj->player = &players[(size_t)mobj->player-1];
@@ -322,12 +322,16 @@ size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 			mobj->ceilingz = mobj->subsector->sector->ceilingheight;
 			mobj->thinker.function.acp1 = (actionf_p1)P_MobjThinker;
 			P_AddThinker (&mobj->thinker);
-			break;
-
-		default:
-			I_Error ("Unknown tclass %i in savegame",tclass);
 		}
 
+		/* BUGFIX: Restore the mobj's target. */
+		for (i = 0; i < total_mobjs; ++i)
+		{
+			mobj_t* const mobj = mobjs[i];
+			mobj->target = mobjs[(size_t)mobj->target];
+		}
+
+		Z_Free(mobjs);
 	}
 
 	return index;
