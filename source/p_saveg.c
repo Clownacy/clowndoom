@@ -263,7 +263,7 @@ size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 	}
 
 	/* restore the prev pointers */
-	for (th = &thinkercap ; th != &thinkercap ; th=th->next)
+	for (th = &thinkercap ; th->next != &thinkercap ; th=th->next)
 		if (th->next->function.acp1 == (actionf_p1)P_MobjThinker)
 			th->next->prev = th;
 
