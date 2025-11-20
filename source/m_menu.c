@@ -1001,9 +1001,9 @@ void M_QuitResponse(int ch)
 	if (!netgame)
 	{
 		if (gamemode == commercial)
-			S_StartSound(NULL,quitsounds2[(gametic>>2)%D_COUNT_OF(quitsounds2)]);
+			S_StartSound(NULL,quitsounds2[(gametic>>2)%CC_COUNT_OF(quitsounds2)]);
 		else
-			S_StartSound(NULL,quitsounds[(gametic>>2)%D_COUNT_OF(quitsounds)]);
+			S_StartSound(NULL,quitsounds[(gametic>>2)%CC_COUNT_OF(quitsounds)]);
 		I_WaitFrames(TICRATE*3/2);
 	}
 	I_Quit (0);
@@ -1041,9 +1041,9 @@ void M_QuitDOOM(int choice)
 	else
 	{
 		if (gamemode == commercial)
-			message = endmsg2[gametic % D_COUNT_OF(endmsg2)];
+			message = endmsg2[gametic % CC_COUNT_OF(endmsg2)];
 		else
-			message = endmsg[gametic % D_COUNT_OF(endmsg)];
+			message = endmsg[gametic % CC_COUNT_OF(endmsg)];
 	}
 
 	sprintf(endstring,"%s\n\n"DOSY, message);
@@ -1676,7 +1676,7 @@ void M_Drawer (void)
 			char string[40 + 1];
 			const size_t string_length = strcspn(&messageString[start], "\n");
 
-			length = D_MIN(string_length, sizeof(string) - 1);
+			length = CC_MIN(string_length, sizeof(string) - 1);
 			memcpy(string, &messageString[start], length);
 			string[length] = '\0';
 

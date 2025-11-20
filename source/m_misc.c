@@ -303,7 +303,7 @@ void M_SaveDefaults (void)
 	if (!f)
 		return; /* can't write the file, but don't complain */
 
-	for (i=0 ; i<(int)D_COUNT_OF(defaults) ; i++)
+	for (i=0 ; i<(int)CC_COUNT_OF(defaults) ; i++)
 	{
 		if (!defaults[i].is_string)
 		{
@@ -326,8 +326,8 @@ void M_LoadDefaults (void)
 #ifdef __LIBRETRO__
 	size_t IB_GetSystemDirectoryPath(char *buffer, size_t size);
 	static char wildmidi_config_path_buffer[0x100];
-	const size_t copy_length = IB_GetSystemDirectoryPath(wildmidi_config_path_buffer, D_COUNT_OF(wildmidi_config_path_buffer));
-	M_StringCopyOffset(wildmidi_config_path_buffer, D_COUNT_OF(wildmidi_config_path_buffer), copy_length, "wildmidi/timidity.cfg");
+	const size_t copy_length = IB_GetSystemDirectoryPath(wildmidi_config_path_buffer, CC_COUNT_OF(wildmidi_config_path_buffer));
+	M_StringCopyOffset(wildmidi_config_path_buffer, CC_COUNT_OF(wildmidi_config_path_buffer), copy_length, "wildmidi/timidity.cfg");
 	wildmidi_config_path = wildmidi_config_path_buffer;
 #else
 	int         i;
@@ -370,7 +370,7 @@ void M_LoadDefaults (void)
 					sscanf(strparm, "%i", &parm);
 				}
 
-				for (i=0 ; i<(int)D_COUNT_OF(defaults) ; i++)
+				for (i=0 ; i<(int)CC_COUNT_OF(defaults) ; i++)
 				{
 					if (!strcmp(def, defaults[i].name))
 					{
@@ -393,9 +393,9 @@ void M_LoadDefaults (void)
 		complevel = default_compatibility_level;
 
 	/* Clamp options to sane values. */
-	SCREENWIDTH  = D_CLAMP(ORIGINAL_SCREEN_WIDTH,  MAXIMUM_SCREENWIDTH,  SCREENWIDTH);
-	SCREENHEIGHT = D_CLAMP(ORIGINAL_SCREEN_HEIGHT, MAXIMUM_SCREENHEIGHT, SCREENHEIGHT);
-	HUD_SCALE = D_CLAMP(1, D_MIN(SCREENWIDTH / ORIGINAL_SCREEN_WIDTH, SCREENHEIGHT / ORIGINAL_SCREEN_HEIGHT), HUD_SCALE);
+	SCREENWIDTH  = CC_CLAMP(ORIGINAL_SCREEN_WIDTH,  MAXIMUM_SCREENWIDTH,  SCREENWIDTH);
+	SCREENHEIGHT = CC_CLAMP(ORIGINAL_SCREEN_HEIGHT, MAXIMUM_SCREENHEIGHT, SCREENHEIGHT);
+	HUD_SCALE = CC_CLAMP(1, CC_MIN(SCREENWIDTH / ORIGINAL_SCREEN_WIDTH, SCREENHEIGHT / ORIGINAL_SCREEN_HEIGHT), HUD_SCALE);
 }
 
 void M_ChangedShowMessages(void)
@@ -713,7 +713,7 @@ size_t M_StringCopy(char* const dest, const size_t destsz, const char* const src
 		return 0;
 
 	src_length = strlen(src);
-	copy_length = D_MIN(src_length, destsz - 1);
+	copy_length = CC_MIN(src_length, destsz - 1);
 
 	memcpy(dest, src, copy_length);
 	dest[copy_length] = '\0';

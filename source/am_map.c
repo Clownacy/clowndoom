@@ -160,7 +160,7 @@ mline_t player_arrow[] = {
 	{ { -R+3*R/8, 0 }, { -R+R/8, -R/4 } }
 };
 #undef R
-#define NUMPLYRLINES D_COUNT_OF(player_arrow)
+#define NUMPLYRLINES CC_COUNT_OF(player_arrow)
 
 #define R ((8*PLAYERRADIUS)/7)
 mline_t cheat_player_arrow[] = {
@@ -182,7 +182,7 @@ mline_t cheat_player_arrow[] = {
 	{ { R/6+R/32, -R/7-R/32 }, { R/6+R/10, -R/7 } }
 };
 #undef R
-#define NUMCHEATPLYRLINES D_COUNT_OF(cheat_player_arrow)
+#define NUMCHEATPLYRLINES CC_COUNT_OF(cheat_player_arrow)
 
 #define R (FRACUNIT)
 mline_t triangle_guy[] = {
@@ -191,7 +191,7 @@ mline_t triangle_guy[] = {
 	{ { 0, R }, { -.867*R, -.5*R } }
 };
 #undef R
-#define NUMTRIANGLEGUYLINES D_COUNT_OF(triangle_guy)
+#define NUMTRIANGLEGUYLINES CC_COUNT_OF(triangle_guy)
 
 #define R (FRACUNIT)
 mline_t thintriangle_guy[] = {
@@ -200,7 +200,7 @@ mline_t thintriangle_guy[] = {
 	{ { -.5*R, .7*R }, { -.5*R, -.7*R } }
 };
 #undef R
-#define NUMTHINTRIANGLEGUYLINES D_COUNT_OF(thintriangle_guy)
+#define NUMTHINTRIANGLEGUYLINES CC_COUNT_OF(thintriangle_guy)
 
 
 
@@ -716,7 +716,7 @@ void AM_updateLightLev(void)
 	if (amclock>nexttic)
 	{
 		lightlev = litelevels[litelevelscnt++];
-		if (litelevelscnt == D_COUNT_OF(litelevels)) litelevelscnt = 0;
+		if (litelevelscnt == CC_COUNT_OF(litelevels)) litelevelscnt = 0;
 		nexttic = amclock + 6 - (amclock % 6);
 	}
 
@@ -1269,7 +1269,7 @@ void AM_resolutionChanged (void)
 	a = FixedDiv(f_w << FRACBITS, max_w);
 	b = FixedDiv(f_h << FRACBITS, max_h);
 
-	min_scale_mtof = D_MIN(a, b);
+	min_scale_mtof = CC_MIN(a, b);
 	max_scale_mtof = FixedDiv(f_h << FRACBITS, 2 * PLAYERRADIUS);
 
 	scale_mtof = FixedDiv(min_scale_mtof, FRACUNIT*7/10);

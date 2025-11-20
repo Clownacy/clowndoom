@@ -151,7 +151,7 @@ void W_AddFile (const char *filename)
 		singleinfo.handle = storehandle;
 		singleinfo.position = 0;
 		singleinfo.size = I_FileSize(handle);
-		ExtractFileBase(singleinfo.name, D_COUNT_OF(singleinfo.name), filename);
+		ExtractFileBase(singleinfo.name, CC_COUNT_OF(singleinfo.name), filename);
 		numlumps++;
 	}
 	else
@@ -196,7 +196,7 @@ void W_AddFile (const char *filename)
 		*lump_p = singleinfo;
 
 		/* overwrite existing entries so patch lump files take precedence */
-		if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, singleinfo.name, D_COUNT_OF(singleinfo.name), &dictionary_entry))
+		if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, singleinfo.name, CC_COUNT_OF(singleinfo.name), &dictionary_entry))
 			I_Error("Could not create lump dictionary entry");
 
 		dictionary_entry->shared.unsigned_long = startlump;
@@ -215,16 +215,16 @@ void W_AddFile (const char *filename)
 			{
 				size_t j = 0;
 
-				while (j < D_COUNT_OF(lump_p->name))
+				while (j < CC_COUNT_OF(lump_p->name))
 					if (lump_p->name[j++] == '\0')
 						break;
 
-				while (j < D_COUNT_OF(lump_p->name))
+				while (j < CC_COUNT_OF(lump_p->name))
 					lump_p->name[j++] = '\0';
 			}
 
 			/* overwrite existing entries so patch lump files take precedence */
-			if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, lump_p->name, D_COUNT_OF(lump_p->name), &dictionary_entry))
+			if (!Dictionary_LookUpAndCreateIfNotExist(&lump_dictionary, lump_p->name, CC_COUNT_OF(lump_p->name), &dictionary_entry))
 				I_Error("Could not create lump dictionary entry");
 
 			dictionary_entry->shared.unsigned_long = i;
@@ -517,11 +517,11 @@ void W_Profile (void)
 	{
 		memcpy (name,lumpinfo[i].name,sizeof(name));
 
-		for (j=0 ; j<D_COUNT_OF(name) ; j++)
+		for (j=0 ; j<CC_COUNT_OF(name) ; j++)
 			if (name[j] == '\0')
 				break;
 
-		for ( ; j<D_COUNT_OF(name) ; j++)
+		for ( ; j<CC_COUNT_OF(name) ; j++)
 			name[j] = ' ';
 
 		I_FileWrite (f,name,sizeof(name));

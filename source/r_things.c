@@ -301,7 +301,7 @@ static vissprite_t* R_NewVisSprite (void)
 {
 	vissprite_t* const sprite = &vissprites[totalvissprite];
 	vissprites_p[totalvissprite] = sprite;
-	totalvissprite += totalvissprite < D_COUNT_OF(vissprites) - 1;
+	totalvissprite += totalvissprite < CC_COUNT_OF(vissprites) - 1;
 	return sprite;
 }
 

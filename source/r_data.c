@@ -225,8 +225,8 @@ void R_GenerateComposite(int texnum)
 		x1 = patch->originx;
 		x2 = x1 + M_BytesToShort(realpatch->width);
 
-		x = D_MAX(0, x1);
-		x2 = D_MIN(x2, texture->width);
+		x = CC_MAX(0, x1);
+		x2 = CC_MIN(x2, texture->width);
 
 		for (; x < x2; ++x)
 		{
@@ -281,8 +281,8 @@ void R_GenerateLookup (int texnum)
 		x1 = patch->originx;
 		x2 = x1 + M_BytesToShort(realpatch->width);
 
-		x = D_MAX(0, x1);
-		x2 = D_MIN(x2, texture->width);
+		x = CC_MAX(0, x1);
+		x2 = CC_MIN(x2, texture->width);
 
 		for (; x < x2; ++x)
 		{
@@ -296,7 +296,7 @@ void R_GenerateLookup (int texnum)
 	{
 		if (!patchcount[x])
 		{
-			I_Info("R_GenerateLookup: column without a patch (%.*s)\n", (int)D_COUNT_OF(texture->name), texture->name);
+			I_Info("R_GenerateLookup: column without a patch (%.*s)\n", (int)CC_COUNT_OF(texture->name), texture->name);
 			break;
 		}
 		/* I_Error("R_GenerateLookup: column without a patch"); */
@@ -470,7 +470,7 @@ void R_InitTextures(void)
 			patch->patch = patchlookup[M_BytesToShort(mpatch->patch)];
 			if (patch->patch == -1)
 			{
-				I_Error ("R_InitTextures: Missing patch in texture %.*s", (int)D_COUNT_OF(texture->name), texture->name);
+				I_Error ("R_InitTextures: Missing patch in texture %.*s", (int)CC_COUNT_OF(texture->name), texture->name);
 			}
 		}
 		texturecolumnlump[i] = (short*)Z_Malloc(texture->width * sizeof(*texturecolumnlump), PU_STATIC, NULL);
@@ -554,11 +554,11 @@ void R_InitColormaps(void)
 
 	/* Load the original light tables for the Spectre effect. */
 	for (i = 0; i < 32; ++i)
-		for (j = 0; j < D_COUNT_OF(colormaps[FUZZCOLORMAPS + i]); ++j)
+		for (j = 0; j < CC_COUNT_OF(colormaps[FUZZCOLORMAPS + i]); ++j)
 			colormaps[FUZZCOLORMAPS + i][j] = original_colour_maps[i][j];
 
 	/* Load the invulnerability effect. */
-	for (i = 0; i < D_COUNT_OF(colormaps[INVERSECOLORMAP]); ++i)
+	for (i = 0; i < CC_COUNT_OF(colormaps[INVERSECOLORMAP]); ++i)
 		colormaps[INVERSECOLORMAP][i] = original_colour_maps[32][i];
 
 	/* Release the `COLORMAP` buffer. */
@@ -569,8 +569,8 @@ void R_InitColormaps(void)
 		/* Make the brightness-related colour maps pass-through straight to the underlying
 		   expanded palette, bypassing colour-aliasing and enabling 'full-colour' rendering. */
 		for (i = 0; i < NUMLIGHTCOLORMAPS; ++i)
-			for (j = 0; j < D_COUNT_OF(colormaps[i]); ++j)
-				colormaps[i][j] = i * D_COUNT_OF(colormaps[i]) + j;
+			for (j = 0; j < CC_COUNT_OF(colormaps[i]); ++j)
+				colormaps[i][j] = i * CC_COUNT_OF(colormaps[i]) + j;
 	}
 	else
 	{
@@ -585,7 +585,7 @@ void R_InitColormaps(void)
 	{
 		/* Ripped from the Press Release Pre-Beta. */
 		/* You don't need to be a lawyer to know that the output of a very generic colour-matching algorithm is not copyrightable. */
-		static const unsigned char light_amplification_colour_map[D_COUNT_OF(colormaps[LIGHTAMPCOLORMAP])] = {
+		static const unsigned char light_amplification_colour_map[CC_COUNT_OF(colormaps[LIGHTAMPCOLORMAP])] = {
 			0x00, 0x7F, 0x08, 0x7D, 0x75, 0x7F, 0x7F, 0x08, 0x00, 0x7E, 0x7F, 0x7F, 0x08, 0x7D, 0x7D, 0x7E,
 			0x77, 0x77, 0x77, 0x78, 0x78, 0x78, 0x79, 0x7A, 0x7A, 0x7A, 0x7B, 0x7B, 0x7B, 0x7B, 0x7C, 0x7C,
 			0x7C, 0x7D, 0x7D, 0x7D, 0x7D, 0x7D, 0x7D, 0x7E, 0x7E, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F,
@@ -604,7 +604,7 @@ void R_InitColormaps(void)
 			0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x78, 0x77, 0x77, 0x7B, 0x7C, 0x7D, 0x7E, 0x7B
 		};
 
-		for (i = 0; i < D_COUNT_OF(colormaps[LIGHTAMPCOLORMAP]); ++i)
+		for (i = 0; i < CC_COUNT_OF(colormaps[LIGHTAMPCOLORMAP]); ++i)
 			colormaps[LIGHTAMPCOLORMAP][i] = light_amplification_colour_map[i];
 	}
 	else
@@ -657,7 +657,7 @@ int R_CheckTextureNumForName(const char *name)
 
 	/* TODO: Use a hash map or binary search tree to speed this up. */
 	for (i = 0; i < numtextures; ++i)
-		if (!M_strncasecmp(textures[i]->name, name, D_COUNT_OF(textures[i]->name)))
+		if (!M_strncasecmp(textures[i]->name, name, CC_COUNT_OF(textures[i]->name)))
 			return i;
 
 	return -1;
@@ -783,7 +783,7 @@ void R_PrecacheLevel(void)
 		{
 			sf = &sprites[i].spriteframes[j];
 
-			for (k = 0; k < D_COUNT_OF(sf->lump); ++k)
+			for (k = 0; k < CC_COUNT_OF(sf->lump); ++k)
 			{
 				lump = firstspritelump + sf->lump[k];
 				spritememory += lumpinfo[lump].size;

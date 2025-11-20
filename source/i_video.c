@@ -159,7 +159,7 @@ void I_SetPalette (palette_t* const palette, const size_t total_palettes)
 	{
 		size_t j;
 
-		for (j = 0; j < D_COUNT_OF(palette[i]); ++j)
+		for (j = 0; j < CC_COUNT_OF(palette[i]); ++j)
 		{
 			IB_GetColor(&colors[(i * 0x100 + j) * bytes_per_pixel],
 				gamma[palette[i][j][0]],

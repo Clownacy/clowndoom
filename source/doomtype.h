@@ -24,12 +24,7 @@
 
 #include "clownlibs/clowncommon/clowncommon.h"
 
-/* TODO: Eliminate these shims and just use the ClownCommon macros directly. */
-#define D_MIN(a, b) CC_MIN(a, b)
-#define D_MAX(a, b) CC_MAX(a, b)
-#define D_CLAMP(min, max, value) CC_CLAMP(min, max, value)
-#define D_COUNT_OF(x) CC_COUNT_OF(x)
-
+/* TODO: Eliminate these and just use ClownCommon's versions. */
 enum {d_false, d_true};
 typedef unsigned char d_bool;
 

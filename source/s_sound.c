@@ -199,7 +199,7 @@ void S_Start(void)
 			mus_ddtblu  /* Level 9: March of the Demons */
 		};
 
-		if (gamemission == pack_nerve && gamemap-1 < D_COUNT_OF(spmus))
+		if (gamemission == pack_nerve && gamemap-1 < CC_COUNT_OF(spmus))
 			mnum = spmus[gamemap-1];
 		else
 			mnum = mus_runnin + gamemap - 1;

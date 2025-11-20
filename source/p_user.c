@@ -317,8 +317,8 @@ void P_PlayerThink (player_t* player)
 				--index;
 
 			if (index == -1)
-				index = D_COUNT_OF(order) - 1;
-			else if (index == D_COUNT_OF(order))
+				index = CC_COUNT_OF(order) - 1;
+			else if (index == CC_COUNT_OF(order))
 				index = 0;
 		} while (!WeaponValid(player, order[index]));
 

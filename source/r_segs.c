@@ -215,12 +215,12 @@ void R_RenderMaskedSegRange(drawseg_t *ds, int x1, int x2)
 	/* find positioning */
 	if (curline->linedef->flags & ML_DONTPEGBOTTOM)
 	{
-		dc_texturemid = D_MAX(frontsector->floorheight, backsector->floorheight);
+		dc_texturemid = CC_MAX(frontsector->floorheight, backsector->floorheight);
 		dc_texturemid = dc_texturemid + textureheight[texnum] - viewz;
 	}
 	else
 	{
-		dc_texturemid = D_MIN(frontsector->ceilingheight, backsector->ceilingheight);
+		dc_texturemid = CC_MIN(frontsector->ceilingheight, backsector->ceilingheight);
 		dc_texturemid = dc_texturemid - viewz;
 	}
 	dc_texturemid += curline->sidedef->rowoffset;

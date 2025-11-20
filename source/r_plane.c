@@ -252,7 +252,7 @@ R_FindPlane
 	check->minx = SCREENWIDTH;
 	check->maxx = -1;
 
-	for (i = 0; i < D_COUNT_OF(check->top); ++i)
+	for (i = 0; i < CC_COUNT_OF(check->top); ++i)
 		check->top[i] = INT_MAX;
 
 	return check;
@@ -320,7 +320,7 @@ R_CheckPlane
 	pl->minx = start;
 	pl->maxx = stop;
 
-	for (i = 0; i < D_COUNT_OF(pl->top); ++i)
+	for (i = 0; i < CC_COUNT_OF(pl->top); ++i)
 		pl->top[i] = INT_MAX;
 
 	return pl;

@@ -137,7 +137,7 @@ void P_InitPicAnims (void)
 
 	/*  Init animation*/
 	lastanim = anims;
-	for (i=0 ; i < D_COUNT_OF(animdefs) ; i++)
+	for (i=0 ; i < CC_COUNT_OF(animdefs) ; i++)
 	{
 		if (animdefs[i].istexture)
 		{

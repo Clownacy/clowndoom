@@ -556,7 +556,7 @@ void D_AddFile (const char *file)
 {
 	size_t i;
 
-	for (i = 0; i < D_COUNT_OF(wadfiles); ++i)
+	for (i = 0; i < CC_COUNT_OF(wadfiles); ++i)
 	{
 		if (wadfiles[i] == NULL)
 		{
@@ -576,7 +576,7 @@ void IdentifyVersion (void)
 {
 	const char *doomwaddir;
 
-	I_GetConfigPath(basedefault, D_COUNT_OF(basedefault));
+	I_GetConfigPath(basedefault, CC_COUNT_OF(basedefault));
 
 	doomwaddir = getenv("DOOMWADDIR");
 	if (!doomwaddir)
@@ -651,7 +651,7 @@ void IdentifyVersion (void)
 
 			size_t i;
 
-			for (i = 0; i < D_COUNT_OF(wads); ++i)
+			for (i = 0; i < CC_COUNT_OF(wads); ++i)
 			{
 				if (M_strcasecmp(basename, wads[i].filename) == 0)
 				{
@@ -676,7 +676,7 @@ void IdentifyVersion (void)
 				memcpy(&path[0], doomwaddir, wad_directory_length);
 				path[wad_directory_length] = '/';
 
-				for (i = 0; i < D_COUNT_OF(wads); ++i)
+				for (i = 0; i < CC_COUNT_OF(wads); ++i)
 				{
 					sprintf(&path[wad_directory_length + 1], "%.*s", (int)sizeof(wads[i].filename) - 1, wads[i].filename);
 

@@ -350,11 +350,11 @@ V_FillScreenWithPattern
 				line_buffer[y*HUD_SCALE+w] = src[y*BG_TILE_SRC_SIZE+x%BG_TILE_SRC_SIZE];
 
 		/* Repeatedly copy the upscaled row to the screen. */
-		for (w=0 ; w<D_MIN(HUD_SCALE,SCREENWIDTH-x*HUD_SCALE); w++)
+		for (w=0 ; w<CC_MIN(HUD_SCALE,SCREENWIDTH-x*HUD_SCALE); w++)
 		{
 			for (y=0 ; y<height; y+=BG_TILE_DST_SIZE)
 			{
-				const int pixels_to_do = D_MIN(BG_TILE_DST_SIZE, height - y);
+				const int pixels_to_do = CC_MIN(BG_TILE_DST_SIZE, height - y);
 				memcpy (dest, line_buffer, pixels_to_do * sizeof(colourindex_t));
 				dest += pixels_to_do;
 			}
@@ -443,11 +443,11 @@ palette_t* V_GetPalette(size_t *length)
 		{
 			size_t j;
 
-			for (j = 0; j < D_COUNT_OF(calculated_palette[i]); ++j)
+			for (j = 0; j < CC_COUNT_OF(calculated_palette[i]); ++j)
 			{
 				size_t k;
 
-				for (k = 0; k < D_COUNT_OF(calculated_palette[i][j]); ++k)
+				for (k = 0; k < CC_COUNT_OF(calculated_palette[i][j]); ++k)
 				{
 					int colour;
 

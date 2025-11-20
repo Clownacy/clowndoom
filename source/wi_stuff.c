@@ -248,9 +248,9 @@ static anim_t epsd2animinfo[] =
 
 static const int NUMANIMS[NUMEPISODES] =
 {
-	D_COUNT_OF(epsd0animinfo),
-	D_COUNT_OF(epsd1animinfo),
-	D_COUNT_OF(epsd2animinfo)
+	CC_COUNT_OF(epsd0animinfo),
+	CC_COUNT_OF(epsd1animinfo),
+	CC_COUNT_OF(epsd2animinfo)
 };
 
 static anim_t* const anims[NUMEPISODES] =
