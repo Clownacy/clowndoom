@@ -116,7 +116,7 @@ P_InterceptVector2
 /* P_CrossSubsector */
 /* Returns true */
 /*  if strace crosses the given subsector successfully. */
-d_bool P_CrossSubsector (int num)
+cc_bool P_CrossSubsector (int num)
 {
 	seg_t*              seg;
 	line_t*             line;
@@ -180,7 +180,7 @@ d_bool P_CrossSubsector (int num)
 		/* stop because it is not two sided anyway */
 		/* might do this after updating validcount? */
 		if ( !(line->flags & ML_TWOSIDED) )
-			return d_false;
+			return cc_false;
 
 		/* crosses a two sided line */
 		front = seg->frontsector;
@@ -206,7 +206,7 @@ d_bool P_CrossSubsector (int num)
 
 		/* quick test for totally closed doors */
 		if (openbottom >= opentop)
-			return d_false;               /* stop */
+			return cc_false;               /* stop */
 
 		frac = P_InterceptVector2 (&strace, &divl);
 
@@ -225,10 +225,10 @@ d_bool P_CrossSubsector (int num)
 		}
 
 		if (topslope <= bottomslope)
-			return d_false;               /* stop */
+			return cc_false;               /* stop */
 	}
 	/* passed the subsector ok */
-	return d_true;
+	return cc_true;
 }
 
 
@@ -236,7 +236,7 @@ d_bool P_CrossSubsector (int num)
 /* P_CrossBSPNode */
 /* Returns true */
 /*  if strace crosses the given node successfully. */
-d_bool P_CrossBSPNode (int bspnum)
+cc_bool P_CrossBSPNode (int bspnum)
 {
 	node_t*     bsp;
 	int         side;
@@ -258,13 +258,13 @@ d_bool P_CrossBSPNode (int bspnum)
 
 	/* cross the starting side */
 	if (!P_CrossBSPNode (bsp->children[side]) )
-		return d_false;
+		return cc_false;
 
 	/* the partition plane is crossed here */
 	if (side == P_DivlineSide (t2x, t2y,(divline_t *)bsp))
 	{
 		/* the line doesn't touch the other side */
-		return d_true;
+		return cc_true;
 	}
 
 	/* cross the ending side */
@@ -276,7 +276,7 @@ d_bool P_CrossBSPNode (int bspnum)
 /* Returns true */
 /*  if a straight line between t1 and t2 is unobstructed. */
 /* Uses REJECT. */
-d_bool
+cc_bool
 P_CheckSight
 ( mobj_t*       t1,
   mobj_t*       t2 )
@@ -302,7 +302,7 @@ P_CheckSight
 		sightcounts[0]++;
 
 		/* can't possibly be connected */
-		return d_false;
+		return cc_false;
 	}
 
 	/* An unobstructed LOS is possible. */

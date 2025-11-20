@@ -52,8 +52,8 @@ ticcmd_t        localcmds[BACKUPTICS];
 
 ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
 int             nettics[MAXNETNODES];
-d_bool          nodeingame[MAXNETNODES];                /* set false as nodes leave game */
-d_bool          remoteresend[MAXNETNODES];              /* set when local needs tics */
+cc_bool         nodeingame[MAXNETNODES];                /* set false as nodes leave game */
+cc_bool         remoteresend[MAXNETNODES];              /* set when local needs tics */
 int             resendto[MAXNETNODES];                  /* set when remote needs tics */
 int             resendcount[MAXNETNODES];
 
@@ -70,7 +70,7 @@ void D_ProcessEvents (void);
 void G_BuildTiccmd (ticcmd_t *cmd);
 void D_DoAdvanceDemo (void);
 
-d_bool          reboundpacket;
+cc_bool         reboundpacket;
 doomdata_t      reboundstore;
 
 
@@ -126,7 +126,7 @@ HSendPacket
 	if (!node)
 	{
 		reboundstore = *netbuffer;
-		reboundpacket = d_true;
+		reboundpacket = cc_true;
 		return;
 	}
 
@@ -164,40 +164,40 @@ HSendPacket
 
 /* HGetPacket */
 /* Returns false if no packet is waiting */
-d_bool HGetPacket (void)
+cc_bool HGetPacket (void)
 {
 	if (reboundpacket)
 	{
 		*netbuffer = reboundstore;
 		doomcom->remotenode = 0;
-		reboundpacket = d_false;
-		return d_true;
+		reboundpacket = cc_false;
+		return cc_true;
 	}
 
 	if (!netgame)
-		return d_false;
+		return cc_false;
 
 	if (demoplayback)
-		return d_false;
+		return cc_false;
 
 	doomcom->command = CMD_GET;
 	I_NetCmd ();
 
 	if (doomcom->remotenode == -1)
-		return d_false;
+		return cc_false;
 
 	if (doomcom->datalength != NetbufferSize ())
 	{
 		if (debugfile)
 			fprintf (debugfile,"bad packet length %i\n",(int)doomcom->datalength);
-		return d_false;
+		return cc_false;
 	}
 
 	if (NetbufferChecksum () != (netbuffer->checksum&NCMD_CHECKSUM) )
 	{
 		if (debugfile)
 			fprintf (debugfile,"bad packet checksum\n");
-		return d_false;
+		return cc_false;
 	}
 
 	if (debugfile)
@@ -224,7 +224,7 @@ d_bool HGetPacket (void)
 			fprintf (debugfile,"\n");
 		}
 	}
-	return d_true;
+	return cc_true;
 }
 
 
@@ -257,8 +257,8 @@ void GetPackets (void)
 		{
 			if (!nodeingame[netnode])
 				continue;
-			nodeingame[netnode] = d_false;
-			playeringame[netconsole] = d_false;
+			nodeingame[netnode] = cc_false;
+			playeringame[netconsole] = cc_false;
 			strcpy (exitmsg, "Player 1 left the game");
 			exitmsg[7] += netconsole;
 			players[consoleplayer].message = exitmsg;
@@ -306,7 +306,7 @@ void GetPackets (void)
 				fprintf (debugfile,
 						 "missed tics from %i (%i - %i)\n",
 						 netnode, realstart, nettics[netnode]);
-			remoteresend[netnode] = d_true;
+			remoteresend[netnode] = cc_true;
 			continue;
 		}
 
@@ -314,7 +314,7 @@ void GetPackets (void)
 		{
 			int         start;
 
-			remoteresend[netnode] = d_false;
+			remoteresend[netnode] = cc_false;
 
 			start = nettics[netnode] - realstart;
 			src = &netbuffer->cmds[start];
@@ -443,9 +443,9 @@ void CheckAbort (void)
 void D_ArbitrateNetStart (void)
 {
 	int         i;
-	d_bool      gotinfo[MAXNETNODES];
+	cc_bool     gotinfo[MAXNETNODES];
 
-	autostart = d_true;
+	autostart = cc_true;
 	memset (gotinfo,0,sizeof(gotinfo));
 
 	if (doomcom->consoleplayer)
@@ -497,7 +497,7 @@ void D_ArbitrateNetStart (void)
 			for(i = 10 ; i  &&  HGetPacket(); --i)
 			{
 				if((netbuffer->player&0x7f) < MAXNETNODES)
-					gotinfo[netbuffer->player&0x7f] = d_true;
+					gotinfo[netbuffer->player&0x7f] = cc_true;
 			}
 #else
 			while (HGetPacket ())
@@ -523,9 +523,9 @@ void D_CheckNetGame (void)
 
 	for (i=0 ; i<MAXNETNODES ; i++)
 	{
-		nodeingame[i] = d_false;
+		nodeingame[i] = cc_false;
 		nettics[i] = 0;
-		remoteresend[i] = d_false;        /* set when local needs tics */
+		remoteresend[i] = cc_false;        /* set when local needs tics */
 		resendto[i] = 0;                /* which tic to start sending */
 	}
 
@@ -549,9 +549,9 @@ void D_CheckNetGame (void)
 		maxsend = 1;
 
 	for (i=0 ; i<doomcom->numplayers ; i++)
-		playeringame[i] = d_true;
+		playeringame[i] = cc_true;
 	for (i=0 ; i<doomcom->numnodes ; i++)
-		nodeingame[i] = d_true;
+		nodeingame[i] = cc_true;
 
 	I_Info ("player %i of %i (%i nodes)\n",
 			consoleplayer+1, doomcom->numplayers, doomcom->numnodes);
@@ -594,7 +594,7 @@ int     frameon;
 int     frameskip[4];
 int     oldnettics;
 
-extern  d_bool advancedemo;
+extern  cc_bool advancedemo;
 
 void TryRunTics (void)
 {

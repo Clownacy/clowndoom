@@ -24,10 +24,6 @@
 
 #include "clownlibs/clowncommon/clowncommon.h"
 
-/* TODO: Eliminate these and just use ClownCommon's versions. */
-enum {d_false, d_true};
-typedef unsigned char d_bool;
-
 /* An indexed pixel. Currently `short` to enable true-colour rendering. */
 typedef unsigned short colourindex_t;
 

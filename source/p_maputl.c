@@ -439,11 +439,11 @@ P_SetThingPosition (mobj_t* thing)
 /* so increment validcount before the first call */
 /* to P_BlockLinesIterator, then make one or more calls */
 /* to it. */
-d_bool
+cc_bool
 P_BlockLinesIterator
 ( int                   x,
   int                   y,
-  d_bool(*func)(line_t*) )
+  cc_bool(*func)(line_t*) )
 {
 	int                 offset;
 	short*              list;
@@ -454,7 +454,7 @@ P_BlockLinesIterator
 		|| x>=bmapwidth
 		|| y>=bmapheight)
 	{
-		return d_true;
+		return cc_true;
 	}
 
 	offset = y*bmapwidth+x;
@@ -471,18 +471,18 @@ P_BlockLinesIterator
 		ld->validcount = validcount;
 
 		if ( !func(ld) )
-			return d_false;
+			return cc_false;
 	}
-	return d_true;        /* everything was checked */
+	return cc_true;        /* everything was checked */
 }
 
 
 /* P_BlockThingsIterator */
-d_bool
+cc_bool
 P_BlockThingsIterator
 ( int                   x,
   int                   y,
-  d_bool(*func)(mobj_t*) )
+  cc_bool(*func)(mobj_t*) )
 {
 	mobj_t*             mobj;
 
@@ -491,7 +491,7 @@ P_BlockThingsIterator
 		 || x>=bmapwidth
 		 || y>=bmapheight)
 	{
-		return d_true;
+		return cc_true;
 	}
 
 
@@ -500,9 +500,9 @@ P_BlockThingsIterator
 		 mobj = mobj->bnext)
 	{
 		if (!func( mobj ) )
-			return d_false;
+			return cc_false;
 	}
-	return d_true;
+	return cc_true;
 }
 
 
@@ -512,7 +512,7 @@ intercept_t     intercepts[MAXINTERCEPTS];
 intercept_t*    intercept_p;
 
 divline_t       trace;
-d_bool          earlyout;
+cc_bool         earlyout;
 int             ptflags;
 
 /* PIT_AddLineIntercepts. */
@@ -522,7 +522,7 @@ int             ptflags;
 /* A line is crossed if its endpoints */
 /* are on opposite sides of the trace. */
 /* Returns true if earlyout and a solid line hit. */
-d_bool
+cc_bool
 PIT_AddLineIntercepts (line_t* ld)
 {
 	int                 s1;
@@ -533,7 +533,7 @@ PIT_AddLineIntercepts (line_t* ld)
 	if (intercept_p == intercepts + MAXINTERCEPTS)
 	{
 		I_Info("Intercept overflow occurred; demo will probably desync!\n");
-		return d_true;    /* intercept array full */
+		return cc_true;    /* intercept array full */
 	}
 
 	/* avoid precision problems with two routines */
@@ -552,36 +552,36 @@ PIT_AddLineIntercepts (line_t* ld)
 	}
 
 	if (s1 == s2)
-		return d_true;    /* line isn't crossed */
+		return cc_true;    /* line isn't crossed */
 
 	/* hit the line */
 	P_MakeDivline (ld, &dl);
 	frac = P_InterceptVector (&trace, &dl);
 
 	if (frac < 0)
-		return d_true;    /* behind source */
+		return cc_true;    /* behind source */
 
 	/* try to early out the check */
 	if (earlyout
 		&& frac < FRACUNIT
 		&& !ld->backsector)
 	{
-		return d_false;   /* stop checking */
+		return cc_false;   /* stop checking */
 	}
 
 
 	intercept_p->frac = frac;
-	intercept_p->isaline = d_true;
+	intercept_p->isaline = cc_true;
 	intercept_p->d.line = ld;
 	intercept_p++;
 
-	return d_true;        /* continue */
+	return cc_true;        /* continue */
 }
 
 
 
 /* PIT_AddThingIntercepts */
-d_bool PIT_AddThingIntercepts (mobj_t* thing)
+cc_bool PIT_AddThingIntercepts (mobj_t* thing)
 {
 	fixed_t             x1;
 	fixed_t             y1;
@@ -591,7 +591,7 @@ d_bool PIT_AddThingIntercepts (mobj_t* thing)
 	int                 s1;
 	int                 s2;
 
-	d_bool              tracepositive;
+	cc_bool             tracepositive;
 
 	divline_t           dl;
 
@@ -600,7 +600,7 @@ d_bool PIT_AddThingIntercepts (mobj_t* thing)
 	if (intercept_p == intercepts + MAXINTERCEPTS)
 	{
 		I_Info("Intercept overflow occurred; demo will probably desync!\n");
-		return d_true;            /* intercept array full */
+		return cc_true;            /* intercept array full */
 	}
 
 	tracepositive = (trace.dx ^ trace.dy)>0;
@@ -627,7 +627,7 @@ d_bool PIT_AddThingIntercepts (mobj_t* thing)
 	s2 = P_PointOnDivlineSide (x2, y2, &trace);
 
 	if (s1 == s2)
-		return d_true;            /* line isn't crossed */
+		return cc_true;            /* line isn't crossed */
 
 	dl.x = x1;
 	dl.y = y1;
@@ -637,21 +637,21 @@ d_bool PIT_AddThingIntercepts (mobj_t* thing)
 	frac = P_InterceptVector (&trace, &dl);
 
 	if (frac < 0)
-		return d_true;            /* behind source */
+		return cc_true;            /* behind source */
 
 	intercept_p->frac = frac;
-	intercept_p->isaline = d_false;
+	intercept_p->isaline = cc_false;
 	intercept_p->d.thing = thing;
 	intercept_p++;
 
-	return d_true;                /* keep going */
+	return cc_true;                /* keep going */
 }
 
 
 /* P_TraverseIntercepts */
 /* Returns b_true if the traverser function returns true */
 /* for all lines. */
-d_bool
+cc_bool
 P_TraverseIntercepts
 ( traverser_t   func,
   fixed_t       maxfrac )
@@ -678,7 +678,7 @@ P_TraverseIntercepts
 		}
 
 		if (dist > maxfrac)
-			return d_true;        /* checked everything in range */
+			return cc_true;        /* checked everything in range */
 
 #if 0  /* UNUSED */
 	{
@@ -693,12 +693,12 @@ P_TraverseIntercepts
 #endif
 
 		if ( !func (in) )
-			return d_false;       /* don't bother going farther */
+			return cc_false;       /* don't bother going farther */
 
 		in->frac = INT_MAX;
 	}
 
-	return d_true;                /* everything was traversed */
+	return cc_true;                /* everything was traversed */
 }
 
 
@@ -709,14 +709,14 @@ P_TraverseIntercepts
 /* calling the traverser function for each. */
 /* Returns b_true if the traverser function returns true */
 /* for all lines. */
-d_bool
+cc_bool
 P_PathTraverse
 ( fixed_t               x1,
   fixed_t               y1,
   fixed_t               x2,
   fixed_t               y2,
   int                   flags,
-  d_bool (*trav) (intercept_t *))
+  cc_bool (*trav) (intercept_t *))
 {
 	fixed_t     xt1;
 	fixed_t     yt1;
@@ -818,13 +818,13 @@ P_PathTraverse
 		if (flags & PT_ADDLINES)
 		{
 			if (!P_BlockLinesIterator (mapx, mapy,PIT_AddLineIntercepts))
-				return d_false;   /* early out */
+				return cc_false;   /* early out */
 		}
 
 		if (flags & PT_ADDTHINGS)
 		{
 			if (!P_BlockThingsIterator (mapx, mapy,PIT_AddThingIntercepts))
-				return d_false;   /* early out */
+				return cc_false;   /* early out */
 		}
 
 		if (mapx == xt2

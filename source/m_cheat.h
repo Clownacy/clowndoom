@@ -32,7 +32,7 @@ typedef struct
 
 } cheatseq_t;
 
-d_bool
+cc_bool
 cht_CheckCheat
 ( cheatseq_t*           cht,
   char                  key );

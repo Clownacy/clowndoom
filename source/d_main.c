@@ -88,14 +88,14 @@ void D_DoomLoop (void);
 const char*     wadfiles[MAXWADFILES];
 
 
-d_bool          devparm;        /* started game with -devparm */
-d_bool          nomonsters;     /* checkparm of -nomonsters */
-d_bool          respawnparm;    /* checkparm of -respawn */
-d_bool          fastparm;       /* checkparm of -fast */
+cc_bool         devparm;        /* started game with -devparm */
+cc_bool         nomonsters;     /* checkparm of -nomonsters */
+cc_bool         respawnparm;    /* checkparm of -respawn */
+cc_bool         fastparm;       /* checkparm of -fast */
 
-d_bool          drone;
+cc_bool         drone;
 
-d_bool          singletics = d_false; /* debug flag to cancel adaptiveness */
+cc_bool         singletics = cc_false; /* debug flag to cancel adaptiveness */
 
 
 
@@ -103,17 +103,17 @@ d_bool          singletics = d_false; /* debug flag to cancel adaptiveness */
 /* extern  int  sfxVolume; */
 /* extern  int  musicVolume; */
 
-extern  d_bool inhelpscreens;
+extern  cc_bool inhelpscreens;
 
 skill_t         startskill;
 int             startepisode;
 int             startmap;
-d_bool          autostart;
+cc_bool         autostart;
 int             complevel;
 
 FILE*           debugfile;
 
-d_bool          advancedemo;
+cc_bool         advancedemo;
 
 
 
@@ -159,7 +159,7 @@ void D_ProcessEvents (void)
 
 	for ( ; eventtail != eventhead ; eventtail = (eventtail+1)&(MAXEVENTS-1) )
 	{
-		static d_bool altheld;
+		static cc_bool altheld;
 
 		ev = &events[eventtail];
 
@@ -169,7 +169,7 @@ void D_ProcessEvents (void)
 				switch (ev->data1)
 				{
 					case KEY_LALT:
-						altheld = d_true;
+						altheld = cc_true;
 						break;
 
 					case KEY_ENTER:
@@ -192,7 +192,7 @@ void D_ProcessEvents (void)
 				switch (ev->data1)
 				{
 					case KEY_LALT:
-						altheld = d_false;
+						altheld = cc_false;
 						break;
 
 					default:
@@ -219,28 +219,28 @@ void D_ProcessEvents (void)
 
 /* wipegamestate can be set to -1 to force a wipe on the next draw */
 gamestate_t     wipegamestate = GS_DEMOSCREEN;
-extern  d_bool setsizeneeded; /* TODO: This is such spaghetti code bullshit */
+extern  cc_bool setsizeneeded; /* TODO: This is such spaghetti code bullshit */
 
 void D_Display (void)
 {
-	static  d_bool              viewactivestate = d_false;
-	static  d_bool              menuactivestate = d_false;
-	static  d_bool              inhelpscreensstate = d_false;
-	static  d_bool              fullscreen = d_false;
+	static  cc_bool             viewactivestate = cc_false;
+	static  cc_bool             menuactivestate = cc_false;
+	static  cc_bool             inhelpscreensstate = cc_false;
+	static  cc_bool             fullscreen = cc_false;
 	static  gamestate_t         oldgamestate = GS_FORCEWIPE;
 	static  int                 borderdrawcount;
 	int                         nowtime;
 	int                         tics;
 	int                         wipestart;
 	int                         y;
-	d_bool                      done;
-	d_bool                      wipe;
-	d_bool                      redrawsbar;
+	cc_bool                     done;
+	cc_bool                     wipe;
+	cc_bool                     redrawsbar;
 
 	if (nodrawers)
 		return;                    /* for comparative timing / profiling */
 
-	redrawsbar = d_false;
+	redrawsbar = cc_false;
 
 	/* change the view size if needed */
 	if (setsizeneeded)
@@ -253,11 +253,11 @@ void D_Display (void)
 	/* save the current screen if about to wipe */
 	if (gamestate != wipegamestate)
 	{
-		wipe = d_true;
+		wipe = cc_true;
 		wipe_StartScreen();
 	}
 	else
-		wipe = d_false;
+		wipe = cc_false;
 
 	if (gamestate == GS_LEVEL && gametic)
 		HU_Erase();
@@ -271,9 +271,9 @@ void D_Display (void)
 		if (automapactive)
 			AM_Drawer ();
 		if (wipe || (viewheight != SCREENHEIGHT && fullscreen) )
-			redrawsbar = d_true;
+			redrawsbar = cc_true;
 		if (inhelpscreensstate && !inhelpscreens)
-			redrawsbar = d_true;              /* just put away the help screen */
+			redrawsbar = cc_true;              /* just put away the help screen */
 		ST_Drawer (viewheight == SCREENHEIGHT, redrawsbar );
 		fullscreen = viewheight == SCREENHEIGHT;
 		break;
@@ -311,7 +311,7 @@ void D_Display (void)
 	/* see if the border needs to be initially drawn */
 	if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
 	{
-		viewactivestate = d_false;        /* view was not active */
+		viewactivestate = cc_false;        /* view was not active */
 		R_FillBackScreen ();    /* draw the pattern into the back screen */
 	}
 
@@ -381,7 +381,7 @@ void D_Display (void)
 
 
 /*  D_DoomLoop */
-extern  d_bool          demorecording;
+extern  cc_bool         demorecording;
 
 void D_DoomLoop (void)
 {
@@ -456,7 +456,7 @@ void D_PageDrawer (void)
 /* Called after each demo or intro demosequence finishes */
 void D_AdvanceDemo (void)
 {
-	advancedemo = d_true;
+	advancedemo = cc_true;
 }
 
 
@@ -465,9 +465,9 @@ void D_AdvanceDemo (void)
  void D_DoAdvanceDemo (void)
 {
 	players[consoleplayer].playerstate = PST_LIVE;  /* not reborn */
-	advancedemo = d_false;
-	usergame = d_false;               /* no save / end game here */
-	paused = d_false;
+	advancedemo = cc_false;
+	usergame = cc_false;               /* no save / end game here */
+	paused = cc_false;
 	gameaction = ga_nothing;
 
 	if ( gamemode == retail )
@@ -586,7 +586,7 @@ void IdentifyVersion (void)
 	{
 		gamemode = shareware;
 		gamemission = doom;
-		devparm = d_true;
+		devparm = cc_true;
 		D_AddFile (DEVDATA"doom1.wad");
 		D_AddFile (DEVMAPS"data_se/texture1.lmp");
 		D_AddFile (DEVMAPS"data_se/pnames.lmp");
@@ -596,7 +596,7 @@ void IdentifyVersion (void)
 	{
 		gamemode = registered;
 		gamemission = doom;
-		devparm = d_true;
+		devparm = cc_true;
 		D_AddFile (DEVDATA"doom.wad");
 		D_AddFile (DEVMAPS"data_se/texture1.lmp");
 		D_AddFile (DEVMAPS"data_se/texture2.lmp");
@@ -607,7 +607,7 @@ void IdentifyVersion (void)
 	{
 		gamemode = commercial;
 		gamemission = doom2;
-		devparm = d_true;
+		devparm = cc_true;
 		/* I don't bother
 		if(plutonia)
 			D_AddFile (DEVDATA"plutonia.wad");
@@ -792,7 +792,7 @@ void D_DoomMain (int argc, char **argv)
 	IdentifyVersion ();
 
 	setbuf (stdout, NULL);
-	modifiedgame = d_false;
+	modifiedgame = cc_false;
 
 	nomonsters = M_CheckParm ("-nomonsters");
 	respawnparm = M_CheckParm ("-respawn");
@@ -925,7 +925,7 @@ void D_DoomMain (int argc, char **argv)
 	{
 		/* the parms after p are wadfile/lump names, */
 		/* until end of parms or another - preceded parm */
-		modifiedgame = d_true;            /* homebrew levels */
+		modifiedgame = cc_true;            /* homebrew levels */
 		while (++p != myargc && myargv[p][0] != '-')
 		{
 			const char* const path = myargv[p];
@@ -956,14 +956,14 @@ void D_DoomMain (int argc, char **argv)
 	startskill = sk_medium;
 	startepisode = 1;
 	startmap = 1;
-	autostart = d_false;
+	autostart = cc_false;
 	complevel = -1;
 
 	p = M_CheckParm ("-skill");
 	if (p && p < myargc-1)
 	{
 		startskill = (skill_t)(myargv[p+1][0]-'1');
-		autostart = d_true;
+		autostart = cc_true;
 	}
 
 	p = M_CheckParm ("-episode");
@@ -971,7 +971,7 @@ void D_DoomMain (int argc, char **argv)
 	{
 		startepisode = myargv[p+1][0]-'0';
 		startmap = 1;
-		autostart = d_true;
+		autostart = cc_true;
 	}
 
 	p = M_CheckParm ("-timer");
@@ -1001,7 +1001,7 @@ void D_DoomMain (int argc, char **argv)
 			startepisode = myargv[p+1][0]-'0';
 			startmap = myargv[p+2][0]-'0';
 		}
-		autostart = d_true;
+		autostart = cc_true;
 	}
 
 	p = M_CheckParm ("-complevel");
@@ -1067,13 +1067,13 @@ void D_DoomMain (int argc, char **argv)
 	if (p && p < myargc-1)
 	{
 		G_RecordDemo (myargv[p+1]);
-		autostart = d_true;
+		autostart = cc_true;
 	}
 
 	p = M_CheckParm ("-playdemo");
 	if (p && p < myargc-1)
 	{
-		singledemo = d_true;              /* quit after one demo */
+		singledemo = cc_true;              /* quit after one demo */
 		G_DeferedPlayDemo (myargv[p+1]);
 		D_DoomLoop ();  /* never returns */
 	}

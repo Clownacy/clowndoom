@@ -103,7 +103,7 @@ static int              snd_SfxVolume;
 
 
 /* whether songs are mus_paused */
-static d_bool           mus_paused;
+static cc_bool          mus_paused;
 
 /* music currently being played */
 static musicinfo_t*     mus_playing;
@@ -157,7 +157,7 @@ void S_Init
 		channels[i].sfxinfo = NULL;
 
 	/* no sounds are playing, and they are not mus_paused */
-	mus_paused = d_false;
+	mus_paused = cc_false;
 
 	/* Note that sounds have not been cached (yet). */
 	for (i=1 ; i<NUMSFX ; i++)
@@ -231,7 +231,7 @@ void S_Start(void)
 	/*  if (commercial && mnum > mus_e3m9) */
 	/*      mnum -= mus_e3m9; */
 
-	S_ChangeMusic(mnum, d_true);
+	S_ChangeMusic(mnum, cc_true);
 
 	nextcleanup = 15;
 }
@@ -472,7 +472,7 @@ void S_PauseSound(void)
 	if (mus_playing != NULL && !mus_paused)
 	{
 		I_PauseSong(mus_playing->handle);
-		mus_paused = d_true;
+		mus_paused = cc_true;
 	}
 }
 
@@ -481,7 +481,7 @@ void S_ResumeSound(void)
 	if (mus_playing != NULL && mus_paused)
 	{
 		I_ResumeSong(mus_playing->handle);
-		mus_paused = d_false;
+		mus_paused = cc_false;
 	}
 }
 
@@ -602,13 +602,13 @@ void S_SetSfxVolume(int volume)
 /* Starts some music with the music id found in sounds.h. */
 void S_StartMusic(int m_id)
 {
-	S_ChangeMusic(m_id, d_false);
+	S_ChangeMusic(m_id, cc_false);
 }
 
 void
 S_ChangeMusic
 ( int                   musicnum,
-  d_bool                looping )
+  cc_bool               looping )
 {
 	musicinfo_t*        music;
 	char                namebuf[9];

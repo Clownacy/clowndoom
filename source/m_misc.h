@@ -70,7 +70,7 @@ extern const char *wildmidi_config_path;
 
 extern const char *chat_macros[10];
 
-d_bool
+cc_bool
 M_WriteFile
 ( char const*   name,
   void*         source,
@@ -115,7 +115,7 @@ const char* M_basename(const char *path);
 size_t M_StringCopy(char *dest, size_t destsz, const char *src);
 size_t M_StringCopyOffset(char *dest, size_t destsz, size_t dest_offset, const char *src);
 
-d_bool M_FileExists(const char* const filename);
+cc_bool M_FileExists(const char* const filename);
 
 int M_BytesToShort(const unsigned char * const data);
 long M_BytesToLong(const unsigned char * const data);

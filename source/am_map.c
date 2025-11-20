@@ -206,11 +206,11 @@ mline_t thintriangle_guy[] = {
 
 
 int             automap_cheats = 0;
-static d_bool   grid = d_false;
+static cc_bool  grid = cc_false;
 
-static d_bool   leveljuststarted = d_true;   /* kluge until AM_LevelInit() is called */
+static cc_bool  leveljuststarted = cc_true;   /* kluge until AM_LevelInit() is called */
 
-d_bool          automapactive = d_false;
+cc_bool         automapactive = cc_false;
 #define finit_width SCREENWIDTH
 #define finit_height (SCREENHEIGHT - ST_HEIGHT)
 
@@ -272,14 +272,14 @@ static patch_t *marknums[10]; /* numbers used for marking by the automap */
 static mpoint_t markpoints[AM_NUMMARKPOINTS]; /* where the points are */
 static int markpointnum = 0; /* next point to be assigned */
 
-static d_bool followplayer = d_true; /* specifies whether to follow the player around */
+static cc_bool followplayer = cc_true; /* specifies whether to follow the player around */
 
 static char cheat_amap_seq[] = {'i', 'd', 'd', 't', (char)-1};
 static cheatseq_t cheat_amap = { cheat_amap_seq, NULL };
 
-static d_bool stopped = d_true;
+static cc_bool stopped = cc_true;
 
-extern d_bool viewactive;
+extern cc_bool viewactive;
 /* extern byte screens[][SCREENWIDTH*SCREENHEIGHT]; */
 
 
@@ -388,7 +388,7 @@ void AM_changeWindowLoc(void)
 {
 	if (m_paninc.x || m_paninc.y)
 	{
-		followplayer = d_false;
+		followplayer = cc_false;
 		f_oldloc.x = INT_MAX;
 	}
 
@@ -415,7 +415,7 @@ void AM_initVariables(void)
 	int pnum;
 	static event_t st_notify = { ev_keyup, AM_MSGENTERED, 0, 0, 0 };
 
-	automapactive = d_true;
+	automapactive = cc_true;
 	fb = screens[SCREEN_FRAMEBUFFER];
 
 	f_oldloc.x = INT_MAX;
@@ -486,7 +486,7 @@ void AM_clearMarks(void)
 /* right now, i figure it out myself */
 void AM_LevelInit(void)
 {
-	leveljuststarted = d_false;
+	leveljuststarted = cc_false;
 
 	f_x = f_y = 0;
 
@@ -505,9 +505,9 @@ void AM_Stop (void)
 	static event_t st_notify = { ev_keyup, AM_MSGEXITED, 0, 0, 0 };
 
 	AM_unloadPics();
-	automapactive = d_false;
+	automapactive = cc_false;
 	ST_Responder(&st_notify);
-	stopped = d_true;
+	stopped = cc_true;
 }
 
 void AM_Start (void)
@@ -515,7 +515,7 @@ void AM_Start (void)
 	static unsigned int lastlevel = -1, lastepisode = -1;
 
 	if (!stopped) AM_Stop();
-	stopped = d_false;
+	stopped = cc_false;
 	if (lastlevel != gamemap || lastepisode != gameepisode)
 	{
 		AM_LevelInit();
@@ -544,7 +544,7 @@ void AM_maxOutWindowScale(void)
 
 
 /* Handle events (user inputs) in automap mode */
-d_bool
+cc_bool
 AM_Responder
 ( const event_t*        ev )
 {
@@ -553,39 +553,39 @@ AM_Responder
 	static int bigstate=0;
 	static char buffer[20];
 
-	rc = d_false;
+	rc = cc_false;
 
 	if (!automapactive)
 	{
 		if (ev->type == ev_keydown && ev->data1 == AM_STARTKEY)
 		{
 			AM_Start ();
-			viewactive = d_false;
-			rc = d_true;
+			viewactive = cc_false;
+			rc = cc_true;
 		}
 	}
 
 	else if (ev->type == ev_keydown)
 	{
 
-		rc = d_true;
+		rc = cc_true;
 		switch(ev->data1)
 		{
 		case AM_PANRIGHTKEY: /* pan right */
 			if (!followplayer) m_paninc.x = FTOM(F_PANINC);
-			else rc = d_false;
+			else rc = cc_false;
 			break;
 		case AM_PANLEFTKEY: /* pan left */
 			if (!followplayer) m_paninc.x = -FTOM(F_PANINC);
-			else rc = d_false;
+			else rc = cc_false;
 			break;
 		case AM_PANUPKEY: /* pan up */
 			if (!followplayer) m_paninc.y = FTOM(F_PANINC);
-			else rc = d_false;
+			else rc = cc_false;
 			break;
 		case AM_PANDOWNKEY: /* pan down */
 			if (!followplayer) m_paninc.y = -FTOM(F_PANINC);
-			else rc = d_false;
+			else rc = cc_false;
 			break;
 		case AM_ZOOMOUTKEY: /* zoom out */
 			mtof_zoommul = M_ZOOMOUT;
@@ -597,7 +597,7 @@ AM_Responder
 			break;
 		case AM_ENDKEY:
 			bigstate = 0;
-			viewactive = d_true;
+			viewactive = cc_true;
 			AM_Stop ();
 			break;
 		case AM_GOBIGKEY:
@@ -628,18 +628,18 @@ AM_Responder
 			plr->message = AMSTR_MARKSCLEARED;
 			break;
 		default:
-			rc = d_false;
+			rc = cc_false;
 		}
 		if (deathmatch == DM_OFF && cht_CheckCheat(&cheat_amap, ev->data1))
 		{
-			rc = d_false;
+			rc = cc_false;
 			automap_cheats = (automap_cheats+1) % 4;
 		}
 	}
 
 	else if (ev->type == ev_keyup)
 	{
-		rc = d_false;
+		rc = cc_false;
 		switch (ev->data1)
 		{
 		case AM_PANRIGHTKEY:
@@ -762,7 +762,7 @@ void AM_clearFB(int color)
 /* Based on Cohen-Sutherland clipping algorithm but with a slightly */
 /* faster reject and precalculated slopes.  If the speed is needed, */
 /* use a hash algorithm to handle  the common cases. */
-d_bool
+cc_bool
 AM_clipMline
 ( mline_t*      ml,
   fline_t*      fl )
@@ -804,7 +804,7 @@ AM_clipMline
 		outcode2 = BOTTOM;
 
 	if (outcode1 & outcode2)
-		return d_false; /* trivially outside */
+		return cc_false; /* trivially outside */
 
 	if (ml->a.x < m_x)
 		outcode1 |= LEFT;
@@ -817,7 +817,7 @@ AM_clipMline
 		outcode2 |= RIGHT;
 
 	if (outcode1 & outcode2)
-		return d_false; /* trivially outside */
+		return cc_false; /* trivially outside */
 
 	/* transform to frame-buffer coordinates. */
 	fl->a.x = CXMTOF(ml->a.x);
@@ -829,7 +829,7 @@ AM_clipMline
 	DOOUTCODE(outcode2, fl->b.x, fl->b.y);
 
 	if (outcode1 & outcode2)
-		return d_false;
+		return cc_false;
 
 	while (outcode1 | outcode2)
 	{
@@ -882,10 +882,10 @@ AM_clipMline
 		}
 
 		if (outcode1 & outcode2)
-			return d_false; /* trivially outside */
+			return cc_false; /* trivially outside */
 	}
 
-	return d_true;
+	return cc_true;
 }
 #undef DOOUTCODE
 

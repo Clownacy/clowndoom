@@ -87,11 +87,11 @@ V_DrawPatchFlipped
   int            y,
   screen_t       scrn,
   const patch_t* patch,
-  d_bool          flip );
+  cc_bool         flip );
 
 /* V_DrawPatch */
 /* Masks a column based masked pic to the screen. */
-#define V_DrawPatch(x, y, scrn, patch) V_DrawPatchFlipped(x, y, scrn, patch, d_false)
+#define V_DrawPatch(x, y, scrn, patch) V_DrawPatchFlipped(x, y, scrn, patch, cc_false)
 
 void
 V_FillScreenWithPattern

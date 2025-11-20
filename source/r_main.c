@@ -565,7 +565,7 @@ void R_InitLightTables (void)
 /* Do not really change anything here, */
 /*  because it might be in the middle of a refresh. */
 /* The change will take effect next refresh. */
-d_bool          setsizeneeded;
+cc_bool         setsizeneeded;
 int             setblocks;
 int             setdetail;
 int             setscreenwidth;
@@ -581,7 +581,7 @@ R_SetViewSize
   int           new_screen_height,
   int           new_hud_scale )
 {
-	setsizeneeded = d_true;
+	setsizeneeded = cc_true;
 	setblocks = blocks;
 	setdetail = detail;
 	setscreenwidth = new_screen_width;
@@ -600,7 +600,7 @@ void R_ExecuteSetViewSize (void)
 	int         level;
 	int         startmap;
 
-	setsizeneeded = d_false;
+	setsizeneeded = cc_false;
 
 	/* TODO: These really should be moved somewhere else, somewhere higher-level. */
 	SCREENWIDTH = setscreenwidth;

@@ -59,7 +59,7 @@ void I_StartFrame (void);
 /* Can call D_PostEvent. */
 void I_StartTic (void);
 
-void I_GrabMouse(d_bool grab);
+void I_GrabMouse(cc_bool grab);
 void I_ToggleFullscreen(void);
 void I_RenderSizeChanged(void);
 

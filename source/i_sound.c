@@ -85,9 +85,9 @@ static short            vol_lookup[S_TOTAL_VOLUMES][0x100];
 /* static int            snd_MusicVolume; */
 
 #ifdef WILDMIDI
-static d_bool           music_initialised;
+static cc_bool          music_initialised;
 static midi*            music_midi;
-static d_bool           music_playing;
+static cc_bool          music_playing;
 #endif
 
 
@@ -124,7 +124,7 @@ static void AudioCallback(short* const output_buffer, const size_t frames_to_do,
 		bytes_done = (size_t)WildMidi_GetOutput(music_midi, (int8_t*)output_buffer, bytes_to_do);
 
 		if (bytes_done < bytes_to_do)
-			music_playing = d_false;
+			music_playing = cc_false;
 	}
 #endif
 
@@ -376,7 +376,7 @@ void I_StopSound(int handle)
 
 
 
-d_bool I_SoundIsPlaying(int handle)
+cc_bool I_SoundIsPlaying(int handle)
 {
 	int i;
 
@@ -384,7 +384,7 @@ d_bool I_SoundIsPlaying(int handle)
 	{
 		if (channelhandles[i] == handle)
 		{
-			d_bool playing;
+			cc_bool playing;
 
 			IB_LockSound();
 
@@ -396,7 +396,7 @@ d_bool I_SoundIsPlaying(int handle)
 		}
 	}
 
-	return d_false; /* Sound doesn't exist */
+	return cc_false; /* Sound doesn't exist */
 }
 
 
@@ -479,7 +479,7 @@ static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 		if (WildMidi_InitVIO(&vio, wildmidi_config_path, output_sample_rate, 0) != 0)
 			I_Info("I_StartupSound: Failed to initialize WildMIDI. Error message was '%s'\n", WildMidi_GetError());
 		else
-			music_initialised = d_true;
+			music_initialised = cc_true;
 	}
 #endif
 }
@@ -517,7 +517,7 @@ void I_ShutdownSound(void)
 	if (music_initialised)
 	{
 		WildMidi_Shutdown();
-		music_initialised = d_false;
+		music_initialised = cc_false;
 	}
 #endif
 }
@@ -527,7 +527,7 @@ void I_ShutdownSound(void)
 
 /* MUSIC API. */
 
-void I_PlaySong(int handle, d_bool looping)
+void I_PlaySong(int handle, cc_bool looping)
 {
 	/* UNUSED. */
 	(void)handle;
@@ -539,7 +539,7 @@ void I_PlaySong(int handle, d_bool looping)
 	{
 		IB_LockSound();
 
-		music_playing = d_true;
+		music_playing = cc_true;
 		WildMidi_SetOption(music_midi, WM_MO_LOOP, looping ? WM_MO_LOOP : 0);
 
 		IB_UnlockSound();
@@ -560,7 +560,7 @@ void I_PauseSong (int handle)
 	{
 		IB_LockSound();
 
-		music_playing = d_false;
+		music_playing = cc_false;
 
 		IB_UnlockSound();
 	}
@@ -580,7 +580,7 @@ void I_ResumeSong (int handle)
 	{
 		IB_LockSound();
 
-		music_playing = d_true;
+		music_playing = cc_true;
 
 		IB_UnlockSound();
 	}
@@ -600,7 +600,7 @@ void I_StopSong(int handle)
 	{
 		IB_LockSound();
 
-		music_playing = d_false;
+		music_playing = cc_false;
 		WildMidi_FastSeek(music_midi, 0);
 
 		IB_UnlockSound();
@@ -654,17 +654,17 @@ int I_RegisterSong(const void* data, size_t size)
 
 
 /* Is the song playing? (unused) */
-d_bool I_QrySongPlaying(int handle)
+cc_bool I_QrySongPlaying(int handle)
 {
 #ifdef WILDMIDI
-	d_bool playing;
+	cc_bool playing;
 #endif
 
 	/* UNUSED. */
 	(void)handle;
 
 #ifndef WILDMIDI
-	return d_false;
+	return cc_false;
 #else
 	IB_LockSound();
 

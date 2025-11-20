@@ -94,7 +94,7 @@ R_InstallSpriteLump
 ( int           lump,
   unsigned      frame,
   unsigned      rotation,
-  d_bool        flipped )
+  cc_bool       flipped )
 {
 	int         r;
 
@@ -208,13 +208,13 @@ void R_InitSpriteDefs (const char* const *namelist)
 				else
 					patched = l;
 
-				R_InstallSpriteLump (patched, frame, rotation, d_false);
+				R_InstallSpriteLump (patched, frame, rotation, cc_false);
 
 				if (lumpinfo[l].name[6])
 				{
 					frame = lumpinfo[l].name[6] - 'A';
 					rotation = lumpinfo[l].name[7] - '0';
-					R_InstallSpriteLump (l, frame, rotation, d_true);
+					R_InstallSpriteLump (l, frame, rotation, cc_true);
 				}
 			}
 		}
@@ -433,7 +433,7 @@ void R_ProjectSprite (mobj_t* thing)
 	int                 lump;
 
 	unsigned            rot;
-	d_bool              flip;
+	cc_bool             flip;
 
 	int                 index;
 
@@ -610,7 +610,7 @@ void R_DrawPSprite (pspdef_t* psp)
 	spritedef_t*        sprdef;
 	spriteframe_t*      sprframe;
 	int                 lump;
-	d_bool              flip;
+	cc_bool             flip;
 	vissprite_t*        vis;
 	vissprite_t         avis;
 

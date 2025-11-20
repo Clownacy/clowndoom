@@ -111,7 +111,7 @@ void I_EndRead(void)
 
 
 /* I_Error */
-extern d_bool demorecording;
+extern cc_bool demorecording;
 
 void I_Error (const char *error, ...)
 {

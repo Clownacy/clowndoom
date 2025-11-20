@@ -386,11 +386,11 @@ void WI_slamBackground(void)
 
 /* The ticker is used to detect keys */
 /*  because of timing issues in netgames. */
-d_bool WI_Responder(event_t* ev)
+cc_bool WI_Responder(event_t* ev)
 {
 	(void)ev;
 
-	return d_false;
+	return cc_false;
 }
 
 
@@ -440,7 +440,7 @@ WI_drawOnLnode
 	int         top;
 	int         right;
 	int         bottom;
-	d_bool      fits = d_false;
+	cc_bool     fits = cc_false;
 
 	i = 0;
 	do
@@ -455,7 +455,7 @@ WI_drawOnLnode
 			&& top >= 0
 			&& bottom < SCREENHEIGHT)
 		{
-			fits = d_true;
+			fits = cc_true;
 		}
 		else
 		{
@@ -719,7 +719,7 @@ void WI_updateNoState(void) {
 
 }
 
-static d_bool           snl_pointeron = d_false;
+static cc_bool          snl_pointeron = cc_false;
 
 
 void WI_initShowNextLoc(void)
@@ -782,7 +782,7 @@ void WI_drawShowNextLoc(void)
 
 void WI_drawNoState(void)
 {
-	snl_pointeron = d_true;
+	snl_pointeron = cc_true;
 	WI_drawShowNextLoc();
 }
 
@@ -852,7 +852,7 @@ void WI_updateDeathmatchStats(void)
 	int         i;
 	int         j;
 
-	d_bool      stillticking;
+	cc_bool     stillticking;
 
 	WI_updateAnimatedBack();
 
@@ -883,7 +883,7 @@ void WI_updateDeathmatchStats(void)
 		if (!(bcnt&3))
 			S_StartSound(NULL, sfx_pistol);
 
-		stillticking = d_false;
+		stillticking = cc_false;
 
 		for (i=0 ; i<MAXPLAYERS ; i++)
 		{
@@ -905,7 +905,7 @@ void WI_updateDeathmatchStats(void)
 						if (dm_frags[i][j] < -99)
 							dm_frags[i][j] = -99;
 
-						stillticking = d_true;
+						stillticking = cc_true;
 					}
 				}
 				dm_totals[i] = WI_fragSum(i);
@@ -1076,7 +1076,7 @@ void WI_updateNetgameStats(void)
 	int         i;
 	int         fsum;
 
-	d_bool      stillticking;
+	cc_bool     stillticking;
 
 	WI_updateAnimatedBack();
 
@@ -1105,7 +1105,7 @@ void WI_updateNetgameStats(void)
 		if (!(bcnt&3))
 			S_StartSound(NULL, sfx_pistol);
 
-		stillticking = d_false;
+		stillticking = cc_false;
 
 		for (i=0 ; i<MAXPLAYERS ; i++)
 		{
@@ -1117,7 +1117,7 @@ void WI_updateNetgameStats(void)
 			if (cnt_kills[i] >= kill_percent[i])
 				cnt_kills[i] = kill_percent[i];
 			else
-				stillticking = d_true;
+				stillticking = cc_true;
 		}
 
 		if (!stillticking)
@@ -1131,7 +1131,7 @@ void WI_updateNetgameStats(void)
 		if (!(bcnt&3))
 			S_StartSound(NULL, sfx_pistol);
 
-		stillticking = d_false;
+		stillticking = cc_false;
 
 		for (i=0 ; i<MAXPLAYERS ; i++)
 		{
@@ -1142,7 +1142,7 @@ void WI_updateNetgameStats(void)
 			if (cnt_items[i] >= item_percent[i])
 				cnt_items[i] = item_percent[i];
 			else
-				stillticking = d_true;
+				stillticking = cc_true;
 		}
 		if (!stillticking)
 		{
@@ -1155,7 +1155,7 @@ void WI_updateNetgameStats(void)
 		if (!(bcnt&3))
 			S_StartSound(NULL, sfx_pistol);
 
-		stillticking = d_false;
+		stillticking = cc_false;
 
 		for (i=0 ; i<MAXPLAYERS ; i++)
 		{
@@ -1167,7 +1167,7 @@ void WI_updateNetgameStats(void)
 			if (cnt_secret[i] >= secret_percent[i])
 				cnt_secret[i] = secret_percent[i];
 			else
-				stillticking = d_true;
+				stillticking = cc_true;
 		}
 
 		if (!stillticking)
@@ -1181,7 +1181,7 @@ void WI_updateNetgameStats(void)
 		if (!(bcnt&3))
 			S_StartSound(NULL, sfx_pistol);
 
-		stillticking = d_false;
+		stillticking = cc_false;
 
 		for (i=0 ; i<MAXPLAYERS ; i++)
 		{
@@ -1193,7 +1193,7 @@ void WI_updateNetgameStats(void)
 			if (cnt_frags[i] >= (fsum = WI_fragSum(i)))
 				cnt_frags[i] = fsum;
 			else
-				stillticking = d_true;
+				stillticking = cc_true;
 		}
 
 		if (!stillticking)
@@ -1460,18 +1460,18 @@ void WI_checkForAccelerate(void)
 			{
 				if (!player->attackdown)
 					acceleratestage = 1;
-				player->attackdown = d_true;
+				player->attackdown = cc_true;
 			}
 			else
-				player->attackdown = d_false;
+				player->attackdown = cc_false;
 			if (player->cmd.buttons & BT_USE)
 			{
 				if (!player->usedown)
 					acceleratestage = 1;
-				player->usedown = d_true;
+				player->usedown = cc_true;
 			}
 			else
-				player->usedown = d_false;
+				player->usedown = cc_false;
 		}
 	}
 }
@@ -1488,9 +1488,9 @@ void WI_Ticker(void)
 	{
 		/* intermission music */
 		if ( gamemode == commercial )
-		  S_ChangeMusic(mus_dm2int, d_true);
+		  S_ChangeMusic(mus_dm2int, cc_true);
 		else
-		  S_ChangeMusic(mus_inter, d_true);
+		  S_ChangeMusic(mus_inter, cc_true);
 	}
 
 	WI_checkForAccelerate();

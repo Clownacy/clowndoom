@@ -48,7 +48,7 @@ typedef struct
 
 	/* pointer to boolean stating */
 	/*  whether to update number */
-	d_bool*    on;
+	cc_bool*    on;
 
 	/* list of patches for 0-9 */
 	patch_t**   p;
@@ -89,7 +89,7 @@ typedef struct
 
 	/* pointer to boolean stating */
 	/*  whether to update icon */
-	d_bool*            on;
+	cc_bool*            on;
 
 	/* list of icons */
 	patch_t**           p;
@@ -111,14 +111,14 @@ typedef struct
 	int                 yRaw;
 
 	/* last icon value */
-	d_bool                      oldval;
+	cc_bool                     oldval;
 
 	/* pointer to current icon status */
-	d_bool*            val;
+	cc_bool*            val;
 
 	/* pointer to boolean */
 	/*  stating whether to update icon */
-	d_bool*            on;
+	cc_bool*            on;
 
 
 	patch_t*            p;      /* icon */
@@ -145,13 +145,13 @@ STlib_initNum
   int                   y,
   patch_t**             pl,
   int*                  num,
-  d_bool*              on,
+  cc_bool*              on,
   int                   width );
 
 void
 STlib_updateNum
 ( st_number_t*          n,
-  d_bool                refresh );
+  cc_bool               refresh );
 
 
 /* Percent widget routines */
@@ -162,7 +162,7 @@ STlib_initPercent
   int                   y,
   patch_t**             pl,
   int*                  num,
-  d_bool*              on,
+  cc_bool*              on,
   patch_t*              percent );
 
 
@@ -180,13 +180,13 @@ STlib_initMultIcon
   int                   y,
   patch_t**             il,
   int*                  inum,
-  d_bool*              on );
+  cc_bool*              on );
 
 
 void
 STlib_updateMultIcon
 ( st_multicon_t*        mi,
-  d_bool                refresh );
+  cc_bool               refresh );
 
 /* Binary Icon widget routines */
 
@@ -196,12 +196,12 @@ STlib_initBinIcon
   int                   x,
   int                   y,
   patch_t*              i,
-  d_bool*              val,
-  d_bool*              on );
+  cc_bool*              val,
+  cc_bool*              on );
 
 void
 STlib_updateBinIcon
 ( st_binicon_t*         bi,
-  d_bool                refresh );
+  cc_bool               refresh );
 
 #endif

@@ -40,11 +40,11 @@ T_MovePlane
 ( sector_t*     sector,
   fixed_t       speed,
   fixed_t       dest,
-  d_bool        crush,
+  cc_bool       crush,
   int           floorOrCeiling,
   int           direction )
 {
-	d_bool      flag;
+	cc_bool     flag;
 	fixed_t     lastpos;
 
 	switch(floorOrCeiling)
@@ -60,7 +60,7 @@ T_MovePlane
 				lastpos = sector->floorheight;
 				sector->floorheight = dest;
 				flag = P_ChangeSector(sector,crush);
-				if (flag == d_true)
+				if (flag == cc_true)
 				{
 					sector->floorheight =lastpos;
 					P_ChangeSector(sector,crush);
@@ -73,7 +73,7 @@ T_MovePlane
 				lastpos = sector->floorheight;
 				sector->floorheight -= speed;
 				flag = P_ChangeSector(sector,crush);
-				if (flag == d_true)
+				if (flag == cc_true)
 				{
 					sector->floorheight = lastpos;
 					P_ChangeSector(sector,crush);
@@ -89,7 +89,7 @@ T_MovePlane
 				lastpos = sector->floorheight;
 				sector->floorheight = dest;
 				flag = P_ChangeSector(sector,crush);
-				if (flag == d_true)
+				if (flag == cc_true)
 				{
 					sector->floorheight = lastpos;
 					P_ChangeSector(sector,crush);
@@ -103,9 +103,9 @@ T_MovePlane
 				lastpos = sector->floorheight;
 				sector->floorheight += speed;
 				flag = P_ChangeSector(sector,crush);
-				if (flag == d_true)
+				if (flag == cc_true)
 				{
-					if (crush == d_true)
+					if (crush == cc_true)
 						return crushed;
 					sector->floorheight = lastpos;
 					P_ChangeSector(sector,crush);
@@ -128,7 +128,7 @@ T_MovePlane
 				sector->ceilingheight = dest;
 				flag = P_ChangeSector(sector,crush);
 
-				if (flag == d_true)
+				if (flag == cc_true)
 				{
 					sector->ceilingheight = lastpos;
 					P_ChangeSector(sector,crush);
@@ -143,9 +143,9 @@ T_MovePlane
 				sector->ceilingheight -= speed;
 				flag = P_ChangeSector(sector,crush);
 
-				if (flag == d_true)
+				if (flag == cc_true)
 				{
-					if (crush == d_true)
+					if (crush == cc_true)
 						return crushed;
 					sector->ceilingheight = lastpos;
 					P_ChangeSector(sector,crush);
@@ -161,7 +161,7 @@ T_MovePlane
 				lastpos = sector->ceilingheight;
 				sector->ceilingheight = dest;
 				flag = P_ChangeSector(sector,crush);
-				if (flag == d_true)
+				if (flag == cc_true)
 				{
 					sector->ceilingheight = lastpos;
 					P_ChangeSector(sector,crush);
@@ -270,7 +270,7 @@ EV_DoFloor
 		sec->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 		floor->type = floortype;
-		floor->crush = d_false;
+		floor->crush = cc_false;
 
 		switch(floortype)
 		{
@@ -301,7 +301,7 @@ EV_DoFloor
 			break;
 
 		case raiseFloorCrush:
-			floor->crush = d_true;
+			floor->crush = cc_true;
 			/* Fallthrough */
 		case raiseFloor:
 			floor->direction = 1;
@@ -472,7 +472,7 @@ EV_BuildStairs
 		sec->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 		floor->type = raiseBuildStep;
-		floor->crush = d_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
+		floor->crush = cc_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
 		floor->direction = 1;
 		floor->sector = sec;
 		switch(type)
@@ -530,7 +530,7 @@ EV_BuildStairs
 				sec->specialdata = floor;
 				floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 				floor->type = raiseBuildStep;
-				floor->crush = d_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
+				floor->crush = cc_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
 				floor->direction = 1;
 				floor->sector = sec;
 				floor->speed = speed;

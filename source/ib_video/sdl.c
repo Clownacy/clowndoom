@@ -171,7 +171,7 @@ static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
 static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right, joystick_x_dpad, joystick_y_dpad;
 #endif
 
-static void SetJoystickButton(const unsigned int button_index, const d_bool pressed)
+static void SetJoystickButton(const unsigned int button_index, const cc_bool pressed)
 {
 	const unsigned int mask = 1U << button_index;
 
@@ -229,7 +229,7 @@ void IB_StartTic (void)
 			case SDL_MOUSEBUTTONUP:
 			{
 				int button_index;
-				const d_bool button_down = sdl_event.type == SDL_MOUSEBUTTONDOWN;
+				const cc_bool button_down = sdl_event.type == SDL_MOUSEBUTTONDOWN;
 
 				button_index = -1;
 
@@ -289,7 +289,7 @@ void IB_StartTic (void)
 			{
 				int button_index, x_delta, y_delta;
 
-				const d_bool button_down = sdl_event.type == SDL_CONTROLLERBUTTONDOWN;
+				const cc_bool button_down = sdl_event.type == SDL_CONTROLLERBUTTONDOWN;
 
 				button_index = -1;
 				x_delta = y_delta = 0;
@@ -510,7 +510,7 @@ void IB_ShutdownGraphics(void)
 }
 
 
-void IB_GrabMouse(d_bool grab)
+void IB_GrabMouse(cc_bool grab)
 {
 #if SDL_MAJOR_VERSION >= 2
 	SDL_SetRelativeMouseMode(grab ? SDL_TRUE : SDL_FALSE);
@@ -523,7 +523,7 @@ void IB_GrabMouse(d_bool grab)
 void IB_ToggleFullscreen(void)
 {
 #if SDL_MAJOR_VERSION >= 2
-	static d_bool fullscreen;
+	static cc_bool fullscreen;
 
 	fullscreen = !fullscreen;
 	SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);

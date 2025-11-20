@@ -170,7 +170,7 @@ void I_SetPalette (palette_t* const palette, const size_t total_palettes)
 }
 
 
-static void OutputSizeChanged(const size_t width, const size_t height, const d_bool aspect_ratio_correction)
+static void OutputSizeChanged(const size_t width, const size_t height, const cc_bool aspect_ratio_correction)
 {
 	const size_t aspect_ratio_w = SCREENWIDTH;
 	const size_t aspect_ratio_h = aspect_ratio_correction ? SCREENHEIGHT * 6 / 5 : SCREENHEIGHT;
@@ -219,7 +219,7 @@ void I_InitGraphics(void)
 
 	IB_InitGraphics("clowndoom", 640, 480, &bytes_per_pixel, OutputSizeChanged);
 
-	I_GrabMouse(d_true);
+	I_GrabMouse(cc_true);
 
 	/* TODO - handle failed allocations */
 	colors = (unsigned char*)malloc(MAX_PALETTES * 0x100 * bytes_per_pixel);
@@ -237,7 +237,7 @@ void I_ShutdownGraphics(void)
 }
 
 
-void I_GrabMouse(d_bool grab)
+void I_GrabMouse(cc_bool grab)
 {
 	IB_GrabMouse(grab);
 }

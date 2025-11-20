@@ -76,20 +76,20 @@ char                    chat_char; /* remove later. */
 static player_t*        plr;
 patch_t*                hu_font[HU_FONTSIZE];
 static hu_textline_t    w_title;
-d_bool                  chat_on;
+cc_bool                 chat_on;
 static hu_itext_t       w_chat;
-static d_bool           always_off = d_false;
+static cc_bool          always_off = cc_false;
 static char             chat_dest[MAXPLAYERS];
 static hu_itext_t w_inputbuffer[MAXPLAYERS];
 
-static d_bool           message_on;
-d_bool                  message_dontfuckwithme;
-static d_bool           message_nottobefuckedwith;
+static cc_bool          message_on;
+cc_bool                 message_dontfuckwithme;
+static cc_bool          message_nottobefuckedwith;
 
 static hu_stext_t       w_message;
 static int              message_counter;
 
-static d_bool           headsupactive = d_false;
+static cc_bool          headsupactive = cc_false;
 
 /* Builtin map names. */
 /* The actual names can be found in DStrings.h. */
@@ -427,7 +427,7 @@ void HU_Init(void)
 
 void HU_Stop(void)
 {
-	headsupactive = d_false;
+	headsupactive = cc_false;
 }
 
 void HU_Start(void)
@@ -439,10 +439,10 @@ void HU_Start(void)
 		HU_Stop();
 
 	plr = &players[consoleplayer];
-	message_on = d_false;
-	message_dontfuckwithme = d_false;
-	message_nottobefuckedwith = d_false;
-	chat_on = d_false;
+	message_on = cc_false;
+	message_dontfuckwithme = cc_false;
+	message_nottobefuckedwith = cc_false;
+	chat_on = cc_false;
 
 	/* create the message widget */
 	HUlib_initSText(&w_message,
@@ -501,7 +501,7 @@ void HU_Start(void)
 	for (i=0 ; i<MAXPLAYERS ; i++)
 		HUlib_initIText(&w_inputbuffer[i], 0, 0, 0, 0, &always_off);
 
-	headsupactive = d_true;
+	headsupactive = cc_true;
 }
 
 static void
@@ -549,7 +549,7 @@ void HU_Drawer(void)
 	if (automapactive)
 	{
 		HUlib_positionTextLine(&w_title, HU_TITLEX, HU_TITLEY);
-		HUlib_drawTextLine(&w_title, d_false);
+		HUlib_drawTextLine(&w_title, cc_false);
 
 		if (deathmatch == DM_OFF && automap_cheats >= 1)
 		{
@@ -590,8 +590,8 @@ void HU_Ticker(void)
 	/* tick down message counter if message is up */
 	if (message_counter && !--message_counter)
 	{
-		message_on = d_false;
-		message_nottobefuckedwith = d_false;
+		message_on = cc_false;
+		message_nottobefuckedwith = cc_false;
 	}
 
 	if (showMessages || message_dontfuckwithme)
@@ -603,10 +603,10 @@ void HU_Ticker(void)
 		{
 			HUlib_addMessageToSText(&w_message, NULL, plr->message);
 			plr->message = NULL;
-			message_on = d_true;
+			message_on = cc_true;
 			message_counter = HU_MSGTIMEOUT;
 			message_nottobefuckedwith = message_dontfuckwithme;
-			message_dontfuckwithme = d_false;
+			message_dontfuckwithme = cc_false;
 		}
 
 	} /* else message_on = false; */
@@ -638,8 +638,8 @@ void HU_Ticker(void)
 													player_names[i],
 													w_inputbuffer[i].l.l);
 
-							message_nottobefuckedwith = d_true;
-							message_on = d_true;
+							message_nottobefuckedwith = cc_true;
+							message_on = cc_true;
 							message_counter = HU_MSGTIMEOUT;
 							if ( gamemode == commercial )
 							  S_StartSound(NULL, sfx_radio);
@@ -693,14 +693,14 @@ char HU_dequeueChatChar(void)
 	return c;
 }
 
-d_bool HU_Responder(const event_t *ev)
+cc_bool HU_Responder(const event_t *ev)
 {
 
 	static char         lastmessage[HU_MAXLINELENGTH+1];
 	const char*         macromessage;
-	d_bool              eatkey = d_false;
-	static d_bool       shiftdown = d_false;
-	static d_bool       altdown = d_false;
+	cc_bool             eatkey = cc_false;
+	static cc_bool      shiftdown = cc_false;
+	static cc_bool      altdown = cc_false;
 	unsigned char       c;
 	int                 i;
 	int                 numplayers;
@@ -722,28 +722,28 @@ d_bool HU_Responder(const event_t *ev)
 	if (ev->data1 == KEY_RSHIFT)
 	{
 		shiftdown = ev->type == ev_keydown;
-		return d_false;
+		return cc_false;
 	}
 	else if (ev->data1 == KEY_RALT || ev->data1 == KEY_LALT)
 	{
 		altdown = ev->type == ev_keydown;
-		return d_false;
+		return cc_false;
 	}
 
 	if (ev->type != ev_keydown)
-		return d_false;
+		return cc_false;
 
 	if (!chat_on)
 	{
 		if (ev->data1 == HU_MSGREFRESH)
 		{
-			message_on = d_true;
+			message_on = cc_true;
 			message_counter = HU_MSGTIMEOUT;
-			eatkey = d_true;
+			eatkey = cc_true;
 		}
 		else if (netgame && ev->data1 == HU_INPUTTOGGLE)
 		{
-			eatkey = chat_on = d_true;
+			eatkey = chat_on = cc_true;
 			HUlib_resetIText(&w_chat);
 			HU_queueChatChar(HU_BROADCAST);
 		}
@@ -755,7 +755,7 @@ d_bool HU_Responder(const event_t *ev)
 				{
 					if (playeringame[i] && i!=consoleplayer)
 					{
-						eatkey = chat_on = d_true;
+						eatkey = chat_on = cc_true;
 						HUlib_resetIText(&w_chat);
 						HU_queueChatChar(i+1);
 						break;
@@ -786,7 +786,7 @@ d_bool HU_Responder(const event_t *ev)
 		{
 			c = c - '0';
 			if (c > 9)
-				return d_false;
+				return cc_false;
 			/* I_Info("got here\n"); */
 			macromessage = chat_macros[c];
 
@@ -799,10 +799,10 @@ d_bool HU_Responder(const event_t *ev)
 			HU_queueChatChar(KEY_ENTER);
 
 			/* leave chat mode and notify that it was sent */
-			chat_on = d_false;
+			chat_on = cc_false;
 			strcpy(lastmessage, chat_macros[c]);
 			plr->message = lastmessage;
-			eatkey = d_true;
+			eatkey = cc_true;
 		}
 		else
 		{
@@ -821,7 +821,7 @@ d_bool HU_Responder(const event_t *ev)
 			}
 			if (c == KEY_ENTER)
 			{
-				chat_on = d_false;
+				chat_on = cc_false;
 				if (w_chat.l.len)
 				{
 					strcpy(lastmessage, w_chat.l.l);
@@ -829,7 +829,7 @@ d_bool HU_Responder(const event_t *ev)
 				}
 			}
 			else if (c == KEY_ESCAPE)
-				chat_on = d_false;
+				chat_on = cc_false;
 		}
 	}
 

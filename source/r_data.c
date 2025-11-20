@@ -704,12 +704,12 @@ void R_PrecacheLevel(void)
 
 	/* Precache flats. */
 	flatpresent = (char*)Z_Malloc(numflats * sizeof(*flatpresent), PU_STATIC, NULL);
-	memset(flatpresent, d_false, numflats);
+	memset(flatpresent, cc_false, numflats);
 
 	for (i = 0; i < numsectors; ++i)
 	{
-		flatpresent[sectors[i].floorpic] = d_true;
-		flatpresent[sectors[i].ceilingpic] = d_true;
+		flatpresent[sectors[i].floorpic] = cc_true;
+		flatpresent[sectors[i].ceilingpic] = cc_true;
 	}
 
 	flatmemory = 0;
@@ -728,13 +728,13 @@ void R_PrecacheLevel(void)
 
 	/* Precache textures. */
 	texturepresent = (char*)Z_Malloc(numtextures * sizeof(*texturepresent), PU_STATIC, NULL);
-	memset(texturepresent, d_false, numtextures);
+	memset(texturepresent, cc_false, numtextures);
 
 	for (i = 0; i < numsides; ++i)
 	{
-		texturepresent[sides[i].toptexture] = d_true;
-		texturepresent[sides[i].midtexture] = d_true;
-		texturepresent[sides[i].bottomtexture] = d_true;
+		texturepresent[sides[i].toptexture] = cc_true;
+		texturepresent[sides[i].midtexture] = cc_true;
+		texturepresent[sides[i].bottomtexture] = cc_true;
 	}
 
 	/* Sky texture is always present. */
@@ -743,7 +743,7 @@ void R_PrecacheLevel(void)
 	/*  while the sky texture is stored like */
 	/*  a wall texture, with an episode dependend */
 	/*  name. */
-	texturepresent[skytexture] = d_true;
+	texturepresent[skytexture] = cc_true;
 
 	texturememory = 0;
 
@@ -766,11 +766,11 @@ void R_PrecacheLevel(void)
 
 	/* Precache sprites. */
 	spritepresent = (char*)Z_Malloc(numsprites * sizeof(*spritepresent), PU_STATIC, NULL);
-	memset(spritepresent, d_false, numsprites);
+	memset(spritepresent, cc_false, numsprites);
 
 	for (th = thinkercap.next; th != &thinkercap; th = th->next)
 		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
-			spritepresent[((mobj_t*)th)->sprite] = d_true;
+			spritepresent[((mobj_t*)th)->sprite] = cc_true;
 
 	spritememory = 0;
 

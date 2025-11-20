@@ -195,22 +195,22 @@
 static player_t*        plyr;
 
 /* ST_Start() has just been called */
-static d_bool           st_firsttime;
+static cc_bool          st_firsttime;
 
 /* lump number for PLAYPAL */
 static int              lu_palette;
 
 /* whether left-side main status bar is active */
-static d_bool           st_statusbaron;
+static cc_bool          st_statusbaron;
 
 /* !deathmatch */
-static d_bool           st_notdeathmatch;
+static cc_bool          st_notdeathmatch;
 
 /* !deathmatch && st_statusbaron */
-static d_bool           st_armson;
+static cc_bool          st_armson;
 
 /* !deathmatch */
-static d_bool           st_fragson;
+static cc_bool          st_fragson;
 
 /* main bar left */
 static patch_t*         sbar;
@@ -408,7 +408,7 @@ void ST_refreshBackground(void)
 
 /* Respond to keyboard input events, */
 /*  intercept cheats. */
-d_bool
+cc_bool
 ST_Responder (const event_t* ev)
 {
 	int i;
@@ -419,7 +419,7 @@ ST_Responder (const event_t* ev)
 		switch(ev->data1)
 		{
 			case AM_MSGENTERED:
-				st_firsttime = d_true;
+				st_firsttime = cc_true;
 				break;
 
 			case AM_MSGEXITED:
@@ -456,7 +456,7 @@ ST_Responder (const event_t* ev)
 				plyr->armortype = 2;
 
 				for (i=0;i<NUMWEAPONS;i++)
-					plyr->weaponowned[i] = d_true;
+					plyr->weaponowned[i] = cc_true;
 
 				for (i=0;i<NUMAMMO;i++)
 					plyr->ammo[i] = plyr->maxammo[i];
@@ -470,13 +470,13 @@ ST_Responder (const event_t* ev)
 				plyr->armortype = 2;
 
 				for (i=0;i<NUMWEAPONS;i++)
-					plyr->weaponowned[i] = d_true;
+					plyr->weaponowned[i] = cc_true;
 
 				for (i=0;i<NUMAMMO;i++)
 					plyr->ammo[i] = plyr->maxammo[i];
 
 				for (i=0;i<NUMCARDS;i++)
-					plyr->cards[i] = d_true;
+					plyr->cards[i] = cc_true;
 
 				plyr->message = STSTR_KFAADDED;
 			}
@@ -496,7 +496,7 @@ ST_Responder (const event_t* ev)
 					if (musnum > 35 || musnum < 0)
 						plyr->message = STSTR_NOMUS;
 					else
-						S_ChangeMusic(mus_runnin + musnum, d_true);
+						S_ChangeMusic(mus_runnin + musnum, cc_true);
 				}
 				else
 				{
@@ -505,7 +505,7 @@ ST_Responder (const event_t* ev)
 					if (musnum > 31 || musnum < 0)
 						plyr->message = STSTR_NOMUS;
 					else
-						S_ChangeMusic(mus_e1m1 + musnum, d_true);
+						S_ChangeMusic(mus_e1m1 + musnum, cc_true);
 				}
 			}
 			/* Simplified, accepting both "noclip" and "idspispopd". */
@@ -543,8 +543,8 @@ ST_Responder (const event_t* ev)
 			/* 'choppers' invulnerability & chainsaw */
 			else if (cht_CheckCheat(&cheat_choppers, ev->data1))
 			{
-				plyr->weaponowned[wp_chainsaw] = d_true;
-				plyr->powers[pw_invulnerability] = d_true;
+				plyr->weaponowned[wp_chainsaw] = cc_true;
+				plyr->powers[pw_invulnerability] = cc_true;
 				plyr->message = STSTR_CHOPPERS;
 			}
 			/* 'mypos' for player position */
@@ -581,44 +581,44 @@ ST_Responder (const event_t* ev)
 
 			/* Catch invalid maps. */
 			if (epsd < 1)
-				return d_false;
+				return cc_false;
 
 			if (map < 1)
-				return d_false;
+				return cc_false;
 
 			/* Ohmygod - this is not going to work. */
 			if ((gamemode == retail)
 				&& ((epsd > 4) || (map > 9)))
-				return d_false;
+				return cc_false;
 
 			if ((gamemode == registered)
 				&& ((epsd > 3) || (map > 9)))
-				return d_false;
+				return cc_false;
 
 			if ((gamemode == shareware)
 				&& ((epsd > 1) || (map > 9)))
-				return d_false;
+				return cc_false;
 
 			if ((gamemode == commercial)
 				&& (( epsd > 1) || (map > 32)))
-				return d_false;
+				return cc_false;
 
 			if ((gamemode == commercial)
 				&& (gamemission == pack_master)
 				&& (( epsd > 1) || (map > 21)))
-				return d_false;
+				return cc_false;
 
 			if ((gamemode == commercial)
 				&& (gamemission == pack_nerve)
 				&& (( epsd > 1) || (map > 9)))
-				return d_false;
+				return cc_false;
 
 			/* So be it. */
 			plyr->message = STSTR_CLEV;
 			G_DeferedInitNew(gameskill, epsd, map);
 		}
 	}
-	return d_false;
+	return cc_false;
 }
 
 
@@ -651,7 +651,7 @@ void ST_updateFaceWidget(void)
 	angle_t     diffang;
 	static int  lastattackdown = -1;
 	static int  priority = 0;
-	d_bool      doevilgrin;
+	cc_bool     doevilgrin;
 
 	if (priority < 10)
 	{
@@ -669,13 +669,13 @@ void ST_updateFaceWidget(void)
 		if (plyr->bonuscount)
 		{
 			/* picking up bonus */
-			doevilgrin = d_false;
+			doevilgrin = cc_false;
 
 			for (i=0;i<NUMWEAPONS;i++)
 			{
 				if (oldweaponsowned[i] != plyr->weaponowned[i])
 				{
-					doevilgrin = d_true;
+					doevilgrin = cc_true;
 					oldweaponsowned[i] = plyr->weaponowned[i];
 				}
 			}
@@ -948,7 +948,7 @@ void ST_doPaletteStuff(void)
 
 }
 
-void ST_drawWidgets(d_bool refresh)
+void ST_drawWidgets(cc_bool refresh)
 {
 	int         i;
 
@@ -986,23 +986,23 @@ void ST_drawWidgets(d_bool refresh)
 void ST_doRefresh(void)
 {
 
-	st_firsttime = d_false;
+	st_firsttime = cc_false;
 
 	/* draw status bar background to off-screen buff */
 	ST_refreshBackground();
 
 	/* and refresh all widgets */
-	ST_drawWidgets(d_true);
+	ST_drawWidgets(cc_true);
 
 }
 
 void ST_diffDraw(void)
 {
 	/* update all widgets */
-	ST_drawWidgets(d_false);
+	ST_drawWidgets(cc_false);
 }
 
-void ST_Drawer (d_bool fullscreen, d_bool refresh)
+void ST_Drawer (cc_bool fullscreen, cc_bool refresh)
 {
 
 	st_statusbaron = (!fullscreen) || automapactive;
@@ -1148,10 +1148,10 @@ void ST_initData(void)
 
 	int         i;
 
-	st_firsttime = d_true;
+	st_firsttime = cc_true;
 	plyr = &players[consoleplayer];
 
-	st_statusbaron = d_true;
+	st_statusbaron = cc_true;
 
 	st_faceindex = 0;
 	st_palette = -1;
@@ -1329,7 +1329,7 @@ void ST_createWidgets(void)
 
 }
 
-static d_bool  st_stopped = d_true;
+static cc_bool st_stopped = cc_true;
 
 
 void ST_Start (void)
@@ -1340,7 +1340,7 @@ void ST_Start (void)
 
 	ST_initData();
 	ST_createWidgets();
-	st_stopped = d_false;
+	st_stopped = cc_false;
 
 }
 
@@ -1351,7 +1351,7 @@ void ST_Stop (void)
 
 	V_SetPalette(0);
 
-	st_stopped = d_true;
+	st_stopped = cc_true;
 }
 
 void ST_Init (void)
@@ -1362,5 +1362,5 @@ void ST_Init (void)
 
 void ST_setRefreshPending(void)
 {
-	st_firsttime = d_true;
+	st_firsttime = cc_true;
 }

@@ -33,7 +33,7 @@ FixedMul
 ( fixed_t       a,
   fixed_t       b )
 {
-	const d_bool result_is_negative = (a < 0) != (b < 0);
+	const cc_bool result_is_negative = (a < 0) != (b < 0);
 
 	const unsigned int a_absolute = abs(a);
 	const unsigned int b_absolute = abs(b);
@@ -65,7 +65,7 @@ FixedDiv
 {
 	/* Horrific fixed point division using only 32-bit integers. */
 	/* This particular algorithm is taken from the Atari Jaguar port. */
-	const d_bool result_is_negative = (a < 0) != (b < 0);
+	const cc_bool result_is_negative = (a < 0) != (b < 0);
 
 	unsigned int bit = FRACUNIT;
 	unsigned int result = 0;

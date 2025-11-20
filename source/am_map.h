@@ -31,7 +31,7 @@
 extern int automap_cheats;
 
 /* Called by main loop. */
-d_bool AM_Responder (const event_t* ev);
+cc_bool AM_Responder (const event_t* ev);
 
 /* Called by main loop. */
 void AM_Ticker (void);

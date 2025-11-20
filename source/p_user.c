@@ -33,7 +33,7 @@
 /* 16 pixels of bob */
 #define MAXBOB  0x100000
 
-d_bool          onground;
+cc_bool         onground;
 
 
 /* P_Thrust */
@@ -207,20 +207,20 @@ void P_DeathThink (player_t* player)
 
 
 
-static d_bool WeaponValid(const player_t* const player, const weapontype_t weapon)
+static cc_bool WeaponValid(const player_t* const player, const weapontype_t weapon)
 {
 	if (!player->weaponowned[weapon])
-		return d_false;
+		return cc_false;
 
 	/* Disable plasma rifle and BFG if playing shareware Doom. */
 	if ((weapon == wp_plasma || weapon == wp_bfg) && gamemode == shareware)
-		return d_false;
+		return cc_false;
 
 	/* Disable super shotgun if not playing Doom II. */
 	if (weapon == wp_supershotgun && gamemode != commercial)
-		return d_false;
+		return cc_false;
 
-	return d_true;
+	return cc_true;
 }
 
 
@@ -331,11 +331,11 @@ void P_PlayerThink (player_t* player)
 		if (!player->usedown)
 		{
 			P_UseLines (player);
-			player->usedown = d_true;
+			player->usedown = cc_true;
 		}
 	}
 	else
-		player->usedown = d_false;
+		player->usedown = cc_false;
 
 	/* cycle psprites */
 	P_MovePsprites (player);

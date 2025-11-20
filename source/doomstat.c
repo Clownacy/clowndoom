@@ -29,7 +29,7 @@ GameMission_t   gamemission = doom;
 Language_t   language = english;
 
 /* Set if homebrew PWAD stuff has been added. */
-d_bool modifiedgame;
+cc_bool modifiedgame;
 
 
 

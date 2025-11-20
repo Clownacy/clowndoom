@@ -51,7 +51,7 @@ void T_MoveCeiling (ceiling_t* ceiling)
 		res = T_MovePlane(ceiling->sector,
 						  ceiling->speed,
 						  ceiling->topheight,
-						  d_false,1,ceiling->direction);
+						  cc_false,1,ceiling->direction);
 
 		if (!(leveltime&7))
 		{
@@ -194,12 +194,12 @@ EV_DoCeiling
 		sec->specialdata = ceiling;
 		ceiling->thinker.function.acp1 = (actionf_p1)T_MoveCeiling;
 		ceiling->sector = sec;
-		ceiling->crush = d_false;
+		ceiling->crush = cc_false;
 
 		switch(type)
 		{
 		case fastCrushAndRaise:
-			ceiling->crush = d_true;
+			ceiling->crush = cc_true;
 			ceiling->topheight = sec->ceilingheight;
 			ceiling->bottomheight = sec->floorheight + (8*FRACUNIT);
 			ceiling->direction = -1;
@@ -208,7 +208,7 @@ EV_DoCeiling
 
 		case silentCrushAndRaise:
 		case crushAndRaise:
-			ceiling->crush = d_true;
+			ceiling->crush = cc_true;
 			ceiling->topheight = sec->ceilingheight;
 			/* Fallthrough */
 		case lowerAndCrush:

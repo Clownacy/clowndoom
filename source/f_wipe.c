@@ -35,7 +35,7 @@
 #define PIXELS_PER_COLUMN (2 * MELT_SCALE)
 
 /* when zero, stop the wipe */
-static d_bool  go = 0;
+static cc_bool go = 0;
 
 static colourindex_t*    wipe_scr_start;
 static colourindex_t*    wipe_scr_end;
@@ -56,12 +56,12 @@ static int
 wipe_doColorXForm
 ( int   ticks )
 {
-	d_bool      changed;
+	cc_bool     changed;
 	colourindex_t*       w;
 	colourindex_t*       e;
 	int         newval;
 
-	changed = d_false;
+	changed = cc_false;
 	w = wipe_scr;
 	e = wipe_scr_end;
 
@@ -76,7 +76,7 @@ wipe_doColorXForm
 					*w = *e;
 				else
 					*w = newval;
-				changed = d_true;
+				changed = cc_true;
 			}
 			else if (*w < *e)
 			{
@@ -85,7 +85,7 @@ wipe_doColorXForm
 					*w = *e;
 				else
 					*w = newval;
-				changed = d_true;
+				changed = cc_true;
 			}
 		}
 		w++;
@@ -133,7 +133,7 @@ wipe_doMelt
 	int         i;
 	int         j;
 
-	d_bool      done = d_true;
+	cc_bool     done = cc_true;
 
 	while (ticks--)
 	{
@@ -141,7 +141,7 @@ wipe_doMelt
 		{
 			if (y[i]<0)
 			{
-				y[i] += 1*MELT_SCALE; done = d_false;
+				y[i] += 1*MELT_SCALE; done = cc_false;
 			}
 			else if (y[i] < SCREENHEIGHT)
 			{
@@ -164,7 +164,7 @@ wipe_doMelt
 				}
 
 				y[i] += dy;
-				done = d_false;
+				done = cc_false;
 			}
 		}
 	}

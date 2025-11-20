@@ -89,7 +89,7 @@ M_DrawText
 
 
 /* M_WriteFile */
-d_bool
+cc_bool
 M_WriteFile
 ( char const*   name,
   void*         source,
@@ -101,15 +101,15 @@ M_WriteFile
 	handle = I_FileOpen ( name, I_FILE_MODE_WRITE);
 
 	if (handle == NULL)
-		return d_false;
+		return cc_false;
 
 	count = I_FileWrite (handle, source, length);
 	I_FileClose (handle);
 
 	if (count < length)
-		return d_false;
+		return cc_false;
 
-	return d_true;
+	return cc_true;
 }
 
 
@@ -214,7 +214,7 @@ typedef struct
 {
 	const char* name;
 	int*        location;
-	d_bool      is_string;
+	cc_bool     is_string;
 	/*int               scantranslate;*/        /* PC scan code hack */
 	/*int               untranslated;*/         /* lousy hack */
 } default_t;
@@ -222,69 +222,69 @@ typedef struct
 static const default_t       defaults[] =
 {
 	/* General */
-	{"show_messages",&showMessages, d_false},
-	{"novert",&novert, d_false},
-	{"always_run",&always_run, d_false},
-	{"always_strafe",&always_strafe, d_false},
-	{"default_compatibility_level",&default_compatibility_level, d_false},
+	{"show_messages",&showMessages, cc_false},
+	{"novert",&novert, cc_false},
+	{"always_run",&always_run, cc_false},
+	{"always_strafe",&always_strafe, cc_false},
+	{"default_compatibility_level",&default_compatibility_level, cc_false},
 
 	/* Keyboard */
 	/* Movement */
-	{"key_right",&key_right, d_false},
-	{"key_left",&key_left, d_false},
-	{"key_up",&key_up, d_false},
-	{"key_down",&key_down, d_false},
-	{"key_strafeleft",&key_strafeleft, d_false},
-	{"key_straferight",&key_straferight, d_false},
+	{"key_right",&key_right, cc_false},
+	{"key_left",&key_left, cc_false},
+	{"key_up",&key_up, cc_false},
+	{"key_down",&key_down, cc_false},
+	{"key_strafeleft",&key_strafeleft, cc_false},
+	{"key_straferight",&key_straferight, cc_false},
 	/* Actions */
-	{"key_fire",&key_fire, d_false},
-	{"key_use",&key_use, d_false},
-	{"key_strafe",&key_strafe, d_false},
-	{"key_speed",&key_speed, d_false},
+	{"key_fire",&key_fire, cc_false},
+	{"key_use",&key_use, cc_false},
+	{"key_strafe",&key_strafe, cc_false},
+	{"key_speed",&key_speed, cc_false},
 
 	/* Mouse */
-	{"mouseb_fire",&mousebfire, d_false},
-	{"mouseb_strafe",&mousebstrafe, d_false},
-	{"mouseb_forward",&mousebforward, d_false},
-	{"mouse_sensitivity",&mouseSensitivity, d_false},
+	{"mouseb_fire",&mousebfire, cc_false},
+	{"mouseb_strafe",&mousebstrafe, cc_false},
+	{"mouseb_forward",&mousebforward, cc_false},
+	{"mouse_sensitivity",&mouseSensitivity, cc_false},
 
 	/* Joystick */
-	{"joyb_fire",&joybfire, d_false},
-	{"joyb_strafe",&joybstrafe, d_false},
-	{"joyb_use",&joybuse, d_false},
-	{"joyb_speed",&joybspeed, d_false},
-	{"joyb_weaponprevious",&joybweaponprevious, d_false},
-	{"joyb_weaponnext",&joybweaponnext, d_false},
+	{"joyb_fire",&joybfire, cc_false},
+	{"joyb_strafe",&joybstrafe, cc_false},
+	{"joyb_use",&joybuse, cc_false},
+	{"joyb_speed",&joybspeed, cc_false},
+	{"joyb_weaponprevious",&joybweaponprevious, cc_false},
+	{"joyb_weaponnext",&joybweaponnext, cc_false},
 
 	/* Video */
-	{"screenblocks",&screenblocks, d_false},
-	{"detaillevel",&detailLevel, d_false},
-	{"usegamma",&usegamma, d_false},
-	{"aspect_ratio_correction",&aspect_ratio_correction, d_false},
-	{"full_colour",&full_colour, d_false},
-	{"prototype_light_amplification_visor_effect",&prototype_light_amplification_visor_effect, d_false},
-	{"screen_width",&SCREENWIDTH, d_false},
-	{"screen_height",&SCREENHEIGHT, d_false},
-	{"hud_scale",&HUD_SCALE, d_false},
-	{"field_of_view",&field_of_view, d_false},
+	{"screenblocks",&screenblocks, cc_false},
+	{"detaillevel",&detailLevel, cc_false},
+	{"usegamma",&usegamma, cc_false},
+	{"aspect_ratio_correction",&aspect_ratio_correction, cc_false},
+	{"full_colour",&full_colour, cc_false},
+	{"prototype_light_amplification_visor_effect",&prototype_light_amplification_visor_effect, cc_false},
+	{"screen_width",&SCREENWIDTH, cc_false},
+	{"screen_height",&SCREENHEIGHT, cc_false},
+	{"hud_scale",&HUD_SCALE, cc_false},
+	{"field_of_view",&field_of_view, cc_false},
 
 	/* Audio */
-	{"music_volume",&musicVolume, d_false},
-	{"sfx_volume",&sfxVolume, d_false},
-	{"snd_channels",&numChannels, d_false},
-	{"wildmidi_config_path", (int*)&wildmidi_config_path, d_true },
+	{"music_volume",&musicVolume, cc_false},
+	{"sfx_volume",&sfxVolume, cc_false},
+	{"snd_channels",&numChannels, cc_false},
+	{"wildmidi_config_path", (int*)&wildmidi_config_path, cc_true },
 
 	/* Chat macros */
-	{"chatmacro0", (int *) &chat_macros[0], d_true },
-	{"chatmacro1", (int *) &chat_macros[1], d_true },
-	{"chatmacro2", (int *) &chat_macros[2], d_true },
-	{"chatmacro3", (int *) &chat_macros[3], d_true },
-	{"chatmacro4", (int *) &chat_macros[4], d_true },
-	{"chatmacro5", (int *) &chat_macros[5], d_true },
-	{"chatmacro6", (int *) &chat_macros[6], d_true },
-	{"chatmacro7", (int *) &chat_macros[7], d_true },
-	{"chatmacro8", (int *) &chat_macros[8], d_true },
-	{"chatmacro9", (int *) &chat_macros[9], d_true }
+	{"chatmacro0", (int *) &chat_macros[0], cc_true },
+	{"chatmacro1", (int *) &chat_macros[1], cc_true },
+	{"chatmacro2", (int *) &chat_macros[2], cc_true },
+	{"chatmacro3", (int *) &chat_macros[3], cc_true },
+	{"chatmacro4", (int *) &chat_macros[4], cc_true },
+	{"chatmacro5", (int *) &chat_macros[5], cc_true },
+	{"chatmacro6", (int *) &chat_macros[6], cc_true },
+	{"chatmacro7", (int *) &chat_macros[7], cc_true },
+	{"chatmacro8", (int *) &chat_macros[8], cc_true },
+	{"chatmacro9", (int *) &chat_macros[9], cc_true }
 };
 #endif
 
@@ -336,7 +336,7 @@ void M_LoadDefaults (void)
 	char        strparm[100];
 	char*       newstring;
 	int         parm;
-	d_bool      isstring;
+	cc_bool     isstring;
 
 	/* check for a custom default file */
 	i = M_CheckParm ("-config");
@@ -356,13 +356,13 @@ void M_LoadDefaults (void)
 	{
 		while (!feof(f))
 		{
-			isstring = d_false;
+			isstring = cc_false;
 			if (fscanf (f, "%79s %99[^\n]\n", def, strparm) == 2)
 			{
 				if (strparm[0] == '"')
 				{
 					/* get a string default */
-					isstring = d_true;
+					isstring = cc_true;
 					newstring = M_strndup(strparm+1, strlen(strparm+1)-1);
 				}
 				else
@@ -726,18 +726,18 @@ size_t M_StringCopyOffset(char* const dest, const size_t destsz, const size_t de
 	return M_StringCopy(dest + dest_offset, destsz - dest_offset, src);
 }
 
-d_bool M_FileExists(const char* const filename)
+cc_bool M_FileExists(const char* const filename)
 {
 	I_File* const file = I_FileOpen(filename, I_FILE_MODE_READ);
 
 	if (file != NULL)
 	{
 		I_FileClose(file);
-		return d_true;
+		return cc_true;
 	}
 	else
 	{
-		return d_false;
+		return cc_false;
 	}
 }
 

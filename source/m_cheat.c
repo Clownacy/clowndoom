@@ -28,12 +28,12 @@
 
 /* Called in st_stuff module, which handles the input. */
 /* Returns a 1 if the cheat was successful, 0 if failed. */
-d_bool
+cc_bool
 cht_CheckCheat
 ( cheatseq_t*   cht,
   char          key )
 {
-	d_bool rc = d_false;
+	cc_bool rc = cc_false;
 
 	if (cht->p == NULL)
 		cht->p = cht->sequence; /* initialize if first time */
@@ -50,7 +50,7 @@ cht_CheckCheat
 	else if (*cht->p == (char)-1) /* end of sequence character */
 	{
 		cht->p = cht->sequence;
-		rc = d_true;
+		rc = cc_true;
 	}
 
 	return rc;

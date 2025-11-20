@@ -31,13 +31,13 @@
 /* OPTIMIZE: closed two sided lines as single sided */
 
 /* True if any of the segs textures might be visible. */
-d_bool          segtextured;
+cc_bool         segtextured;
 
 /* False if the back side is the same plane. */
-d_bool          markfloor;
-d_bool          markceiling;
+cc_bool         markfloor;
+cc_bool         markceiling;
 
-d_bool          maskedtexture;
+cc_bool         maskedtexture;
 int             toptexture;
 int             bottomtexture;
 int             midtexture;
@@ -572,7 +572,7 @@ void R_StoreWallRange(int start, int stop)
 		/* single sided line */
 		midtexture = texturetranslation[sidedef->midtexture];
 		/* a single sided line is terminal, so it must mark ends */
-		markfloor = markceiling = d_true;
+		markfloor = markceiling = cc_true;
 		if (linedef->flags & ML_DONTPEGBOTTOM)
 		{
 			vtop = frontsector->floorheight + textureheight[sidedef->midtexture];
@@ -651,12 +651,12 @@ void R_StoreWallRange(int start, int stop)
 			|| backsector->floorpic != frontsector->floorpic
 			|| backsector->lightlevel != frontsector->lightlevel)
 		{
-			markfloor = d_true;
+			markfloor = cc_true;
 		}
 		else
 		{
 			/* same plane on both sides */
-			markfloor = d_false;
+			markfloor = cc_false;
 		}
 
 
@@ -664,19 +664,19 @@ void R_StoreWallRange(int start, int stop)
 			|| backsector->ceilingpic != frontsector->ceilingpic
 			|| backsector->lightlevel != frontsector->lightlevel)
 		{
-			markceiling = d_true;
+			markceiling = cc_true;
 		}
 		else
 		{
 			/* same plane on both sides */
-			markceiling = d_false;
+			markceiling = cc_false;
 		}
 
 		if (backsector->ceilingheight <= frontsector->floorheight
 			|| backsector->floorheight >= frontsector->ceilingheight)
 		{
 			/* closed door */
-			markceiling = markfloor = d_true;
+			markceiling = markfloor = cc_true;
 		}
 
 
@@ -721,7 +721,7 @@ void R_StoreWallRange(int start, int stop)
 		if (sidedef->midtexture)
 		{
 			/* masked midtexture */
-			maskedtexture = d_true;
+			maskedtexture = cc_true;
 			ds_p->maskedtexturecol = maskedtexturecol = lastopening - rw_x;
 			lastopening += rw_stopx - rw_x;
 		}
@@ -779,13 +779,13 @@ void R_StoreWallRange(int start, int stop)
 	if (frontsector->floorheight >= viewz)
 	{
 		/* above view plane */
-		markfloor = d_false;
+		markfloor = cc_false;
 	}
 
 	if (frontsector->ceilingheight <= viewz && frontsector->ceilingpic != skyflatnum)
 	{
 		/* below view plane */
-		markceiling = d_false;
+		markceiling = cc_false;
 	}
 
 

@@ -119,7 +119,7 @@ void W_AddFile (const char *filename)
 	size_t              startlump;
 	lumpinfo_t          singleinfo;
 	I_File*             storehandle;
-	d_bool              singlelump;
+	cc_bool             singlelump;
 	Dictionary_Entry*   dictionary_entry;
 
 	/* open the file and add to directory */

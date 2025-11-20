@@ -325,7 +325,7 @@ static const int checkcoord[12][4] =
 	{2,1,3,0}
 };
 
-d_bool R_CheckBBox(fixed_t *bspcoord)
+cc_bool R_CheckBBox(fixed_t *bspcoord)
 {
 	int                 boxx;
 	int                 boxy;
@@ -364,7 +364,7 @@ d_bool R_CheckBBox(fixed_t *bspcoord)
 
 	boxpos = (boxy<<2)+boxx;
 	if (boxpos == 5)
-		return d_true;
+		return cc_true;
 
 	x1 = bspcoord[checkcoord[boxpos][0]];
 	y1 = bspcoord[checkcoord[boxpos][1]];
@@ -379,7 +379,7 @@ d_bool R_CheckBBox(fixed_t *bspcoord)
 
 	/* Sitting on a line? */
 	if (span >= ANG180)
-		return d_true;
+		return cc_true;
 
 	tspan = angle1 + clipangle;
 
@@ -389,7 +389,7 @@ d_bool R_CheckBBox(fixed_t *bspcoord)
 
 		/* Totally off the left edge? */
 		if (tspan >= span)
-			return d_false;
+			return cc_false;
 
 		angle1 = clipangle;
 	}
@@ -400,7 +400,7 @@ d_bool R_CheckBBox(fixed_t *bspcoord)
 
 		/* Totally off the left edge? */
 		if (tspan >= span)
-			return d_false;
+			return cc_false;
 
 		angle2 = -clipangle;
 	}
@@ -415,7 +415,7 @@ d_bool R_CheckBBox(fixed_t *bspcoord)
 
 	/* Does not cross a pixel. */
 	if (sx1 == sx2)
-		return d_false;
+		return cc_false;
 	sx2--;
 
 	start = solidsegs;
@@ -425,10 +425,10 @@ d_bool R_CheckBBox(fixed_t *bspcoord)
 	if (sx1 >= start->first && sx2 <= start->last)
 	{
 		/* The clippost contains the new span. */
-		return d_false;
+		return cc_false;
 	}
 
-	return d_true;
+	return cc_true;
 }
 
 /* R_Subsector */

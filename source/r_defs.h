@@ -403,7 +403,7 @@ typedef struct
 	short       lump[8];
 
 	/* Flip bit (1 = flip) to use for view angles 0-7. */
-	d_bool      flip[8];
+	cc_bool     flip[8];
 
 } spriteframe_t;
 
