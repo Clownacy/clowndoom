@@ -55,6 +55,8 @@ extern int joybuse;
 extern int joybspeed;
 extern int joybweaponprevious;
 extern int joybweaponnext;
+extern int joybmenuok;
+extern int joybmenucancel;
 
 extern int screenblocks;
 extern int detailLevel;

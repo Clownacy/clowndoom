@@ -180,6 +180,8 @@ int             joybuse = 3;
 int             joybspeed = 10;
 int             joybweaponprevious = 1;
 int             joybweaponnext = 0;
+int             joybmenuok = 3;
+int             joybmenucancel = 5;
 
 int             screenblocks = 10;
 /* Blocky mode, has default, 0 = high, 1 = normal */
@@ -255,6 +257,8 @@ static const default_t       defaults[] =
 	{"joyb_speed",&joybspeed, cc_false},
 	{"joyb_weaponprevious",&joybweaponprevious, cc_false},
 	{"joyb_weaponnext",&joybweaponnext, cc_false},
+	{"joyb_menuok",&joybmenuok, cc_false},
+	{"joyb_menucancel",&joybmenucancel, cc_false},
 
 	/* Video */
 	{"screenblocks",&screenblocks, cc_false},

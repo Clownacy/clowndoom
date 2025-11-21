@@ -1305,12 +1305,12 @@ cc_bool M_Responder (event_t* ev)
 			joywait = I_GetTime() + 2;
 		}
 
-		if (ev->data1&1)
+		if (ev->data1&(1<<joybmenuok))
 		{
 			ch = KEY_ENTER;
 			joywait = I_GetTime() + 5;
 		}
-		if (ev->data1&2)
+		if (ev->data1&(1<<joybmenucancel))
 		{
 			ch = KEY_BACKSPACE;
 			joywait = I_GetTime() + 5;
