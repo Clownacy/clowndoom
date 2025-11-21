@@ -605,7 +605,7 @@ char    tempstring[83];
 
 void M_QuickSaveResponse(int ch)
 {
-	if (ch == 'y')
+	if (ch == 'y' || ch == KEY_ENTER)
 	{
 		M_DoSave(quickSaveSlot);
 		S_StartSound(NULL,sfx_swtchx);
@@ -640,7 +640,7 @@ void M_QuickSave(void)
 /* M_QuickLoad */
 void M_QuickLoadResponse(int ch)
 {
-	if (ch == 'y')
+	if (ch == 'y' || ch == KEY_ENTER)
 	{
 		M_LoadSelect(quickSaveSlot);
 		S_StartSound(NULL,sfx_swtchx);
@@ -814,7 +814,7 @@ void M_DrawEpisode(void)
 
 void M_VerifyNightmare(int ch)
 {
-	if (ch != 'y')
+	if (ch != 'y' && ch != KEY_ENTER)
 		return;
 
 	G_DeferedInitNew(sk_nightmare,epi+1,1);
@@ -914,7 +914,7 @@ void M_ResetGame(void)
 /* M_EndGame */
 void M_EndGameResponse(int ch)
 {
-	if (ch != 'y')
+	if (ch != 'y' && ch != KEY_ENTER)
 		return;
 
 	M_ResetGame();
@@ -996,7 +996,7 @@ static const int     quitsounds2[8] =
 
 void M_QuitResponse(int ch)
 {
-	if (ch != 'y')
+	if (ch != 'y' && ch != KEY_ENTER)
 		return;
 	if (!netgame)
 	{
@@ -1423,7 +1423,7 @@ cc_bool M_Responder (event_t* ev)
 	if (messageToPrint)
 	{
 		if (messageNeedsInput == cc_true &&
-			!(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE))
+			!(ch == ' ' || ch == 'n' || ch == 'y' || ch == KEY_ESCAPE || ch == KEY_ENTER || ch == KEY_BACKSPACE))
 			return cc_false;
 
 		menuactive = messageLastMenuActive;
