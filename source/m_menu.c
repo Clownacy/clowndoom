@@ -1395,8 +1395,10 @@ cc_bool M_Responder (event_t* ev)
 
 		case KEY_ENTER:
 			saveStringEnter = 0;
-			if (savegamestrings[saveSlot][0] != '\0')
-				M_DoSave(saveSlot);
+			/* BUGFIX: Allow joystick users to save. */
+			if (savegamestrings[saveSlot][0] == '\0')
+				sprintf(savegamestrings[saveSlot], "Slot %d", saveSlot);
+			M_DoSave(saveSlot);
 			break;
 
 		default:
