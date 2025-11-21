@@ -576,7 +576,7 @@ void M_SaveSelect(int choice)
 	saveSlot = choice;
 	strcpy(saveOldString,savegamestrings[choice]);
 	if (!strcmp(savegamestrings[choice],EMPTYSTRING))
-		savegamestrings[choice][0] = 0;
+		savegamestrings[choice][0] = '\0';
 	saveCharIndex = strlen(savegamestrings[choice]);
 }
 
@@ -1384,7 +1384,7 @@ cc_bool M_Responder (event_t* ev)
 			if (saveCharIndex > 0)
 			{
 				saveCharIndex--;
-				savegamestrings[saveSlot][saveCharIndex] = 0;
+				savegamestrings[saveSlot][saveCharIndex] = '\0';
 			}
 			break;
 
@@ -1395,7 +1395,7 @@ cc_bool M_Responder (event_t* ev)
 
 		case KEY_ENTER:
 			saveStringEnter = 0;
-			if (savegamestrings[saveSlot][0])
+			if (savegamestrings[saveSlot][0] != '\0')
 				M_DoSave(saveSlot);
 			break;
 
@@ -1410,7 +1410,7 @@ cc_bool M_Responder (event_t* ev)
 				(SAVESTRINGSIZE-2)*8*HUD_SCALE)
 			{
 				savegamestrings[saveSlot][saveCharIndex++] = ch;
-				savegamestrings[saveSlot][saveCharIndex] = 0;
+				savegamestrings[saveSlot][saveCharIndex] = '\0';
 			}
 			break;
 		}
