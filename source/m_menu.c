@@ -1315,6 +1315,11 @@ cc_bool M_Responder (event_t* ev)
 			ch = KEY_BACKSPACE;
 			joywait = I_GetTime() + 5;
 		}
+		if (ev->data1&(1<<joybmenuopen))
+		{
+			ch = KEY_ESCAPE;
+			joywait = I_GetTime() + 5;
+		}
 	}
 	else
 	{
