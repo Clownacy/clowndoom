@@ -1283,23 +1283,23 @@ cc_bool M_Responder (event_t* ev)
 
 	if (ev->type == ev_joystick && joywait < I_GetTime())
 	{
-		if (ev->data3 == -1)
+		if (ev->data3 < 0)
 		{
 			ch = KEY_UPARROW;
 			joywait = I_GetTime() + 5;
 		}
-		else if (ev->data3 == 1)
+		else if (ev->data3 > 0)
 		{
 			ch = KEY_DOWNARROW;
 			joywait = I_GetTime() + 5;
 		}
 
-		if (ev->data2 == -1)
+		if (ev->data2 < 0)
 		{
 			ch = KEY_LEFTARROW;
 			joywait = I_GetTime() + 2;
 		}
-		else if (ev->data2 == 1)
+		else if (ev->data2 > 0)
 		{
 			ch = KEY_RIGHTARROW;
 			joywait = I_GetTime() + 2;
