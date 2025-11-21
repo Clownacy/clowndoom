@@ -747,9 +747,8 @@ cc_bool M_FileExists(const char* const filename)
 	}
 }
 
-#define SIGN_EXTEND(type, bit, value) (((value) & (((type)1 << (bit)) - 1)) - (value & ((type)1 << (bit))))
-#define SIGN_EXTEND_SHORT(value) SIGN_EXTEND(unsigned int,  16 - 1, value)
-#define SIGN_EXTEND_LONG(value)  SIGN_EXTEND(unsigned long, 32 - 1, value)
+#define SIGN_EXTEND_SHORT(value) CC_SIGN_EXTEND_UINT(16 - 1, value)
+#define SIGN_EXTEND_LONG(value)  CC_SIGN_EXTEND_ULONG(32 - 1, value)
 
 int M_BytesToShort(const unsigned char * const data)
 {
