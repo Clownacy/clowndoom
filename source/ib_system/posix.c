@@ -95,7 +95,7 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 
 	size_t i;
 
-	for (i = 0; i < D_COUNT_OF(directories); ++i)
+	for (i = 0; i < CC_COUNT_OF(directories); ++i)
 	{
 		const char* const configdir = getenv(directories[i].environment_variable_name);
 

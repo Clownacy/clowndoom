@@ -331,7 +331,7 @@ static void GameEntryPoint(void)
 	argv[ 3] = "-file";
 	argv[ 4] = pwad_paths[0];
 
-	while (argc < D_COUNT_OF(argv) && argv[argc] != NULL)
+	while (argc < CC_COUNT_OF(argv) && argv[argc] != NULL)
 		++argc;
 
 	D_DoomMain(argc, argv);
@@ -536,7 +536,7 @@ void retro_set_environment(const retro_environment_t cb)
 		};
 
 		static const struct retro_subsystem_info info[] = {
-			{ "Mod", "mod", rom_info, D_COUNT_OF(rom_info), 0 },
+			{ "Mod", "mod", rom_info, CC_COUNT_OF(rom_info), 0 },
 			{ NULL, NULL, NULL, 0, 0 }
 		};
 
@@ -589,8 +589,8 @@ void retro_run(void)
 
 	co_switch(game_coroutine);
 
-	libretro.generate_audio.callback(&audio_buffer[0][0], D_COUNT_OF(audio_buffer), libretro.generate_audio.user_data);
-	libretro.audio_batch(&audio_buffer[0][0], D_COUNT_OF(audio_buffer));
+	libretro.generate_audio.callback(&audio_buffer[0][0], CC_COUNT_OF(audio_buffer), libretro.generate_audio.user_data);
+	libretro.audio_batch(&audio_buffer[0][0], CC_COUNT_OF(audio_buffer));
 }
 
 bool retro_load_game(const struct retro_game_info* const info)
@@ -604,7 +604,7 @@ void retro_unload_game(void)
 
 	free(iwad_path);
 
-	for (i = 0; i < D_COUNT_OF(pwad_paths); ++i)
+	for (i = 0; i < CC_COUNT_OF(pwad_paths); ++i)
 		free(pwad_paths[i]);
 }
 

@@ -65,7 +65,7 @@ void IB_ShutdownGraphics(void)
 }
 
 
-void IB_GrabMouse(d_bool grab)
+void IB_GrabMouse(cc_bool grab)
 {
 	(void)grab;
 }

@@ -59,7 +59,7 @@ static int              X_width;
 static int              X_height;
 
 /* MIT SHared Memory extension. */
-static d_bool          doShm;
+static cc_bool          doShm;
 
 static XShmSegmentInfo  X_shminfo;
 static int              X_shmeventtype;
@@ -67,7 +67,7 @@ static int              X_shmeventtype;
 /* Fake mouse handling. */
 /* This cannot work properly w/o DGA. */
 /* Needs an invisible mouse cursor at least. */
-static d_bool          grabMouse;
+static cc_bool          grabMouse;
 static Cursor           nullCursor;
 
 
@@ -143,7 +143,7 @@ static int xlatekey(void)
 
 static int      lastmousex = 0;
 static int      lastmousey = 0;
-static d_bool  shmFinished;
+static cc_bool  shmFinished;
 
 static void IB_GetEvent(void)
 {
@@ -229,7 +229,7 @@ static void IB_GetEvent(void)
 		break;
 
 	  default:
-		if (doShm && X_event.type == X_shmeventtype) shmFinished = d_true;
+		if (doShm && X_event.type == X_shmeventtype) shmFinished = cc_true;
 		break;
 	}
 
@@ -310,7 +310,7 @@ void IB_FinishUpdate (void)
 			I_Error("XShmPutImage() failed\n");
 
 		/* wait for it to finish and processes all input events */
-		shmFinished = d_false;
+		shmFinished = cc_false;
 		do
 		{
 			IB_GetEvent();
@@ -528,7 +528,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 			d = displayname;
 			while (*d && (*d != ':')) d++;
 			if (*d) *d = 0;
-			if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = d_false;
+			if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = cc_false;
 		}
 	}
 
@@ -662,7 +662,7 @@ void IB_ShutdownGraphics(void)
 }
 
 
-void IB_GrabMouse(d_bool grab)
+void IB_GrabMouse(cc_bool grab)
 {
 	grabMouse = grab;
 

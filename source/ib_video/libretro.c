@@ -39,7 +39,7 @@ static void *framebuffer;
 static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right, joystick_x_dpad, joystick_y_dpad;
 static int mouse_button_state;
 
-static void SetButton(const unsigned int button_index, const d_bool pressed, int* const state)
+static void SetButton(const unsigned int button_index, const cc_bool pressed, int* const state)
 {
 	const unsigned int mask = 1U << button_index;
 
@@ -49,12 +49,12 @@ static void SetButton(const unsigned int button_index, const d_bool pressed, int
 		*state &= ~mask;
 }
 
-static void SetJoystickButton(const unsigned int button_index, const d_bool pressed)
+static void SetJoystickButton(const unsigned int button_index, const cc_bool pressed)
 {
 	SetButton(button_index, pressed, &joystick_button_state);
 }
 
-static void SetMouseButton(const unsigned int button_index, const d_bool pressed)
+static void SetMouseButton(const unsigned int button_index, const cc_bool pressed)
 {
 	SetButton(button_index, pressed, &mouse_button_state);
 }
@@ -64,8 +64,8 @@ static void SubmitJoystickEvent(void)
 	event_t event;
 	event.type = ev_joystick;
 	event.data1 = joystick_button_state;
-	event.data2 = D_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_x_left + joystick_x_dpad);
-	event.data3 = D_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_y_left + joystick_y_dpad);
+	event.data2 = CC_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_x_left + joystick_x_dpad);
+	event.data3 = CC_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_y_left + joystick_y_dpad);
 	event.data4 = joystick_x_right;
 	D_PostEvent(&event);
 }
@@ -242,7 +242,7 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	/* TODO: Handle failed allocation. */
 	framebuffer = malloc(SCREENWIDTH * SCREENHEIGHT * *bytes_per_pixel);
 
-	output_size_changed_callback(SCREENWIDTH, SCREENHEIGHT, d_false);
+	output_size_changed_callback(SCREENWIDTH, SCREENHEIGHT, cc_false);
 
 	/* Update the frontend with the game's chosen resolution. */
 	{
@@ -263,7 +263,7 @@ void IB_ShutdownGraphics(void)
 }
 
 
-void IB_GrabMouse(d_bool grab)
+void IB_GrabMouse(cc_bool grab)
 {
 	(void)grab;
 }
