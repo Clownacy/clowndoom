@@ -71,11 +71,20 @@ void IB_Sleep(void)
 }
 
 
-size_t IB_GetConfigPath(char* const buffer, const size_t size)
+static size_t IB_GetDirectoryCommon(char* const buffer, const size_t size)
 {
 	char* const path = SDL_GetPrefPath("clownacy", "clowndoom");
 	size_t path_length = M_StringCopy(buffer, size, path);
-	path_length += M_StringCopyOffset(buffer, size, path_length, "default.cfg");
 	SDL_free(path);
 	return path_length;
+}
+
+size_t IB_GetConfigDirectoryPath(char* const buffer, const size_t size)
+{
+	return IB_GetDirectoryCommon(buffer, size);
+}
+
+size_t IB_GetSaveDirectoryPath(char *buffer, size_t size)
+{
+	return IB_GetDirectoryCommon(buffer, size);
 }

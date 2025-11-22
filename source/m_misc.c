@@ -780,7 +780,7 @@ const char* M_GetSaveFilePath(const int i)
 {
 	static char name[0x100];
 
-	sprintf(name + I_GetConfigPath(name, CC_COUNT_OF(name)), SAVEGAMENAME"%d.dsg", i);
+	sprintf(name + I_GetSaveDirectoryPath(name, CC_COUNT_OF(name)), SAVEGAMENAME"%d.dsg", i);
 
 	return name;
 }

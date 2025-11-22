@@ -73,7 +73,8 @@ void I_Info(const char *error, ...);
 
 void I_Sleep(void);
 
-size_t I_GetConfigPath(char *buffer, size_t size);
+size_t I_GetConfigDirectoryPath(char *buffer, size_t size);
+size_t I_GetSaveDirectoryPath(char *buffer, size_t size);
 
 void I_BeginRead (void);
 void I_EndRead (void);

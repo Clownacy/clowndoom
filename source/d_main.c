@@ -576,7 +576,7 @@ void IdentifyVersion (void)
 {
 	const char *doomwaddir;
 
-	I_GetConfigPath(basedefault, CC_COUNT_OF(basedefault));
+	M_StringCopyOffset(basedefault, CC_COUNT_OF(basedefault), I_GetConfigDirectoryPath(basedefault, CC_COUNT_OF(basedefault)), "default.cfg");
 
 	doomwaddir = getenv("DOOMWADDIR");
 	if (!doomwaddir)

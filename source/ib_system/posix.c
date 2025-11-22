@@ -82,7 +82,7 @@ void IB_Sleep(void)
 }
 
 
-size_t IB_GetConfigPath(char* const buffer, const size_t size)
+static size_t IB_GetDirectoryCommon(char* const buffer, const size_t size)
 {
 	static const struct
 	{
@@ -93,7 +93,10 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 		{"HOME", "/.config/"},
 	};
 
-	size_t i;
+	size_t i, offset;
+
+	if (size != 0)
+		buffer[0] = '\0';
 
 	for (i = 0; i < CC_COUNT_OF(directories); ++i)
 	{
@@ -101,15 +104,25 @@ size_t IB_GetConfigPath(char* const buffer, const size_t size)
 
 		if (configdir != NULL)
 		{
-			size_t offset = M_StringCopy(buffer, size, configdir);
+			offset = M_StringCopy(buffer, size, configdir);
 			offset += M_StringCopyOffset(buffer, size, offset, directories[i].path_suffix);
-			offset += M_StringCopyOffset(buffer, size, offset, "clowndoomrc");
-			return offset;
+			break;
 		}
 	}
 
-	if (size != 0)
-		buffer[0] = '\0';
+	offset += M_StringCopyOffset(buffer, size, offset, "clownacy/clowndoom/");
 
-	return 0;
+	mkdir(buffer, 0755);
+
+	return offset;
+}
+
+size_t IB_GetConfigDirectoryPath(char* const buffer, const size_t size)
+{
+	return IB_GetDirectoryCommon(buffer, size);
+}
+
+size_t IB_GetSaveDirectoryPath(char *buffer, size_t size)
+{
+	return IB_GetDirectoryCommon(buffer, size);
 }

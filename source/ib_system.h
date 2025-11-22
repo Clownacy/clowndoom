@@ -30,7 +30,8 @@ void IB_Init (void);
 void IB_Quit (int exit_code);
 void IB_WaitFrames(int count);
 void IB_Sleep(void);
-size_t IB_GetConfigPath(char *buffer, size_t size);
+size_t IB_GetConfigDirectoryPath(char *buffer, size_t size);
+size_t IB_GetSaveDirectoryPath(char *buffer, size_t size);
 
 typedef enum I_FileMode
 {

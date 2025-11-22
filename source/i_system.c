@@ -152,7 +152,12 @@ void I_Sleep(void)
 	IB_Sleep();
 }
 
-size_t I_GetConfigPath(char* const buffer, const size_t size)
+size_t I_GetConfigDirectoryPath(char* const buffer, const size_t size)
 {
-	return IB_GetConfigPath(buffer, size);
+	return IB_GetConfigDirectoryPath(buffer, size);
+}
+
+size_t I_GetSaveDirectoryPath(char* const buffer, const size_t size)
+{
+	return IB_GetSaveDirectoryPath(buffer, size);
 }
