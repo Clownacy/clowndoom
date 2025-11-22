@@ -550,7 +550,7 @@ AM_Responder
 {
 
 	int rc;
-	static int bigstate=0;
+	static cc_bool bigstate=cc_false;
 	static char buffer[20];
 
 	rc = cc_false;
@@ -596,7 +596,7 @@ AM_Responder
 			ftom_zoommul = M_ZOOMOUT;
 			break;
 		case AM_ENDKEY:
-			bigstate = 0;
+			bigstate = cc_false;
 			viewactive = cc_true;
 			AM_Stop ();
 			break;
