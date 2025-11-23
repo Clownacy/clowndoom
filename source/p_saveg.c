@@ -256,7 +256,13 @@ size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 					mobj->player = (player_t *)((mobj->player-players) + 1);
 
 				if (mobj->target)
-					mobj->target = (mobj_t *)mobj->target->thinker.prev;
+				{
+					/* It seems that some mobjs contain stale target pointers, so filter them out here. */
+					if ((size_t)mobj->target->thinker.prev > total_mobjs)
+						mobj->target = NULL;
+					else
+						mobj->target = (mobj_t *)mobj->target->thinker.prev;
+				}
 			}
 			index += sizeof(*mobj);
 		}
