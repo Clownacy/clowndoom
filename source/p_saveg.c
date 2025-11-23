@@ -234,7 +234,7 @@ size_t P_ArchiveThinkers (unsigned char* const buffer, size_t index)
 	/* temporarily replace the prev pointer with an index into the thinker list */
 	for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
 		if (th->function.acp1 == (actionf_p1)P_MobjThinker)
-			th->prev = (thinker_t*)total_mobjs++;
+			th->prev = (thinker_t*)++total_mobjs;
 
 	if (buffer != NULL)
 		*(size_t*)&buffer[index] = total_mobjs;
@@ -328,7 +328,11 @@ size_t P_UnArchiveThinkers (const unsigned char* const buffer, size_t index)
 		for (i = 0; i < total_mobjs; ++i)
 		{
 			mobj_t* const mobj = mobjs[i];
-			mobj->target = mobjs[(size_t)mobj->target];
+			if (mobj->target)
+			{
+				mobj_t* const target = mobj->target;
+				mobj->target = mobjs[(size_t)target - 1];
+			}
 		}
 
 		Z_Free(mobjs);
