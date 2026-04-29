@@ -313,3 +313,11 @@ if(WILDMIDI)
 		target_link_libraries(clowndoom PRIVATE libwildmidi-static)
 	endif()
 endif()
+
+################
+# Installation #
+################
+
+install(TARGETS clowndoom DESTINATION "bin")
+install(FILES "assets/com.clownacy.clowndoom.desktop" DESTINATION "share/applications")
+install(FILES "assets/com.clownacy.clowndoom.appdata.xml" DESTINATION "share/metainfo")

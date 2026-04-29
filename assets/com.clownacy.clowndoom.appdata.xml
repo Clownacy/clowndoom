@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.clownacy.clowndoom</id>
+  
+  <name>ClownDoom</name>
+  <summary>Limit-removing Doom engine port.</summary>
+  
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>gamepad</control>
+  </supports>
+  
+  <description>
+    <p>
+      Limit-removing purist Doom engine port with enhancements and an emphasis on being lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">com.clownacy.clowndoom.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/Clownacy/clownmdemu-frontend/refs/heads/master/assets/screenshot-debug.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Clownacy/clownmdemu-frontend/refs/heads/master/assets/screenshot-minimal.png</image>
+    </screenshot>
+  </screenshots>
+</component>

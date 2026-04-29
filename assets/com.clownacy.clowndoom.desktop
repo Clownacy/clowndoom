@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Exec=clowndoom
+Terminal=false
+Type=Application
+Categories=Game;
+Name=ClownDoom
+GenericName=Doom Engine
+Keywords=doom;shooter;game
