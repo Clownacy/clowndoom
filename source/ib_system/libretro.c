@@ -381,7 +381,7 @@ void retro_get_system_info(struct retro_system_info* const info)
 {
 	memset(info, 0, sizeof(*info));
 	info->library_name     = "ClownDoom";
-	info->library_version  = "v1.1" GIT_VERSION;
+	info->library_version  = "v1.2" GIT_VERSION;
 	info->need_fullpath    = true;
 	info->valid_extensions = "wad";
 }
