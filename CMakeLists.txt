@@ -208,6 +208,8 @@ elseif(BACKEND STREQUAL "SDL2")
 	find_package(SDL2)
 
 	if(NOT SDL2_FOUND)
+		set(SDL_STATIC ON)
+		set(SDL_SHARED OFF)
 		add_subdirectory("external/SDL" EXCLUDE_FROM_ALL)
 		if(SDL_STATIC)
 			target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2-static)
