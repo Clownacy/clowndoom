@@ -624,18 +624,20 @@ void IdentifyVersion (void)
 	{
 		static const struct
 		{
-			char filename[8 + 4 + 1];
+			char filename[9 + 1 + 3 + 1];
 			GameMode_t gamemode;
 			GameMission_t gamemission;
 			Language_t language;
 		} wads[] = {
-			{"doom2f.wad",   commercial, doom2,     french },
-			{"doom2.wad",    commercial, doom2,     english},
-			{"plutonia.wad", commercial, pack_plut, english},
-			{"tnt.wad",      commercial, pack_tnt,  english},
-			{"doomu.wad",    retail,     doom,      english},
-			{"doom.wad",     registered, doom,      english},
-			{"doom1.wad",    shareware,  doom,      english},
+			{"doom2f.wad",    commercial, doom2,     french },
+			{"doom2.wad",     commercial, doom2,     english},
+			{"freedoom2.wad", commercial, doom2,     english},
+			{"plutonia.wad",  commercial, pack_plut, english},
+			{"tnt.wad",       commercial, pack_tnt,  english},
+			{"doomu.wad",     retail,     doom,      english},
+			{"freedoom1.wad", retail,     doom,      english},
+			{"doom.wad",      registered, doom,      english},
+			{"doom1.wad",     shareware,  doom,      english},
 		};
 
 		const int p = M_CheckParm ("-iwad");
