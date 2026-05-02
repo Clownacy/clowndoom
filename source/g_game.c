@@ -796,7 +796,7 @@ void G_PlayerReborn (int player)
 	players[player].itemcount = itemcount;
 	players[player].secretcount = secretcount;
 
-	p->usedown = p->attackdown = cc_true;  /* don't do anything immediately */
+	p->usedown = p->attackdown = p->changedown = cc_true;  /* don't do anything immediately */
 	p->playerstate = PST_LIVE;
 	p->health = MAXHEALTH;
 	p->readyweapon = p->pendingweapon = wp_pistol;

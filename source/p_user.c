@@ -303,29 +303,35 @@ void P_PlayerThink (player_t* player)
 
 		if (newweapon == wp_previous || newweapon == wp_next)
 		{
-			int index;
-
-			static const weapontype_t order[] = {wp_fist, wp_chainsaw, wp_pistol, wp_shotgun, wp_supershotgun, wp_chaingun, wp_missile, wp_plasma, wp_bfg};
-			static const int type_to_index[] = {0, 2, 3, 5, 6, 7, 8, 1, 4};
-
-			index = type_to_index[player->readyweapon];
-
-			do
+			if (!player->changedown)
 			{
-				if (newweapon == wp_next)
-					++index;
-				else
-					--index;
+				int index;
 
-				if (index == -1)
-					index = CC_COUNT_OF(order) - 1;
-				else if (index == CC_COUNT_OF(order))
-					index = 0;
-			} while (!WeaponValid(player, order[index]));
+				static const weapontype_t order[] = {wp_fist, wp_chainsaw, wp_pistol, wp_shotgun, wp_supershotgun, wp_chaingun, wp_missile, wp_plasma, wp_bfg};
+				static const int type_to_index[] = {0, 2, 3, 5, 6, 7, 8, 1, 4};
 
-			player->pendingweapon = order[index];
+				index = type_to_index[player->pendingweapon != wp_nochange ? player->pendingweapon : player->readyweapon];
+
+				do
+				{
+					if (newweapon == wp_next)
+						++index;
+					else
+						--index;
+
+					if (index == -1)
+						index = CC_COUNT_OF(order) - 1;
+					else if (index == CC_COUNT_OF(order))
+						index = 0;
+				} while (!WeaponValid(player, order[index]));
+
+				player->pendingweapon = order[index];
+			}
 		}
+		player->changedown = cc_true;
 	}
+	else
+		player->changedown = cc_false;
 
 	/* check for use */
 	if (cmd->buttons & BT_USE)
