@@ -209,6 +209,9 @@ void P_DeathThink (player_t* player)
 
 static cc_bool WeaponValid(const player_t* const player, const weapontype_t weapon)
 {
+	if (weapon >= NUMWEAPONS)
+		return cc_false;
+
 	if (!player->weaponowned[weapon])
 		return cc_false;
 
@@ -295,34 +298,33 @@ void P_PlayerThink (player_t* player)
 			newweapon = wp_supershotgun;
 		}
 
-
 		if (newweapon != player->readyweapon && WeaponValid(player, newweapon))
-				player->pendingweapon = newweapon;
-	}
+			player->pendingweapon = newweapon;
 
-	if (cmd->buttons & BT_CYCLE)
-	{
-		int index;
-
-		static const weapontype_t order[] = {wp_fist, wp_chainsaw, wp_pistol, wp_shotgun, wp_supershotgun, wp_chaingun, wp_missile, wp_plasma, wp_bfg};
-		static const int type_to_index[] = {0, 2, 3, 5, 6, 7, 8, 1, 4};
-
-		index = type_to_index[player->readyweapon];
-
-		do
+		if (newweapon == wp_previous || newweapon == wp_next)
 		{
-			if (cmd->buttons & 1)
-				++index;
-			else
-				--index;
+			int index;
 
-			if (index == -1)
-				index = CC_COUNT_OF(order) - 1;
-			else if (index == CC_COUNT_OF(order))
-				index = 0;
-		} while (!WeaponValid(player, order[index]));
+			static const weapontype_t order[] = {wp_fist, wp_chainsaw, wp_pistol, wp_shotgun, wp_supershotgun, wp_chaingun, wp_missile, wp_plasma, wp_bfg};
+			static const int type_to_index[] = {0, 2, 3, 5, 6, 7, 8, 1, 4};
 
-		player->pendingweapon = order[index];
+			index = type_to_index[player->readyweapon];
+
+			do
+			{
+				if (newweapon == wp_next)
+					++index;
+				else
+					--index;
+
+				if (index == -1)
+					index = CC_COUNT_OF(order) - 1;
+				else if (index == CC_COUNT_OF(order))
+					index = 0;
+			} while (!WeaponValid(player, order[index]));
+
+			player->pendingweapon = order[index];
+		}
 	}
 
 	/* check for use */

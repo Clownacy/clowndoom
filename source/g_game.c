@@ -296,9 +296,15 @@ void G_BuildTiccmd (ticcmd_t* cmd)
 		}
 
 	if (joybuttons[joybweaponprevious])
-		cmd->buttons |= BT_CYCLE | 0;
+	{
+		cmd->buttons |= BT_CHANGE;
+		cmd->buttons |= wp_previous<<BT_WEAPONSHIFT;
+	}
 	else if (joybuttons[joybweaponnext])
-		cmd->buttons |= BT_CYCLE | 1;
+	{
+		cmd->buttons |= BT_CHANGE;
+		cmd->buttons |= wp_next<<BT_WEAPONSHIFT;
+	}
 
 	/* mouse */
 	if (mousebuttons[mousebforward])
