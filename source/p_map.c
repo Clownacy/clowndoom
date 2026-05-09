@@ -1055,7 +1055,10 @@ cc_bool PTR_UseTraverse (intercept_t* in)
 	if (!in->d.line->special)
 	{
 		P_LineOpening (in->d.line);
-		if (openrange <= 0)
+		if (openrange <= 0 || (
+			in->d.line->backsector &&
+			in->d.line->frontsector->ceilingpic == skyflatnum &&
+			in->d.line->backsector->ceilingpic == skyflatnum))
 		{
 			S_StartSound (usething, sfx_noway);
 
