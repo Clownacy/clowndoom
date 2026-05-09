@@ -923,7 +923,16 @@ cc_bool PTR_ShootTraverse (intercept_t* in)
 
 			/* it's a sky hack wall */
 			if  (li->backsector && li->backsector->ceilingpic == skyflatnum)
+			{
+				if (z <= li->backsector->ceilingheight)
+				{
+					P_RandomSelect (1);
+					P_SpawnPuff (x,y,z);
+					P_RandomSelect (0);
+				}
+
 				return cc_false;
+			}
 		}
 
 		/* Spawn bullet puffs. */

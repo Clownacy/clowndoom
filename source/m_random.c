@@ -19,6 +19,8 @@
 
 #include "m_random.h"
 
+#include "clownlibs/clowncommon/clowncommon.h"
+
 #define RND_TABLE_COUNT 0x100
 
 /* M_Random */
@@ -46,13 +48,14 @@ static const unsigned char rndtable[RND_TABLE_COUNT] = {
 };
 
 static unsigned int rndindex = 0;
-static unsigned int prndindex = 0;
+static unsigned int prndindex[2] = {0, 0};
+static unsigned int pselection = 0;
 
 /* Which one is deterministic? */
 int P_Random(void)
 {
-	prndindex = (prndindex + 1) % RND_TABLE_COUNT;
-	return rndtable[prndindex];
+	prndindex[pselection] = (prndindex[pselection] + 1) % RND_TABLE_COUNT;
+	return rndtable[prndindex[pselection]];
 }
 
 int M_Random(void)
@@ -63,7 +66,12 @@ int M_Random(void)
 
 void M_ClearRandom(void)
 {
-	rndindex = prndindex = 0;
+	unsigned int i;
+
+	rndindex = 0;
+
+	for (i = 0; i < CC_COUNT_OF(prndindex); ++i)
+		prndindex[i] = 0;
 }
 
 int M_GetRndIndex(void)
@@ -76,4 +84,9 @@ int P_SubRandom(void)
 	const int value1 = P_Random();
 	const int value2 = P_Random();
 	return value1 - value2;
+}
+
+void P_RandomSelect(const unsigned int selection)
+{
+	pselection = selection;
 }
