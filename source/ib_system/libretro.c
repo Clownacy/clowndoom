@@ -130,6 +130,16 @@ static void UpdateOptions(const bool initial)
 		"enabled",
 		M_ChangedShowMessages);
 	DoOptionNumericalWithCallback(initial,
+		&automap_stats,
+		"clowndoom_automap_stats",
+		NULL);
+	DoOptionNumericalWithCallback(initial,
+		&default_compatibility_level,
+		"clowndoom_default_compatibility_level",
+		NULL);
+
+	/* Controls. */
+	DoOptionNumericalWithCallback(initial,
 		&mouseSensitivity,
 		"clowndoom_mouse_sensitivity",
 		M_ChangedMouseSensitivity);
@@ -147,14 +157,6 @@ static void UpdateOptions(const bool initial)
 		&always_strafe,
 		"clowndoom_always_strafe",
 		"enabled",
-		NULL);
-	DoOptionNumericalWithCallback(initial,
-		&automap_stats,
-		"clowndoom_automap_stats",
-		NULL);
-	DoOptionNumericalWithCallback(initial,
-		&default_compatibility_level,
-		"clowndoom_default_compatibility_level",
 		NULL);
 
 	/* Video. */

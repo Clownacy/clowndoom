@@ -62,6 +62,14 @@ struct retro_core_option_v2_category option_cats_us[] = {
 	},
 	{
 		/* Key. */
+		"input",
+		/* Label. */
+		"Input",
+		/* Description. */
+		"Options related to player controls."
+	},
+	{
+		/* Key. */
 		"video",
 		/* Label. */
 		"Video",
@@ -89,102 +97,6 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		"Show Messages",
 		/* Description. */
 		"Display messages in the top-left corner of the screen.",
-		/* Categorised description. */
-		NULL,
-		/* Category. */
-		"general",
-		/* Values. */
-		{
-			{"enabled", NULL},
-			{"disabled", NULL},
-			{NULL, NULL},
-		},
-		/* Default value. */
-		"enabled"
-	},
-	{
-		/* Key. */
-		"clowndoom_mouse_sensitivity",
-		/* Label. */
-		"General > Mouse Sensitivity",
-		/* Categorised label. */
-		"Mouse Sensitivity",
-		/* Description. */
-		"Adjusts the sensitivity of the first-person aiming.",
-		/* Categorised description. */
-		NULL,
-		/* Category. */
-		"general",
-		/* Values. */
-		{
-			{"0", NULL},
-			{"1", NULL},
-			{"2", NULL},
-			{"3", NULL},
-			{"4", NULL},
-			{"5", NULL},
-			{"6", NULL},
-			{"7", NULL},
-			{"8", NULL},
-			{"9", NULL},
-			{NULL, NULL},
-		},
-		/* Default value. */
-		"5"
-	},
-	{
-		/* Key. */
-		"clowndoom_move_with_mouse",
-		/* Label. */
-		"General > Move with Mouse",
-		/* Categorised label. */
-		"Move with Mouse",
-		/* Description. */
-		"Allow the player to move forward and backward with the mouse.",
-		/* Categorised description. */
-		NULL,
-		/* Category. */
-		"general",
-		/* Values. */
-		{
-			{"enabled", NULL},
-			{"disabled", NULL},
-			{NULL, NULL},
-		},
-		/* Default value. */
-		"disabled"
-	},
-	{
-		/* Key. */
-		"clowndoom_always_run",
-		/* Label. */
-		"General > Run by Default",
-		/* Categorised label. */
-		"Run by Default",
-		/* Description. */
-		"Makes the run button make the player character walk instead.",
-		/* Categorised description. */
-		NULL,
-		/* Category. */
-		"general",
-		/* Values. */
-		{
-			{"enabled", NULL},
-			{"disabled", NULL},
-			{NULL, NULL},
-		},
-		/* Default value. */
-		"enabled"
-	},
-	{
-		/* Key. */
-		"clowndoom_always_strafe",
-		/* Label. */
-		"General > Strafe by Default",
-		/* Categorised label. */
-		"Strafe by Default",
-		/* Description. */
-		"Makes the left and right buttons make the player character strafe instead.",
 		/* Categorised description. */
 		NULL,
 		/* Category. */
@@ -242,6 +154,102 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		},
 		/* Default value. */
 		"3"
+	},
+	{
+		/* Key. */
+		"clowndoom_mouse_sensitivity",
+		/* Label. */
+		"Input > Mouse Sensitivity",
+		/* Categorised label. */
+		"Mouse Sensitivity",
+		/* Description. */
+		"Adjusts the sensitivity of the first-person aiming.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"input",
+		/* Values. */
+		{
+			{"0", NULL},
+			{"1", NULL},
+			{"2", NULL},
+			{"3", NULL},
+			{"4", NULL},
+			{"5", NULL},
+			{"6", NULL},
+			{"7", NULL},
+			{"8", NULL},
+			{"9", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"5"
+	},
+	{
+		/* Key. */
+		"clowndoom_move_with_mouse",
+		/* Label. */
+		"Input > Move with Mouse",
+		/* Categorised label. */
+		"Move with Mouse",
+		/* Description. */
+		"Allow the player to move forward and backward with the mouse.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"input",
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"disabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_always_run",
+		/* Label. */
+		"Input > Run by Default",
+		/* Categorised label. */
+		"Run by Default",
+		/* Description. */
+		"Makes the run button make the player character walk instead.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"input",
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"enabled"
+	},
+	{
+		/* Key. */
+		"clowndoom_always_strafe",
+		/* Label. */
+		"Input > Strafe by Default",
+		/* Categorised label. */
+		"Strafe by Default",
+		/* Description. */
+		"Makes the left and right buttons make the player character strafe instead.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"input",
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"enabled"
 	},
 	{
 		/* Key. */
