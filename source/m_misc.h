@@ -70,6 +70,7 @@ extern int usegamma;
 extern int aspect_ratio_correction;
 extern int full_colour;
 extern int prototype_light_amplification_visor_effect;
+extern int automap_stats;
 
 extern int musicVolume;
 extern int sfxVolume;

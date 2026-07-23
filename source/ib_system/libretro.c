@@ -149,6 +149,10 @@ static void UpdateOptions(const bool initial)
 		"enabled",
 		NULL);
 	DoOptionNumericalWithCallback(initial,
+		&automap_stats,
+		"clowndoom_automap_stats",
+		NULL);
+	DoOptionNumericalWithCallback(initial,
 		&default_compatibility_level,
 		"clowndoom_default_compatibility_level",
 		NULL);

@@ -192,6 +192,7 @@ int             usegamma = 0;
 int             aspect_ratio_correction = 1;
 int             full_colour = 0;
 int             prototype_light_amplification_visor_effect = 0;
+int             automap_stats = 0;
 
 int             musicVolume = 8;
 int             sfxVolume = 8;
@@ -271,6 +272,7 @@ static const default_t       defaults[] =
 	{"aspect_ratio_correction",&aspect_ratio_correction, cc_false},
 	{"full_colour",&full_colour, cc_false},
 	{"prototype_light_amplification_visor_effect",&prototype_light_amplification_visor_effect, cc_false},
+	{"automap_stats",&automap_stats, cc_false},
 	{"screen_width",&SCREENWIDTH, cc_false},
 	{"screen_height",&SCREENHEIGHT, cc_false},
 	{"hud_scale",&HUD_SCALE, cc_false},

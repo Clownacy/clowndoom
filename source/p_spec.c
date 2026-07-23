@@ -28,10 +28,10 @@
 #include "doomstat.h"
 #include "dstrings.h"
 
-#include "am_map.h"
 #include "i_system.h"
 #include "z_zone.h"
 #include "m_argv.h"
+#include "m_misc.h"
 #include "m_random.h"
 #include "w_wad.h"
 
@@ -1002,7 +1002,7 @@ void P_PlayerInSpecialSector (player_t* player)
 		/* SECRET SECTOR */
 		player->secretcount++;
 		sector->special = 0;
-		if (deathmatch == DM_OFF && automap_cheats >= 1)
+		if (deathmatch == DM_OFF && automap_stats)
 		{
 			players[consoleplayer].message = SECRETFOUND;
 			S_StartSound(NULL, sfx_itmbk);

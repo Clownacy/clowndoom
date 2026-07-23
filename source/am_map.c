@@ -208,7 +208,7 @@ static const mline_t thintriangle_guy[] = {
 
 
 
-int             automap_cheats = 0;
+static int      automap_cheats = 0;
 static cc_bool  grid = cc_false;
 
 static cc_bool  leveljuststarted = cc_true;   /* kluge until AM_LevelInit() is called */
@@ -643,7 +643,7 @@ AM_Responder
 		if (deathmatch == DM_OFF && cht_CheckCheat(&cheat_amap, ev->data1))
 		{
 			rc = cc_false;
-			automap_cheats = (automap_cheats+1) % 4;
+			automap_cheats = (automap_cheats+1) % 3;
 		}
 	}
 
@@ -1048,9 +1048,9 @@ void AM_drawWalls(void)
 		l.a.y = lines[i].v1->y;
 		l.b.x = lines[i].v2->x;
 		l.b.y = lines[i].v2->y;
-		if (automap_cheats >= 2 || (lines[i].flags & ML_MAPPED))
+		if (automap_cheats != 0 || (lines[i].flags & ML_MAPPED))
 		{
-			if ((lines[i].flags & LINE_NEVERSEE) && automap_cheats < 2)
+			if ((lines[i].flags & LINE_NEVERSEE) && automap_cheats == 0)
 				continue;
 			if (!lines[i].backsector)
 			{
@@ -1064,7 +1064,7 @@ void AM_drawWalls(void)
 				}
 				else if (lines[i].flags & ML_SECRET) /* secret door */
 				{
-					if (automap_cheats >= 2) AM_drawMline(&l, SECRETWALLCOLORS + lightlev);
+					if (automap_cheats != 0) AM_drawMline(&l, SECRETWALLCOLORS + lightlev);
 					else AM_drawMline(&l, WALLCOLORS+lightlev);
 				}
 				else if (lines[i].backsector->floorheight
@@ -1075,7 +1075,7 @@ void AM_drawWalls(void)
 						   != lines[i].frontsector->ceilingheight) {
 					AM_drawMline(&l, CDWALLCOLORS+lightlev); /* ceiling level change */
 				}
-				else if (automap_cheats >= 2) {
+				else if (automap_cheats != 0) {
 					AM_drawMline(&l, TSWALLCOLORS+lightlev);
 				}
 			}
@@ -1168,7 +1168,7 @@ void AM_drawPlayers(void)
 
 	if (!netgame)
 	{
-		if (automap_cheats >= 2)
+		if (automap_cheats != 0)
 			AM_drawLineCharacter
 				(cheat_player_arrow, NUMCHEATPLYRLINES, 0,
 				 plr->mo->angle, WHITE, plr->mo->x, plr->mo->y);
@@ -1261,7 +1261,7 @@ void AM_Drawer (void)
 		AM_drawGrid(GRIDCOLORS);
 	AM_drawWalls();
 	AM_drawPlayers();
-	if (automap_cheats==3)
+	if (automap_cheats==2)
 		AM_drawThings(THINGCOLORS);
 	AM_drawCrosshair(XHAIRCOLORS);
 

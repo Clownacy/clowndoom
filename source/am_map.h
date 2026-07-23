@@ -28,8 +28,6 @@
 #define AM_MSGEXITED (AM_MSGHEADER | ('x'<<8))
 
 
-extern int automap_cheats;
-
 /* Called by main loop. */
 cc_bool AM_Responder (const event_t* ev);
 

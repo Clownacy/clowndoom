@@ -551,7 +551,7 @@ void HU_Drawer(void)
 		HUlib_positionTextLine(&w_title, HU_TITLEX, HU_TITLEY);
 		HUlib_drawTextLine(&w_title, cc_false);
 
-		if (deathmatch == DM_OFF && automap_cheats >= 1)
+		if (deathmatch == DM_OFF && automap_stats)
 		{
 			int i, kills, items, secrets;
 

@@ -36,6 +36,8 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
     the mouse up and down.
   - `always_run` - Makes the player character run instead of walk, and vice
     versa.
+  - `automap_stats` - Enables kill/item/secret totals in the automap, as well
+    as notifications when finding secrets.
   - `aspect_ratio_correction` - Restores the original 4:3 aspect ratio by
     making pixels rectangular.
   - `full_colour` - Render with more than 256 colours.
@@ -53,8 +55,6 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
 - Supported expansions:
   - Master Levels for Doom II
   - No Rest for the Living
-- The 'iddt' cheat enables kill/item/secret totals in the automap, as well as
-  notifications when finding secrets.
 - Assorted bug fixes.
 - Better than CuckyDOOM.
 

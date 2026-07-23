@@ -200,6 +200,28 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 	},
 	{
 		/* Key. */
+		"clowndoom_automap_stats",
+		/* Label. */
+		"General > Automap Stats",
+		/* Categorised label. */
+		"Automap Stats",
+		/* Description. */
+		"Show statistics (kills, items, secrets) in the automap. Also notifies player when a secret is discovered.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"general",
+		/* Values. */
+		{
+			{"enabled", NULL},
+			{"disabled", NULL},
+			{NULL, NULL},
+		},
+		/* Default value. */
+		"disabled"
+	},
+	{
+		/* Key. */
 		"clowndoom_default_compatibility_level",
 		/* Label. */
 		"General > Default Compatibility Level",
