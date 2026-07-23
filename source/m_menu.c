@@ -1272,7 +1272,6 @@ cc_bool M_Responder (event_t* ev)
 {
 	int             ch;
 	int             i;
-	static  int     joywait = 0;
 	static  int     mousewait = 0;
 	static  int     mousey = 0;
 	static  int     lasty = 0;
@@ -1281,45 +1280,22 @@ cc_bool M_Responder (event_t* ev)
 
 	ch = -1;
 
-	if (ev->type == ev_joystick && joywait < I_GetTime())
+	if (ev->type == ev_buttondown)
 	{
-		if (ev->data3 < 0)
-		{
+		if (ev->data1 == joybup)
 			ch = KEY_UPARROW;
-			joywait = I_GetTime() + 5;
-		}
-		else if (ev->data3 > 0)
-		{
+		else if (ev->data1 == joybdown)
 			ch = KEY_DOWNARROW;
-			joywait = I_GetTime() + 5;
-		}
-
-		if (ev->data2 < 0)
-		{
+		else if (ev->data1 == joybleft)
 			ch = KEY_LEFTARROW;
-			joywait = I_GetTime() + 2;
-		}
-		else if (ev->data2 > 0)
-		{
+		else if (ev->data1 == joybright)
 			ch = KEY_RIGHTARROW;
-			joywait = I_GetTime() + 2;
-		}
-
-		if (ev->data1&(1<<joybmenuok))
-		{
+		else if (ev->data1 == joybmenuok)
 			ch = KEY_ENTER;
-			joywait = I_GetTime() + 5;
-		}
-		if (ev->data1&(1<<joybmenucancel))
-		{
+		else if (ev->data1 == joybmenucancel)
 			ch = KEY_BACKSPACE;
-			joywait = I_GetTime() + 5;
-		}
-		if (ev->data1&(1<<joybmenuopen))
-		{
+		else if (ev->data1 == joybmenuopen)
 			ch = KEY_ESCAPE;
-			joywait = I_GetTime() + 5;
-		}
 	}
 	else
 	{

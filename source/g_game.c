@@ -513,7 +513,7 @@ cc_bool G_Responder (const event_t* ev)
 	{
 		if (ev->type == ev_keydown ||
 			(ev->type == ev_mouse && ev->data1) ||
-			(ev->type == ev_joystick && ev->data1) )
+			ev->type == ev_buttondown )
 		{
 			M_StartControlPanel ();
 			return cc_true;
