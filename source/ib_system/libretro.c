@@ -82,151 +82,102 @@ static double DoOptionFloating(const char* const key)
 	return 0;
 }
 
-static void DoOptionBooleanWithCallback(const bool initial, int* const option, const char* const name, const char* const true_value, void (* const callback)(void))
+static bool DoOptionBooleanWithCallback(const bool initial, int* const option, const char* const name, const char* const true_value)
 {
 	const bool new_setting = DoOptionBoolean(name, true_value);
 
-	if (*option != new_setting)
-	{
-		*option = new_setting;
+	if (*option == new_setting)
+		return false;
 
-		if (!initial && callback != NULL)
-			callback();
-	}
+	*option = new_setting;
+
+	return !initial;
 }
 
-static void DoOptionNumericalWithCallback(const bool initial, int* const option, const char* const name, void (* const callback)(void))
+static bool DoOptionNumericalWithCallback(const bool initial, int* const option, const char* const name)
 {
 	const int new_setting = DoOptionNumerical(name);
 
-	if (*option != new_setting)
-	{
-		*option = new_setting;
+	if (*option == new_setting)
+		return false;
 
-		if (!initial && callback != NULL)
-			callback();
-	}
+	*option = new_setting;
+
+	return !initial;
 }
 
-static void DoOptionFloatingWithCallback(const bool initial, double* const option, const char* const name, void (* const callback)(void))
+static bool DoOptionFloatingWithCallback(const bool initial, double* const option, const char* const name)
 {
 	const double new_setting = DoOptionFloating(name);
 
-	if (*option != new_setting)
-	{
-		*option = new_setting;
+	if (*option == new_setting)
+		return false;
 
-		if (!initial && callback != NULL)
-			callback();
-	}
-}
+	*option = new_setting;
 
-static void ChangedAspectRatioCorrection(void)
-{
-	/* Update the frontend with the game's chosen resolution. */
-	struct retro_game_geometry geometry;
-	geometry.base_width = SCREENWIDTH;
-	geometry.base_height = SCREENHEIGHT;
-	geometry.aspect_ratio = (float)SCREENWIDTH / SCREENHEIGHT;
-	if (aspect_ratio_correction)
-		geometry.aspect_ratio = geometry.aspect_ratio * 5 / 6;
-	libretro.environment(RETRO_ENVIRONMENT_SET_GEOMETRY, &geometry);
+	return !initial;
 }
 
 static void UpdateOptions(const bool initial)
 {
 	/* General. */
-	DoOptionBooleanWithCallback(initial,
-		&showMessages,
-		"clowndoom_show_messages",
-		"enabled",
-		M_ChangedShowMessages);
-	DoOptionBooleanWithCallback(initial,
-		&automap_stats,
-		"clowndoom_automap_stats",
-		"enabled",
-		NULL);
-	DoOptionNumericalWithCallback(initial,
-		&default_compatibility_level,
-		"clowndoom_default_compatibility_level",
-		NULL);
+
+	if (DoOptionBooleanWithCallback(initial, &showMessages, "clowndoom_show_messages", "enabled"))
+		M_ChangedShowMessages();
+
+	DoOptionBooleanWithCallback(initial, &automap_stats, "clowndoom_automap_stats", "enabled");
+	DoOptionNumericalWithCallback(initial, &default_compatibility_level, "clowndoom_default_compatibility_level");
 
 	/* Input. */
-	DoOptionNumericalWithCallback(initial,
-		&mouseSensitivity,
-		"clowndoom_mouse_sensitivity",
-		M_ChangedMouseSensitivity);
-	DoOptionBooleanWithCallback(initial,
-		&novert,
-		"clowndoom_move_with_mouse",
-		"disabled",
-		NULL);
-	DoOptionBooleanWithCallback(initial,
-		&always_run,
-		"clowndoom_always_run",
-		"enabled",
-		NULL);
-	DoOptionBooleanWithCallback(initial,
-		&always_strafe,
-		"clowndoom_always_strafe",
-		"enabled",
-		NULL);
+
+	if (DoOptionNumericalWithCallback(initial, &mouseSensitivity, "clowndoom_mouse_sensitivity"))
+		M_ChangedMouseSensitivity();
+
+	DoOptionBooleanWithCallback(initial, &novert, "clowndoom_move_with_mouse", "disabled");
+	DoOptionBooleanWithCallback(initial, &always_run, "clowndoom_always_run", "enabled");
+	DoOptionBooleanWithCallback(initial, &always_strafe, "clowndoom_always_strafe", "enabled");
 
 	/* Video. */
-	DoOptionBooleanWithCallback(initial,
-		&detailLevel,
-		"clowndoom_graphic_detail",
-		"Low",
-		M_ChangedGraphicDetail);
-	DoOptionNumericalWithCallback(initial,
-		&screenblocks,
-		"clowndoom_screen_size",
-		M_ChangedScreenBlocks);
-	DoOptionNumericalWithCallback(initial,
-		&usegamma,
-		"clowndoom_use_gamma",
-		M_ChangedUseGamma);
-	DoOptionBooleanWithCallback(initial,
-		&aspect_ratio_correction,
-		"clowndoom_aspect_ratio_correction",
-		"enabled",
-		ChangedAspectRatioCorrection);
-	DoOptionBooleanWithCallback(initial,
-		&full_colour,
-		"clowndoom_full_colour",
-		"enabled",
-		M_ChangedFullColour);
-	DoOptionBooleanWithCallback(initial,
-		&prototype_light_amplification_visor_effect,
-		"clowndoom_prototype_light_amplification_visor_effect",
-		"enabled",
-		M_ChangedPrototypeLightAmplificationVisorEffect);
-	DoOptionNumericalWithCallback(initial,
-		&SCREENWIDTH_OPTION,
-		"clowndoom_horizontal_resolution",
-		NULL);
-	DoOptionNumericalWithCallback(initial,
-		&HUD_SCALE_OPTION,
-		"clowndoom_hud_scale",
-		NULL);
-	DoOptionFloatingWithCallback(initial,
-		&aspect_ratio_option,
-		"clowndoom_aspect_ratio",
-		NULL);
-	DoOptionNumericalWithCallback(initial,
-		&field_of_view,
-		"clowndoom_field_of_view",
-		NULL);
+
+	if (DoOptionBooleanWithCallback(initial, &detailLevel, "clowndoom_graphic_detail", "Low"))
+		M_ChangedGraphicDetail();
+
+	if (DoOptionNumericalWithCallback(initial, &screenblocks, "clowndoom_screen_size"))
+		M_ChangedScreenBlocks();
+
+	if (DoOptionNumericalWithCallback(initial, &usegamma, "clowndoom_use_gamma"))
+		M_ChangedUseGamma();
+
+	if (DoOptionBooleanWithCallback(initial, &aspect_ratio_correction, "clowndoom_aspect_ratio_correction", "enabled"))
+	{
+		/* Update the frontend with the game's chosen resolution. */
+		struct retro_game_geometry geometry;
+		geometry.base_width = SCREENWIDTH;
+		geometry.base_height = SCREENHEIGHT;
+		geometry.aspect_ratio = (float)SCREENWIDTH / SCREENHEIGHT;
+		if (aspect_ratio_correction)
+			geometry.aspect_ratio = geometry.aspect_ratio * 5 / 6;
+		libretro.environment(RETRO_ENVIRONMENT_SET_GEOMETRY, &geometry);
+	}
+
+	if (DoOptionBooleanWithCallback(initial, &full_colour, "clowndoom_full_colour", "enabled"))
+		M_ChangedFullColour();
+
+	if (DoOptionBooleanWithCallback(initial, &prototype_light_amplification_visor_effect, "clowndoom_prototype_light_amplification_visor_effect", "enabled"))
+		M_ChangedPrototypeLightAmplificationVisorEffect();
+
+	DoOptionNumericalWithCallback(initial, &SCREENWIDTH_OPTION, "clowndoom_horizontal_resolution");
+	DoOptionNumericalWithCallback(initial, &HUD_SCALE_OPTION, "clowndoom_hud_scale");
+	DoOptionFloatingWithCallback(initial, &aspect_ratio_option, "clowndoom_aspect_ratio");
+	DoOptionNumericalWithCallback(initial, &field_of_view, "clowndoom_field_of_view");
 
 	/* Audio. */
-	DoOptionNumericalWithCallback(initial,
-		&sfxVolume,
-		"clowndoom_sfx_volume",
-		M_ChangedSFXVolume);
-	DoOptionNumericalWithCallback(initial,
-		&musicVolume,
-		"clowndoom_music_volume",
-		M_ChangedMusicVolume);
+
+	if (DoOptionNumericalWithCallback(initial, &sfxVolume, "clowndoom_sfx_volume"))
+		M_ChangedSFXVolume();
+
+	if (DoOptionNumericalWithCallback(initial, &musicVolume, "clowndoom_music_volume"))
+		M_ChangedMusicVolume();
 }
 
 void IB_ChangedShowMessages(void)
