@@ -132,7 +132,7 @@ void T_VerticalDoor (vldoor_t* door)
 
 			case vldoor_close30ThenOpen:
 				door->direction = 0;
-				door->topcountdown = 35*30;
+				door->topcountdown = TICRATE*30;
 				break;
 
 			default:
@@ -509,7 +509,7 @@ void P_SpawnDoorCloseIn30 (sector_t* sec)
 	door->direction = 0;
 	door->type = vldoor_normal;
 	door->speed = VDOORSPEED;
-	door->topcountdown = 30 * 35;
+	door->topcountdown = 30 * TICRATE;
 }
 
 /* Spawn a door that opens after 5 minutes */
@@ -534,7 +534,7 @@ P_SpawnDoorRaiseIn5Mins
 	door->topheight = P_FindLowestCeilingSurrounding(sec);
 	door->topheight -= 4*FRACUNIT;
 	door->topwait = VDOORWAIT;
-	door->topcountdown = 5 * 60 * 35;
+	door->topcountdown = 5 * 60 * TICRATE;
 }
 
 

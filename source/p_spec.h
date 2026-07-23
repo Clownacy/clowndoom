@@ -235,7 +235,7 @@ typedef struct
 #define MAXBUTTONS              16
 
  /* 1 second, in ticks. */
-#define BUTTONTIME      35
+#define BUTTONTIME      TICRATE
 
 extern button_t buttonlist[MAXBUTTONS];
 
@@ -442,7 +442,7 @@ typedef struct
 /* how many frames of animation */
 #define SNUMFRAMES              4
 
-#define SDOORWAIT               35*3
+#define SDOORWAIT               (TICRATE*3)
 #define SWAITTICS               4
 
 /* how many diff. types of anims */
