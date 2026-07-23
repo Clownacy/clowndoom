@@ -67,7 +67,7 @@ static void SubmitJoystickEvent(void)
 	event.data2 = CC_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_x_left + joystick_x_dpad);
 	event.data3 = CC_CLAMP(-ANALOGUE_MAX, ANALOGUE_MAX, joystick_y_left + joystick_y_dpad);
 	event.data4 = joystick_x_right;
-	D_PostEvent(&event);
+	D_PostJoystickEvent(&event);
 }
 
 static int16_t GetJoypadButton(unsigned int button_id)

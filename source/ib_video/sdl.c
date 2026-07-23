@@ -189,7 +189,7 @@ static void SubmitJoystickEvent(void)
 	event.data2 = SDL_clamp(joystick_x_left + joystick_x_dpad, -0x7FFF, 0x7FFF);
 	event.data3 = SDL_clamp(joystick_y_left + joystick_y_dpad, -0x7FFF, 0x7FFF);
 	event.data4 = joystick_x_right;
-	D_PostEvent(&event);
+	D_PostJoystickEvent(&event);
 }
 
 /* IB_StartTic */

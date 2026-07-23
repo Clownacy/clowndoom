@@ -40,6 +40,7 @@ void D_DoomMain (int argc, char **argv);
 
 /* Called by IO functions when input is detected. */
 void D_PostEvent (const event_t* ev);
+void D_PostJoystickEvent (const event_t* ev);
 
 
 

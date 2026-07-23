@@ -145,6 +145,31 @@ void D_PostEvent (const event_t* ev)
 	eventhead = (eventhead+1)&(MAXEVENTS-1);
 }
 
+void D_PostJoystickEvent (const event_t* ev)
+{
+	static unsigned int previous_button_state;
+
+	const unsigned int delta_button_state = ev->data1 ^ previous_button_state;
+	unsigned int i;
+
+	D_PostEvent(ev);
+
+	for (i = 0; i < 16; ++i)
+	{
+		const unsigned int mask = 1 << i;
+
+		if ((delta_button_state & mask) != 0)
+		{
+			event_t new_event;
+			new_event.type = (ev->data1 & mask) != 0 ? ev_buttondown : ev_buttonup;
+			new_event.data1 = i;
+			D_PostEvent(&new_event);
+		}
+	}
+
+	previous_button_state = ev->data1;
+}
+
 
 /* D_ProcessEvents */
 /* Send all the events of the given timestamp down the responder chain */
