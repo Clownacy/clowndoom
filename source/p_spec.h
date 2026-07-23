@@ -165,10 +165,10 @@ typedef struct
 } glow_t;
 
 
-#define GLOWSPEED                       8
-#define STROBEBRIGHT            5
-#define FASTDARK                        15
-#define SLOWDARK                        35
+#define GLOWSPEED                       (TICRATE*8/35)
+#define STROBEBRIGHT                    (TICRATE/7)
+#define FASTDARK                        (TICRATE*3/7)
+#define SLOWDARK                        TICRATE
 
 void    T_FireFlicker (fireflicker_t* flicker);
 void    P_SpawnFireFlicker (sector_t* sector);
@@ -348,8 +348,8 @@ typedef struct
 
 
 
-#define VDOORSPEED              FRACUNIT*2
-#define VDOORWAIT               150
+#define VDOORSPEED              (FRACUNIT*2)
+#define VDOORWAIT               (TICRATE*30/7)
 
 void
 EV_VerticalDoor
@@ -496,7 +496,7 @@ typedef struct
 
 
 #define CEILSPEED               FRACUNIT
-#define CEILWAIT                150
+#define CEILWAIT                (TICRATE*30/7)
 #define MAXCEILINGS             30
 
 extern ceiling_t*       activeceilings[MAXCEILINGS];
