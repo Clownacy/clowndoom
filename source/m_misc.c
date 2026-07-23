@@ -454,17 +454,6 @@ void M_ChangedUseGamma(void)
 	V_SetPalette(0);
 }
 
-void M_ChangedAspectRatioCorrection(void)
-{
-#ifdef __LIBRETRO__
-	void IB_ChangedAspectRatioCorrection(void);
-	IB_ChangedAspectRatioCorrection();
-#endif
-
-	V_ReloadPalette();
-	R_InitColormaps();
-}
-
 void M_ChangedFullColour(void)
 {
 #ifdef __LIBRETRO__

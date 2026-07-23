@@ -101,7 +101,6 @@ void M_ChangedMouseSensitivity (void);
 void M_ChangedGraphicDetail (void);
 void M_ChangedScreenBlocks (void);
 void M_ChangedUseGamma (void);
-void M_ChangedAspectRatioCorrection (void);
 void M_ChangedFullColour (void);
 void M_ChangedPrototypeLightAmplificationVisorEffect (void);
 void M_ChangedSFXVolume (void);

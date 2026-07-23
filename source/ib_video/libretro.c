@@ -243,17 +243,6 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	framebuffer = malloc(SCREENWIDTH * SCREENHEIGHT * *bytes_per_pixel);
 
 	output_size_changed_callback(SCREENWIDTH, SCREENHEIGHT, cc_false);
-
-	/* Update the frontend with the game's chosen resolution. */
-	{
-		struct retro_game_geometry geometry;
-		geometry.base_width = SCREENWIDTH;
-		geometry.base_height = SCREENHEIGHT;
-		geometry.aspect_ratio = (float)SCREENWIDTH / SCREENHEIGHT;
-		if (aspect_ratio_correction)
-			geometry.aspect_ratio = geometry.aspect_ratio * 5 / 6;
-		libretro.environment(RETRO_ENVIRONMENT_SET_GEOMETRY, &geometry);
-	}
 }
 
 

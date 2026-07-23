@@ -121,6 +121,18 @@ static void DoOptionFloatingWithCallback(const bool initial, double* const optio
 	}
 }
 
+static void ChangedAspectRatioCorrection(void)
+{
+	/* Update the frontend with the game's chosen resolution. */
+	struct retro_game_geometry geometry;
+	geometry.base_width = SCREENWIDTH;
+	geometry.base_height = SCREENHEIGHT;
+	geometry.aspect_ratio = (float)SCREENWIDTH / SCREENHEIGHT;
+	if (aspect_ratio_correction)
+		geometry.aspect_ratio = geometry.aspect_ratio * 5 / 6;
+	libretro.environment(RETRO_ENVIRONMENT_SET_GEOMETRY, &geometry);
+}
+
 static void UpdateOptions(const bool initial)
 {
 	/* General. */
@@ -178,7 +190,7 @@ static void UpdateOptions(const bool initial)
 		&aspect_ratio_correction,
 		"clowndoom_aspect_ratio_correction",
 		"enabled",
-		M_ChangedAspectRatioCorrection);
+		ChangedAspectRatioCorrection);
 	DoOptionBooleanWithCallback(initial,
 		&full_colour,
 		"clowndoom_full_colour",
@@ -270,15 +282,6 @@ void IB_ChangedUseGamma(void)
 
 	variable.key = "clowndoom_use_gamma";
 	variable.value = buffer;
-
-	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
-}
-
-void IB_ChangedAspectRatioCorrection(void)
-{
-	struct retro_variable variable;
-	variable.key = "clowndoom_aspect_ratio_correction";
-	variable.value = aspect_ratio_correction ? "enabled" : "disabled";
 
 	libretro.environment(RETRO_ENVIRONMENT_SET_VARIABLE, &variable);
 }
