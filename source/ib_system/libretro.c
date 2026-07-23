@@ -53,6 +53,15 @@ static int SCREENWIDTH_OPTION;
 static int HUD_SCALE_OPTION;
 static double aspect_ratio_option;
 
+static void GetGeometry(struct retro_game_geometry* const geometry)
+{
+	geometry->base_width = SCREENWIDTH;
+	geometry->base_height = SCREENHEIGHT;
+	geometry->aspect_ratio = (float)SCREENWIDTH / SCREENHEIGHT;
+	if (aspect_ratio_correction)
+		geometry->aspect_ratio = geometry->aspect_ratio * 5 / 6;
+}
+
 static bool DoOptionBoolean(const char* const key, const char* const true_value)
 {
 	struct retro_variable variable;
@@ -152,11 +161,7 @@ static void UpdateOptions(const bool initial)
 	{
 		/* Update the frontend with the game's chosen resolution. */
 		struct retro_game_geometry geometry;
-		geometry.base_width = SCREENWIDTH;
-		geometry.base_height = SCREENHEIGHT;
-		geometry.aspect_ratio = (float)SCREENWIDTH / SCREENHEIGHT;
-		if (aspect_ratio_correction)
-			geometry.aspect_ratio = geometry.aspect_ratio * 5 / 6;
+		GetGeometry(&geometry);
 		libretro.environment(RETRO_ENVIRONMENT_SET_GEOMETRY, &geometry);
 	}
 
@@ -349,13 +354,9 @@ void retro_get_system_info(struct retro_system_info* const info)
 
 void retro_get_system_av_info(struct retro_system_av_info* const info)
 {
-	info->geometry.base_width   = SCREENWIDTH;
-	info->geometry.base_height  = SCREENHEIGHT;
+	GetGeometry(&info->geometry);
 	info->geometry.max_width    = MAXIMUM_SCREENWIDTH;
 	info->geometry.max_height   = MAXIMUM_SCREENHEIGHT;
-	info->geometry.aspect_ratio = (float)info->geometry.base_width / info->geometry.base_height;
-	if (aspect_ratio_correction)
-		info->geometry.aspect_ratio = info->geometry.aspect_ratio * 5 / 6;
 
 	info->timing.fps            = TICRATE;
 	info->timing.sample_rate    = LIBRETRO_SAMPLE_RATE;
