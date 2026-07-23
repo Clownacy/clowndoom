@@ -206,12 +206,11 @@ typedef struct
 } switchlist_t;
 
 
-/* TODO: Namespace this (and all the other enums...). */
 typedef enum
 {
-	top,
-	middle,
-	bottom
+	bwhere_top,
+	bwhere_middle,
+	bwhere_bottom
 
 } bwhere_e;
 
@@ -251,10 +250,10 @@ void P_InitSwitchList(void);
 /* P_PLATS */
 typedef enum
 {
-	up,
-	down,
-	waiting,
-	in_stasis
+	plat_up,
+	plat_down,
+	plat_waiting,
+	plat_in_stasis
 
 } plat_e;
 
@@ -262,11 +261,11 @@ typedef enum
 
 typedef enum
 {
-	perpetualRaise,
-	downWaitUpStay,
-	raiseAndChange,
-	raiseToNearestAndChange,
-	blazeDWUS
+	plattype_perpetualRaise,
+	plattype_downWaitUpStay,
+	plattype_raiseAndChange,
+	plattype_raiseToNearestAndChange,
+	plattype_blazeDWUS
 
 } plattype_e;
 
@@ -462,12 +461,12 @@ EV_SlidingDoor
 /* P_CEILNG */
 typedef enum
 {
-	lowerToFloor,
-	raiseToHighest,
-	lowerAndCrush,
-	crushAndRaise,
-	fastCrushAndRaise,
-	silentCrushAndRaise
+	ceiling_lowerToFloor,
+	ceiling_raiseToHighest,
+	ceiling_lowerAndCrush,
+	ceiling_crushAndRaise,
+	ceiling_fastCrushAndRaise,
+	ceiling_silentCrushAndRaise
 
 } ceiling_e;
 
@@ -518,37 +517,37 @@ void    P_ActivateInStasisCeiling(line_t* line);
 typedef enum
 {
 	/* lower floor to highest surrounding floor */
-	lowerFloor,
+	floor_lowerFloor,
 
 	/* lower floor to lowest surrounding floor */
-	lowerFloorToLowest,
+	floor_lowerFloorToLowest,
 
 	/* lower floor to highest surrounding floor VERY FAST */
-	turboLower,
+	floor_turboLower,
 
 	/* raise floor to lowest surrounding CEILING */
-	raiseFloor,
+	floor_raiseFloor,
 
 	/* raise floor to next highest surrounding floor */
-	raiseFloorToNearest,
+	floor_raiseFloorToNearest,
 
 	/* raise floor to shortest height texture around it */
-	raiseToTexture,
+	floor_raiseToTexture,
 
 	/* lower floor to lowest surrounding floor */
 	/*  and change floorpic */
-	lowerAndChange,
+	floor_lowerAndChange,
 
-	raiseFloor24,
-	raiseFloor24AndChange,
-	raiseFloorCrush,
+	floor_raiseFloor24,
+	floor_raiseFloor24AndChange,
+	floor_raiseFloorCrush,
 
 	 /* raise to next highest floor, turbo-speed */
-	raiseFloorTurbo,
-	donutRaise,
-	raiseFloor512,
+	floor_raiseFloorTurbo,
+	floor_donutRaise,
+	floor_raiseFloor512,
 
-	raiseBuildStep
+	floor_raiseBuildStep
 } floor_e;
 
 
@@ -556,8 +555,8 @@ typedef enum
 
 typedef enum
 {
-	build8,     /* slowly build by 8 */
-	turbo16     /* quickly build by 16 */
+	stair_build8,     /* slowly build by 8 */
+	stair_turbo16     /* quickly build by 16 */
 
 } stair_e;
 
@@ -583,9 +582,9 @@ typedef struct
 
 typedef enum
 {
-	ok,
-	crushed,
-	pastdest
+	result_ok,
+	result_crushed,
+	result_pastdest
 
 } result_e;
 

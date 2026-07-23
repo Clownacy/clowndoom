@@ -222,7 +222,7 @@ P_ChangeSwitchTexture
 			sides[line->sidenum[0]].toptexture = switchlist[i^1];
 
 			if (useAgain)
-				P_StartButton(line,top,switchlist[i],BUTTONTIME);
+				P_StartButton(line,bwhere_top,switchlist[i],BUTTONTIME);
 
 			return;
 		}
@@ -232,7 +232,7 @@ P_ChangeSwitchTexture
 			sides[line->sidenum[0]].midtexture = switchlist[i^1];
 
 			if (useAgain)
-				P_StartButton(line, middle,switchlist[i],BUTTONTIME);
+				P_StartButton(line, bwhere_middle,switchlist[i],BUTTONTIME);
 
 			return;
 		}
@@ -242,7 +242,7 @@ P_ChangeSwitchTexture
 			sides[line->sidenum[0]].bottomtexture = switchlist[i^1];
 
 			if (useAgain)
-				P_StartButton(line, bottom,switchlist[i],BUTTONTIME);
+				P_StartButton(line, bwhere_bottom,switchlist[i],BUTTONTIME);
 
 			return;
 		}
@@ -331,7 +331,7 @@ P_UseSpecialLine
 		/* SWITCHES */
 	case 7:
 		/* Build Stairs */
-		if (EV_BuildStairs(line,build8))
+		if (EV_BuildStairs(line,stair_build8))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -349,37 +349,37 @@ P_UseSpecialLine
 
 	case 14:
 		/* Raise Floor 32 and change texture */
-		if (EV_DoPlat(line,raiseAndChange,32))
+		if (EV_DoPlat(line,plattype_raiseAndChange,32))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 15:
 		/* Raise Floor 24 and change texture */
-		if (EV_DoPlat(line,raiseAndChange,24))
+		if (EV_DoPlat(line,plattype_raiseAndChange,24))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 18:
 		/* Raise Floor to next highest floor */
-		if (EV_DoFloor(line, raiseFloorToNearest))
+		if (EV_DoFloor(line, floor_raiseFloorToNearest))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 20:
 		/* Raise Plat next highest floor and change texture */
-		if (EV_DoPlat(line,raiseToNearestAndChange,0))
+		if (EV_DoPlat(line,plattype_raiseToNearestAndChange,0))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 21:
 		/* PlatDownWaitUpStay */
-		if (EV_DoPlat(line,downWaitUpStay,0))
+		if (EV_DoPlat(line,plattype_downWaitUpStay,0))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 23:
 		/* Lower Floor to Lowest */
-		if (EV_DoFloor(line,lowerFloorToLowest))
+		if (EV_DoFloor(line,floor_lowerFloorToLowest))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -391,19 +391,19 @@ P_UseSpecialLine
 
 	case 41:
 		/* Lower Ceiling to Floor */
-		if (EV_DoCeiling(line,lowerToFloor))
+		if (EV_DoCeiling(line,ceiling_lowerToFloor))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 71:
 		/* Turbo Lower Floor */
-		if (EV_DoFloor(line,turboLower))
+		if (EV_DoFloor(line,floor_turboLower))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 49:
 		/* Ceiling Crush And Raise */
-		if (EV_DoCeiling(line,crushAndRaise))
+		if (EV_DoCeiling(line,ceiling_crushAndRaise))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -421,19 +421,19 @@ P_UseSpecialLine
 
 	case 55:
 		/* Raise Floor Crush */
-		if (EV_DoFloor(line,raiseFloorCrush))
+		if (EV_DoFloor(line,floor_raiseFloorCrush))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 101:
 		/* Raise Floor */
-		if (EV_DoFloor(line,raiseFloor))
+		if (EV_DoFloor(line,floor_raiseFloor))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 102:
 		/* Lower Floor to Surrounding floor height */
-		if (EV_DoFloor(line,lowerFloor))
+		if (EV_DoFloor(line,floor_lowerFloor))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -463,19 +463,19 @@ P_UseSpecialLine
 
 	case 122:
 		/* Blazing PlatDownWaitUpStay */
-		if (EV_DoPlat(line,blazeDWUS,0))
+		if (EV_DoPlat(line,plattype_blazeDWUS,0))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 127:
 		/* Build Stairs Turbo 16 */
-		if (EV_BuildStairs(line,turbo16))
+		if (EV_BuildStairs(line,stair_turbo16))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 131:
 		/* Raise Floor Turbo */
-		if (EV_DoFloor(line,raiseFloorTurbo))
+		if (EV_DoFloor(line,floor_raiseFloorTurbo))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -491,7 +491,7 @@ P_UseSpecialLine
 
 	case 140:
 		/* Raise Floor 512 */
-		if (EV_DoFloor(line,raiseFloor512))
+		if (EV_DoFloor(line,floor_raiseFloor512))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -504,19 +504,19 @@ P_UseSpecialLine
 
 	case 43:
 		/* Lower Ceiling to Floor */
-		if (EV_DoCeiling(line,lowerToFloor))
+		if (EV_DoCeiling(line,ceiling_lowerToFloor))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 45:
 		/* Lower Floor to Surrounding floor height */
-		if (EV_DoFloor(line,lowerFloor))
+		if (EV_DoFloor(line,floor_lowerFloor))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 60:
 		/* Lower Floor to Lowest */
-		if (EV_DoFloor(line,lowerFloorToLowest))
+		if (EV_DoFloor(line,floor_lowerFloorToLowest))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -528,7 +528,7 @@ P_UseSpecialLine
 
 	case 62:
 		/* PlatDownWaitUpStay */
-		if (EV_DoPlat(line,downWaitUpStay,1))
+		if (EV_DoPlat(line,plattype_downWaitUpStay,1))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -540,43 +540,43 @@ P_UseSpecialLine
 
 	case 64:
 		/* Raise Floor to ceiling */
-		if (EV_DoFloor(line,raiseFloor))
+		if (EV_DoFloor(line,floor_raiseFloor))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 66:
 		/* Raise Floor 24 and change texture */
-		if (EV_DoPlat(line,raiseAndChange,24))
+		if (EV_DoPlat(line,plattype_raiseAndChange,24))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 67:
 		/* Raise Floor 32 and change texture */
-		if (EV_DoPlat(line,raiseAndChange,32))
+		if (EV_DoPlat(line,plattype_raiseAndChange,32))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 65:
 		/* Raise Floor Crush */
-		if (EV_DoFloor(line,raiseFloorCrush))
+		if (EV_DoFloor(line,floor_raiseFloorCrush))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 68:
 		/* Raise Plat to next highest floor and change texture */
-		if (EV_DoPlat(line,raiseToNearestAndChange,0))
+		if (EV_DoPlat(line,plattype_raiseToNearestAndChange,0))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 69:
 		/* Raise Floor to next highest floor */
-		if (EV_DoFloor(line, raiseFloorToNearest))
+		if (EV_DoFloor(line, floor_raiseFloorToNearest))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 70:
 		/* Turbo Lower Floor */
-		if (EV_DoFloor(line,turboLower))
+		if (EV_DoFloor(line,floor_turboLower))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -600,13 +600,13 @@ P_UseSpecialLine
 
 	case 123:
 		/* Blazing PlatDownWaitUpStay */
-		if (EV_DoPlat(line,blazeDWUS,0))
+		if (EV_DoPlat(line,plattype_blazeDWUS,0))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 132:
 		/* Raise Floor Turbo */
-		if (EV_DoFloor(line,raiseFloorTurbo))
+		if (EV_DoFloor(line,floor_raiseFloorTurbo))
 			P_ChangeSwitchTexture(line,1);
 		break;
 

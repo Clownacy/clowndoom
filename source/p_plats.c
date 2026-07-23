@@ -45,14 +45,14 @@ void T_PlatRaise(plat_t* plat)
 
 	switch(plat->status)
 	{
-	case up:
+	case plat_up:
 		res = T_MovePlane(plat->sector,
 						  plat->speed,
 						  plat->high,
 						  plat->crush,0,1);
 
-		if (plat->type == raiseAndChange
-			|| plat->type == raiseToNearestAndChange)
+		if (plat->type == plattype_raiseAndChange
+			|| plat->type == plattype_raiseToNearestAndChange)
 		{
 			if (!(leveltime&7))
 				S_StartSound((mobj_t *)&plat->sector->soundorg,
@@ -60,31 +60,31 @@ void T_PlatRaise(plat_t* plat)
 		}
 
 
-		if (res == crushed && (!plat->crush))
+		if (res == result_crushed && (!plat->crush))
 		{
 			plat->count = plat->wait;
-			plat->status = down;
+			plat->status = plat_down;
 			S_StartSound((mobj_t *)&plat->sector->soundorg,
 						 sfx_pstart);
 		}
 		else
 		{
-			if (res == pastdest)
+			if (res == result_pastdest)
 			{
 				plat->count = plat->wait;
-				plat->status = waiting;
+				plat->status = plat_waiting;
 				S_StartSound((mobj_t *)&plat->sector->soundorg,
 							 sfx_pstop);
 
 				switch(plat->type)
 				{
-				case blazeDWUS:
-				case downWaitUpStay:
+				case plattype_blazeDWUS:
+				case plattype_downWaitUpStay:
 					P_RemoveActivePlat(plat);
 					break;
 
-				case raiseAndChange:
-				case raiseToNearestAndChange:
+				case plattype_raiseAndChange:
+				case plattype_raiseToNearestAndChange:
 					P_RemoveActivePlat(plat);
 					break;
 
@@ -95,27 +95,27 @@ void T_PlatRaise(plat_t* plat)
 		}
 		break;
 
-	case      down:
+	case      plat_down:
 		res = T_MovePlane(plat->sector,plat->speed,plat->low,cc_false,0,-1);
 
-		if (res == pastdest)
+		if (res == result_pastdest)
 		{
 			plat->count = plat->wait;
-			plat->status = waiting;
+			plat->status = plat_waiting;
 			S_StartSound((mobj_t *)&plat->sector->soundorg,sfx_pstop);
 		}
 		break;
 
-	case      waiting:
+	case      plat_waiting:
 		if (!--plat->count)
 		{
 			if (plat->sector->floorheight == plat->low)
-				plat->status = up;
+				plat->status = plat_up;
 			else
-				plat->status = down;
+				plat->status = plat_down;
 			S_StartSound((mobj_t *)&plat->sector->soundorg,sfx_pstart);
 		}
-	case      in_stasis:
+	case      plat_in_stasis:
 		break;
 	}
 }
@@ -141,7 +141,7 @@ EV_DoPlat
 	/*  Activate all <type> plats that are in_stasis */
 	switch(type)
 	{
-	case perpetualRaise:
+	case plattype_perpetualRaise:
 		P_ActivateInStasis(line->tag);
 		break;
 
@@ -170,29 +170,29 @@ EV_DoPlat
 
 		switch(type)
 		{
-		case raiseToNearestAndChange:
+		case plattype_raiseToNearestAndChange:
 			plat->speed = PLATSPEED/2;
 			sec->floorpic = sides[line->sidenum[0]].sector->floorpic;
 			plat->high = P_FindNextHighestFloor(sec,sec->floorheight);
 			plat->wait = 0;
-			plat->status = up;
+			plat->status = plat_up;
 			/* NO MORE DAMAGE, IF APPLICABLE */
 			sec->special = 0;
 
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_stnmov);
 			break;
 
-		case raiseAndChange:
+		case plattype_raiseAndChange:
 			plat->speed = PLATSPEED/2;
 			sec->floorpic = sides[line->sidenum[0]].sector->floorpic;
 			plat->high = sec->floorheight + amount*FRACUNIT;
 			plat->wait = 0;
-			plat->status = up;
+			plat->status = plat_up;
 
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_stnmov);
 			break;
 
-		case downWaitUpStay:
+		case plattype_downWaitUpStay:
 			plat->speed = PLATSPEED * 4;
 			plat->low = P_FindLowestFloorSurrounding(sec);
 
@@ -201,11 +201,11 @@ EV_DoPlat
 
 			plat->high = sec->floorheight;
 			plat->wait = 35*PLATWAIT;
-			plat->status = down;
+			plat->status = plat_down;
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_pstart);
 			break;
 
-		case blazeDWUS:
+		case plattype_blazeDWUS:
 			plat->speed = PLATSPEED * 8;
 			plat->low = P_FindLowestFloorSurrounding(sec);
 
@@ -214,11 +214,11 @@ EV_DoPlat
 
 			plat->high = sec->floorheight;
 			plat->wait = 35*PLATWAIT;
-			plat->status = down;
+			plat->status = plat_down;
 			S_StartSound((mobj_t *)&sec->soundorg,sfx_pstart);
 			break;
 
-		case perpetualRaise:
+		case plattype_perpetualRaise:
 			plat->speed = PLATSPEED;
 			plat->low = P_FindLowestFloorSurrounding(sec);
 
@@ -250,7 +250,7 @@ void P_ActivateInStasis(int tag)
 	for (i = 0;i < MAXPLATS;i++)
 		if (activeplats[i]
 			&& (activeplats[i])->tag == tag
-			&& (activeplats[i])->status == in_stasis)
+			&& (activeplats[i])->status == plat_in_stasis)
 		{
 			(activeplats[i])->status = (activeplats[i])->oldstatus;
 			(activeplats[i])->thinker.function.acp1
@@ -264,11 +264,11 @@ void EV_StopPlat(line_t* line)
 
 	for (j = 0;j < MAXPLATS;j++)
 		if (activeplats[j]
-			&& ((activeplats[j])->status != in_stasis)
+			&& ((activeplats[j])->status != plat_in_stasis)
 			&& ((activeplats[j])->tag == line->tag))
 		{
 			(activeplats[j])->oldstatus = (activeplats[j])->status;
-			(activeplats[j])->status = in_stasis;
+			(activeplats[j])->status = plat_in_stasis;
 			(activeplats[j])->thinker.function.acv = (actionf_v)NULL;
 		}
 }

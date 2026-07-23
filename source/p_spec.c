@@ -517,25 +517,25 @@ P_CrossSpecialLine
 
 	case 5:
 		/* Raise Floor */
-		EV_DoFloor(line,raiseFloor);
+		EV_DoFloor(line,floor_raiseFloor);
 		line->special = 0;
 		break;
 
 	case 6:
 		/* Fast Ceiling Crush & Raise */
-		EV_DoCeiling(line,fastCrushAndRaise);
+		EV_DoCeiling(line,ceiling_fastCrushAndRaise);
 		line->special = 0;
 		break;
 
 	case 8:
 		/* Build Stairs */
-		EV_BuildStairs(line,build8);
+		EV_BuildStairs(line,stair_build8);
 		line->special = 0;
 		break;
 
 	case 10:
 		/* PlatDownWaitUp */
-		EV_DoPlat(line,downWaitUpStay,0);
+		EV_DoPlat(line,plattype_downWaitUpStay,0);
 		line->special = 0;
 		break;
 
@@ -565,26 +565,26 @@ P_CrossSpecialLine
 
 	case 19:
 		/* Lower Floor */
-		EV_DoFloor(line,lowerFloor);
+		EV_DoFloor(line,floor_lowerFloor);
 		line->special = 0;
 		break;
 
 	case 22:
 		/* Raise floor to nearest height and change texture */
-		EV_DoPlat(line,raiseToNearestAndChange,0);
+		EV_DoPlat(line,plattype_raiseToNearestAndChange,0);
 		line->special = 0;
 		break;
 
 	case 25:
 		/* Ceiling Crush and Raise */
-		EV_DoCeiling(line,crushAndRaise);
+		EV_DoCeiling(line,ceiling_crushAndRaise);
 		line->special = 0;
 		break;
 
 	case 30:
 		/* Raise floor to shortest texture height */
 		/*  on either side of lines. */
-		EV_DoFloor(line,raiseToTexture);
+		EV_DoFloor(line,floor_raiseToTexture);
 		line->special = 0;
 		break;
 
@@ -596,19 +596,19 @@ P_CrossSpecialLine
 
 	case 36:
 		/* Lower Floor (TURBO) */
-		EV_DoFloor(line,turboLower);
+		EV_DoFloor(line,floor_turboLower);
 		line->special = 0;
 		break;
 
 	case 37:
 		/* LowerAndChange */
-		EV_DoFloor(line,lowerAndChange);
+		EV_DoFloor(line,floor_lowerAndChange);
 		line->special = 0;
 		break;
 
 	case 38:
 		/* Lower Floor To Lowest */
-		EV_DoFloor( line, lowerFloorToLowest );
+		EV_DoFloor( line, floor_lowerFloorToLowest );
 		line->special = 0;
 		break;
 
@@ -620,14 +620,14 @@ P_CrossSpecialLine
 
 	case 40:
 		/* RaiseCeilingLowerFloor */
-		EV_DoCeiling( line, raiseToHighest );
-		EV_DoFloor( line, lowerFloorToLowest );
+		EV_DoCeiling( line, ceiling_raiseToHighest );
+		EV_DoFloor( line, floor_lowerFloorToLowest );
 		line->special = 0;
 		break;
 
 	case 44:
 		/* Ceiling Crush */
-		EV_DoCeiling( line, lowerAndCrush );
+		EV_DoCeiling( line, ceiling_lowerAndCrush );
 		line->special = 0;
 		break;
 
@@ -638,7 +638,7 @@ P_CrossSpecialLine
 
 	case 53:
 		/* Perpetual Platform Raise */
-		EV_DoPlat(line,perpetualRaise,0);
+		EV_DoPlat(line,plattype_perpetualRaise,0);
 		line->special = 0;
 		break;
 
@@ -650,7 +650,7 @@ P_CrossSpecialLine
 
 	case 56:
 		/* Raise Floor Crush */
-		EV_DoFloor(line,raiseFloorCrush);
+		EV_DoFloor(line,floor_raiseFloorCrush);
 		line->special = 0;
 		break;
 
@@ -662,13 +662,13 @@ P_CrossSpecialLine
 
 	case 58:
 		/* Raise Floor 24 */
-		EV_DoFloor(line,raiseFloor24);
+		EV_DoFloor(line,floor_raiseFloor24);
 		line->special = 0;
 		break;
 
 	case 59:
 		/* Raise Floor 24 And Change */
-		EV_DoFloor(line,raiseFloor24AndChange);
+		EV_DoFloor(line,floor_raiseFloor24AndChange);
 		line->special = 0;
 		break;
 
@@ -692,7 +692,7 @@ P_CrossSpecialLine
 
 	case 100:
 		/* Build Stairs Turbo 16 */
-		EV_BuildStairs(line,turbo16);
+		EV_BuildStairs(line,stair_turbo16);
 		line->special = 0;
 		break;
 
@@ -704,13 +704,13 @@ P_CrossSpecialLine
 
 	case 119:
 		/* Raise floor to nearest surr. floor */
-		EV_DoFloor(line,raiseFloorToNearest);
+		EV_DoFloor(line,floor_raiseFloorToNearest);
 		line->special = 0;
 		break;
 
 	case 121:
 		/* Blazing PlatDownWaitUpStay */
-		EV_DoPlat(line,blazeDWUS,0);
+		EV_DoPlat(line,plattype_blazeDWUS,0);
 		line->special = 0;
 		break;
 
@@ -730,25 +730,25 @@ P_CrossSpecialLine
 
 	case 130:
 		/* Raise Floor Turbo */
-		EV_DoFloor(line,raiseFloorTurbo);
+		EV_DoFloor(line,floor_raiseFloorTurbo);
 		line->special = 0;
 		break;
 
 	case 141:
 		/* Silent Ceiling Crush & Raise */
-		EV_DoCeiling(line,silentCrushAndRaise);
+		EV_DoCeiling(line,ceiling_silentCrushAndRaise);
 		line->special = 0;
 		break;
 
 		/* RETRIGGERS.  All from here till end. */
 	case 72:
 		/* Ceiling Crush */
-		EV_DoCeiling( line, lowerAndCrush );
+		EV_DoCeiling( line, ceiling_lowerAndCrush );
 		break;
 
 	case 73:
 		/* Ceiling Crush and Raise */
-		EV_DoCeiling(line,crushAndRaise);
+		EV_DoCeiling(line,ceiling_crushAndRaise);
 		break;
 
 	case 74:
@@ -768,7 +768,7 @@ P_CrossSpecialLine
 
 	case 77:
 		/* Fast Ceiling Crush & Raise */
-		EV_DoCeiling(line,fastCrushAndRaise);
+		EV_DoCeiling(line,ceiling_fastCrushAndRaise);
 		break;
 
 	case 79:
@@ -788,17 +788,17 @@ P_CrossSpecialLine
 
 	case 82:
 		/* Lower Floor To Lowest */
-		EV_DoFloor( line, lowerFloorToLowest );
+		EV_DoFloor( line, floor_lowerFloorToLowest );
 		break;
 
 	case 83:
 		/* Lower Floor */
-		EV_DoFloor(line,lowerFloor);
+		EV_DoFloor(line,floor_lowerFloor);
 		break;
 
 	case 84:
 		/* LowerAndChange */
-		EV_DoFloor(line,lowerAndChange);
+		EV_DoFloor(line,floor_lowerAndChange);
 		break;
 
 	case 86:
@@ -808,12 +808,12 @@ P_CrossSpecialLine
 
 	case 87:
 		/* Perpetual Platform Raise */
-		EV_DoPlat(line,perpetualRaise,0);
+		EV_DoPlat(line,plattype_perpetualRaise,0);
 		break;
 
 	case 88:
 		/* PlatDownWaitUp */
-		EV_DoPlat(line,downWaitUpStay,0);
+		EV_DoPlat(line,plattype_downWaitUpStay,0);
 		break;
 
 	case 89:
@@ -828,34 +828,34 @@ P_CrossSpecialLine
 
 	case 91:
 		/* Raise Floor */
-		EV_DoFloor(line,raiseFloor);
+		EV_DoFloor(line,floor_raiseFloor);
 		break;
 
 	case 92:
 		/* Raise Floor 24 */
-		EV_DoFloor(line,raiseFloor24);
+		EV_DoFloor(line,floor_raiseFloor24);
 		break;
 
 	case 93:
 		/* Raise Floor 24 And Change */
-		EV_DoFloor(line,raiseFloor24AndChange);
+		EV_DoFloor(line,floor_raiseFloor24AndChange);
 		break;
 
 	case 94:
 		/* Raise Floor Crush */
-		EV_DoFloor(line,raiseFloorCrush);
+		EV_DoFloor(line,floor_raiseFloorCrush);
 		break;
 
 	case 95:
 		/* Raise floor to nearest height */
 		/* and change texture. */
-		EV_DoPlat(line,raiseToNearestAndChange,0);
+		EV_DoPlat(line,plattype_raiseToNearestAndChange,0);
 		break;
 
 	case 96:
 		/* Raise floor to shortest texture height */
 		/* on either side of lines. */
-		EV_DoFloor(line,raiseToTexture);
+		EV_DoFloor(line,floor_raiseToTexture);
 		break;
 
 	case 97:
@@ -865,7 +865,7 @@ P_CrossSpecialLine
 
 	case 98:
 		/* Lower Floor (TURBO) */
-		EV_DoFloor(line,turboLower);
+		EV_DoFloor(line,floor_turboLower);
 		break;
 
 	case 105:
@@ -885,7 +885,7 @@ P_CrossSpecialLine
 
 	case 120:
 		/* Blazing PlatDownWaitUpStay. */
-		EV_DoPlat(line,blazeDWUS,0);
+		EV_DoPlat(line,plattype_blazeDWUS,0);
 		break;
 
 	case 126:
@@ -896,12 +896,12 @@ P_CrossSpecialLine
 
 	case 128:
 		/* Raise To Nearest Floor */
-		EV_DoFloor(line,raiseFloorToNearest);
+		EV_DoFloor(line,floor_raiseFloorToNearest);
 		break;
 
 	case 129:
 		/* Raise Floor Turbo */
-		EV_DoFloor(line,raiseFloorTurbo);
+		EV_DoFloor(line,floor_raiseFloorTurbo);
 		break;
 	}
 }
@@ -936,7 +936,7 @@ P_ShootSpecialLine
 	{
 	case 24:
 		/* RAISE FLOOR */
-		EV_DoFloor(line,raiseFloor);
+		EV_DoFloor(line,floor_raiseFloor);
 		P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -948,7 +948,7 @@ P_ShootSpecialLine
 
 	case 47:
 		/* RAISE FLOOR NEAR AND CHANGE */
-		EV_DoPlat(line,raiseToNearestAndChange,0);
+		EV_DoPlat(line,plattype_raiseToNearestAndChange,0);
 		P_ChangeSwitchTexture(line,0);
 		break;
 	}
@@ -1089,17 +1089,17 @@ void P_UpdateSpecials (void)
 			{
 				switch(buttonlist[i].where)
 				{
-				case top:
+				case bwhere_top:
 					sides[buttonlist[i].line->sidenum[0]].toptexture =
 						buttonlist[i].btexture;
 					break;
 
-				case middle:
+				case bwhere_middle:
 					sides[buttonlist[i].line->sidenum[0]].midtexture =
 						buttonlist[i].btexture;
 					break;
 
-				case bottom:
+				case bwhere_bottom:
 					sides[buttonlist[i].line->sidenum[0]].bottomtexture =
 						buttonlist[i].btexture;
 					break;
@@ -1148,7 +1148,7 @@ int EV_DoDonut(line_t*  line)
 			P_AddThinker (&floor->thinker);
 			s2->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
-			floor->type = donutRaise;
+			floor->type = floor_donutRaise;
 			floor->crush = cc_false;
 			floor->direction = 1;
 			floor->sector = s2;
@@ -1162,7 +1162,7 @@ int EV_DoDonut(line_t*  line)
 			P_AddThinker (&floor->thinker);
 			s1->specialdata = floor;
 			floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
-			floor->type = lowerFloor;
+			floor->type = floor_lowerFloor;
 			floor->crush = cc_false;
 			floor->direction = -1;
 			floor->sector = s1;

@@ -107,7 +107,7 @@ void T_VerticalDoor (vldoor_t* door)
 						  door->speed,
 						  door->sector->floorheight,
 						  cc_false,1,door->direction);
-		if (res == pastdest)
+		if (res == result_pastdest)
 		{
 			switch(door->type)
 			{
@@ -139,7 +139,7 @@ void T_VerticalDoor (vldoor_t* door)
 				break;
 			}
 		}
-		else if (res == crushed)
+		else if (res == result_crushed)
 		{
 			switch(door->type)
 			{
@@ -171,7 +171,7 @@ void T_VerticalDoor (vldoor_t* door)
 						  door->topheight,
 						  cc_false,1,door->direction);
 
-		if (res == pastdest)
+		if (res == result_pastdest)
 		{
 			switch(door->type)
 			{

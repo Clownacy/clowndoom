@@ -64,9 +64,9 @@ T_MovePlane
 				{
 					sector->floorheight =lastpos;
 					P_ChangeSector(sector,crush);
-				   /* return crushed; */
+				   /* return result_crushed; */
 				}
-				return pastdest;
+				return result_pastdest;
 			}
 			else
 			{
@@ -77,7 +77,7 @@ T_MovePlane
 				{
 					sector->floorheight = lastpos;
 					P_ChangeSector(sector,crush);
-					return crushed;
+					return result_crushed;
 				}
 			}
 			break;
@@ -93,23 +93,23 @@ T_MovePlane
 				{
 					sector->floorheight = lastpos;
 					P_ChangeSector(sector,crush);
-				   /* return crushed; */
+				   /* return result_crushed; */
 				}
-				return pastdest;
+				return result_pastdest;
 			}
 			else
 			{
-				/* COULD GET CRUSHED */
+				/* COULD GET result_crushed */
 				lastpos = sector->floorheight;
 				sector->floorheight += speed;
 				flag = P_ChangeSector(sector,crush);
 				if (flag == cc_true)
 				{
 					if (crush == cc_true)
-						return crushed;
+						return result_crushed;
 					sector->floorheight = lastpos;
 					P_ChangeSector(sector,crush);
-					return crushed;
+					return result_crushed;
 				}
 			}
 			break;
@@ -132,9 +132,9 @@ T_MovePlane
 				{
 					sector->ceilingheight = lastpos;
 					P_ChangeSector(sector,crush);
-				   /* return crushed; */
+				   /* return result_crushed; */
 				}
-				return pastdest;
+				return result_pastdest;
 			}
 			else
 			{
@@ -146,10 +146,10 @@ T_MovePlane
 				if (flag == cc_true)
 				{
 					if (crush == cc_true)
-						return crushed;
+						return result_crushed;
 					sector->ceilingheight = lastpos;
 					P_ChangeSector(sector,crush);
-					return crushed;
+					return result_crushed;
 				}
 			}
 			break;
@@ -165,9 +165,9 @@ T_MovePlane
 				{
 					sector->ceilingheight = lastpos;
 					P_ChangeSector(sector,crush);
-				   /* return crushed; */
+				   /* return result_crushed; */
 				}
-				return pastdest;
+				return result_pastdest;
 			}
 			else
 			{
@@ -180,7 +180,7 @@ T_MovePlane
 				{
 					sector->ceilingheight = lastpos;
 					P_ChangeSector(sector,crush);
-					return crushed;
+					return result_crushed;
 				}
 #endif
 			}
@@ -189,7 +189,7 @@ T_MovePlane
 		break;
 
 	}
-	return ok;
+	return result_ok;
 }
 
 
@@ -207,7 +207,7 @@ void T_MoveFloor(floormove_t* floor)
 		S_StartSound((mobj_t *)&floor->sector->soundorg,
 					 sfx_stnmov);
 
-	if (res == pastdest)
+	if (res == result_pastdest)
 	{
 		floor->sector->specialdata = NULL;
 
@@ -215,7 +215,7 @@ void T_MoveFloor(floormove_t* floor)
 		{
 			switch(floor->type)
 			{
-			case donutRaise:
+			case floor_donutRaise:
 				floor->sector->special = floor->newspecial;
 				floor->sector->floorpic = floor->texture;
 			default:
@@ -226,7 +226,7 @@ void T_MoveFloor(floormove_t* floor)
 		{
 			switch(floor->type)
 			{
-			case lowerAndChange:
+			case floor_lowerAndChange:
 				floor->sector->special = floor->newspecial;
 				floor->sector->floorpic = floor->texture;
 			default:
@@ -274,7 +274,7 @@ EV_DoFloor
 
 		switch(floortype)
 		{
-		case lowerFloor:
+		case floor_lowerFloor:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -282,7 +282,7 @@ EV_DoFloor
 				P_FindHighestFloorSurrounding(sec);
 			break;
 
-		case lowerFloorToLowest:
+		case floor_lowerFloorToLowest:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -290,7 +290,7 @@ EV_DoFloor
 				P_FindLowestFloorSurrounding(sec);
 			break;
 
-		case turboLower:
+		case floor_turboLower:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED * 4;
@@ -300,10 +300,10 @@ EV_DoFloor
 				floor->floordestheight += 8*FRACUNIT;
 			break;
 
-		case raiseFloorCrush:
+		case floor_raiseFloorCrush:
 			floor->crush = cc_true;
 			/* Fallthrough */
-		case raiseFloor:
+		case floor_raiseFloor:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -312,10 +312,10 @@ EV_DoFloor
 			if (floor->floordestheight > sec->ceilingheight)
 				floor->floordestheight = sec->ceilingheight;
 			floor->floordestheight -= (8*FRACUNIT)*
-				(floortype == raiseFloorCrush);
+				(floortype == floor_raiseFloorCrush);
 			break;
 
-		case raiseFloorTurbo:
+		case floor_raiseFloorTurbo:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED*4;
@@ -323,7 +323,7 @@ EV_DoFloor
 				P_FindNextHighestFloor(sec,sec->floorheight);
 			break;
 
-		case raiseFloorToNearest:
+		case floor_raiseFloorToNearest:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -331,14 +331,14 @@ EV_DoFloor
 				P_FindNextHighestFloor(sec,sec->floorheight);
 			break;
 
-		case raiseFloor24:
+		case floor_raiseFloor24:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
 			floor->floordestheight = floor->sector->floorheight +
 				24 * FRACUNIT;
 			break;
-		case raiseFloor512:
+		case floor_raiseFloor512:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -346,7 +346,7 @@ EV_DoFloor
 				512 * FRACUNIT;
 			break;
 
-		case raiseFloor24AndChange:
+		case floor_raiseFloor24AndChange:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -356,7 +356,7 @@ EV_DoFloor
 			sec->special = line->frontsector->special;
 			break;
 
-		case raiseToTexture:
+		case floor_raiseToTexture:
 		  {
 			  int       minsize = INT_MAX;
 			  side_t*   side;
@@ -387,7 +387,7 @@ EV_DoFloor
 		  }
 		  break;
 
-		case lowerAndChange:
+		case floor_lowerAndChange:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -471,18 +471,18 @@ EV_BuildStairs
 		P_AddThinker (&floor->thinker);
 		sec->specialdata = floor;
 		floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
-		floor->type = raiseBuildStep;
+		floor->type = floor_raiseBuildStep;
 		floor->crush = cc_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
 		floor->direction = 1;
 		floor->sector = sec;
 		switch(type)
 		{
 		default:
-		case build8:
+		case stair_build8:
 			speed = FLOORSPEED/4;
 			stairsize = 8*FRACUNIT;
 			break;
-		case turbo16:
+		case stair_turbo16:
 			speed = FLOORSPEED*4;
 			stairsize = 16*FRACUNIT;
 			break;
@@ -529,7 +529,7 @@ EV_BuildStairs
 
 				sec->specialdata = floor;
 				floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
-				floor->type = raiseBuildStep;
+				floor->type = floor_raiseBuildStep;
 				floor->crush = cc_false; /* Set to true to emulate a vanilla bug. https://www.youtube.com/watch?v=VNX0_DJNRQM */
 				floor->direction = 1;
 				floor->sector = sec;

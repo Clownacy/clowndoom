@@ -1644,14 +1644,14 @@ void A_BossDeath (mobj_t* mo)
 			if (mo->type == MT_FATSO)
 			{
 				junk.tag = 666;
-				EV_DoFloor(&junk,lowerFloorToLowest);
+				EV_DoFloor(&junk,floor_lowerFloorToLowest);
 				return;
 			}
 
 			if (mo->type == MT_BABY)
 			{
 				junk.tag = 667;
-				EV_DoFloor(&junk,raiseToTexture);
+				EV_DoFloor(&junk,floor_raiseToTexture);
 				return;
 			}
 		}
@@ -1662,7 +1662,7 @@ void A_BossDeath (mobj_t* mo)
 		{
 		case 1:
 			junk.tag = 666;
-			EV_DoFloor (&junk, lowerFloorToLowest);
+			EV_DoFloor (&junk, floor_lowerFloorToLowest);
 			return;
 
 		case 4:
@@ -1675,7 +1675,7 @@ void A_BossDeath (mobj_t* mo)
 
 			case 8:
 				junk.tag = 666;
-				EV_DoFloor (&junk, lowerFloorToLowest);
+				EV_DoFloor (&junk, floor_lowerFloorToLowest);
 				return;
 			}
 			break;
