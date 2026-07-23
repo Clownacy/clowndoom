@@ -119,9 +119,9 @@ void IB_StartTic (void)
 
 	joystick_y_dpad = 0;
 	if (GetJoypadButton(RETRO_DEVICE_ID_JOYPAD_UP))
-		--joystick_y_dpad;
+		joystick_y_dpad -= ANALOGUE_MAX;
 	if (GetJoypadButton(RETRO_DEVICE_ID_JOYPAD_DOWN))
-		++joystick_y_dpad;
+		joystick_y_dpad += ANALOGUE_MAX;
 
 	joystick_x_left  = ApplyDeadzone(libretro.input_state(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_X));
 	joystick_y_left  = ApplyDeadzone(libretro.input_state(0, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_Y));
