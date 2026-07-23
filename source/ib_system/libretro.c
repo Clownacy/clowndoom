@@ -129,16 +129,17 @@ static void UpdateOptions(const bool initial)
 		"clowndoom_show_messages",
 		"enabled",
 		M_ChangedShowMessages);
-	DoOptionNumericalWithCallback(initial,
+	DoOptionBooleanWithCallback(initial,
 		&automap_stats,
 		"clowndoom_automap_stats",
+		"enabled",
 		NULL);
 	DoOptionNumericalWithCallback(initial,
 		&default_compatibility_level,
 		"clowndoom_default_compatibility_level",
 		NULL);
 
-	/* Controls. */
+	/* Input. */
 	DoOptionNumericalWithCallback(initial,
 		&mouseSensitivity,
 		"clowndoom_mouse_sensitivity",
