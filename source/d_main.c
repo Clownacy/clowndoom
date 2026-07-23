@@ -145,14 +145,12 @@ void D_PostEvent (const event_t* ev)
 	eventhead = (eventhead+1)&(MAXEVENTS-1);
 }
 
-void D_PostJoystickEvent (const event_t* ev)
+static void D_GenerateJoystickButtonEvents(const event_t* ev)
 {
 	static unsigned int previous_button_state;
 
 	const unsigned int delta_button_state = ev->data1 ^ previous_button_state;
 	unsigned int i;
-
-	D_PostEvent(ev);
 
 	for (i = 0; i < 16; ++i)
 	{
@@ -168,6 +166,24 @@ void D_PostJoystickEvent (const event_t* ev)
 	}
 
 	previous_button_state = ev->data1;
+}
+
+void D_PostJoystickEvent (const event_t* ev)
+{
+	event_t modified_event = *ev;
+
+	/* Insert directional inputs into the button state. */
+	if (modified_event.data2 < 0)
+		modified_event.data1 |= 1U << joybleft;
+	if (modified_event.data2 > 0)
+		modified_event.data1 |= 1U << joybright;
+	if (modified_event.data3 < 0)
+		modified_event.data1 |= 1U << joybup;
+	if (modified_event.data3 > 0)
+		modified_event.data1 |= 1U << joybdown;
+
+	D_PostEvent(&modified_event);
+	D_GenerateJoystickButtonEvents(&modified_event);
 }
 
 

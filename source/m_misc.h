@@ -59,6 +59,10 @@ extern int joybmenuok;
 extern int joybmenucancel;
 extern int joybmenuopen;
 extern int joybmap;
+#define joybup 12
+#define joybdown 13
+#define joybleft 14
+#define joybright 15
 
 extern int screenblocks;
 extern int detailLevel;
