@@ -148,7 +148,7 @@ cc_bool         gamekeydown[NUMKEYS];
 int             turnheld;                               /* for accelerative turning */
 
 cc_bool         mousearray[4];
-cc_bool*        mousebuttons = &mousearray[1];          /* allow [-1] */
+#define         mousebuttons (mousearray + 1)           /* allow [-1] */
 
 /* mouse values are used once */
 int             mousex;
@@ -166,7 +166,7 @@ int             joyxmove;
 int             joyymove;
 int             joyxmoveright;
 cc_bool         joyarray[1 + 12];
-cc_bool*        joybuttons = &joyarray[1];              /* allow [-1] */
+#define         joybuttons (joyarray + 1)               /* allow [-1] */
 
 int             savegameslot;
 char            savedescription[32];
