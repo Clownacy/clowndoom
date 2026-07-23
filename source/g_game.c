@@ -571,12 +571,19 @@ cc_bool G_Responder (const event_t* ev)
 			return cc_true;    /* eat events */
 
 		case ev_joystick:
-			for (i = 0; i < CC_COUNT_OF(joyarray) - 1; ++i)
-				joybuttons[i] = (ev->data1 & 1U << i) != 0;
+			/* The button state info is ignored here. */
 			joyxmove = ev->data2;
 			joyymove = ev->data3;
 			joyxmoveright = ev->data4*(mouseSensitivity+5)/10;
 			return cc_true;    /* eat events */
+
+		case ev_buttondown:
+			joybuttons[ev->data1] = cc_true;
+			return cc_true;    /* eat button down events */
+
+		case ev_buttonup:
+			joybuttons[ev->data1] = cc_false;
+			return cc_false;   /* always let button up events filter down */
 
 		default:
 			break;
