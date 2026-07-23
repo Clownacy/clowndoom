@@ -150,7 +150,7 @@ typedef struct
 /*  A line drawing of the player pointing right, */
 /*   starting from the middle. */
 #define R ((8*PLAYERRADIUS)/7)
-mline_t player_arrow[] = {
+static const mline_t player_arrow[] = {
 	{ { -R+R/8, 0 }, { R, 0 } }, /* ----- */
 	{ { R, 0 }, { R-R/2, R/4 } },  /* -----> */
 	{ { R, 0 }, { R-R/2, -R/4 } },
@@ -163,7 +163,7 @@ mline_t player_arrow[] = {
 #define NUMPLYRLINES CC_COUNT_OF(player_arrow)
 
 #define R ((8*PLAYERRADIUS)/7)
-mline_t cheat_player_arrow[] = {
+static const mline_t cheat_player_arrow[] = {
 	{ { -R+R/8, 0 }, { R, 0 } }, /* ----- */
 	{ { R, 0 }, { R-R/2, R/6 } },  /* -----> */
 	{ { R, 0 }, { R-R/2, -R/6 } },
@@ -184,17 +184,19 @@ mline_t cheat_player_arrow[] = {
 #undef R
 #define NUMCHEATPLYRLINES CC_COUNT_OF(cheat_player_arrow)
 
+/*
 #define R (FRACUNIT)
-mline_t triangle_guy[] = {
+static const mline_t triangle_guy[] = {
 	{ { -.867*R, -.5*R }, { .867*R, -.5*R } },
 	{ { .867*R, -.5*R } , { 0, R } },
 	{ { 0, R }, { -.867*R, -.5*R } }
 };
 #undef R
 #define NUMTRIANGLEGUYLINES CC_COUNT_OF(triangle_guy)
+*/
 
 #define R (FRACUNIT)
-mline_t thintriangle_guy[] = {
+static const mline_t thintriangle_guy[] = {
 	{ { -.5*R, -.7*R }, { R, 0 } },
 	{ { R, 0 }, { -.5*R, .7*R } },
 	{ { -.5*R, .7*R }, { -.5*R, -.7*R } }
@@ -1101,13 +1103,13 @@ AM_rotate
 
 void
 AM_drawLineCharacter
-( mline_t*      lineguy,
-  int           lineguylines,
-  fixed_t       scale,
-  angle_t       angle,
-  int           color,
-  fixed_t       x,
-  fixed_t       y )
+( const mline_t* lineguy,
+  int            lineguylines,
+  fixed_t        scale,
+  angle_t        angle,
+  int            color,
+  fixed_t        x,
+  fixed_t        y )
 {
 	int         i;
 	mline_t     l;
