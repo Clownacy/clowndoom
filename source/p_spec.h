@@ -517,19 +517,19 @@ void    P_ActivateInStasisCeiling(line_t* line);
 typedef enum
 {
 	/* lower floor to highest surrounding floor */
-	floor_lowerFloor,
+	floor_lower,
 
 	/* lower floor to lowest surrounding floor */
-	floor_lowerFloorToLowest,
+	floor_lowerToLowest,
 
 	/* lower floor to highest surrounding floor VERY FAST */
 	floor_turboLower,
 
 	/* raise floor to lowest surrounding CEILING */
-	floor_raiseFloor,
+	floor_raise,
 
 	/* raise floor to next highest surrounding floor */
-	floor_raiseFloorToNearest,
+	floor_raiseToNearest,
 
 	/* raise floor to shortest height texture around it */
 	floor_raiseToTexture,
@@ -538,14 +538,14 @@ typedef enum
 	/*  and change floorpic */
 	floor_lowerAndChange,
 
-	floor_raiseFloor24,
-	floor_raiseFloor24AndChange,
-	floor_raiseFloorCrush,
+	floor_raise24,
+	floor_raise24AndChange,
+	floor_raiseCrush,
 
 	 /* raise to next highest floor, turbo-speed */
-	floor_raiseFloorTurbo,
+	floor_raiseTurbo,
 	floor_donutRaise,
-	floor_raiseFloor512,
+	floor_raise512,
 
 	floor_raiseBuildStep
 } floor_e;

@@ -274,7 +274,7 @@ EV_DoFloor
 
 		switch(floortype)
 		{
-		case floor_lowerFloor:
+		case floor_lower:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -282,7 +282,7 @@ EV_DoFloor
 				P_FindHighestFloorSurrounding(sec);
 			break;
 
-		case floor_lowerFloorToLowest:
+		case floor_lowerToLowest:
 			floor->direction = -1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -300,10 +300,10 @@ EV_DoFloor
 				floor->floordestheight += 8*FRACUNIT;
 			break;
 
-		case floor_raiseFloorCrush:
+		case floor_raiseCrush:
 			floor->crush = cc_true;
 			/* Fallthrough */
-		case floor_raiseFloor:
+		case floor_raise:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -312,10 +312,10 @@ EV_DoFloor
 			if (floor->floordestheight > sec->ceilingheight)
 				floor->floordestheight = sec->ceilingheight;
 			floor->floordestheight -= (8*FRACUNIT)*
-				(floortype == floor_raiseFloorCrush);
+				(floortype == floor_raiseCrush);
 			break;
 
-		case floor_raiseFloorTurbo:
+		case floor_raiseTurbo:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED*4;
@@ -323,7 +323,7 @@ EV_DoFloor
 				P_FindNextHighestFloor(sec,sec->floorheight);
 			break;
 
-		case floor_raiseFloorToNearest:
+		case floor_raiseToNearest:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -331,14 +331,14 @@ EV_DoFloor
 				P_FindNextHighestFloor(sec,sec->floorheight);
 			break;
 
-		case floor_raiseFloor24:
+		case floor_raise24:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
 			floor->floordestheight = floor->sector->floorheight +
 				24 * FRACUNIT;
 			break;
-		case floor_raiseFloor512:
+		case floor_raise512:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;
@@ -346,7 +346,7 @@ EV_DoFloor
 				512 * FRACUNIT;
 			break;
 
-		case floor_raiseFloor24AndChange:
+		case floor_raise24AndChange:
 			floor->direction = 1;
 			floor->sector = sec;
 			floor->speed = FLOORSPEED;

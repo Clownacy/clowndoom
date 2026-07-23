@@ -361,7 +361,7 @@ P_UseSpecialLine
 
 	case 18:
 		/* Raise Floor to next highest floor */
-		if (EV_DoFloor(line, floor_raiseFloorToNearest))
+		if (EV_DoFloor(line, floor_raiseToNearest))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -379,7 +379,7 @@ P_UseSpecialLine
 
 	case 23:
 		/* Lower Floor to Lowest */
-		if (EV_DoFloor(line,floor_lowerFloorToLowest))
+		if (EV_DoFloor(line,floor_lowerToLowest))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -421,19 +421,19 @@ P_UseSpecialLine
 
 	case 55:
 		/* Raise Floor Crush */
-		if (EV_DoFloor(line,floor_raiseFloorCrush))
+		if (EV_DoFloor(line,floor_raiseCrush))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 101:
 		/* Raise Floor */
-		if (EV_DoFloor(line,floor_raiseFloor))
+		if (EV_DoFloor(line,floor_raise))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
 	case 102:
 		/* Lower Floor to Surrounding floor height */
-		if (EV_DoFloor(line,floor_lowerFloor))
+		if (EV_DoFloor(line,floor_lower))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -475,7 +475,7 @@ P_UseSpecialLine
 
 	case 131:
 		/* Raise Floor Turbo */
-		if (EV_DoFloor(line,floor_raiseFloorTurbo))
+		if (EV_DoFloor(line,floor_raiseTurbo))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -491,7 +491,7 @@ P_UseSpecialLine
 
 	case 140:
 		/* Raise Floor 512 */
-		if (EV_DoFloor(line,floor_raiseFloor512))
+		if (EV_DoFloor(line,floor_raise512))
 			P_ChangeSwitchTexture(line,0);
 		break;
 
@@ -510,13 +510,13 @@ P_UseSpecialLine
 
 	case 45:
 		/* Lower Floor to Surrounding floor height */
-		if (EV_DoFloor(line,floor_lowerFloor))
+		if (EV_DoFloor(line,floor_lower))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
 	case 60:
 		/* Lower Floor to Lowest */
-		if (EV_DoFloor(line,floor_lowerFloorToLowest))
+		if (EV_DoFloor(line,floor_lowerToLowest))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -540,7 +540,7 @@ P_UseSpecialLine
 
 	case 64:
 		/* Raise Floor to ceiling */
-		if (EV_DoFloor(line,floor_raiseFloor))
+		if (EV_DoFloor(line,floor_raise))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -558,7 +558,7 @@ P_UseSpecialLine
 
 	case 65:
 		/* Raise Floor Crush */
-		if (EV_DoFloor(line,floor_raiseFloorCrush))
+		if (EV_DoFloor(line,floor_raiseCrush))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -570,7 +570,7 @@ P_UseSpecialLine
 
 	case 69:
 		/* Raise Floor to next highest floor */
-		if (EV_DoFloor(line, floor_raiseFloorToNearest))
+		if (EV_DoFloor(line, floor_raiseToNearest))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
@@ -606,7 +606,7 @@ P_UseSpecialLine
 
 	case 132:
 		/* Raise Floor Turbo */
-		if (EV_DoFloor(line,floor_raiseFloorTurbo))
+		if (EV_DoFloor(line,floor_raiseTurbo))
 			P_ChangeSwitchTexture(line,1);
 		break;
 
