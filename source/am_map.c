@@ -30,6 +30,7 @@
 #include "w_wad.h"
 
 #include "m_cheat.h"
+#include "m_misc.h"
 #include "i_system.h"
 
 /* Needs access to LFB. */
@@ -559,12 +560,19 @@ AM_Responder
 
 	if (!automapactive)
 	{
-		if (ev->type == ev_keydown && ev->data1 == AM_STARTKEY)
+		if ((ev->type == ev_keydown && ev->data1 == AM_STARTKEY) || (ev->type == ev_buttondown && ev->data1 == joybmap))
 		{
 			AM_Start ();
 			viewactive = cc_false;
 			rc = cc_true;
 		}
+	}
+
+	else if (ev->type == ev_buttondown && ev->data1 == joybmap)
+	{
+		bigstate = cc_false;
+		viewactive = cc_true;
+		AM_Stop ();
 	}
 
 	else if (ev->type == ev_keydown)

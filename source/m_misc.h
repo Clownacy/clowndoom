@@ -58,6 +58,7 @@ extern int joybweaponnext;
 extern int joybmenuok;
 extern int joybmenucancel;
 extern int joybmenuopen;
+extern int joybmap;
 
 extern int screenblocks;
 extern int detailLevel;
