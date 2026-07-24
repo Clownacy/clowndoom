@@ -49,6 +49,10 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
     at their native resolutions, 2 renders them at double their resolution,
     etc. The maximum value is 9.
   - `field_of_view` - The vertical field-of-view.
+  - `soundfont_preference` - Which style of soundtrack to use. 0 uses wavetable
+    synthesis, 1 uses FM synthesis with the GENMIDI lump instruments, and 2
+    uses FM synthesis with the custom [DMXOPL3](https://github.com/sneakernets/DMXOPL)
+    instruments.
 - Command line parameters:
   - `-iwad`, for loading a specific primary WAD file.
   - `-complevel`, supporting options 2, 3, and 4.
@@ -65,7 +69,7 @@ file can be found in the user's standard configuration directory
 In SDL builds, it can be found in the ['pref dir'](https://wiki.libsdl.org/SDL2/SDL_GetPrefPath),
 at `clownacy/clowndoom/default.cfg`.
 
-WildMIDI requires a collection of GUS patches in order to work. The patches
-should come with a Timidity-compatible '.cfg'. file. Set the
+For wavetable synthesis to work, WildMIDI requires a collection of GUS patches.
+The patches should come with a Timidity-compatible '.cfg'. file. Set the
 `wildmidi_config_path` option in 'clowndoomrc' to the path of this file, and
-music should now work.
+music should now work. Alternatively, a SoundFont2 ('.sf2') file can be used.
