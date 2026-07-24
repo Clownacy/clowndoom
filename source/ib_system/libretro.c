@@ -183,6 +183,8 @@ static void UpdateOptions(const bool initial)
 
 	if (DoOptionNumericalWithCallback(initial, &musicVolume, "clowndoom_music_volume"))
 		M_ChangedMusicVolume();
+
+	DoOptionNumericalWithCallback(initial, &soundfont_preference, "clowndoom_soundfont_preference");
 }
 
 void IB_ChangedShowMessages(void)

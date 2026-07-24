@@ -564,6 +564,28 @@ struct retro_core_option_v2_definition option_defs_us[] = {
 		/* Default value. */
 		"8"
 	},
+	{
+		/* Key. */
+		"clowndoom_soundfont_preference",
+		/* Label. */
+		"Audio > Soundfont Preference",
+		/* Categorised label. */
+		"Soundfont Preference",
+		/* Description. */
+		"Which style of soundtrack to use. Restart to apply.",
+		/* Categorised description. */
+		NULL,
+		/* Category. */
+		"audio",
+		/* Values. */
+		{
+			{ "0", "Wavetable Synthesis"   },
+			{ "1", "FM Synthesis (GENMIDI)"},
+			{ "2", "FM Synthesis (DMXOPL3)"},
+		},
+		/* Default value. */
+		"0"
+	},
 	{NULL, NULL, NULL, NULL, NULL, NULL, {{NULL, NULL}}, NULL}
 };
 
