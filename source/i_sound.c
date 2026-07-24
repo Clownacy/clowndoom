@@ -426,32 +426,57 @@ void I_UpdateSoundParams(int handle, int vol, int sep, int pitch)
 #ifdef WILDMIDI
 static void* AllocateFileForWildMIDI(const char* const file_path, uint32_t* const file_size_output)
 {
-	I_File* const file = I_FileOpen(file_path, I_FILE_MODE_READ);
-
-	if (file != NULL)
+	if (file_path[0] == '\0')
 	{
-		const size_t file_size = I_FileSize(file);
+		/* Not a real file; actually the OPL2 soundfont in the WAD file. */
+		const int lump_number = W_CheckNumForName("GENMIDI");
 
-		if (file_size <= 0xFFFFFFFF)
+		if (lump_number != -1)
 		{
-			char* const buffer = (char*)malloc(file_size + 1);
+			const int lump_size = W_LumpLength(lump_number);
 
-			if (buffer != NULL)
+			char* const lump_buffer = (char*)malloc(lump_size + 1);
+
+			if (lump_buffer != NULL)
 			{
-				if (I_FileRead(file, buffer, file_size) == file_size)
-				{
-					buffer[file_size] = '\0';
-					*file_size_output = file_size;
+				W_ReadLump(lump_number, lump_buffer);
 
-					I_FileClose(file);
-					return buffer;
-				}
+				lump_buffer[lump_size] = '\0';
+				*file_size_output = lump_size;
 
-				free(buffer);
+				return lump_buffer;
 			}
 		}
+	}
+	else
+	{
+		I_File* const file = I_FileOpen(file_path, I_FILE_MODE_READ);
 
-		I_FileClose(file);
+		if (file != NULL)
+		{
+			const size_t file_size = I_FileSize(file);
+
+			if (file_size <= 0xFFFFFFFF)
+			{
+				char* const buffer = (char*)malloc(file_size + 1);
+
+				if (buffer != NULL)
+				{
+					if (I_FileRead(file, buffer, file_size) == file_size)
+					{
+						buffer[file_size] = '\0';
+						*file_size_output = file_size;
+
+						I_FileClose(file);
+						return buffer;
+					}
+
+					free(buffer);
+				}
+			}
+
+			I_FileClose(file);
+		}
 	}
 
 	return NULL;
@@ -476,7 +501,12 @@ static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 			FreeFileForWildMIDI
 		};
 
-		if (WildMidi_InitVIO(&vio, wildmidi_config_path, output_sample_rate, 0) != 0)
+		/* Try loading a soundfont first. */
+		if (WildMidi_InitVIO(&vio, wildmidi_config_path, output_sample_rate, 0) != 0
+		/* Failing that, fall-back on the OPL2 soundfont inside the WAD file. */
+		 && WildMidi_InitVIO(&vio, ""                  , output_sample_rate, 0) != 0
+		/* Failing that, fall-back on the OPL3 soundfont built into WildMIDI. */
+		 && WildMidi_InitVIO(&vio, "@opl3"             , output_sample_rate, 0) != 0)
 			I_Info("I_StartupSound: Failed to initialize WildMIDI. Error message was '%s'\n", WildMidi_GetError());
 		else
 			music_initialised = cc_true;
