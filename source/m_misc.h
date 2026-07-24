@@ -75,6 +75,7 @@ extern int automap_stats;
 extern int musicVolume;
 extern int sfxVolume;
 extern int numChannels;
+extern int soundfont_preference;
 extern const char *wildmidi_config_path;
 
 extern const char *chat_macros[10];

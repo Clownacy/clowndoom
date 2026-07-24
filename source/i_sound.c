@@ -502,11 +502,11 @@ static void StartupCallback(unsigned int _output_sample_rate, void *user_data)
 		};
 
 		/* Try loading a soundfont first. */
-		if (WildMidi_InitVIO(&vio, wildmidi_config_path, output_sample_rate, 0) != 0
+		if ((soundfont_preference > 0 || WildMidi_InitVIO(&vio, wildmidi_config_path, output_sample_rate, 0) != 0)
 		/* Failing that, fall-back on the OPL2 soundfont inside the WAD file. */
-		 && WildMidi_InitVIO(&vio, ""                  , output_sample_rate, 0) != 0
+		 && (soundfont_preference > 1 || WildMidi_InitVIO(&vio, ""                  , output_sample_rate, 0) != 0)
 		/* Failing that, fall-back on the OPL3 soundfont built into WildMIDI. */
-		 && WildMidi_InitVIO(&vio, "@opl3"             , output_sample_rate, 0) != 0)
+		 && (soundfont_preference > 2 || WildMidi_InitVIO(&vio, "@opl3"             , output_sample_rate, 0) != 0))
 			I_Info("I_StartupSound: Failed to initialize WildMIDI. Error message was '%s'\n", WildMidi_GetError());
 		else
 			music_initialised = cc_true;

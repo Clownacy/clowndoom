@@ -197,6 +197,8 @@ int             automap_stats = 0;
 int             musicVolume = 8;
 int             sfxVolume = 8;
 int             numChannels = 8;
+/* 0 = Patches, 1 = GENMIDI OPL2, 2 = WildMIDI OPL3 */
+int             soundfont_preference = 0;
 const char     *wildmidi_config_path = "wildmidi.cfg";
 
 const char     *chat_macros[10] =
@@ -282,6 +284,7 @@ static const default_t       defaults[] =
 	{"music_volume",&musicVolume, cc_false},
 	{"sfx_volume",&sfxVolume, cc_false},
 	{"snd_channels",&numChannels, cc_false},
+	{"soundfont_preference",&soundfont_preference, cc_false},
 	{"wildmidi_config_path", (int*)&wildmidi_config_path, cc_true },
 
 	/* Chat macros */
