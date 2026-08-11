@@ -402,7 +402,7 @@ void M_LoadDefaults (void)
 	}
 #endif
 
-	complevel = default_compatibility_level;
+	complevel = (complevel_t)default_compatibility_level;
 
 	/* Clamp options to sane values. */
 	SCREENWIDTH  = CC_CLAMP(ORIGINAL_SCREEN_WIDTH,  MAXIMUM_SCREENWIDTH,  SCREENWIDTH);

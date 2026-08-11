@@ -1059,7 +1059,7 @@ void D_DoomMain (int argc, char **argv)
 	{
 		sscanf(myargv[p + 1], "%i", &complevel);
 
-		if (complevel < COMPLEVEL_DOOM_1_9 || complevel > COMPLEVEL_FINAL_DOOM)
+		if ((complevel < COMPLEVEL_DOOM_1_9 || complevel > COMPLEVEL_FINAL_DOOM) && complevel != COMPLEVEL_CUSTOM)
 			I_Error("Unsupported complevel '%d'.\n", complevel);
 	}
 
