@@ -62,6 +62,9 @@ int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio
 	else
 	{
 		SDL_AudioSpec audio_specification;
+#if SDL_MAJOR_VERSION == 2
+		SDL_AudioSpec obtained_audio_specification;
+#endif
 
 #if SDL_MAJOR_VERSION >= 3
 		/* With SDL3, we can use the native sample rate. */
@@ -73,9 +76,7 @@ int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio
 		audio_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &audio_specification, Callback, user_data);
 
 		if (audio_stream == NULL)
-#elif SDL_MAJOR_VERSION >= 2
-		SDL_AudioSpec obtained_audio_specification;
-
+#else
 		audio_specification.freq = DEFAULT_SAMPLE_RATE;
 		audio_specification.channels = 2;
 		audio_specification.format = AUDIO_S16;
@@ -83,13 +84,15 @@ int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio
 		audio_specification.callback = Callback;
 		audio_specification.userdata = user_data;
 
+	#if SDL_MAJOR_VERSION >= 2
 		/* With SDL2, we can use the native sample rate and buffer size. */
 		audio_device = SDL_OpenAudioDevice(NULL, 0, &audio_specification, &obtained_audio_specification, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_SAMPLES_CHANGE);
 		audio_specification = obtained_audio_specification;
 
 		if (audio_device == 0)
-#else
+	#else
 		if (SDL_OpenAudio(&audio_specification, NULL) < 0)
+	#endif
 #endif
 		{
 			I_Error("Could not create SDL audio device");

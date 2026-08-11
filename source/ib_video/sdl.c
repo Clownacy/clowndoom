@@ -571,7 +571,7 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 	const Uint8 bytes_per_pixel = format->bytes_per_pixel;
 	const Uint32 color = SDL_MapRGB(format, NULL, red, green, blue);
 #else
-	const Uint8 bytes_per_pixel = surface->format.BytesPerPixel;
+	const Uint8 bytes_per_pixel = surface->format->BytesPerPixel;
 	const Uint32 color = SDL_MapRGB(surface->format, red, green, blue);
 #endif
 	for (i = 0; i < bytes_per_pixel; ++i)
