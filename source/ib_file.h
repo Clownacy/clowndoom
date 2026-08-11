@@ -18,20 +18,32 @@
 ******************************************************************************/
 
 
-#ifndef __IB_SYSTEM__
-#define __IB_SYSTEM__
+#ifndef __IB_FILE__
+#define __IB_FILE__
 
 #include <stddef.h>
 
 #include "doomtype.h"
-#include "ib_file.h"
 
-int  IB_GetTime (void);
-void IB_Init (void);
-void IB_Quit (int exit_code);
-void IB_WaitFrames(int count);
-void IB_Sleep(void);
-size_t IB_GetConfigDirectoryPath(char *buffer, size_t size);
-size_t IB_GetSaveDirectoryPath(char *buffer, size_t size);
+typedef enum I_FileMode
+{
+	I_FILE_MODE_READ,
+	I_FILE_MODE_WRITE
+} I_FileMode;
+
+typedef enum I_FilePosition
+{
+	I_FILE_POSITION_START,
+	I_FILE_POSITION_CURRENT,
+	I_FILE_POSITION_END
+} I_FilePosition;
+
+I_File* I_FileOpen(const char *path, I_FileMode mode);
+void I_FileClose(I_File *file);
+size_t I_FileSize(I_File *file);
+size_t I_FileRead(I_File *file, void *buffer, size_t size);
+size_t I_FileWrite(I_File *file, const void *buffer, size_t size);
+size_t I_FilePut(I_File *file, char character);
+size_t I_FileSeek(I_File *file, size_t offset, I_FilePosition position);
 
 #endif

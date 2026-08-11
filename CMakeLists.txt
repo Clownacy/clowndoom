@@ -49,6 +49,7 @@ target_sources(clowndoom PRIVATE
 	"source/hu_lib.h"
 	"source/hu_stuff.c"
 	"source/hu_stuff.h"
+	"source/ib_file.h"
 	"source/ib_sound.h"
 	"source/ib_system.h"
 	"source/ib_video.h"
@@ -171,6 +172,7 @@ endif()
 # Handle backends
 if(BACKEND STREQUAL "Xlib")
 	target_sources(clowndoom PRIVATE
+		"source/ib_file/stdio.c"
 		"source/ib_sound/miniaudio.c"
 		"source/ib_sound/miniaudio.h"
 		"source/ib_system/posix.c"
@@ -184,6 +186,7 @@ if(BACKEND STREQUAL "Xlib")
 	target_link_libraries(clowndoom PRIVATE ${CMAKE_DL_LIBS} pthread)
 elseif(BACKEND STREQUAL "SDL1")
 	target_sources(clowndoom PRIVATE
+		"source/ib_file/stdio.c"
 		"source/ib_sound/sdl.c"
 		"source/ib_system/sdl.c"
 		"source/ib_video/sdl.c"
@@ -200,6 +203,7 @@ elseif(BACKEND STREQUAL "SDL1")
 	target_link_libraries(clowndoom PRIVATE SDL::SDL)
 elseif(BACKEND STREQUAL "SDL2")
 	target_sources(clowndoom PRIVATE
+		"source/ib_file/sdl.c"
 		"source/ib_sound/sdl.c"
 		"source/ib_system/sdl.c"
 		"source/ib_video/sdl.c"
@@ -221,6 +225,7 @@ elseif(BACKEND STREQUAL "SDL2")
 	endif()
 elseif(BACKEND STREQUAL "libretro")
 	target_sources(clowndoom PRIVATE
+		"source/ib_file/libretro.c"
 		"source/ib_sound/libretro.c"
 		"source/ib_system/libretro.c"
 		"source/ib_video/libretro.c"
@@ -284,6 +289,7 @@ elseif(BACKEND STREQUAL "libretro")
 	endif()
 elseif(BACKEND STREQUAL "Null")
 	target_sources(clowndoom PRIVATE
+		"source/ib_file/null.c"
 		"source/ib_sound/null.c"
 		"source/ib_system/null.c"
 		"source/ib_video/null.c"
