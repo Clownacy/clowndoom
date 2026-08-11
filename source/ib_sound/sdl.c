@@ -8,6 +8,8 @@
 	#include "SDL.h"
 #endif
 
+#define DEFAULT_SAMPLE_RATE 48000
+
 /* The function that actually produces the output audio */
 static IB_AudioCallback audio_callback;
 
@@ -45,11 +47,6 @@ static void Callback(void *user_data, Uint8 *output_buffer, int bytes_to_do)
 
 int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio_callback, void *user_data)
 {
-	SDL_AudioSpec desired_audio_specification;
-#if SDL_MAJOR_VERSION == 2
-	SDL_AudioSpec obtained_audio_specification;
-#endif
-
 	audio_callback = _audio_callback;
 
 #if SDL_MAJOR_VERSION >= 3
@@ -62,40 +59,42 @@ int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio
 	}
 	else
 	{
-		desired_audio_specification.freq = 48000;
-		desired_audio_specification.channels = 2;
-#if SDL_MAJOR_VERSION >= 3
-		desired_audio_specification.format = SDL_AUDIO_S16;
-#else
-		desired_audio_specification.format = AUDIO_S16;
-		desired_audio_specification.samples = 0x200; /* About 10ms at 48000Hz. */
-		desired_audio_specification.callback = Callback;
-		desired_audio_specification.userdata = user_data;
-#endif
+		SDL_AudioSpec audio_specification;
 
 #if SDL_MAJOR_VERSION >= 3
-		/* With SDL2, we can use the native sample rate and buffer size. */
-		audio_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &desired_audio_specification, Callback, user_data);
+		/* With SDL3, we can use the native sample rate. */
+		if (!SDL_GetAudioDeviceFormat(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &audio_specification, NULL))
+			audio_specification.freq = DEFAULT_SAMPLE_RATE;
+		audio_specification.channels = 2;
+		audio_specification.format = SDL_AUDIO_S16;
+
+		audio_stream = SDL_OpenAudioDeviceStream(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &audio_specification, Callback, user_data);
 
 		if (audio_stream == NULL)
 #elif SDL_MAJOR_VERSION >= 2
+		SDL_AudioSpec obtained_audio_specification;
+
+		audio_specification.freq = DEFAULT_SAMPLE_RATE;
+		audio_specification.channels = 2;
+		audio_specification.format = AUDIO_S16;
+		audio_specification.samples = 0x200; /* About 10ms at 48000Hz. */
+		audio_specification.callback = Callback;
+		audio_specification.userdata = user_data;
+
 		/* With SDL2, we can use the native sample rate and buffer size. */
-		audio_device = SDL_OpenAudioDevice(NULL, 0, &desired_audio_specification, &obtained_audio_specification, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_SAMPLES_CHANGE);
+		audio_device = SDL_OpenAudioDevice(NULL, 0, &audio_specification, &obtained_audio_specification, SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_SAMPLES_CHANGE);
+		audio_specification = obtained_audio_specification;
 
 		if (audio_device == 0)
 #else
-		if (SDL_OpenAudio(&desired_audio_specification, NULL) < 0)
+		if (SDL_OpenAudio(&audio_specification, NULL) < 0)
 #endif
 		{
 			/* TODO: Error message. */
 		}
 		else
 		{
-#if SDL_MAJOR_VERSION == 2
-			initial_callback(obtained_audio_specification.freq, user_data);
-#else
-			initial_callback(desired_audio_specification.freq, user_data);
-#endif
+			initial_callback(audio_specification.freq, user_data);
 
 #if SDL_MAJOR_VERSION >= 3
 			SDL_ResumeAudioStreamDevice(audio_stream);
