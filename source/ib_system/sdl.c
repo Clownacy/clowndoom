@@ -73,10 +73,14 @@ void IB_Sleep(void)
 
 static size_t IB_GetDirectoryCommon(char* const buffer, const size_t size)
 {
+#if SDL_MAJOR_VERSION >= 2
 	char* const path = SDL_GetPrefPath("clownacy", "clowndoom");
 	size_t path_length = M_StringCopy(buffer, size, path);
 	SDL_free(path);
 	return path_length;
+#else
+	return M_StringCopy(buffer, size, "./");
+#endif
 }
 
 size_t IB_GetConfigDirectoryPath(char* const buffer, const size_t size)

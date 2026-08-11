@@ -169,7 +169,6 @@ static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
 
 #if SDL_MAJOR_VERSION >= 2
 static int joystick_button_state, joystick_x_left, joystick_y_left, joystick_x_right, joystick_x_dpad, joystick_y_dpad;
-#endif
 
 static void SetJoystickButton(const unsigned int button_index, const cc_bool pressed)
 {
@@ -191,6 +190,7 @@ static void SubmitJoystickEvent(void)
 	event.data4 = joystick_x_right;
 	D_PostJoystickEvent(&event);
 }
+#endif
 
 /* IB_StartTic */
 void IB_StartTic (void)
@@ -208,9 +208,11 @@ void IB_StartTic (void)
 				break;
 
 			case SDL_KEYDOWN:
+			#if SDL_MAJOR_VERSION >= 2
 				/* Ignore repeat key-presses. */
 				if (sdl_event.key.repeat)
 					break;
+			#endif
 
 				event.type = ev_keydown;
 				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
@@ -473,6 +475,9 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER);
 #else
 	SDL_InitSubSystem(SDL_INIT_VIDEO);
+
+	/* Disable repeated key inputs, since there's no way to filter them out in SDL1. */
+	SDL_EnableKeyRepeat(0, SDL_DEFAULT_REPEAT_INTERVAL);
 #endif
 
 #if SDL_MAJOR_VERSION >= 2
