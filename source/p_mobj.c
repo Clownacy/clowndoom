@@ -279,7 +279,7 @@ void P_ZMovement (mobj_t* mo)
 	{
 		/* hit the floor */
 
-		if (complevel >= 3)
+		if (complevel >= COMPLEVEL_ULTIMATE_DOOM)
 		{
 			/* Note (id): */
 			/*  somebody left this after the setting momz to 0, */
@@ -305,7 +305,7 @@ void P_ZMovement (mobj_t* mo)
 
 		mo->z = mo->floorz;
 
-		if (complevel < 3)
+		if (complevel < COMPLEVEL_ULTIMATE_DOOM)
 		{
 			/* BUG: This is done too late, preventing the
 			   Lost Soul from bouncing off the floor. */
@@ -329,9 +329,8 @@ void P_ZMovement (mobj_t* mo)
 
 	if (mo->z + mo->height > mo->ceilingz)
 	{
-#ifdef FIX_BUGS
-		SkullBounce(mo);
-#endif
+		if (complevel == COMPLEVEL_CUSTOM)
+			SkullBounce(mo);
 
 		/* hit the ceiling */
 		if (mo->momz > 0)
@@ -339,11 +338,10 @@ void P_ZMovement (mobj_t* mo)
 
 		mo->z = mo->ceilingz - mo->height;
 
-#ifndef FIX_BUGS
 		/* BUG: This is done too late, preventing the
 		   Lost Soul from bouncing off the ceiling. */
-		SkullBounce(mo);
-#endif
+		if (complevel != COMPLEVEL_CUSTOM)
+			SkullBounce(mo);
 
 		if ( (mo->flags & MF_MISSILE)
 			 && !(mo->flags & MF_NOCLIP) )

@@ -109,7 +109,7 @@ skill_t         startskill;
 int             startepisode;
 int             startmap;
 cc_bool         autostart;
-int             complevel;
+complevel_t     complevel;
 
 FILE*           debugfile;
 
@@ -1000,7 +1000,7 @@ void D_DoomMain (int argc, char **argv)
 	startepisode = 1;
 	startmap = 1;
 	autostart = cc_false;
-	complevel = -1;
+	complevel = COMPLEVEL_CUSTOM;
 
 	p = M_CheckParm ("-skill");
 	if (p && p < myargc-1)
@@ -1047,21 +1047,21 @@ void D_DoomMain (int argc, char **argv)
 		autostart = cc_true;
 	}
 
-	p = M_CheckParm ("-complevel");
-	if (p && p < myargc - 1)
-	{
-		sscanf(myargv[p + 1], "%i", &complevel);
-
-		if (complevel < 2 || complevel > 4)
-			I_Error("Unsupported complevel '%u'.\n", complevel);
-	}
-
 	/* init subsystems */
 	I_Info ("V_Init: allocate screens.\n");
 	V_Init ();
 
 	I_Info ("M_LoadDefaults: Load system defaults.\n");
 	M_LoadDefaults ();              /* load before initing other systems */
+
+	p = M_CheckParm ("-complevel");
+	if (p && p < myargc - 1)
+	{
+		sscanf(myargv[p + 1], "%i", &complevel);
+
+		if (complevel < COMPLEVEL_DOOM_1_9 || complevel > COMPLEVEL_FINAL_DOOM)
+			I_Error("Unsupported complevel '%d'.\n", complevel);
+	}
 
 	I_Info ("Z_Init: Init zone memory allocation daemon. \n");
 	Z_Init ();

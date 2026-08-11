@@ -250,6 +250,18 @@ typedef enum
 
 
 
+typedef enum
+{
+	COMPLEVEL_DOOM_1_2,
+	COMPLEVEL_DOOM_1_666,
+	COMPLEVEL_DOOM_1_9,
+	COMPLEVEL_ULTIMATE_DOOM,
+	COMPLEVEL_FINAL_DOOM,
+	COMPLEVEL_CUSTOM = (unsigned int)-1
+} complevel_t;
+
+
+
 
 /* DOOM keyboard definition. */
 /* This is the stuff configured by Setup.Exe. */

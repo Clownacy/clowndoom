@@ -94,10 +94,8 @@ EV_Teleport
 					return 0;
 
 				/* Final Doom-specific bug: teleporters do not set the Z coordinate. */
-				if (complevel != 4)
-				{
-					thing->z = thing->floorz; /* fixme: not needed? */
-				}
+				if (complevel != COMPLEVEL_FINAL_DOOM)
+					thing->z = thing->floorz;
 
 				if (thing->player)
 					thing->player->viewz = thing->z+thing->player->viewheight;

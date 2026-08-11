@@ -1545,7 +1545,7 @@ void A_BossDeath (mobj_t* mo)
 			if (gamemap != 8)
 				return;
 
-			if (complevel >= 3)
+			if (complevel >= COMPLEVEL_ULTIMATE_DOOM)
 			{
 				if (mo->type != MT_BRUISER)
 					return;
@@ -1556,7 +1556,7 @@ void A_BossDeath (mobj_t* mo)
 			if (gamemap != 8)
 				return;
 
-			if (complevel >= 3)
+			if (complevel >= COMPLEVEL_ULTIMATE_DOOM)
 			{
 				if (mo->type != MT_CYBORG)
 					return;
@@ -1572,7 +1572,7 @@ void A_BossDeath (mobj_t* mo)
 			if (gamemap != 8)
 				return;
 
-			if (complevel >= 3)
+			if (complevel >= COMPLEVEL_ULTIMATE_DOOM)
 			{
 				if (mo->type != MT_SPIDER)
 					return;

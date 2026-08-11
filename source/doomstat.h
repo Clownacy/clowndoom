@@ -70,7 +70,7 @@ extern  int             startepisode;
 extern  int             startmap;
 
 extern  cc_bool         autostart;
-extern  int             complevel;
+extern  complevel_t     complevel;
 
 /* Selected by user. */
 extern  skill_t         gameskill;

@@ -153,7 +153,7 @@ int             showMessages = 1;
 int             novert = 1;
 int             always_run = 1;
 int             always_strafe = 1;
-int             default_compatibility_level = 3; /* Default to Ultimate Doom, since the Linux Doom source release is the closest to it. */
+int             default_compatibility_level = COMPLEVEL_ULTIMATE_DOOM; /* Default to Ultimate Doom, since the Linux Doom source release is the closest to it. */
 
 /* controls (have defaults) */
 int             key_right = 'd';
@@ -402,8 +402,7 @@ void M_LoadDefaults (void)
 	}
 #endif
 
-	if (complevel == -1)
-		complevel = default_compatibility_level;
+	complevel = default_compatibility_level;
 
 	/* Clamp options to sane values. */
 	SCREENWIDTH  = CC_CLAMP(ORIGINAL_SCREEN_WIDTH,  MAXIMUM_SCREENWIDTH,  SCREENWIDTH);
