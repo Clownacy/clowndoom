@@ -61,7 +61,7 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
   - Master Levels for Doom II
   - No Rest for the Living
 - Assorted bug fixes.
-- Better than CuckyDOOM.
+- Better than [CuckyDOOM](https://github.com/cuckydev/CuckyDOOM).
 
 ## Configuration
 Additional settings are found in the configuration file. In POSIX builds, this
