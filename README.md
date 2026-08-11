@@ -23,7 +23,7 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
     modern X11 servers.
   - The audio code has been migrated from OSS to the miniaudio middleware
     library (supports OSS, ALSA, PulseAudio, JACK, and more).
-  - As an alternative to X11 and miniaudio, SDL1 and SDL2 backends are
+  - As an alternative to X11 and miniaudio, SDL1, SDL2, and SDL3 backends are
     available.
   - The codebase can be compiled with MSVC.
   - Windows networking code has been added.
