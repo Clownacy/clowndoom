@@ -34,14 +34,14 @@ size_t I_FileWrite(I_File* const file, const void* const buffer, const size_t si
 	return 0;
 }
 
-size_t I_FilePut(I_File* const file, const char character)
+cc_bool I_FilePut(I_File* const file, const char character)
 {
 	(void)file;
 	(void)character;
 	return 0;
 }
 
-size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
+cc_bool I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
 {
 	(void)file;
 	(void)offset;

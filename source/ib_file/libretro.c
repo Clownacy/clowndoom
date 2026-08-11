@@ -40,12 +40,12 @@ size_t I_FileWrite(I_File* const file, const void* const buffer, const size_t si
 	return filestream_write((RFILE*)file, buffer, size);
 }
 
-size_t I_FilePut(I_File* const file, const char character)
+cc_bool I_FilePut(I_File* const file, const char character)
 {
-	return filestream_putc((RFILE*)file, character) == character ? 1 : 0;
+	return filestream_putc((RFILE*)file, character) != -1;
 }
 
-size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
+cc_bool I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
 {
 	int vfs_position;
 
@@ -64,5 +64,5 @@ size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition 
 			break;
 	}
 
-	return filestream_seek((RFILE*)file, offset, vfs_position);
+	return filestream_seek((RFILE*)file, offset, vfs_position) != -1;
 }

@@ -48,12 +48,12 @@ size_t I_FileWrite(I_File* const file, const void* const buffer, const size_t si
 	return fwrite(buffer, 1, size, (FILE*)file);
 }
 
-size_t I_FilePut(I_File* const file, const char character)
+cc_bool I_FilePut(I_File* const file, const char character)
 {
-	return fputc(character, (FILE*)file);
+	return fputc(character, (FILE*)file) != EOF;
 }
 
-size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
+cc_bool I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
 {
 	int rw_position;
 
@@ -72,5 +72,5 @@ size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition 
 			break;
 	}
 
-	return fseek((FILE*)file, offset, rw_position);
+	return fseek((FILE*)file, offset, rw_position) != -1;
 }

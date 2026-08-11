@@ -43,7 +43,7 @@ void I_FileClose(I_File *file);
 size_t I_FileSize(I_File *file);
 size_t I_FileRead(I_File *file, void *buffer, size_t size);
 size_t I_FileWrite(I_File *file, const void *buffer, size_t size);
-size_t I_FilePut(I_File *file, char character);
-size_t I_FileSeek(I_File *file, size_t offset, I_FilePosition position);
+cc_bool I_FilePut(I_File *file, char character);
+cc_bool I_FileSeek(I_File *file, size_t offset, I_FilePosition position);
 
 #endif

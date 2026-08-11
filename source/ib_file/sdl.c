@@ -40,12 +40,12 @@ size_t I_FileWrite(I_File* const file, const void* const buffer, const size_t si
 	return SDL_RWwrite((SDL_RWops*)file, buffer, 1, size);
 }
 
-size_t I_FilePut(I_File* const file, const char character)
+cc_bool I_FilePut(I_File* const file, const char character)
 {
-	return I_FileWrite(file, &character, 1);
+	return I_FileWrite(file, &character, 1) != 0;
 }
 
-size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
+cc_bool I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition position)
 {
 	int rw_position;
 
@@ -64,5 +64,5 @@ size_t I_FileSeek(I_File* const file, const size_t offset, const I_FilePosition 
 			break;
 	}
 
-	return SDL_RWseek((SDL_RWops*)file, offset, rw_position);
+	return SDL_RWseek((SDL_RWops*)file, offset, rw_position) != -1;
 }
