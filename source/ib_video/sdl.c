@@ -21,7 +21,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SDL.h"
+#ifdef USE_SDL3
+	#include <SDL3/SDL.h>
+#else
+	#include "SDL.h"
+#endif
 
 #include "../doomstat.h"
 #include "../i_system.h"
@@ -34,6 +38,83 @@
 
 #include "../ib_video.h"
 
+#if SDL_MAJOR_VERSION >= 3
+	#undef SDL_QUIT
+	#define SDL_QUIT SDL_EVENT_QUIT
+	#undef SDL_KEYDOWN
+	#define SDL_KEYDOWN SDL_EVENT_KEY_DOWN
+	#undef SDL_KEYUP
+	#define SDL_KEYUP SDL_EVENT_KEY_UP
+	#undef SDL_MOUSEBUTTONDOWN
+	#define SDL_MOUSEBUTTONDOWN SDL_EVENT_MOUSE_BUTTON_DOWN
+	#undef SDL_MOUSEBUTTONUP
+	#define SDL_MOUSEBUTTONUP SDL_EVENT_MOUSE_BUTTON_UP
+	#undef SDL_MOUSEMOTION
+	#define SDL_MOUSEMOTION SDL_EVENT_MOUSE_MOTION
+	#undef SDL_CONTROLLERBUTTONDOWN
+	#define SDL_CONTROLLERBUTTONDOWN SDL_EVENT_GAMEPAD_BUTTON_DOWN
+	#undef SDL_CONTROLLERBUTTONUP
+	#define SDL_CONTROLLERBUTTONUP SDL_EVENT_GAMEPAD_BUTTON_UP
+	#undef SDL_CONTROLLERAXISMOTION
+	#define SDL_CONTROLLERAXISMOTION SDL_EVENT_GAMEPAD_AXIS_MOTION
+	#undef SDL_WINDOWEVENT_SIZE_CHANGED
+	#define SDL_WINDOWEVENT_SIZE_CHANGED SDL_EVENT_WINDOW_PIXEL_SIZE_CHANGED
+
+	#undef SDL_FillRect
+	#define SDL_FillRect SDL_FillSurfaceRect
+	#undef SDL_FreeSurface
+	#define SDL_FreeSurface SDL_DestroySurface
+
+	#undef SDL_CONTROLLER_BUTTON_DPAD_UP
+	#define SDL_CONTROLLER_BUTTON_DPAD_UP SDL_GAMEPAD_BUTTON_DPAD_UP
+	#undef SDL_CONTROLLER_BUTTON_DPAD_DOWN
+	#define SDL_CONTROLLER_BUTTON_DPAD_DOWN SDL_GAMEPAD_BUTTON_DPAD_DOWN
+	#undef SDL_CONTROLLER_BUTTON_DPAD_LEFT
+	#define SDL_CONTROLLER_BUTTON_DPAD_LEFT SDL_GAMEPAD_BUTTON_DPAD_LEFT
+	#undef SDL_CONTROLLER_BUTTON_DPAD_RIGHT
+	#define SDL_CONTROLLER_BUTTON_DPAD_RIGHT SDL_GAMEPAD_BUTTON_DPAD_RIGHT
+	#undef SDL_CONTROLLER_BUTTON_Y
+	#define SDL_CONTROLLER_BUTTON_Y SDL_GAMEPAD_BUTTON_NORTH
+	#undef SDL_CONTROLLER_BUTTON_A
+	#define SDL_CONTROLLER_BUTTON_A SDL_GAMEPAD_BUTTON_SOUTH
+	#undef SDL_CONTROLLER_BUTTON_X
+	#define SDL_CONTROLLER_BUTTON_X SDL_GAMEPAD_BUTTON_WEST
+	#undef SDL_CONTROLLER_BUTTON_B
+	#define SDL_CONTROLLER_BUTTON_B SDL_GAMEPAD_BUTTON_EAST
+	#undef SDL_CONTROLLER_BUTTON_START
+	#define SDL_CONTROLLER_BUTTON_START SDL_GAMEPAD_BUTTON_START
+	#undef SDL_CONTROLLER_BUTTON_BACK
+	#define SDL_CONTROLLER_BUTTON_BACK SDL_GAMEPAD_BUTTON_BACK
+	#undef SDL_CONTROLLER_BUTTON_LEFTSHOULDER
+	#define SDL_CONTROLLER_BUTTON_LEFTSHOULDER SDL_GAMEPAD_BUTTON_LEFT_SHOULDER
+	#undef SDL_CONTROLLER_BUTTON_RIGHTSHOULDER
+	#define SDL_CONTROLLER_BUTTON_RIGHTSHOULDER SDL_GAMEPAD_BUTTON_RIGHT_SHOULDER
+	#undef SDL_CONTROLLER_BUTTON_LEFTSTICK
+	#define SDL_CONTROLLER_BUTTON_LEFTSTICK SDL_GAMEPAD_BUTTON_LEFT_STICK
+	#undef SDL_CONTROLLER_BUTTON_RIGHTSTICK
+	#define SDL_CONTROLLER_BUTTON_RIGHTSTICK SDL_GAMEPAD_BUTTON_RIGHT_STICK
+
+	#undef SDL_CONTROLLER_AXIS_LEFTX
+	#define SDL_CONTROLLER_AXIS_LEFTX SDL_GAMEPAD_AXIS_LEFTX
+	#undef SDL_CONTROLLER_AXIS_LEFTY
+	#define SDL_CONTROLLER_AXIS_LEFTY SDL_GAMEPAD_AXIS_LEFTY
+	#undef SDL_CONTROLLER_AXIS_RIGHTX
+	#define SDL_CONTROLLER_AXIS_RIGHTX SDL_GAMEPAD_AXIS_RIGHTX
+	#undef SDL_CONTROLLER_AXIS_RIGHTY
+	#define SDL_CONTROLLER_AXIS_RIGHTY SDL_GAMEPAD_AXIS_RIGHTY
+	#undef SDL_CONTROLLER_AXIS_TRIGGERLEFT
+	#define SDL_CONTROLLER_AXIS_TRIGGERLEFT SDL_GAMEPAD_AXIS_LEFT_TRIGGER
+	#undef SDL_CONTROLLER_AXIS_TRIGGERRIGHT
+	#define SDL_CONTROLLER_AXIS_TRIGGERRIGHT SDL_GAMEPAD_AXIS_RIGHT_TRIGGER
+
+	#undef SDL_WINDOW_ALLOW_HIGHDPI
+	#define SDL_WINDOW_ALLOW_HIGHDPI SDL_WINDOW_HIGH_PIXEL_DENSITY
+
+	#undef SDL_TRUE
+	#define SDL_TRUE true
+	#undef SDL_FALSE
+	#define SDL_FALSE false
+#endif
 
 #if SDL_MAJOR_VERSION >= 2
 static SDL_Window *window;
@@ -42,12 +123,19 @@ static SDL_Surface *surface;
 
 static IB_OutputSizeChangedCallback output_size_changed_callback;
 
-#if SDL_MAJOR_VERSION >= 2
-static int SDLKeyToNative(const SDL_Keycode keycode, const SDL_Scancode scancode)
-#else
-static int SDLKeyToNative(const SDLKey keycode, const Uint8 scancode)
-#endif
+static int SDLKeyToNative(const SDL_Event* const event)
 {
+#if SDL_MAJOR_VERSION >= 3
+	const SDL_Keycode keycode = event->key.key;
+	const SDL_Scancode scancode = event->key.scancode;
+#elif SDL_MAJOR_VERSION >= 2
+	const SDL_Keycode keycode = event->key.keysym.sym;
+	const SDL_Scancode scancode = event->key.keysym.scancode;
+#else
+	const SDLKey keycode = event->key.keysym.sym;
+	const Uint8 scancode = event->key.keysym.scancode;
+#endif
+
 	switch (keycode)
 	{
 		case SDLK_LEFT:   return KEY_LEFTARROW;
@@ -215,14 +303,14 @@ void IB_StartTic (void)
 			#endif
 
 				event.type = ev_keydown;
-				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
+				event.data1 = SDLKeyToNative(&sdl_event);
 				if (event.data1 != -1)
 					D_PostEvent(&event);
 				/* I_Info("k"); */
 				break;
 			case SDL_KEYUP:
 				event.type = ev_keyup;
-				event.data1 = SDLKeyToNative(sdl_event.key.keysym.sym, sdl_event.key.keysym.scancode);
+				event.data1 = SDLKeyToNative(&sdl_event);
 				if (event.data1 != -1)
 					D_PostEvent(&event);
 				/* I_Info("ku"); */
@@ -279,13 +367,22 @@ void IB_StartTic (void)
 					/* I_Info("m"); */
 				}
 				break;
-			#if SDL_MAJOR_VERSION >= 2
+			#if SDL_MAJOR_VERSION >= 3
+			case SDL_EVENT_GAMEPAD_ADDED:
+				SDL_OpenGamepad(sdl_event.gdevice.which);
+				break;
+			case SDL_EVENT_GAMEPAD_REMOVED:
+				SDL_CloseGamepad(SDL_GetGamepadFromID(sdl_event.gdevice.which));
+				break;
+			#elif SDL_MAJOR_VERSION >= 2
 			case SDL_CONTROLLERDEVICEADDED:
 				SDL_GameControllerOpen(sdl_event.cdevice.which);
 				break;
 			case SDL_CONTROLLERDEVICEREMOVED:
 				SDL_GameControllerClose(SDL_GameControllerFromInstanceID(sdl_event.cdevice.which));
 				break;
+			#endif
+			#if SDL_MAJOR_VERSION >= 2
 			case SDL_CONTROLLERBUTTONDOWN:
 			case SDL_CONTROLLERBUTTONUP:
 			{
@@ -296,7 +393,11 @@ void IB_StartTic (void)
 				button_index = -1;
 				x_delta = y_delta = 0;
 
+			#if SDL_MAJOR_VERSION >= 3
+				switch (sdl_event.gbutton.button)
+			#else
 				switch (sdl_event.cbutton.button)
+			#endif
 				{
 					default:
 						break;
@@ -362,9 +463,14 @@ void IB_StartTic (void)
 			}
 			case SDL_CONTROLLERAXISMOTION:
 			{
-				unsigned long value = sdl_event.caxis.value;
+			#if SDL_MAJOR_VERSION >= 3
+				SDL_GamepadAxisEvent* const axis = &sdl_event.gaxis;
+			#else
+				SDL_ControllerAxisEvent* const axis = &sdl_event.caxis;
+			#endif
+				unsigned long value = axis->value;
 
-				switch (sdl_event.caxis.axis)
+				switch (axis->axis)
 				{
 					case SDL_CONTROLLER_AXIS_LEFTX:
 					case SDL_CONTROLLER_AXIS_LEFTY:
@@ -372,7 +478,7 @@ void IB_StartTic (void)
 						if (SDL_abs(value) < 0x7FFF / 4)
 							value = 0;
 
-						if (sdl_event.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX)
+						if (axis->axis == SDL_CONTROLLER_AXIS_LEFTX)
 							joystick_x_left = value;
 						else
 							joystick_y_left = value;
@@ -387,7 +493,7 @@ void IB_StartTic (void)
 						if (value < 0x7FFF / 0x10)
 							value = 0;
 
-						if (sdl_event.caxis.value < 0)
+						if (axis->value < 0)
 							value = -value;
 
 						joystick_x_right = value;
@@ -397,24 +503,28 @@ void IB_StartTic (void)
 					case SDL_CONTROLLER_AXIS_TRIGGERLEFT:
 					case SDL_CONTROLLER_AXIS_TRIGGERRIGHT:
 						/* Deadzone. */
-						SetJoystickButton(sdl_event.caxis.axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT ? 10 : 11, value >= 0x7FFF / 4);
+						SetJoystickButton(axis->axis == SDL_CONTROLLER_AXIS_TRIGGERLEFT ? 10 : 11, value >= 0x7FFF / 4);
 						break;
 				}
 
 				SubmitJoystickEvent();
 				break;
 			}
+			#if SDL_MAJOR_VERSION == 2
 			case SDL_WINDOWEVENT:
 				switch (sdl_event.window.event)
 				{
+			#endif
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
 						surface = SDL_GetWindowSurface(window);
 						/* Clear surface of any garbage pixels. */
 						SDL_FillRect(surface, NULL, 0);
 						output_size_changed_callback(surface->w, surface->h, aspect_ratio_correction);
 						break;
+			#if SDL_MAJOR_VERSION == 2
 				}
 				break;
+			#endif
 			#else
 			case SDL_VIDEORESIZE:
 				surface = SDL_SetVideoMode(sdl_event.resize.w, sdl_event.resize.h, 32, SDL_SWSURFACE | SDL_ANYFORMAT | SDL_RESIZABLE);
@@ -456,9 +566,15 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 {
 	unsigned int i;
 
+#if SDL_MAJOR_VERSION >= 3
+	const SDL_PixelFormatDetails* format = SDL_GetPixelFormatDetails(surface->format);
+	const Uint8 bytes_per_pixel = format->bytes_per_pixel;
+	const Uint32 color = SDL_MapRGB(format, NULL, red, green, blue);
+#else
+	const Uint8 bytes_per_pixel = surface->format.BytesPerPixel;
 	const Uint32 color = SDL_MapRGB(surface->format, red, green, blue);
-
-	for (i = 0; i < surface->format->BytesPerPixel; ++i)
+#endif
+	for (i = 0; i < bytes_per_pixel; ++i)
 		bytes[i] = (color >> (i * 8)) & 0xFF;
 }
 
@@ -466,7 +582,9 @@ void IB_GetColor(unsigned char *bytes, unsigned char red, unsigned char green, u
 void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_height, size_t *bytes_per_pixel, IB_OutputSizeChangedCallback output_size_changed_callback_p)
 {
 	output_size_changed_callback = output_size_changed_callback_p;
-#if SDL_MAJOR_VERSION >= 2
+#if SDL_MAJOR_VERSION >= 3
+	SDL_InitSubSystem(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD);
+#elif SDL_MAJOR_VERSION >= 2
 #ifdef _WIN32
 	/* Enable high-DPI support on Windows because SDL2 is bad at being a platform abstraction library. */
 	SDL_SetHint(SDL_HINT_WINDOWS_DPI_SCALING, "1");
@@ -481,7 +599,11 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 #endif
 
 #if SDL_MAJOR_VERSION >= 2
-	window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screen_width, screen_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | (M_CheckParm("-full") ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0));
+	window = SDL_CreateWindow(title,
+#if SDL_MAJOR_VERSION <= 2
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+#endif
+		screen_width, screen_height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI | (M_CheckParm("-full") ? SDL_WINDOW_FULLSCREEN : 0));
 
 	if (window == NULL)
 		I_Error("Could not create SDL window");
@@ -496,7 +618,11 @@ void IB_InitGraphics(const char *title, size_t screen_width, size_t screen_heigh
 	SDL_WM_SetCaption(title, title);
 #endif
 
+#if SDL_MAJOR_VERSION >= 3
+	*bytes_per_pixel = SDL_GetPixelFormatDetails(surface->format)->bytes_per_pixel;
+#else
 	*bytes_per_pixel = surface->format->BytesPerPixel;
+#endif
 
 	output_size_changed_callback(surface->w, surface->h, aspect_ratio_correction);
 }
@@ -519,7 +645,9 @@ void IB_ShutdownGraphics(void)
 
 void IB_GrabMouse(cc_bool grab)
 {
-#if SDL_MAJOR_VERSION >= 2
+#if SDL_MAJOR_VERSION >= 3
+	SDL_SetWindowRelativeMouseMode(window, grab);
+#elif SDL_MAJOR_VERSION >= 2
 	SDL_SetRelativeMouseMode(grab ? SDL_TRUE : SDL_FALSE);
 #else
 	SDL_WM_GrabInput(grab ? SDL_GRAB_ON : SDL_GRAB_OFF);
@@ -533,7 +661,11 @@ void IB_ToggleFullscreen(void)
 	static cc_bool fullscreen;
 
 	fullscreen = !fullscreen;
+#if SDL_MAJOR_VERSION >= 3
+	SDL_SetWindowFullscreen(window, fullscreen);
+#else
 	SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+#endif
 #else
 	SDL_WM_ToggleFullScreen(surface);
 #endif

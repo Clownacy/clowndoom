@@ -18,10 +18,14 @@
 
 #include <stdlib.h>
 
-#include "SDL.h"
-
-#if SDL_MAJOR_VERSION >= 2
-#include "SDL_main.h"
+#ifdef USE_SDL3
+	#include <SDL3/SDL.h>
+	#include <SDL3/SDL_main.h>
+#else
+	#include "SDL.h"
+	#if SDL_MAJOR_VERSION >= 2
+		#include "SDL_main.h"
+	#endif
 #endif
 
 #include "../doomdef.h"

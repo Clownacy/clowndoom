@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 
 project(clowndoom LANGUAGES C)
 
-set(BACKEND "SDL2" CACHE STRING "Which backend to use: Xlib, SDL1, SDL2, libretro, or Null")
+set(BACKEND "SDL3" CACHE STRING "Which backend to use: Xlib, SDL1, SDL2, SDL3, libretro, or Null")
 option(WILDMIDI "Render MIDI using the WildMIDI library" ON)
 option(FRENCH "Change the language of various strings to French" OFF)
 option(LOW_END "Exchange visual fidelity for resource usage, reducing RAM usage and CPU usage" OFF)
@@ -209,19 +209,44 @@ elseif(BACKEND STREQUAL "SDL2")
 		"source/ib_video/sdl.c"
 	)
 
-	find_package(SDL2)
+	find_package(SDL2 REQUIRED)
 
-	if(NOT SDL2_FOUND)
+	# TODO: Add a second SDL subdirectory just for SDL2.
+	#if(NOT SDL2_FOUND)
+	#	set(SDL_STATIC ON)
+	#	set(SDL_SHARED OFF)
+	#	add_subdirectory("external/SDL" EXCLUDE_FROM_ALL)
+	#	if(SDL_STATIC)
+	#		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2-static)
+	#	else()
+	#		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
+	#	endif()
+	#else()
+		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
+	#endif()
+elseif(BACKEND STREQUAL "SDL3")
+	target_sources(clowndoom PRIVATE
+		"source/ib_file/sdl.c"
+		"source/ib_sound/sdl.c"
+		"source/ib_system/sdl.c"
+		"source/ib_video/sdl.c"
+	)
+
+	target_compile_definitions(clowndoom PRIVATE USE_SDL3)
+
+	find_package(SDL3)
+
+	if(NOT SDL3_FOUND)
 		set(SDL_STATIC ON)
 		set(SDL_SHARED OFF)
 		add_subdirectory("external/SDL" EXCLUDE_FROM_ALL)
 		if(SDL_STATIC)
-			target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2-static)
+			target_link_libraries(clowndoom PRIVATE SDL3::SDL3-static)
 		else()
-			target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
+			target_link_libraries(clowndoom PRIVATE SDL3::SDL3)
 		endif()
 	else()
-		target_link_libraries(clowndoom PRIVATE SDL2::SDL2main SDL2::SDL2)
+		target_link_libraries(clowndoom PRIVATE SDL3::SDL3)
 	endif()
 elseif(BACKEND STREQUAL "libretro")
 	target_sources(clowndoom PRIVATE
