@@ -56,6 +56,7 @@ lightweight and highly portable. Think 'Crispy Doom minus the bloat'.
 - Command line parameters:
   - `-iwad`, for loading a specific primary WAD file.
   - `-complevel`, supporting options 2, 3, and 4.
+  - `-full`, for starting in full-screen by default.
 - Supported expansions:
   - Master Levels for Doom II
   - No Rest for the Living
