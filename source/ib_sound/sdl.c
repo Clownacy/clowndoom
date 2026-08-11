@@ -8,6 +8,8 @@
 	#include "SDL.h"
 #endif
 
+#include "../i_system.h"
+
 #define DEFAULT_SAMPLE_RATE 48000
 
 /* The function that actually produces the output audio */
@@ -55,7 +57,7 @@ int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio
 	if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0)
 #endif
 	{
-		/* TODO: Error message. */
+		I_Error("Could not initialise SDL audio subsystem");
 	}
 	else
 	{
@@ -90,7 +92,7 @@ int IB_StartupSound(IB_InitialCallback initial_callback, IB_AudioCallback _audio
 		if (SDL_OpenAudio(&audio_specification, NULL) < 0)
 #endif
 		{
-			/* TODO: Error message. */
+			I_Error("Could not create SDL audio device");
 		}
 		else
 		{
