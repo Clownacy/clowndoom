@@ -1057,10 +1057,13 @@ void D_DoomMain (int argc, char **argv)
 	p = M_CheckParm ("-complevel");
 	if (p && p < myargc - 1)
 	{
-		sscanf(myargv[p + 1], "%i", &complevel);
+		int value;
+		value = atoi(myargv[p + 1]);
 
-		if ((complevel < COMPLEVEL_DOOM_1_9 || complevel > COMPLEVEL_FINAL_DOOM) && complevel != COMPLEVEL_CUSTOM)
-			I_Error("Unsupported complevel '%d'.\n", complevel);
+		if ((value < COMPLEVEL_DOOM_1_9 || value > COMPLEVEL_FINAL_DOOM) && value != COMPLEVEL_CUSTOM)
+			I_Error("Unsupported complevel '%d'.\n", value);
+
+		complevel = (complevel_t)value;
 	}
 
 	I_Info ("Z_Init: Init zone memory allocation daemon. \n");
